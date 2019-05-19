@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icbc.common.system_menu.menuMapper.MenuMapper">
+
+
+    <resultMap id="treeResultMap" type="com.icbc.entity.menu.TreeNode">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pId" property="pid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="order_sort" property="orderSort" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getTreeList" resultMap="treeResultMap" >
+      SELECT * FROM T_TREE_ELEMENT_TREE
+    </select>
+
+</mapper>
