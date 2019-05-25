@@ -1,0 +1,39 @@
+<Configuration status="off">
+    <Properties>
+        <Property name="LOG_PATH">.</Property>
+    </Properties>
+    <Appenders>
+        <!-- Console -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36}.%M@%L - %msg%n"/>
+            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %C{5} (%F:%L) - %msg%n"/>-->
+        </Console>
+        <!-- RollingFile -->
+        <RollingRandomAccessFile name="RollingFile"
+                                 fileName="./aifasion.log"
+                                 filePattern="${LOG_PATH}/aifasion.log.%d{yyyy-MM-dd-HH}">
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36}.%M@%L - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Spring Loggers -->
+        <Logger  name="org.springframework" level="info"/>
+
+        <!-- App Loggers -->
+        <Logger name="org.jd.test" level="debug" additivity="false">
+            <AppenderRef  ref="Console"/>
+            <AppenderRef  ref="RollingFile"/>
+        </Logger>
+
+        <!-- Root Logger -->
+        <Root  level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root >
+    </Loggers>
+</Configuration>
