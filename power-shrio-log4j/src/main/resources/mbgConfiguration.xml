@@ -14,7 +14,7 @@
         </commentGenerator>
 
         <!-- 数据库链接URL、用户名、密码 -->
-        <jdbcConnection driverClass="${jdbc.driver}"
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
                         connectionURL="${spring.datasource.driver-class-name}"
                         userId="${spring.datasource.username}"
                         password="${spring.datasource.password}">

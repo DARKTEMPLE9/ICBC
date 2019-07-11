@@ -1,6 +1,6 @@
-package com.icbc.common.system_menu.menuMapper;
+package com.icbc.common.user_power.userMapper.menuMapper;
 
-import com.icbc.entity.menu.TreeNode;
+import com.icbc.entity.mapper.menu.TreeNode;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
