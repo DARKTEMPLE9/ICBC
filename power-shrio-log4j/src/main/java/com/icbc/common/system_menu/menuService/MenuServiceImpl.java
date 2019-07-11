@@ -1,9 +1,8 @@
 package com.icbc.common.system_menu.menuService;
 
 import com.icbc.common.system_menu.menuMapper.MenuMapper;
-import com.icbc.entity.menu.TreeNode;
+import com.icbc.entity.mapper.menu.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -3,7 +3,7 @@
 <mapper namespace="com.icbc.common.system_menu.menuMapper.MenuMapper">
 
 
-    <resultMap id="treeResultMap" type="com.icbc.entity.menu.TreeNode">
+    <resultMap id="treeResultMap" type="com.icbc.entity.mapper.menu.TreeNode">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="pId" property="pid" jdbcType="INTEGER"/>

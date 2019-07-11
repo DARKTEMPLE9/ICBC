@@ -1,7 +1,7 @@
 package com.icbc.common.system_menu.menuController;
 
 import com.icbc.common.system_menu.menuService.MenuService;
-import com.icbc.entity.menu.TreeNode;
+import com.icbc.entity.mapper.menu.TreeNode;
 import com.icbc.utils.TreeUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.applet.Main;
 
 import java.util.List;
 

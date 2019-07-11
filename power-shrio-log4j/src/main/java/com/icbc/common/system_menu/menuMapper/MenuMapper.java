@@ -1,4 +1,4 @@
-package com.icbc.common.user_power.userMapper.menuMapper;
+package com.icbc.common.system_menu.menuMapper;
 
 import com.icbc.entity.mapper.menu.TreeNode;
 import org.apache.ibatis.annotations.Mapper;

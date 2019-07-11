@@ -1,9 +1,7 @@
 package com.icbc.utils;
 
-import com.icbc.entity.menu.TreeNode;
 import lombok.Data;
 
-import javax.naming.Name;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;

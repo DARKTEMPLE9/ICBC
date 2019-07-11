@@ -2,9 +2,169 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>员工信息123123</title>
+    <!-- 引入vue -->
+    <script src="../../plugins/vue.min.js"></script>
+    <!-- 引入jquery -->
+    <script src="../../plugins/jquery.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet"
+          href="../../plugins/element-ui/theme-default/index.css">
+    <!--引入组件库-->
+    <script src="../../plugins/element-ui/index.js"></script>
 </head>
+<style>
+
+</style>
 <body>
-员工信息123
+<div id="rrapps">
+        <el-table
+                :data="tableData"
+                style="width: 50%"
+                max-height="800">
+            <el-table-column
+                    fixed
+                    prop="date"
+                    label="日期"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="province"
+                    label="省份"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="city"
+                    label="市区"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="地址"
+                    width="300">
+            </el-table-column>
+            <el-table-column
+                    prop="zip"
+                    label="邮编"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="120">
+                <template slot-scope="scope">
+                    <el-button
+                            @click.native.prevent="deleteRow(scope.$index, tableData)"
+                            type="text"
+                            size="small">
+                        移除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    <el-pagination background
+                   layout="prev, pager, next, sizes, total, jumper"
+                   :page-sizes="[5, 10, 15, 20]"//每页展示条选择组件
+    >
+    </el-pagination>
+    </div>
 </body>
+<script type="text/javascript">
+    var vue = new Vue({
+        el:'#rrapps',
+        data(){
+            return{
+                tableData: [{
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-08',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-06',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }, {
+                    date: '2016-05-07',
+                    name: '王小虎',
+                    province: '上海',
+                    city: '普陀区',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    zip: 200333
+                }],
+                pagesize:10,
+            }
+        },
+        created:function () {
+            this.getUserInfoTable();
+        },
+        methods:{
+            deleteRow(index, rows) {
+                rows.splice(index, 1);
+            },
+            getUserInfoTable(){
+                $.ajax({
+                    url:"../user/getUserPage",    //请求的url地址
+                    dataType:"json",   //返回格式为json
+                    async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                    type:"GET",   //请求方式
+                    beforeSend:function(){
+                    },
+                    success:function(req){
+                        console.info(req);
+                    },
+                    complete:function(){
+                        //请求完成的处理
+                    },
+                    error:function(){
+                        //请求出错处理
+                    }
+                })
+            },
+            handleCurrentChange(){
+
+            },
+            handleSizeChange(){
+
+            }
+        }
+    })
+</script>
 </html>

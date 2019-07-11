@@ -1,4 +1,4 @@
-package com.icbc.entity.menu;
+package com.icbc.entity.mapper.menu;
 
 import lombok.Data;
 
