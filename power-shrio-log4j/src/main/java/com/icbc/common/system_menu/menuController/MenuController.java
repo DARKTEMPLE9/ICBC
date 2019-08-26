@@ -74,7 +74,7 @@ public class MenuController {
     public ModelAndView toMain(){
         ModelAndView view = new ModelAndView();
         view.setViewName("index");
-        logger.info("hello world");
+        //logger.info("hello world");
         return view;
     }
 

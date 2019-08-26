@@ -24,7 +24,6 @@ public class DateUtils {
     }
 
     public static Date StrToDate(String str) {
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
