@@ -31,6 +31,8 @@
     <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id" />
   </resultMap>
 
+
+
   <resultMap id="Export_a_2_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_2_1">
     <result column="row_id" jdbcType="VARCHAR" property="row_id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -46,6 +48,20 @@
 
   <select id="queryExcelObject" resultType="map">
     SELECT * FROM EXPORT_A
+  </select>
+
+  <select id="queryExcel_a_1" parameterType="java.lang.String" resultType="com.icbc.common.export_poi.entity.Export_a_1">
+    SELECT * FROM EXPORT_A_1 WHERE
+    <if test="row_id  != null and row_id  !=''">
+      EXPORT_A_ROW_ID = #{row_id}
+    </if>
+  </select>
+
+  <select id="queryExcel_a_1_1" parameterType="java.lang.String" resultType="com.icbc.common.export_poi.entity.Export_a_1_1">
+    SELECT  * FROM EXPORT_A_1_1 where
+    <if test="row_id  != null and row_id  !=''">
+      EXPORT_A_1_ROW_ID = #{row_id}
+    </if>
   </select>
 
 </mapper>
