@@ -25,6 +25,36 @@ public class MenuController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /*
+    * 跳转至EL-Tree-lazy页面
+    * */
+    @RequestMapping(value = "/toTreeLazy",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView toTreeLazy(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userInfo/EL-Tree-lazy");
+        return modelAndView;
+    }
+
+    /*
+    * 获取当前父节点下的子节点数据
+    * */
+    @RequestMapping(value = "/getTreeChild",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public List<TreeNode> getTreeChild(String id){
+        List<TreeNode> childList = menuService.getTreeChild(id);
+        return childList;
+
+    }
+    /*
+    * 获取全部父节点
+    * */
+    @RequestMapping(value = "/getTreeParent",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public List<TreeNode> getTreeParent(){
+        List<TreeNode> treeList = menuService.getTreeParent();
+
+        return treeList;
+    }
 
     /**
      * 首页树

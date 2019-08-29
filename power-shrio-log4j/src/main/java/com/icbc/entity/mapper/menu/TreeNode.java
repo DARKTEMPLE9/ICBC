@@ -17,7 +17,7 @@ public class TreeNode {
 
     private Integer orderSort;
 
-    private List<TreeNode> childList;
+    private List<TreeNode> childNodes;
 
 
 }

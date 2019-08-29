@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入vue -->
+    <script src="../../plugins/vue.min.js"></script>
+    <!-- 引入jquery -->
+    <script src="../../plugins/jquery.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet"
+          href="../../plugins/element-ui/theme-default/index.css">
+    <!--引入组件库-->
+    <script src="../../plugins/element-ui/index.js"></script>
+    <title>EL-Tree-lazy</title>
+</head>
+<body>
+<div id="rrapp">
+    <div>
+        <el-tree
+                :data="data"
+                :props="props"
+                :load="loadNode"
+                lazy
+                show-checkbox>
+        </el-tree>
+
+
+
+
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#rrapp',
+        data() {
+            return {
+                data: [],
+                props: {
+                    children: 'childList',
+                    label: 'name',
+                    isLeaf:'leaf'
+                }
+            }
+        },
+        created: function () {
+            //this.getTreeList();
+
+        },
+        methods: {
+            loadNode(node, resolve) {
+                console.info(node);
+                if (node.level === 0) {
+                    //return resolve([{ name: 'region' }]);
+                    var _this = this;
+                    $.ajax({
+                        url: '/menu/getTreeParent',
+                        type: 'post',
+                        async: false,
+                        data: {},
+                        datatype: "JSON",
+                        success: function (data) {
+                            resolve(data);
+                        }
+                    })
+                }
+                if (node.level >= 1) {
+                    setTimeout(() => {
+                        const data = [{}];
+                    $.ajax({
+                        url: '/menu/getTreeChild?id='+node.data.id,
+                        type: 'post',
+                        async: false,
+                        data: {},
+                        datatype: "JSON",
+                        success: function (data) {
+                            //console.info(data);
+                            resolve(data);
+                        }
+                    })
+                    //resolve(data);
+                }, 500);
+                }
+
+                setTimeout(() => {
+                    const data = [{}];
+                $.ajax({
+                    url: '/menu/getTreeChild?id='+node.data.id,
+                    type: 'post',
+                    async: false,
+                    data: {},
+                    datatype: "JSON",
+                    success: function (data) {
+                        //console.info(data);
+                        resolve(data);
+                    }
+                })
+                //resolve(data);
+            }, 500);
+            }
+        }
+
+    });
+</script>
+</html>

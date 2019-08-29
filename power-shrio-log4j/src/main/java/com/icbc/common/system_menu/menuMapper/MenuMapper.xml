@@ -16,5 +16,15 @@
     <select id="getTreeList" resultMap="treeResultMap" >
       SELECT * FROM T_TREE_ELEMENT_TREE
     </select>
+    <select id="getTreeParent"  resultType="com.icbc.entity.mapper.menu.TreeNode">
+        SELECT * FROM T_TREE_ELEMENT_TREE WHERE  PID = #{i}
+    </select>
+    <select id="getParent" resultType="com.icbc.entity.mapper.menu.TreeNode">
+        SELECT * FROM T_TREE_ELEMENT_TREE WHERE  ID = #{id}
+    </select>
+
+    <select id="getChildList" resultType="com.icbc.entity.mapper.menu.TreeNode">
+      SELECT * FROM T_TREE_ELEMENT_TREE WHERE  PID = #{id}
+    </select>
 
 </mapper>

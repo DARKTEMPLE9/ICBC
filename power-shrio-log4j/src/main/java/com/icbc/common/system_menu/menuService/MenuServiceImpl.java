@@ -15,9 +15,33 @@ public class MenuServiceImpl implements MenuService{
     private MenuMapper menuMapper;
 
 
+
+
     @Override
     public List<TreeNode> getTree() {
         List<TreeNode> list = menuMapper.getTreeList();
         return list;
+    }
+    /*
+    * 获取父节点
+    * */
+    @Override
+    public List<TreeNode> getTreeParent() {
+        int i = 0;
+        List<TreeNode> treeNodeList =  menuMapper.getTreeParent(i);
+        return treeNodeList;
+    }
+
+    /*
+     * 获取当前父节点下的子节点数据
+     * */
+    @Override
+    public List<TreeNode> getTreeChild(String id) {
+        //获取父节点信息
+        TreeNode  treeNode = menuMapper.getParent(id);
+        //查询子节点信息  父节点id当作子节点pid
+        List<TreeNode> treeNodeList = menuMapper.getChildList(id);
+        treeNode.setChildNodes(treeNodeList);
+        return treeNodeList;
     }
 }
