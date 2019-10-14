@@ -14,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/*
+* 首页菜单类
+* */
 @Controller
 @RequestMapping("menu")
 public class MenuController {
@@ -24,6 +27,16 @@ public class MenuController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 跳转测试elementui-table页面
+     * @return
+     */
+    @RequestMapping(value = "/toTable",method = {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView toTable(){
+        ModelAndView view = new ModelAndView();
+        view.setViewName("table-element/table-js");
+        return view;
+    }
 
     /*
     * 测试获取JSON数据

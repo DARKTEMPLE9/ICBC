@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>金审三期-安全保障支撑系统</title>
+    <!-- 引入vue -->
+    <script src="../../plugins/vue.min.js"></script>
+    <!-- 引入jquery -->
+    <script src="../../plugins/jquery.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet"
+          href="../../plugins/element-ui/theme-default/index.css">
+    <!--引入组件库-->
+    <script src="../../plugins/element-ui/index.js"></script>
+    <!--引入CSS样式-->
+    <script src="../../js/css/base.css"></script>
+    <script src="../../js/css/main.css"></script>
+    <script src="../../js/css/reset.css"></script>
+</head>
+<body>
+<div class="wrapper" :style="{width:weapperW} id=app1" v-cloak>
+    <div class="header clear">
+        <div class="float-left">
+            <div class="imglogo">
+                <img th:src="@{/public/img/IronmanMI.png}" alt="金审三期-安全保障支撑系统">
+            </div>
+            <div class="logo">
+                <h1 class="logo-title" style="margin-top: 5px;font-family: microsoft yahei">金审三期-安全保障支撑系统</h1>
+            </div>
+            <ul class="nav" id="nav">
+                <li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(iteam)">
+                    <a style="padding-top: 12px">{{item.menuObj.menuName}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="welcome-tip-wp float-rigth" v-if="clientW>1024">
+            <div class="welcome-tip">
+                <a class="profilebox">
+                    <img th:src="@{/public/img/IronmanMIII.png}" alt="img">
+                </a>
+            </div>
+            <el-form ref="sercurityTrainForm" :model="sercurityTrainForm" label-width="100px" size="medium">
+                <div class="userInfos">
+                    <span shiro:guest="">
+                        暂未登录<a href="/icbc/login?loginname=user_edit_net" target="_top">点击登录</a><br>
+                    </span>
+                    <el-popover
+                        placement="top-start"
+                        width="100"
+                        trigger="hover">
+                        <a slot="reference">
+                            <div id="loginUserName">
+                                <span shiro:principal="">
+                                    <el-button type="primary" size="mini" @click="exit('/')" round>
+                                        <i class="iconfont icon-ios-power sjs-exitBtn">
+                                            <font size="2">&nbsp;退出</font>
+                                        </i>
+                                    </el-button>
+                                </span>
+                            </div>
+                        </a>
+                    </el-popover>
+
+                </div>
+            </el-form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

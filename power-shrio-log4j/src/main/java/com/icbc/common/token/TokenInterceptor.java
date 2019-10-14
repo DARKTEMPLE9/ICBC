@@ -31,7 +31,8 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
             if (annotation != null) {
                 boolean needSaveSession = annotation.save();
                 if (needSaveSession) {
-                    String token = UUID.randomUUID().toString().replace("-", "");
+                    //String token = UUID.randomUUID().toString().replace("-", "");
+                    String token = UUID.randomUUID().toString();
                     Object tokens = addToken(token, request.getSession().getAttribute("tokenSet"));
                     /*
                      * 存放当前token,最终返回到页面

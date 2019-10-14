@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>elementui-table样式测试</title>
+    <!-- 引入vue -->
+    <script src="../../plugins/vue.min.js"></script>
+    <!-- 引入jquery -->
+    <script src="../../plugins/jquery.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet"
+          href="../../plugins/element-ui/theme-default/index.css">
+    <!--引入组件库-->
+    <script src="../../plugins/element-ui/index.js"></script>
+</head>
+<body>
+<div id="rrapp">
+
+    <el-table
+            :data="tableData"
+            border
+            style="width: 100%">
+        <el-table-column
+                prop="date"
+                label="日期"
+                width="180"
+
+        >
+        </el-table-column>
+        <el-table-column
+                prop="name"
+                label="姓名"
+                width="180"
+
+
+        >
+        </el-table-column>
+        <el-table-column
+                width="180"
+                prop="address"
+                label="地址"
+                show-overflow-tooltip
+                :formatter="formatterAddress"
+        >
+        </el-table-column>
+    </el-table>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#rrapp',
+        data() {
+            return {
+                tableData: [{
+                    date: '2016-05-02',
+                    name: '',
+                    address: '上海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎王小虎王小',
+                    address: '   '
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                }]
+            }
+        },
+        methods:{
+            formatterAddress(row, column, cellValue){
+                return "上海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄海市普陀区金沙江路 1518 弄";
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
