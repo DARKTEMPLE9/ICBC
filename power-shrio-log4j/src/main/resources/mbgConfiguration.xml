@@ -10,7 +10,7 @@
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="false" />
+            <property name="suppressAllComments" value="true" />
         </commentGenerator>
 
         <!-- 数据库链接URL、用户名、密码 -->
@@ -19,11 +19,11 @@
                         password="${jdbc.password}" />
 
         <!--生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="entity" targetProject="src/main/java/com/icbc" />
+        <javaModelGenerator targetPackage="entity" targetProject="src/main/java/com/icbc/super_shopping/super_power/entity" />
         <!--映射文件的包名和位置 -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/java/com/icbc/entity" />
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/java/com/icbc/super_shopping/super_power/mapper" />
         <!--DAO的包名和位置 -->
-        <javaClientGenerator targetPackage="mapper" targetProject="src/main/java/com/icbc/entity" type="XMLMAPPER" />
+        <javaClientGenerator targetPackage="mapper" targetProject="src/main/resources/spuer_shopping/super_power" type="XMLMAPPER" />
 
 
 

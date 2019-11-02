@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserManageMapper">
+  <resultMap id="BaseResultMap" type="com.icbc.super_shopping.super_power.entity.UserManage">
+    <id column="ROW_ID" jdbcType="VARCHAR" property="rowId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_LOGIN_NUMBER" jdbcType="VARCHAR" property="userLoginNumber" />
+    <result column="USER_PASSWORD" jdbcType="VARCHAR" property="userPassword" />
+    <result column="USER_STATUS" jdbcType="INTEGER" property="userStatus" />
+    <result column="USER_PHONE" jdbcType="VARCHAR" property="userPhone" />
+    <result column="USER_DEPT_ROW_ID" jdbcType="VARCHAR" property="userDeptRowId" />
+    <result column="USER_POSITION_ROW_ID" jdbcType="VARCHAR" property="userPositionRowId" />
+    <result column="USER_APP_ROW_ID" jdbcType="VARCHAR" property="userAppRowId" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="MODIFY_USER" jdbcType="VARCHAR" property="modifyUser" />
+    <result column="MODIFY_DATE" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ROW_ID, USER_NAME, USER_LOGIN_NUMBER, USER_PASSWORD, USER_STATUS, USER_PHONE, USER_DEPT_ROW_ID, 
+    USER_POSITION_ROW_ID, USER_APP_ROW_ID, CREATE_USER, CREATE_DATE, MODIFY_USER, MODIFY_DATE
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_manage
+    where ROW_ID = #{rowId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_manage
+    where ROW_ID = #{rowId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.icbc.super_shopping.super_power.entity.UserManage">
+    insert into user_manage (ROW_ID, USER_NAME, USER_LOGIN_NUMBER, 
+      USER_PASSWORD, USER_STATUS, USER_PHONE, 
+      USER_DEPT_ROW_ID, USER_POSITION_ROW_ID, USER_APP_ROW_ID, 
+      CREATE_USER, CREATE_DATE, MODIFY_USER, 
+      MODIFY_DATE)
+    values (#{rowId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userLoginNumber,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, 
+      #{userDeptRowId,jdbcType=VARCHAR}, #{userPositionRowId,jdbcType=VARCHAR}, #{userAppRowId,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{modifyUser,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.icbc.super_shopping.super_power.entity.UserManage">
+    insert into user_manage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rowId != null">
+        ROW_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userLoginNumber != null">
+        USER_LOGIN_NUMBER,
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD,
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS,
+      </if>
+      <if test="userPhone != null">
+        USER_PHONE,
+      </if>
+      <if test="userDeptRowId != null">
+        USER_DEPT_ROW_ID,
+      </if>
+      <if test="userPositionRowId != null">
+        USER_POSITION_ROW_ID,
+      </if>
+      <if test="userAppRowId != null">
+        USER_APP_ROW_ID,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="modifyUser != null">
+        MODIFY_USER,
+      </if>
+      <if test="modifyDate != null">
+        MODIFY_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginNumber != null">
+        #{userLoginNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userDeptRowId != null">
+        #{userDeptRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPositionRowId != null">
+        #{userPositionRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAppRowId != null">
+        #{userAppRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null">
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.icbc.super_shopping.super_power.entity.UserManage">
+    update user_manage
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginNumber != null">
+        USER_LOGIN_NUMBER = #{userLoginNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userPhone != null">
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userDeptRowId != null">
+        USER_DEPT_ROW_ID = #{userDeptRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPositionRowId != null">
+        USER_POSITION_ROW_ID = #{userPositionRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAppRowId != null">
+        USER_APP_ROW_ID = #{userAppRowId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null">
+        MODIFY_USER = #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        MODIFY_DATE = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ROW_ID = #{rowId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.icbc.super_shopping.super_power.entity.UserManage">
+    update user_manage
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_LOGIN_NUMBER = #{userLoginNumber,jdbcType=VARCHAR},
+      USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      USER_STATUS = #{userStatus,jdbcType=INTEGER},
+      USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      USER_DEPT_ROW_ID = #{userDeptRowId,jdbcType=VARCHAR},
+      USER_POSITION_ROW_ID = #{userPositionRowId,jdbcType=VARCHAR},
+      USER_APP_ROW_ID = #{userAppRowId,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      MODIFY_USER = #{modifyUser,jdbcType=VARCHAR},
+      MODIFY_DATE = #{modifyDate,jdbcType=TIMESTAMP}
+    where ROW_ID = #{rowId,jdbcType=VARCHAR}
+  </update>
+</mapper>

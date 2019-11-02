@@ -19,10 +19,10 @@ public class endService implements Runnable{
         thread.setName("开始一个新的线程");
         System.out.println("=========== 开启线程 成功  =============");
         thread.start();
-        List<TreeNode> treeParent = menuService.getTreeParent();
+        /*List<TreeNode> treeParent = menuService.getTreeParent();
         for (int i = 0; i < treeParent.size(); i++) {
             System.out.println(treeParent.get(i));
-        }
+        }*/
 
         System.out.println("=========== 调用 @Autowired  成功=============");
         return "执行完毕";
