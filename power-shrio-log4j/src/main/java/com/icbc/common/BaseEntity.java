@@ -1,4 +1,4 @@
-package com.icbc.entity;
+package com.icbc.common;
 
 import lombok.Data;
 

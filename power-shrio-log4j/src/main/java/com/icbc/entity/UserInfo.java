@@ -1,6 +1,6 @@
 package com.icbc.entity;
 
-import com.icbc.entity.BaseEntity;
+import com.icbc.common.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;

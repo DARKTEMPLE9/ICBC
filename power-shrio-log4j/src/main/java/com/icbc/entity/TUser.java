@@ -1,6 +1,6 @@
 package entity;
 
-import com.icbc.entity.BaseEntity;
+import com.icbc.common.BaseEntity;
 
 import java.io.Serializable;
 

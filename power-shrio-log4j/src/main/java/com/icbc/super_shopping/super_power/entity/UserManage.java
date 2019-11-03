@@ -1,6 +1,6 @@
 package com.icbc.super_shopping.super_power.entity;
 
-import com.icbc.entity.BaseEntity;
+import com.icbc.common.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
 

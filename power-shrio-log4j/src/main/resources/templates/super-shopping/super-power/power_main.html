@@ -7,15 +7,16 @@
     <!--引入静态资源-->
     <script src="/common/common-js.js" type="application/javascript"></script>
     <script th:inline="javascript">
-        var tabMaxCount,blank, accessedMenus, manual, roleCode,orgId,ctx,userId;
+        var tabMaxCount,list,blank, accessedMenus, manual, roleCode,orgId,ctx,userNamx;
         blank = [[${blank}]];
+        list = [[accessedMenus]];
         accessedMenus = [[${accessedMenus}]];
         tabMaxCount = [[${tabMaxCount}]];
         manual = [[${manual}]];
         roleCode = [[${roleCode}]];
         orgId = [[${orgId}]];
         ctx = [[${#request.getContextPath()}]];
-
+        userNamx = null;
     </script>
 </head>
 <body>
@@ -31,13 +32,13 @@
                     <h1 class="logo-title">统一认证权限支撑系统</h1>
                 </div>
                 <ul class="nav" id="nav">
-                   <li v-for="item in accessedMenus.childen" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(item)">
+                   <li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(item)">
                         <a>{{item.menuObj.menuName}}</a>
                    </li>
                 </ul>
             </div>
-            <div class="welcome-tip-wp float-rigth" v-if="clientW>1024">
-                <!--<div class="welcome-tip">
+           <!-- <div class="welcome-tip-wp float-rigth" v-if="clientW>1024">
+                <div class="welcome-tip">
                     <a class="profilebox">
                         <img id="profileimg" th:src="@{../img/IronmanMIII.png}">
                     </a>
@@ -48,14 +49,18 @@
                             暂未登录<a href="#" target="_top">点击登录</a>
                         </span>
                     </div>
-                </el-form>-->
-            </div>
+                </el-form>
+            </div>-->
             <el-row class="main" ref="main" :style="{height:minaH}">
                 <el-col :span="isCollapse?1:4" class="aside" ref="aside" v-if="expandMenu">
                     <div class="sjs-sideMenu" :style="{height:sideMenuH}">
                         <el-menu class="el-menu-vertical-demo" ref="sjsMenu" :uniqun-openeds=true
                                  :collapse="isCollapse" :default-active="itemIndex" :default-openeds="openedMenu"
                                  @select="menuOpen">
+                            <el-menu-item index="1">处理中心</el-menu-item>
+                            <el-menu-item index="1">用户中心</el-menu-item>
+                            <el-menu-item index="1">权限中心</el-menu-item>
+                            <el-menu-item index="1">应用中心</el-menu-item>
                             <div v-for="(item,idx) in menuList.children" :key="idx">
                                 <el-menu-item v-if="item.chidren.length <= 0" :index ="item.menuObj.menuCode"
                                               @click="getTabList(item)">
@@ -88,6 +93,10 @@
                     <div class="content" :style="{height:contentH}">
                         <el-tabs v-if="expandTab" v-model="defaultTab" type="card" :closable="closable"
                                  @tab-remove="removeTab">
+                            <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+                            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+                            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+                            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
                             <el-tab-pane v-for="itab in tabList" :key="itab.menuObj.menuCode"
                                          :label="itab.menuObj.menuName" :name="itab.menuObj.menuName">
                                 <iframe :id="itab.menuObj.menuCode" :src="ctx+itab.menuObj.url"></iframe>
@@ -119,7 +128,8 @@
                 tabList:{},
                 userLoginForm:{},
                 accessedMenus:accessedMenus,
-                url:'../su/welcome',
+                list:list,
+                url:'../power/welcome',
                 isCollapse:false,
                 isCptrans:true,
                 isUnique:true,
@@ -139,14 +149,11 @@
                 selectObj:null,
                 itemIndex:'',
                 openedMenu: '',
-                list:[],
-                menuCode: ''
-
             }
         },
         created: function () {
             this.reSize();
-            this.getMenuList(this.root);
+            //this.getMenuList(this.list);
             this.closable = false;
         },
         computed:{
@@ -160,14 +167,14 @@
         },
         methods: {
             userNameSplice(){
-                /*if(userNamex != null){
+                if(userNamex != null){
                     if(userNamx.length == 0 || userNamex == null){
                         $('#loginUserName').text("暂未登录");
                     }
                     if(userNamx.length <= 8 ){
                         $('#loginUserName').text("暂未登录");
                     }
-                }*/
+                }
             },
             getCurrentMenuList(list){
                 if(list == ''){
@@ -225,7 +232,7 @@
                     }
                 }
             },
-            getMenuList() {
+            getMenuList(list) {
                 if (list.children && list.children.length > 0) {
                     this.expandMenu = true;
                     this.menuList = list;
