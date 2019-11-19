@@ -1,6 +1,6 @@
 package com.icbc.super_shopping.super_power.entity;
 
-import com.icbc.common.BaseEntity;
+import com.icbc.turnpage.PageModel;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @ToString
-public class UserManage extends BaseEntity implements Serializable {
+public class UserManage extends PageModel implements Serializable {
     private String rowId;
 
     private String userName;

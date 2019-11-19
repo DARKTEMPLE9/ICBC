@@ -36,11 +36,11 @@ public class SuperPowerController {
         List<Children> childenList = new ArrayList<Children>();
         Children children = new Children();
         MenuObj menuObj = new MenuObj();
-        menuObj.setMenuCOde("1");
-        menuObj.setMenuName("sadfasdf");
-        children.setMenuObj(menuObj);
+        //menuObj.setMenuCOde("1");
+        //menuObj.setMenuName("sadfasdf");
+        //children.setMenuObj(menuObj);
         childenList.add(children);
-        accessedMenus.setList(childenList);
+        //accessedMenus.setList(childenList);
         modelAndView.addObject("accessedMenus", accessedMenus);
         modelAndView.setViewName("/super-shopping/super-power/power_main.html");
         return modelAndView;

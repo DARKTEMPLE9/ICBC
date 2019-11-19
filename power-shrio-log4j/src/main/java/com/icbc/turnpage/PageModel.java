@@ -1,4 +1,4 @@
-package com.icbc.common;
+package com.icbc.turnpage;
 
 import lombok.Data;
 
@@ -13,9 +13,9 @@ import java.io.Serializable;
  */
 
 @Data
-public class BaseEntity implements Serializable {
+public class PageModel implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer page = 1;
-    private Integer rows = 10;
+    private Integer pageSize;
+    private Integer pageNum;
 
 }
