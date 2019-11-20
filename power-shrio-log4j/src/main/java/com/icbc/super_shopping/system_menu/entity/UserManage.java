@@ -1,4 +1,4 @@
-package com.icbc.super_shopping.super_power.entity;
+package com.icbc.super_shopping.system_menu.entity;
 
 import com.icbc.turnpage.PageModel;
 import lombok.Data;

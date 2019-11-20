@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><!-- 引入样式 -->
+
+    <!--引入静态资源-->
+    <script src="/common/common-js.js" type="application/javascript"></script>
+    <title>安全保障支撑系统</title>
+    <style type="text/css">
+        .userInfos {
+            font-size: 16px;
+            margin: -35px 8px -7px 130px;
+        }
+        .userInfos .dddd {
+            font-size: 16px;
+            margin: -24px 8px -7px 112px;
+        }
+
+    </style>
+    <script th:inline="javascript">
+        var tabMaxCount,list,blank, accessedMenus, manual, roleCode,orgId,ctx,userNamx;
+        blank = [[${blank}]];
+        list = [[accessedMenus]];
+        accessedMenus = [[${accessedMenus}]];
+        tabMaxCount = [[${tabMaxCount}]];
+        manual = [[${manual}]];
+        roleCode = [[${roleCode}]];
+        orgId = [[${orgId}]];
+        ctx = [[${#request.getContextPath()}]];
+        userNamx = null;
+    </script>
+</head>
+<style>
+    .el-tabs,
+    .el-tabs__content,
+    .el-tab-pane{
+        height: 97%!important;
+    }
+
+    .el-popper .popper__arrow {
+        border-width: 0px;
+        -webkit-filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .03));
+        filter: drop-shadow(20 2px 12px rgba(0, 0, 0, .03));
+    }
+
+    .el-popover {
+        position: absolute;
+        background: #fff;
+        min-width: 83px;
+        margin: 0px 110px 0px 0px;
+        border: 1px solid #ebeef5;
+        word-wrap:break-word;
+        word-break:normal;
+        padding: 12px;
+        z-index: 2000;
+        color: #606266;
+        line-height: 1.4;
+        text-align: justify;
+        font-size: 14px;
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    }
+    .el-pagination {
+        float: left;
+        margin-top: 10px;
+    }
+    .el-notification.right {
+        right: 50%;
+    }
+
+</style>
+<body>
+<div class="wrapper" :style="{width:wrapperW}" id="app1" v-cloak>
+    <div class="header clear">
+        <div class="float-left">
+            <div class="imglogo" >
+                <img src="../img/resizeApi.png" alt="审计署安全保障支撑系统">
+            </div>
+            <div class="logo">
+                <h1 class="logo-title"  style="margin-top:5px;font-family: microsoft yahei">安全保障支撑系统</h1>
+            </div>
+            <ul class="nav" id="nav">
+                 <li class="active" @click="clickIndex"><a title="首页" style="padding-top:11px;">首页</a></li>
+                <!--<li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(item)">
+                    <a style="padding-top:12px;">{{item.menuObj.menuName}}</a>
+                </li>-->
+            </ul>
+        </div>
+        <div class="welcome-tip-wp float-right" v-if="clientW>1024">
+            <div class="welcome-tip">
+                <!-- <div class="person-icon">
+                    <i class="iconfont icon-ios-person"></i>
+                </div> -->
+                <a class="profilebox">
+                    <img id="profileimg" src="../img/resizeApi.png" alt="img">
+                </a>
+            </div>
+            <el-form ref="sercurityTrainForm" :model="sercurityTrainForm" label-width="100px"  size="medium"  >
+                <div class="userInfos">
+	                 	<span shiro:guest="">
+							暂未登录 <a href="/ocm/login?loginname=user_edit_net"
+                                    target='_top'>点击登录</a> <br>
+
+						</span>
+                    <el-popover
+                            placement="top-start"
+                            width="100"
+                            trigger="hover">
+                        <a slot="reference">
+                            <div id="loginUserName">
+			                  		<span shiro:principal="">
+			                  				<el-button type="primary"  size="mini" @click="exit('/')" round>
+							                   <i class="iconfont icon-ios-power sjs-exitBtn"><font size="2">&nbsp;退出</font></i>
+							                </el-button>
+
+			                  		</span>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </a>
+                        <span id="userNamesp" ></span>
+                    </el-popover>
+
+                    <div class="dddd">
+                        <el-button type="primary"  size="mini" @click="exit('/')" round>
+                            <i class="iconfont icon-ios-power sjs-exitBtn"><font size="2">&nbsp;退出</font></i>
+                        </el-button>
+                    </div>
+                    <!-- 展示登录用户名 -->
+                    <!-- 认证通过或已记住的用户。 -->
+                    <!-- <span shiro:user="" > -->
+                    <!-- 已经登录的用户： <a href="/ocm/logout" target="_top"> 登出</a><br> -->
+                    <!-- 当前用户： <span shiro:principal=""></span> <br> -->
+                    <!-- </span> -->
+                </div>
+            </el-form>
+        </div>
+
+        <el-row class="main" ref="main" :style="{height: mainH}">
+            <el-col :span="isCollapse?1:4" class="aside" ref="aside" v-if="expandMenu">
+               <!-- <div class="sjs-sideMenu" :style="{height:sideMenuH}">
+                    <el-menu
+                            class="el-menu-vertical-demo"
+                            ref="sjsMenu"
+                            :unique-opened=true
+                            :collapse="isCollapse"
+                            :default-active="itemIndex"
+                            :default-openeds="openedMenu"
+                            @select="menuOpen">
+                        &lt;!&ndash;
+                        :active="itemIndex"
+                        :openeds="openedMenu"
+                        &ndash;&gt;
+                        &lt;!&ndash; default-active: 当前激活菜单的 index &ndash;&gt;
+                        &lt;!&ndash; unique-opened: 是否只保持一个子菜单的展开 &ndash;&gt;
+                        &lt;!&ndash; collapse: 是否水平收起菜单 &ndash;&gt;
+                        <div v-for="(item,idx) in menuList.children" :key="idx">
+                            &lt;!&ndash;<el-menu-item
+                                    v-if="item.children.length <= 0"
+                                    :index="item.menuObj.menuCode"
+                                    @click="getTabList(item)">
+                                <i class="iconfont icon-md-list-box"></i>
+                                <span slot="title">{{item.menuObj.menuName}}</span>
+                            </el-menu-item>&ndash;&gt;
+
+                            <el-submenu v-else
+                                        :index="item.menuObj.menuCode">
+                                <template slot="title">
+                                    <i class="iconfont icon-md-folder-open"></i>
+                                    <span slot="title"><a>{{item.menuObj.menuName}}</a></span>
+                                </template>
+                                <el-menu-item v-for="(it,i) in item.children"
+                                              :key="i"
+                                              :index="it.menuObj.menuCode"
+                                              :tabindex="it.menuObj.menuCode"
+                                              @click="getTabList(it)">
+                                    <span slot="title">{{it.menuObj.menuName}}</span>
+                                </el-menu-item>
+                            </el-submenu>
+                        </div>
+                    </el-menu >
+
+                </div>-->
+                <div class="collapse-btn">
+                    <el-button type="primary" circle size="mini" @click="collapseChange">
+                        <i class="el-icon-menu"></i>
+                    </el-button>
+                </div>
+            </el-col>
+            <el-col :span="expandMenu?(isCollapse?23:20):24" style="padding:20px 20px 0;height:100%">
+                <div class="content" :style="{height:contentH}">
+                    <!--<el-tabs v-if="expandTab" v-model="defaultTab" type="card" :closable="closable" @tab-remove="removeTab">
+                        <el-tab-pane v-for="itab in tabList"
+                                     :key="itab.menuObj.menuCode"
+                                     :label="itab.menuObj.menuName"
+                                     :name="itab.menuObj.menuName">
+                            <iframe :id="itab.menuObj.menuCode" :src="ctx+itab.menuObj.url"></iframe>
+                        </el-tab-pane>
+                    </el-tabs>-->
+                    <div v-else>
+                        <iframe :src="url" :style="{height:frameH}"></iframe>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <div class="sjs-copyRight">
+                        <span>Copyright &copy; 统一认证权限支撑系统 - CNAO </span>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script>
+    var mainMenu = new Vue({
+        el: "#app1",
+        data: function(){
+            return{
+                openedMenu:[],
+                root:{},
+                menuList: {},
+                tabList: {},
+                sercurityTrainForm:{},
+                accessedMenus: accessedMenus,
+                url:'/su/welcome',
+                //参数
+                isCollapse: false,
+                isCptrans: true,
+                isUnique: true,
+                expandMenu:true,
+                expandTab:false,
+                closable:true,
+                //宽高
+                clientW: '',
+                frameH: '',
+                mainH: '',
+                contentH: '',
+                contentW: '',
+                wrapperW: '',
+                sideMenuH: '',
+                defaultTab:'defaultTab',
+                ctx: ctx,
+                itemindex: '',
+                selectObj: null,
+            }
+        },
+        created () {
+            //this.reSize();
+            //this.getMenuList(this.root);
+            //this.closable=false;
+
+
+        },
+        computed:{
+            userName:function() {
+                /* var value = orgName;
+                if(value != null){
+                    if(value.length > 6){
+                        value = value.substring(0,6)+ " ...";
+                        value += "," + userName ;
+                    } else {
+                        value += "," + userName;
+                    }
+                    return value;
+                }else{
+                    return "暂未登录,未登录";
+                } */
+
+            }
+        },
+        mounted: function () {
+            //this.windowResizeEvent(this.reSize);
+
+        },
+        methods: {
+
+            /* trim(str){
+                str = str.replace(/S);
+                for(var i = str.length-1;i>=0;i--){
+                    if(/\S/.test(str.charAt(i))){
+                        str=str.substring(0,i+1);
+                        break;
+                    }
+                }
+                return str;
+            }, */
+            getCurrentMenuList(list) {
+                if(list == ''){
+                    //点击首页时执行
+                    this.expandMenu = false;    //不显示侧栏
+                }else{
+
+                }
+                console.log(list);
+            },
+            collapseChange() {
+                if(this.isCollapse == true){
+                    this.isCollapse = false;
+                }else {
+                    this.isCollapse = true;
+                }
+            },
+            getActiveIndex(list,i){
+                var _this=this;
+                /* i=1：list表示一级菜单*/
+                if(i>=3)
+                {
+                    if(list.children && list.children.length > 0)
+                    {
+                        this.select(list.menuObj.menuCode);
+                        if(this.selectObj){
+                            this.defaultTab = list.children[eval('this.selectObj.a'+(i+1))].menuObj.menuName;
+                        } else {
+                            this.defaultTab = list.children[0].menuObj.menuName;
+                        }
+                    }
+                    else{
+                        this.defaultTab = list.menuObj.menuName;
+                    }
+                    this.openedMenu = [];
+                    this.openedMenu.push(list.menuObj.menuCode);
+                    this.itemIndex = list.menuObj.menuCode;
+                    this.getTabList(list);
+                    this.selectObj = null;
+                }else{
+                    if(list.children && list.children.length > 0)
+                    {
+                        this.openedMenu = [];
+                        this.openedMenu.push(list.menuObj.menuCode);
+                        if(this.selectObj){
+                            this.getActiveIndex(list.children[eval('this.selectObj.a'+(i+1))],i+1)
+                        } else {
+                            this.getActiveIndex(list.children[0],i+1)
+                        }
+                    }
+                    else{
+                        if(list.menuObj)
+                        {
+                            this.expandTab=true;this.openedMenu = [];
+                            this.openedMenu.push(list.menuObj.menuCode);
+                            this.itemIndex=list.menuObj.menuCode;
+                            this.defaultTab=list.menuObj.menuName;
+                            this.getTabList(list);
+                        }else{
+
+                            /*    	var obj = this.accessedMenus.children[0].children[0].children[0]; //children[0].menuObj
+                                   var obj1 = this.accessedMenus.children[0].children[0]; //children[0].menuObj
+                                    this.expandMenu = true;
+                                   this.openedMenu = [];
+                                   this.openedMenu.push(this.accessedMenus.children[0].children[0].menuCode);
+                                   this.defaultTab= obj.menuName;
+                                   this.itemIndex=obj.menuCode;
+                                   //this.getTabList(obj);
+                                   this.menuList = obj1;
+                                   this.expandTab = true;
+                                     this.getActiveIndex(obj1,i+1);
+                                      this.selectObj = null; */
+
+                            // alert(JSON.stringify());
+                            //var obj = this.accessedMenus.children[0];
+                            //$("#"+obj.menuCode).click();
+                            //$('#it_436fa1a1aa01000').click();
+
+                            //this.url='/su/welcome?menuid='+;
+
+                            //it_436fa1a1aa01000
+
+                            //var id1="it_"+this.accessedMenus.children[0].menuObj.menuCode;
+                            //this.url='/su/welcome?menuid='+id1;
+                            //this.getMenuId();
+                        }
+                    }
+                }
+            },
+
+
+            getMenuList(list){
+                /* 二级及以下菜单 */
+                if(list.children && list.children.length > 0)
+                {
+                    this.expandMenu = true;
+                    this.menuList = list;
+                    this.expandTab = true;
+                }
+                else
+                {
+                    this.expandMenu=false;
+                }
+                this.getActiveIndex(list,1);/* 显示二级菜单*/
+            },
+            clickIndex(){
+                this.expandMenu = false;
+                this.expandTab=false;
+                this.closable=false;
+                this.defaultTab='defaultTab',
+                    this.url="/ocm/count/index";
+            },
+            getTabList(list){
+                this.expandTab = true;
+
+                if(list.children && list.children.length > 0)
+                {
+                    if(list.menuObj.url.indexOf("target")>0){
+                    }else{
+                        this.tabList = list.children;
+                        this.defaultTab = list.children[0].menuObj.menuName;
+                        this.closable = true;
+                    }
+                }
+                else
+                {
+                    if(list.menuObj.url.indexOf("target")>0){
+                    }else{
+                        this.tabList = [list];
+                        this.defaultTab = list.menuObj.menuName;
+                        this.closable = false;
+                    }
+
+                }
+            },
+            openTo(url,target){
+                if(url.indexOf("http")>=0){
+                    window.open(url,target);
+                }else{
+                    window.open(ctx+url,target);
+                }
+            },
+            menuOpen(key,keyPath){
+                this.selectCode(this.menuList,key);
+            },
+            selectCode(data,key){
+                if(data.children.length!=0){
+                    data.children.forEach((v,i) => {
+                        this.selectCode(v,key);
+                })
+                }else{
+                    if(data.menuObj.menuCode == key)
+                    {
+                        if(data.menuObj.url.indexOf("target")>0){
+                            var urltarget=data.menuObj.url;
+                            var target= urltarget.substring(urltarget.indexOf("target=")+7);
+                            this.openTo(data.menuObj.url,target);
+                        }else{
+                            this.defaultTab=data.menuObj.menuName;
+                            this.getTabList(data);
+                        }
+                    }else{
+                    }
+                }
+            },
+            windowResizeEvent (callback) {
+                let resizeTimer = null;
+                window.onresize =  () => {
+                    if(resizeTimer === null) {
+                        resizeTimer = setTimeout( () => {
+                            resizeTimer = null;
+                        callback();
+                    }, 200);
+                    }
+                }
+            },
+            reSize(){
+                let clientH = document.body.clientHeight;
+                let clientW = document.body.clientWidth;
+                this.clientW = clientW;
+                this.mainH = clientH - 105 +'px';
+                this.frameH = clientH - 135 + 'px';
+                this.contentH = clientH - 155 +'px';
+                this.sideMenuH = clientH -130 +'px';
+                this.$nextTick(()=>{
+                    if(clientW>1200){
+                    this.wrapperW = '100%';
+                }else{
+                    this.wrapperW = '100%';
+                }
+            })
+            },
+
+            redirectTo(url){
+                if(self != top){
+                    window.parent.location.href = ctx+url;
+                }
+                else
+                    window.location.href = ctx+ url;
+            },
+
+            exit(url){
+                location.href=""+ctx+"/logout";
+                /*  axios.get("/ocm/logout",{}).then(resp => {
+                     if(  resp.data.code != 0){
+                         alert(resp.data.message);
+                     }
+                     if(  resp.data.code == 0){
+                        //成功退出
+                         this.redirectTo(url);
+                     }
+                   }).catch(error=>{
+                       console.log("退出失败");
+                       <!--console.log(error.response.status);-->
+                       <!--this.redirectTo(url);-->
+                   }) */
+            },
+            <!--在iframe中调用的方法：parent.window.mainMenu.addTab(tabName,tabUrl);tabName,tabUrl使用需要传输的值即可-->
+            <!-- tabName：tab名称,tabUrl：tab的地址-->
+            addTab(tabName,tabUrl){
+                this.$notify.closeAll();
+                newTabName = tabName;
+                tabs = this.tabList;
+                if(tabMaxCount == null)
+                {
+                    tabMaxCount = 10;
+                }
+                if(tabs.length >= tabMaxCount)
+                {
+                    /* this.$message({
+                        message: '打开过多TAB页，请先关闭不使用的TAB页！',
+                        type:'warning',
+                        duration: 0
+                    }); */
+                    this.$notify({
+                        title: '警告',
+                        message: '打开过多TAB页，请先关闭不使用的TAB页！',
+                        type: 'warning',
+                        duration: 2500
+                    });
+
+                    return false;
+                }
+                ret = true;
+                tabs.forEach((tab,index) => {
+                    if(tab.menuObj.menuName === newTabName){
+                    ret = false;
+                    /* this.$message({
+                        message: '不能打开相同名称的标签页面',
+                        type:'warning'
+                    }); */
+                    this.$notify({
+                        title: '警告',
+                        message: '不能打开相同名称的标签页面！',
+                        type: 'warning',
+                        duration: 2500
+                    });
+                }
+            });
+                if(!ret)
+                {
+                    return false;
+                }
+                this.tabList.push({
+                    menuObj:{
+                        menuCode:newTabName,
+                        menuName:newTabName,
+                        url:tabUrl,
+                    },
+                });
+                this.closable = true;
+                this.defaultTab = newTabName;
+            },
+            setTabName(oldTabName,newTabName){
+                tabs = this.tabList;
+                tabs.forEach((tab,index) => {
+                    if(tab.menuObj.menuName === oldTabName){
+                    tab.menuObj.menuName = newTabName;
+                }
+            });
+            },
+            deleteThisTab(){
+
+                tabs = this.tabList;
+                activeName = this.defaultTab;
+                targetName = activeName;
+
+                tabs.forEach((tab,index) => {
+                    if(tab.menuObj.menuName === targetName){
+                    nextTab = tabs[index+1] || tabs[index-1];
+                    if(nextTab){
+                        activeName = nextTab.menuObj.menuName;
+                    }
+                }
+            });
+
+                this.tabList = tabs.filter(tab => tab.menuObj.menuName !== targetName);
+                if(this.tabList.length <=1 )
+                {
+                    this.closable = false;
+                }
+                this.defaultTab = activeName;
+            },
+            removeTab(targetName){
+                tabs = this.tabList;
+                activeName = this.defaultTab;
+                if(activeName===targetName){
+                    tabs.forEach((tab,index) => {
+                        if(tab.menuObj.menuName === targetName){
+                        nextTab = tabs[index+1] || tabs[index-1];
+                        if(nextTab){
+                            activeName = nextTab.menuObj.menuName;
+                        }
+                    }
+                });
+                }
+
+                this.tabList = tabs.filter(tab => tab.menuObj.menuName !== targetName);
+                if(this.tabList.length <=1 )
+                {
+                    this.closable = false;
+                }
+                this.defaultTab = activeName;
+            },
+            closeTab(redirectName,targetName){
+                tabs = this.tabList;
+                url = "";
+                iframeId = "";
+                //删除指定的tab
+                this.tabList = tabs.filter(tab => tab.menuObj.menuName !== targetName);
+                if(this.tabList.length <= 1)
+                {
+                    this.closable = false;
+                }
+                //跳转到指定的tab并刷新
+                if(this.tabList.length > 0) {
+                    tabs.forEach((tab,index) => {
+                        if(tab.menuObj.menuName === redirectName){
+                        iframeId = tab.menuObj.menuCode;
+                        url = tab.menuObj.url;
+                    }
+                });
+                }
+                //激活需要显示的tab
+                this.defaultTab = redirectName;
+                //刷新tab页面
+                document.getElementById(iframeId).src = ctx + url;
+            },
+            toEntityQuery(entityId){
+                this.selectObj = null;
+                for(var x in this.accessedMenus.children){
+                    if("419cc2928201000" ==  this.accessedMenus.children[x].menuObj.menuCode){
+                        for(var y in this.accessedMenus.children[x].children){
+                            for(var z in this.accessedMenus.children[x].children[y].children){
+                                var obj = this.accessedMenus.children[x].children[y].children[z].menuObj;
+                                if(obj.url.indexOf(entityId) > -1){
+                                    this.selectObj = {};
+                                    this.selectObj.a1 = x;
+                                    this.selectObj.a2 = y;
+                                    this.selectObj.a3 = z;
+                                }
+                            }
+                        }
+                    }
+                }
+                if(this.selectObj){
+                    $("#it_419cc2928201000").click();
+                }
+            },
+            getMenuId(){
+                var id1="it_"+this.accessedMenus.children[0].menuObj.menuCode;
+                var id1="it_436fa1a1aa01000";
+                //alert(id1);
+                //var aaa =
+                //document.getElementById('it_436fa1a1aa01000').click();
+                //alert("aaa"+aaa);
+                //$("#"+id1).click();
+                //alert($("#"+id1));
+                //aaa.click();
+            },
+        }
+    })
+
+</script>
+<!--<script type="text/javascript" src="../common/js/nav.js"></script>
+<script src="../common/js/axios.min.js"></script>-->
+</html>
