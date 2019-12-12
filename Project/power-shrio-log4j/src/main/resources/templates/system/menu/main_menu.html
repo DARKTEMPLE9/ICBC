@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+
+        <!--引入静态资源-->
+        <script src="/common/common-js.js" type="application/javascript"></script>
+        <title>123</title>
+        <script th:inline="javascript">
+            var blank, accessedMenus,userInfo,tabMaxCount;
+            blank = [[${blank}]];
+            userInfo = [[${user}]];
+            accessedMenus = [[${accessedMenus}]];
+            tabMaxCount = [[${tabMaxCount}]];
+
+        </script>
+    </head>
+
+    <body>
+        <div class="wrapper" :style="{width:wrapperW}" id="app1" v-cloak>
+            <div class="header clear">
+                <div class="float-left">
+                    <div class="imglogo" >
+                        <img src="../static/img/resizeApi.png" alt="img">
+        	</div>
+            <div class="logo">
+                <h1 class="logo-title"  style="margin-top:5px;font-family: microsoft yahei"></h1>
+                    </div>
+                    <ul class="nav" id="nav">
+                        <li class="active" @click="clickIndex">
+                            <a title="首页" style="padding-top:11px">首页</a>
+                        </li>
+
+                        <li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(item)">
+                            <a style="padding-top:12px;">{{item.menuObj.menuName}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="welcome-tip-wp float-right" v-if="clientW>1024">
+                    <div class="welcome-tip">
+                        <div class="person-icon">
+                            <i class="iconfont icon-ios-person"></i>
+                        </div>
+                        <a class="profilebox">
+                            <img id="profileimg" src="../static/img/resizeApi.png" alt="img">
+                        </a>
+                    </div>
+                    <el-form ref="sercurityTrainForm" :model="sercurityTrainForm" label-width="100px"  size="medium"  >
+                        <div class="userInfos">
+
+                                <a href="/ocm/login?loginname=user_edit_net"
+                                   target='_top'></a> <br>
+
+
+                            <el-popover
+                                    placement="top-start"
+                                    width="100"
+                                    trigger="hover">
+                                <a slot="reference">
+                                    <div id="loginUserName">
+                                            <el-button type="primary"  size="mini" @click="exit('/')" round>
+                                                <i class="iconfont icon-ios-power sjs-exitBtn"><font size="2">&nbsp;</font></i>
+                                            </el-button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </a>
+                                <span id="userNamesp" ></span>
+                            </el-popover>
+
+                            <div class="dddd">
+                                <el-button type="primary"  size="mini" @click="exit('/')" round>
+                                    <i class="iconfont icon-ios-power sjs-exitBtn"><font size="2">&nbsp;</font></i>
+                                </el-button>
+                            </div>
+
+                        </div>
+                    </el-form>
+                </div>
+
+                <el-row class="main" ref="main" :style="{height: mainH}">
+                    <el-col :span="isCollapse?1:4" class="aside" ref="aside" v-if="expandMenu">
+                        <div class="sjs-sideMenu" :style="{height:sideMenuH}">
+                            <el-menu
+                                    class="el-menu-vertical-demo"
+                                    ref="sjsMenu"
+                                    :unique-opened=true
+                                    :collapse="isCollapse"
+                                    :default-active="itemIndex"
+                                    :default-openeds="openedMenu"
+                                    @select="menuOpen">
+
+                                <div v-for="(item,idx) in menuList.children" :key="idx">
+                                    <el-menu-item
+                                            v-if="item.children.length <= 0"
+                                            :index="item.menuObj.menuCode"
+                                            @click="getTabList(item)">
+                                        <i class="iconfont icon-md-list-box"></i>
+                                        <span slot="title">{{item.menuObj.menuName}}</span>
+                                    </el-menu-item>
+
+                                    <el-submenu v-else
+                                                :index="item.menuObj.menuCode">
+                                        <template slot="title">
+                                            <i class="iconfont icon-md-folder-open"></i>
+                                            <span slot="title"><a>{{item.menuObj.menuName}}</a></span>
+                                        </template>
+                                        <el-menu-item v-for="(it,i) in item.children"
+                                                      :key="i"
+                                                      :index="it.menuObj.menuCode"
+                                                      :tabindex="it.menuObj.menuCode"
+                                                      @click="getTabList(it)">
+                                            <span slot="title">{{it.menuObj.menuName}}</span>
+                                        </el-menu-item>
+                                    </el-submenu>
+                                </div>
+                            </el-menu>
+
+                        </div>
+                        <div class="collapse-btn">
+                            <el-button type="primary" circle size="mini" @click="collapseChange">
+                                <i class="el-icon-menu"></i>
+                            </el-button>
+                        </div>
+                    </el-col>
+                    <el-col :span="expandMenu?(isCollapse?23:20):24" style="padding:20px 20px 0;height:100%">
+                        <div class="content" :style="{height:contentH}">
+                            <el-tabs v-if="expandTab" v-model="defaultTab" type="card" :closable="closable" @tab-remove="removeTab">
+                                <el-tab-pane v-for="itab in tabList"
+                                             :key="itab.menuObj.menuCode"
+                                             :label="itab.menuObj.menuName"
+                                             :name="itab.menuObj.menuName">
+                                    <iframe :id="itab.menuObj.menuCode" :src="ctx+itab.menuObj.url"></iframe>
+                                </el-tab-pane>
+                            </el-tabs>
+                            <div v-else>
+                                <iframe :src="url" :style="{height:frameH}"></iframe>
+                            </div>
+                        </div>
+                        <div class="content-footer">
+                            <div class="sjs-copyRight">
+                                <span>Copyright &copy; - CNAO </span>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        var mainMenu = new Vue({
+            el: "#app1",
+            data: function(){
+                return{
+                    openedMenu:[],
+                    root:{},
+                    menuList: {},
+                    tabList: {},
+                    sercurityTrainForm:{},
+                    accessedMenus: accessedMenus,
+                    url:'/su/welcome',
+                    isCollapse: false,
+                    isCptrans: true,
+                    isUnique: true,
+                    expandMenu:true,
+                    expandTab:false,
+                    closable:true,
+                    clientW: '',
+                    frameH: '',
+                    mainH: '',
+                    contentH: '',
+                    contentW: '',
+                    wrapperW: '',
+                    sideMenuH: '',
+                    defaultTab:'defaultTab',
+                    ctx: "",
+                    itemIndex: '',
+                    selectObj: null,
+                }
+            },
+            created () {
+                this.reSize();
+                this.getMenuList(this.accessedMenus);
+                this.closable=false;
+            },
+            computed:{
+
+            },
+            mounted: function () {
+               // this.windowResizeEvent(this.reSize);
+                //this.userNameSplice();
+            },
+            methods: {
+                /*--------------------------------------------------------------*/
+                clickIndex(){
+                    this.expandMenu = false;
+                    this.expandTab=false;
+                    this.closable=false;
+                    this.defaultTab='defaultTab',
+                        this.url="/ocm/count/index";
+                },
+                menuOpen(key,keyPath){
+                    this.selectCode(this.menuList,key);
+                },
+                collapseChange() {
+                    if(this.isCollapse == true){
+                        this.isCollapse = false;
+                    }else {
+                        this.isCollapse = true;
+                    }
+                },
+                reSize(){
+                    let clientH = document.body.clientHeight;
+                    let clientW = document.body.clientWidth;
+                    this.clientW = clientW;
+                    this.mainH = clientH - 105 +'px';
+                    this.frameH = clientH - 135 + 'px';
+                    this.contentH = clientH - 155 +'px';
+                    this.sideMenuH = clientH -130 +'px';
+                    this.$nextTick(()=>{
+                        if(clientW>1200){
+                        this.wrapperW = '100%';
+                    }else{
+                        this.wrapperW = '100%';
+                    }
+                    })
+                },
+                getMenuList(list){
+                    if(list.children && list.children.length > 0){
+                        this.expandMenu = true;
+                        this.menuList = list;
+                        this.expandTab = true;
+                    } else{
+                        this.expandMenu=false;
+                    }
+                    this.getActiveIndex(list,1);
+                },
+                getActiveIndex(list,i){
+                    var _this=this;
+                   /*i = 1,list表示一级菜单*/
+                    if(i>=3){
+                        if(list.children && list.children.length > 0) {
+                            this.select(list.menuObj.menuCode);
+                            if(this.selectObj){
+                                this.defaultTab = list.children[eval('this.selectObj.a'+(i+1))].menuObj.menuName;
+                            } else {
+                                this.defaultTab = list.children[0].menuObj.menuName;
+                            }
+                        }
+                        else{
+                            this.defaultTab = list.menuObj.menuName;
+                        }
+                        this.openedMenu = [];
+                        this.openedMenu.push(list.menuObj.menuCode);
+                        this.itemIndex = list.menuObj.menuCode;
+                        this.getTabList(list);
+                        this.selectObj = null;
+                    }else{
+                        if(list.children && list.children.length > 0){
+                            this.openedMenu = [];
+                            this.openedMenu.push(list.menuObj.menuCode);
+                            if(this.selectObj){
+                                this.getActiveIndex(list.children[eval('this.selectObj.a'+(i+1))],i+1)
+                            } else {
+                                this.getActiveIndex(list.children[0],i+1)
+                            }
+                        }
+                        else{
+                            if(list.menuObj){
+                                this.expandTab=true;this.openedMenu = [];
+                                this.openedMenu.push(list.menuObj.menuCode);
+                                this.itemIndex=list.menuObj.menuCode;
+                                this.defaultTab=list.menuObj.menuName;
+                                this.getTabList(list);
+                            }else{
+
+
+                    var id1="it_"+this.accessedMenus.children[0].menuObj.menuCode;
+                    this.url='/su/welcome?menuid='+id1;
+                    //this.getMenuId();
+                }
+            }
+        }
+        },
+                removeTab(targetName){
+                    tabs = this.tabList;
+                    activeName = this.defaultTab;
+                    if(activeName===targetName){
+                        tabs.forEach((tab,index) => {
+                            if(tab.menuObj.menuName === targetName){
+                            nextTab = tabs[index+1] || tabs[index-1];
+                            if(nextTab){
+                                activeName = nextTab.menuObj.menuName;
+                            }
+                        }
+                    });
+                    }
+
+                    this.tabList = tabs.filter(tab => tab.menuObj.menuName !== targetName);
+                    if(this.tabList.length <=1 )
+                    {
+                        this.closable = false;
+                    }
+                    this.defaultTab = activeName;
+                },
+                /*--------------------------------------------------------------*/
+            }
+        })
+
+    </script>
+    <!--<script type="text/javascript" th:src="@{/public/zbs/js/nav.js}"></script>
+    <script th:src="@{/public/zbs/js/axios.min.js}"></script>-->
+</html>
