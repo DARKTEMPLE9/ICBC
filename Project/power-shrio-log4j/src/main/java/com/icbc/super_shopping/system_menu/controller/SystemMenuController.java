@@ -143,7 +143,7 @@ public class SystemMenuController {
         String tabMaxCount = "10";
         mv.addObject("tabMaxCount", tabMaxCount);
         mv.addObject("user", userManage);
-        mv.setViewName("/system/menu/main_menu");
+        mv.setViewName("/system/mall-web-main");
         return mv;
     }
 
