@@ -1,0 +1,4 @@
+这个编译需要依赖
+https://github.com/mybatis/parent
+需要先下载它并进行compile
+才可以运行tuling-mybatis-source
