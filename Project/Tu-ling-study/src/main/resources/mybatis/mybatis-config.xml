@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--设置运行时参数 如缓存-->
+    <!--<settings>
+        <setting name="" value=""/>
+    </settings>-->
+    <!--typeAliases 使用自定义别名-->
+    <typeAliases>
+        <typeAlias type="com.mybatis.UserBean" alias="user"/>
+    </typeAliases>
+    <!--插件  拦截器原理  sql监控-->
+    <plugins>
+        <plugin interceptor="com.mybatis.plugin.SqlPrintIntercetor"></plugin>
+    </plugins>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--从properties配置文件中获取参数-->
+                <!--<property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>-->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/vhr"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/UserMapper.xml"/>
+        <mapper class="com.mybatis.mapper.UserMapper"/>
+    </mappers>
+</configuration>
