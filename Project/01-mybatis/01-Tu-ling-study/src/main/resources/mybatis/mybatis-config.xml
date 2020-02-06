@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--开启二级缓存-->
+    <!--<settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>-->
     <!--设置运行时参数 如缓存-->
     <!--<settings>
         <setting name="" value=""/>
