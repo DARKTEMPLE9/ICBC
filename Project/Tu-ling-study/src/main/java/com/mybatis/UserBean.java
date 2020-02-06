@@ -14,4 +14,8 @@ public class UserBean {
     private String phone;
 
     private String desc;
+
+
+    private String mengbb;
+
 }
