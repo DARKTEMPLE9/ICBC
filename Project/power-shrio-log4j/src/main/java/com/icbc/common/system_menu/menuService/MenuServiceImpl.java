@@ -41,7 +41,7 @@ public class MenuServiceImpl implements MenuService{
         TreeNode  treeNode = menuMapper.getParent(id);
         //查询子节点信息  父节点id当作子节点pid
         List<TreeNode> treeNodeList = menuMapper.getChildList(id);
-        treeNode.setChildNodes(treeNodeList);
+        //treeNode.setChildNodes(treeNodeList);
         Object o = new Object();
 
         return treeNodeList;

@@ -1,4 +1,4 @@
-package com.mybatis;
+package pojo;
 
 import lombok.Data;
 

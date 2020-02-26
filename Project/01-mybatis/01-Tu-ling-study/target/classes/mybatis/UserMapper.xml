@@ -3,7 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.UserMapper">
+    <!--自定义开启二级缓存
+     LRU  - 就近原则 缓存最近的
+     -->
+    <!--<cache eviction="LRU" type="com.mybatis.cache.MybatisRedisCache" />-->
+
+
     <select id="selectUser" resultType="com.mybatis.UserBean">
     select * from user where id = #{id}
-  </select>
+    </select>
+    <select id="selectUserAll" resultType="com.mybatis.UserBean">
+    select id,username,age,phone,`desc` from user
+    </select>
+
 </mapper>

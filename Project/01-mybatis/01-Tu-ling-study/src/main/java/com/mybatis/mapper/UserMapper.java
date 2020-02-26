@@ -18,5 +18,4 @@ public interface UserMapper {
     @Select(" select id,username,age,phone,`desc` from user where id = #{id}")
     public UserBean selectUser(Integer id);
 
-
 }

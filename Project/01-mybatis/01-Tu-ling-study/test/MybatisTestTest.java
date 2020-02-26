@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import static org.junit.Assert.*;
+import java.util.List;
 
 public class MybatisTestTest {
 
@@ -39,6 +38,7 @@ public class MybatisTestTest {
          */
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserBean userBean = sqlSession.selectOne("com.mybatis.UserMapper.selectUser", 1);
+        List<UserBean> list = sqlSession.selectList("com.mybatis.UserMapper.selectUserAll");
         System.out.println("根据sqlSessionFactory查询"+userBean);
     }
 
@@ -59,4 +59,7 @@ public class MybatisTestTest {
         System.out.println("使用annotation方式（mapper）查询 user:{}"+userBean);
 
     }
+
+
+
 }

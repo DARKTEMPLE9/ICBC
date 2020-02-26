@@ -1,11 +1,11 @@
 package com.icbc.common.system_menu.menuController;
-import com.alibaba.fastjson.JSON;
 import com.icbc.common.system_menu.menuService.MenuService;
 import com.icbc.entity.mapper.menu.TreeNode;
 import com.icbc.utils.TreeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +24,22 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/setRedis",method = {RequestMethod.GET,RequestMethod.POST})
+    public void setRedis() {
+        //redisTemplate.opsForSet().add("asd_fgh", 1231);
+        redisTemplate.opsForSet().add("testredis", "qwe");
+        redisTemplate.opsForSet().add("testredis1", "testredis1");
+        redisTemplate.opsForSet().add("testredis2", "testredis2");
+        redisTemplate.opsForSet().add("testredis3", "testredis3");
+        redisTemplate.opsForSet().add("testredis4", "testredis4");
+        redisTemplate.opsForSet().add("testredis5", "testredis5");
+        System.out.println(1);
+    }
 
     /**
      * 跳转测试elementui-table页面

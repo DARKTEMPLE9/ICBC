@@ -11,5 +11,9 @@
 
     <select id="selectUser" resultType="com.mybatis.UserBean">
     select * from user where id = #{id}
-  </select>
+    </select>
+    <select id="selectUserAll" resultType="com.mybatis.UserBean">
+    select id,username,age,phone,`desc` from user
+    </select>
+
 </mapper>
