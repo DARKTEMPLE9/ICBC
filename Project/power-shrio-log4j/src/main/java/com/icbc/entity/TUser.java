@@ -1,4 +1,4 @@
-package entity;
+package com.icbc.entity;
 
 import com.icbc.turnpage.PageModel;
 

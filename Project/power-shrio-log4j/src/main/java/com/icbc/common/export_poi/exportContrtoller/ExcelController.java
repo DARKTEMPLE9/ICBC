@@ -3,7 +3,6 @@ package com.icbc.common.export_poi.exportContrtoller;
 import com.icbc.common.export_poi.entity.Export_a;
 import com.icbc.common.export_poi.exportService.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,10 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 *
@@ -22,7 +24,7 @@ import java.util.*;
 * */
 @RequestMapping("excel")
 @Controller
-public class excelController {
+public class ExcelController {
 
     @Autowired
     private ExcelService excelService;
