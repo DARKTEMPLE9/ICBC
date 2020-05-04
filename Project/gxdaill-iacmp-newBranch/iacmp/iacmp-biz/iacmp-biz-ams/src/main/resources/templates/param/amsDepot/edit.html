@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改库房')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsDepot-edit" th:object="${amsDepot}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <input id="treeId" name="deptId" th:field="*{orgNo}" type="hidden"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库房代码：</label>
+            <div class="col-sm-8">
+                <input id="code" name="code" th:field="*{code}" class="form-control" type="text" required
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库房名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" required
+                       readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所含库柜数：</label>
+            <div class="col-sm-8">
+                <input id="allNum" name="allNum" placeholder="请输入小于9位数字" th:maxlength="9" th:field="*{allNum}"
+                       class="form-control allNum" type="text" required maxlength="10">
+                <span class="allNumValidate" style="color: red;"></span>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">所属部门：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="orgNo" name="orgNo" th:field="*{orgNo}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属部门：</label>
+            <div class="col-sm-8">
+                <!--<input id="orgName" name="orgName" th:field="*{orgName}" class="form-control" type="text" required>-->
+                <input class="form-control" type="text" name="orgName"
+                       onclick="selectDeptTree();orgName.blur();return false;" id="treeName" th:field="*{orgName}"
+                       required>
+                <!--<span class="input-group-addon"><i class="fa fa-search"></i></span>-->
+            </div>
+        </div>
+
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">库房类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="depotType" name="depotType" th:field="*{depotType}" class="form-control" type="text" required>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">状态：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="status" name="status" th:field="*{status}" class="form-control" type="text" required>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库房类型：</label>
+            <div class="col-sm-8">
+                <!--<select name="depotType"  class='selectpicker submitInput form-control'-->
+                <!--th:with="type=${@dict.getType('depot_type')}" required>-->
+                <!--<option value="" >请选择</option>-->
+                <!--<option th:selected="*{depotType}" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                <!--</select>-->
+                <input th:if="*{depotType} == '10'" class="form-control" type="text" value="部门库房" readonly="readonly">
+                <input th:if="*{depotType} == '20'" class="form-control" type="text" value="总行库房" readonly="readonly">
+                <input type="hidden" name="depotType"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <!--<input id="status" name="status" class="form-control" type="text" required>-->
+                <!--<select class='selectpicker submitInput form-control'-->
+                <!--id="status" name="status" th:field="*{status}"-->
+                <!--placeholder=""><option value=''>请选择</option>-->
+                <!--<option th:selected="*{status == '1'}" value='1'>已满</option>-->
+                <!--<option th:selected="*{status == '0'}" value='0'>未满</option>-->
+                <!--<option th:selected="*{status == '99'}" value='99'>废弃</option>-->
+                <!--</select>-->
+
+                <select class='selectpicker submitInput form-control'
+                        name="status" th:with="type=${@dict.getType('depot_status')}" th:field="*{status}" required>
+                    <option value="">请选择</option>
+                    <option th:selected="*{status}" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">管理员：</label>
+            <div class="col-sm-8">
+                <input id="admin" name="admin" th:field="*{admin}" placeholder="请选择管理员"
+                       onclick="selectUser('admin');admin.blur();return fales;" class="form-control" type="text"
+                       required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text"
+                       placeholder="请输入200字以内" th:maxlength="200">
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "param/amsDepot";
+
+    $("#form-amsDepot-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsDepot-edit').serialize());
+        }
+    }
+
+    /*选择人*/
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    //库柜数输入校验
+    $(".allNum").blur(function () {
+        var str = $(this).val();
+        if (str != "" && str != null) {
+            var re = /^[0-9]\d{0,10}$/;
+            if (!re.test(str)) {
+                $(this).val("");
+                $(this).siblings(".allNumValidate").html("请输入正确库柜数")
+            } else {
+                $(this).siblings(".allNumValidate").html('');
+            }
+        } else {
+            $(this).siblings(".allNumValidate").html('');
+        }
+
+    });
+
+    /*选择部门树*/
+    function selectDeptTree() {
+        var deptId = $.common.isEmpty($("#treeId").val()) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        // if ($.tree.notAllowParents(tree)) {
+        //
+        // }
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#treeName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

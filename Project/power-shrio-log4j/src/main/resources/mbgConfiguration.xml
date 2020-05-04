@@ -4,27 +4,29 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <!-- 第一种mybatis逆向生成xml配置 -->
 <generatorConfiguration>
-    <properties resource="jdbc.properties" />
+    <properties resource="jdbc.properties"/>
     <context id="sqlserverTables" targetRuntime="MyBatis3">
         <!-- 生成的pojo，将implements Serializable-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="true" />
+            <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
         <!-- 数据库链接URL、用户名、密码 -->
         <!-- 数据库链接URL、用户名、密码 -->
         <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}"
-                        password="${jdbc.password}" />
+                        password="${jdbc.password}"/>
 
         <!--生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="entity" targetProject="src/main/java/com/icbc/super_shopping/super_power/entity" />
+        <javaModelGenerator targetPackage="entity"
+                            targetProject="src/main/java/com/icbc/super_shopping/super_power/entity"/>
         <!--映射文件的包名和位置 -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/java/com/icbc/super_shopping/super_power/mapper" />
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/java/com/icbc/super_shopping/super_power/mapper"/>
         <!--DAO的包名和位置 -->
-        <javaClientGenerator targetPackage="mapper" targetProject="src/main/resources/spuer_shopping/super_power" type="XMLMAPPER" />
-
+        <javaClientGenerator targetPackage="mapper" targetProject="src/main/resources/spuer_shopping/super_power"
+                             type="XMLMAPPER"/>
 
 
         <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
@@ -32,7 +34,7 @@
         <table tableName="%" enableSelectByExample="false" enableDeleteByExample="false"
                enableCountByExample="false" enableUpdateByExample="false"
                selectByExampleQueryId="false">
-            <property name="rootClass" value="common.BaseEntity" />
+            <property name="rootClass" value="common.BaseEntity"/>
         </table>
     </context>
 </generatorConfiguration>

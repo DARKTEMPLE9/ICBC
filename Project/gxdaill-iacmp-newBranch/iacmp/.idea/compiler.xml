@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="iacmp-common-utils" />
+        <module name="iacmp-biz-quartz2" />
+        <module name="iacmp-config2" />
+        <module name="iacmp-config1" />
+        <module name="iacmp-biz-common-bean2" />
+        <module name="iacmp-biz-common-bean1" />
+        <module name="iacmp-turbine2" />
+        <module name="iacmp-turbine1" />
+        <module name="iacmp-biz-cms1" />
+        <module name="iacmp-biz-imp2" />
+        <module name="iacmp-biz-imp1" />
+        <module name="iacmp-gateway2" />
+        <module name="iacmp-gateway1" />
+        <module name="iacmp-http-chunk2" />
+        <module name="iacmp-biz-cms2" />
+        <module name="iacmp-biz-generator2" />
+        <module name="iacmp-biz-generator1" />
+        <module name="iacmp-biz-pms2" />
+        <module name="iacmp-biz-pms1" />
+        <module name="iacmp-common-aop" />
+        <module name="iacmp-eureka2" />
+        <module name="iacmp-eureka1" />
+        <module name="iacmp-biz-common-dao2" />
+        <module name="iacmp-biz-common-dao1" />
+        <module name="iacmp-biz-ams-server1" />
+        <module name="iacmp-biz-common-core2" />
+        <module name="iacmp-biz-ams-server2" />
+        <module name="iacmp-biz-elasticsearch2" />
+        <module name="iacmp-biz-elasticsearch1" />
+        <module name="iacmp-monitor1" />
+        <module name="iacmp-monitor2" />
+        <module name="iacmp-biz-common-core1" />
+        <module name="iacmp-biz-cms-server2" />
+        <module name="iacmp-biz-cms-server1" />
+        <module name="iacmp-common-fs" />
+        <module name="iacmp-biz-framework2" />
+        <module name="iacmp-biz-framework1" />
+        <module name="iacmp-biz-quartz1" />
+        <module name="iacmp-biz-ams2" />
+        <module name="iacmp-biz-ams1" />
+        <module name="iacmp-biz-imp-server2" />
+        <module name="iacmp-biz-imp-server1" />
+        <module name="iacmp-biz-system2" />
+        <module name="iacmp-biz-system1" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="iacmp-biz" target="1.8" />
+      <module name="iacmp-biz-ams-server1" target="1.8" />
+      <module name="iacmp-biz-ams1" target="1.8" />
+      <module name="iacmp-biz-cms-server1" target="1.8" />
+      <module name="iacmp-biz-cms1" target="1.8" />
+      <module name="iacmp-biz-common" target="1.8" />
+      <module name="iacmp-biz-common-bean1" target="1.8" />
+      <module name="iacmp-biz-common-core1" target="1.8" />
+      <module name="iacmp-biz-common-dao1" target="1.8" />
+      <module name="iacmp-biz-elasticsearch1" target="1.8" />
+      <module name="iacmp-biz-framework1" target="1.8" />
+      <module name="iacmp-biz-generator1" target="1.8" />
+      <module name="iacmp-biz-imp-server1" target="1.8" />
+      <module name="iacmp-biz-imp1" target="1.8" />
+      <module name="iacmp-biz-pms1" target="1.8" />
+      <module name="iacmp-biz-quartz1" target="1.8" />
+      <module name="iacmp-biz-system1" target="1.8" />
+      <module name="iacmp-common" target="1.8" />
+      <module name="iacmp-common-aop" target="1.8" />
+      <module name="iacmp-common-fs" target="1.8" />
+      <module name="iacmp-common-utils" target="1.8" />
+      <module name="iacmp-config1" target="1.8" />
+      <module name="iacmp-eureka1" target="1.8" />
+      <module name="iacmp-gateway1" target="1.8" />
+      <module name="iacmp-http-chunk2" target="1.8" />
+      <module name="iacmp-monitor1" target="1.8" />
+      <module name="iacmp-parent" target="1.8" />
+      <module name="iacmp-turbine1" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="iacmp-biz-ams-server1" options="-parameters" />
+      <module name="iacmp-biz-ams1" options="-parameters -extdirs src\main\resources\lib" />
+      <module name="iacmp-biz-cms-server1" options="-parameters" />
+      <module name="iacmp-biz-cms1" options="-parameters" />
+      <module name="iacmp-biz-common-bean1" options="-parameters" />
+      <module name="iacmp-biz-common-core1" options="-parameters" />
+      <module name="iacmp-biz-common-dao1" options="-parameters" />
+      <module name="iacmp-biz-elasticsearch1" options="-parameters" />
+      <module name="iacmp-biz-framework1" options="-parameters" />
+      <module name="iacmp-biz-generator1" options="-parameters" />
+      <module name="iacmp-biz-imp-server1" options="-parameters" />
+      <module name="iacmp-biz-imp1" options="-parameters" />
+      <module name="iacmp-biz-pms1" options="-parameters" />
+      <module name="iacmp-biz-quartz1" options="-parameters" />
+      <module name="iacmp-biz-system1" options="-parameters" />
+      <module name="iacmp-common-aop" options="-parameters" />
+      <module name="iacmp-common-fs" options="-parameters" />
+      <module name="iacmp-common-utils" options="-parameters" />
+      <module name="iacmp-config1" options="-parameters" />
+      <module name="iacmp-eureka1" options="-parameters" />
+      <module name="iacmp-gateway1" options="-parameters" />
+      <module name="iacmp-monitor1" options="-parameters" />
+      <module name="iacmp-turbine1" options="-parameters" />
+    </option>
+  </component>
+</project>

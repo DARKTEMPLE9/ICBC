@@ -1,7 +1,6 @@
 /**
  * BitMap实现
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.bloomfilter.bitMap;

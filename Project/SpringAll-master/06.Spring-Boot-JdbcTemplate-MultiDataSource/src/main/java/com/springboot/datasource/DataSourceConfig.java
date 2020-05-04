@@ -13,28 +13,28 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 
 @Configuration
 public class DataSourceConfig {
-	@Primary
-	@Bean(name = "mysqldatasource")
-	@ConfigurationProperties("spring.datasource.druid.mysql")
-	public DataSource dataSourceOne(){
-	    return DruidDataSourceBuilder.create().build();
-	}
-	
-	@Bean(name = "oracledatasource")
-	@ConfigurationProperties("spring.datasource.druid.oracle")
-	public DataSource dataSourceTwo(){
-	    return DruidDataSourceBuilder.create().build();
-	}
+    @Primary
+    @Bean(name = "mysqldatasource")
+    @ConfigurationProperties("spring.datasource.druid.mysql")
+    public DataSource dataSourceOne() {
+        return DruidDataSourceBuilder.create().build();
+    }
 
-	@Bean(name = "mysqlJdbcTemplate")
-	public JdbcTemplate primaryJdbcTemplate(
-	        @Qualifier("mysqldatasource") DataSource dataSource) {
-	    return new JdbcTemplate(dataSource);
-	}
-	
-	@Bean(name = "oracleJdbcTemplate")
-	public JdbcTemplate secondaryJdbcTemplate(
-	        @Qualifier("oracledatasource") DataSource dataSource) {
-	    return new JdbcTemplate(dataSource);
-	}
+    @Bean(name = "oracledatasource")
+    @ConfigurationProperties("spring.datasource.druid.oracle")
+    public DataSource dataSourceTwo() {
+        return DruidDataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "mysqlJdbcTemplate")
+    public JdbcTemplate primaryJdbcTemplate(
+            @Qualifier("mysqldatasource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean(name = "oracleJdbcTemplate")
+    public JdbcTemplate secondaryJdbcTemplate(
+            @Qualifier("oracledatasource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
 }

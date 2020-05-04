@@ -11,40 +11,40 @@ import cn.hutool.extra.tokenizer.Word;
 /**
  * Jieba分词结果实现<br>
  * 项目地址：https://github.com/huaban/jieba-analysis
- * 
- * @author looly
  *
+ * @author looly
  */
-public class JiebaResult implements Result{
-	
-	Iterator<SegToken> result;
-	
-	/**
-	 * 构造
-	 * @param segTokenList 分词结果
-	 */
-	public JiebaResult(List<SegToken> segTokenList) {
-		this.result = segTokenList.iterator();
-	}
+public class JiebaResult implements Result {
 
-	@Override
-	public boolean hasNext() {
-		return result.hasNext();
-	}
+    Iterator<SegToken> result;
 
-	@Override
-	public Word next() {
-		return new JiebaWord(result.next());
-	}
+    /**
+     * 构造
+     *
+     * @param segTokenList 分词结果
+     */
+    public JiebaResult(List<SegToken> segTokenList) {
+        this.result = segTokenList.iterator();
+    }
 
-	@Override
-	public void remove() {
-		result.remove();
-	}
+    @Override
+    public boolean hasNext() {
+        return result.hasNext();
+    }
 
-	@Override
-	public Iterator<Word> iterator() {
-		return this;
-	}
+    @Override
+    public Word next() {
+        return new JiebaWord(result.next());
+    }
+
+    @Override
+    public void remove() {
+        result.remove();
+    }
+
+    @Override
+    public Iterator<Word> iterator() {
+        return this;
+    }
 
 }

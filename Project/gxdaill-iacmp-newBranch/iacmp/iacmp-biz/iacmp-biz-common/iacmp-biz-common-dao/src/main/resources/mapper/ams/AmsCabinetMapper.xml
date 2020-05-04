@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsCabinetMapper">
+
+    <resultMap type="AmsCabinet" id="AmsCabinetResult">
+        <result property="cabinetId" column="CABINET_ID"/>
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="depId" column="DEP_ID"/>
+        <result property="depCode" column="DEP_CODE"/>
+        <result property="depName" column="DEP_NAME"/>
+        <result property="depType" column="DEP_TYPE"/>
+        <result property="dutyMan" column="DUTY_MAN"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="depStatus" column="DEP_STATUS"/>
+    </resultMap>
+
+    <resultMap type="AmsCabinetVO" id="AmsCabinetResultVO">
+        <result property="cabinetId" column="CABINET_ID"/>
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="depId" column="DEP_ID"/>
+        <result property="depCode" column="DEP_CODE"/>
+        <result property="depName" column="DEP_NAME"/>
+        <result property="depType" column="DEP_TYPE"/>
+        <result property="dutyMan" column="DUTY_MAN"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="depStatus" column="DEP_STATUS"/>
+        <result property="orgName" column="ORG_NAME"/>
+    </resultMap>
+
+    <sql id="selectAmsCabinetVo">
+        select CABINET_ID, ID, CODE, NAME, STATUS, DEP_ID, DEP_CODE, DEP_NAME, DEP_TYPE, DUTY_MAN, ARC_TYPE, DEP_STATUS
+        from ams_cabinet
+    </sql>
+
+    <select id="selectAmsCabinetList" parameterType="AmsCabinet" resultMap="AmsCabinetResult">
+        <include refid="selectAmsCabinetVo"/>
+        <where>
+            <if test="cabinetId != null  and cabinetId != '' ">and CABINET_ID = #{cabinetId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE like CONCAT(CONCAT('%',#{code}),'%')</if>
+            <if test="name != null  and name != '' ">and NAME like CONCAT(CONCAT('%',#{name}),'%')</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="depId != null  and depId != '' ">and DEP_ID = #{depId}</if>
+            <if test="depCode != null  and depCode != '' ">and DEP_CODE like CONCAT(CONCAT('%',#{depCode}),'%')</if>
+            <if test="depName != null  and depName != '' ">and DEP_NAME like CONCAT(CONCAT('%',#{depName}),'%')</if>
+            <if test="depType != null  and depType != '' ">and DEP_TYPE = #{depType}</if>
+            <if test="dutyMan != null  and dutyMan != '' ">and DUTY_MAN = #{dutyMan}</if>
+            <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+            <if test="depStatus != null  and depStatus != '' ">and DEP_STATUS = #{depStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsCabList" resultMap="AmsCabinetResultVO">
+        select a.CABINET_ID, a.ID, a.CODE, a.NAME, a.STATUS, a.DEP_ID, a.DEP_CODE, a.DEP_NAME, a.DEP_TYPE, a.DUTY_MAN,
+        a.ARC_TYPE, a.DEP_STATUS ,d.ORG_NAME
+        from ams_cabinet a
+        left join ams_depot d
+        on a.DEP_ID = d.ID
+        <where>
+            <if test="amsCabinet.cabinetId != null  and amsCabinet.cabinetId != '' ">and a.CABINET_ID =
+                #{amsCabinet.cabinetId}
+            </if>
+            <if test="amsCabinet.id != null  and amsCabinet.id != '' ">and a.ID = #{amsCabinet.id}</if>
+            <if test="amsCabinet.code != null  and amsCabinet.code != '' ">and a.CODE like
+                CONCAT(CONCAT('%',#{amsCabinet.code}),'%')
+            </if>
+            <if test="amsCabinet.name != null  and amsCabinet.name != '' ">and a.NAME like
+                CONCAT(CONCAT('%',#{amsCabinet.name}),'%')
+            </if>
+            <if test="amsCabinet.status != null  and amsCabinet.status != '' ">and a.STATUS = #{amsCabinet.status}</if>
+            <if test="amsCabinet.depId != null  and amsCabinet.depId != '' ">and a.DEP_ID = #{amsCabinet.depId}</if>
+            <if test="amsCabinet.depCode != null  and amsCabinet.depCode!= '' ">and a.DEP_CODE like
+                CONCAT(CONCAT('%',#{amsCabinet.depCode}),'%')
+            </if>
+            <if test="amsCabinet.depName != null  and amsCabinet.depName != '' ">and a.DEP_NAME like
+                CONCAT(CONCAT('%',#{amsCabinet.depName}),'%')
+            </if>
+            <if test="amsCabinet.depType != null  and amsCabinet.depType != '' ">and a.DEP_TYPE =
+                #{amsCabinet.depType}
+            </if>
+            <if test="amsCabinet.dutyMan != null  and amsCabinet.dutyMan != '' ">and a.DUTY_MAN =
+                #{amsCabinet.dutyMan}
+            </if>
+            <if test="amsCabinet.arcType != null  and amsCabinet.arcType != '' ">and a.ARC_TYPE =
+                #{amsCabinet.arcType}
+            </if>
+            <if test="amsCabinet.depStatus != null  and amsCabinet.depStatus != '' ">and a.DEP_STATUS =
+                #{amsCabinet.depStatus}
+            </if>
+            <if test="deptList.size()>0">
+                and d.ORG_NO IN
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectAmsCabinetById" parameterType="String" resultMap="AmsCabinetResult">
+        <include refid="selectAmsCabinetVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsCabinet" parameterType="AmsCabinet">
+        insert into ams_cabinet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="depId != null  and depId != ''  ">DEP_ID,</if>
+            <if test="depCode != null  and depCode != ''  ">DEP_CODE,</if>
+            <if test="depName != null  and depName != ''  ">DEP_NAME,</if>
+            <if test="depType != null  and depType != ''  ">DEP_TYPE,</if>
+            <if test="dutyMan != null  and dutyMan != ''  ">DUTY_MAN,</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE,</if>
+            <if test="depStatus != null  and depStatus != ''  ">DEP_STATUS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="depId != null  and depId != ''  ">#{depId},</if>
+            <if test="depCode != null  and depCode != ''  ">#{depCode},</if>
+            <if test="depName != null  and depName != ''  ">#{depName},</if>
+            <if test="depType != null  and depType != ''  ">#{depType},</if>
+            <if test="dutyMan != null  and dutyMan != ''  ">#{dutyMan},</if>
+            <if test="arcType != null  and arcType != ''  ">#{arcType},</if>
+            <if test="depStatus != null  and depStatus != ''  ">#{depStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsCabinet" parameterType="AmsCabinet">
+        update ams_cabinet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="depId != null  and depId != ''  ">DEP_ID = #{depId},</if>
+            <if test="depCode != null  and depCode != ''  ">DEP_CODE = #{depCode},</if>
+            <if test="depName != null  and depName != ''  ">DEP_NAME = #{depName},</if>
+            <if test="depType != null  and depType != ''  ">DEP_TYPE = #{depType},</if>
+            <if test="dutyMan != null  and dutyMan != ''  ">DUTY_MAN = #{dutyMan},</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE = #{arcType},</if>
+            <if test="depStatus != null  and depStatus != ''  ">DEP_STATUS = #{depStatus},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsCabinetById" parameterType="String">
+        delete from ams_cabinet where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsCabinetByIds" parameterType="String">
+        delete from ams_cabinet where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

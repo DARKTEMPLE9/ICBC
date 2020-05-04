@@ -1,7 +1,6 @@
 /**
  * jboss-logging实现
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.log.dialect.jboss;

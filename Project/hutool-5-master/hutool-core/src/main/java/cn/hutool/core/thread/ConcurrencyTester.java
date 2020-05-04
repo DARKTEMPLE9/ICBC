@@ -17,38 +17,38 @@ import cn.hutool.core.date.TimeInterval;
  * @author kwer
  */
 public class ConcurrencyTester {
-	private SyncFinisher sf;
-	private TimeInterval timeInterval;
-	private long interval;
+    private SyncFinisher sf;
+    private TimeInterval timeInterval;
+    private long interval;
 
-	public ConcurrencyTester(int threadSize) {
-		this.sf = new SyncFinisher(threadSize);
-		this.timeInterval = new TimeInterval();
-	}
+    public ConcurrencyTester(int threadSize) {
+        this.sf = new SyncFinisher(threadSize);
+        this.timeInterval = new TimeInterval();
+    }
 
-	/**
-	 * 执行测试
-	 *
-	 * @param runnable 要测试的内容
-	 * @return this
-	 */
-	public ConcurrencyTester test(Runnable runnable) {
-		timeInterval.start();
-		this.sf//
-				.addRepeatWorker(runnable)//
-				.setBeginAtSameTime(true)// 同时开始
-				.start();
+    /**
+     * 执行测试
+     *
+     * @param runnable 要测试的内容
+     * @return this
+     */
+    public ConcurrencyTester test(Runnable runnable) {
+        timeInterval.start();
+        this.sf//
+                .addRepeatWorker(runnable)//
+                .setBeginAtSameTime(true)// 同时开始
+                .start();
 
-		this.interval = timeInterval.interval();
-		return this;
-	}
+        this.interval = timeInterval.interval();
+        return this;
+    }
 
-	/**
-	 * 获取执行时间
-	 *
-	 * @return 执行时间，单位毫秒
-	 */
-	public long getInterval() {
-		return this.interval;
-	}
+    /**
+     * 获取执行时间
+     *
+     * @return 执行时间，单位毫秒
+     */
+    public long getInterval() {
+        return this.interval;
+    }
 }

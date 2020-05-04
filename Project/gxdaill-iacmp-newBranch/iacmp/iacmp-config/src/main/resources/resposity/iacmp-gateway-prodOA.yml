@@ -1,0 +1,59 @@
+server:
+  port: 9999
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/vole?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+
+#spring:
+#  zipkin:
+#    rabbitmq:
+#      queue: zipkin
+#  sleuth:
+#    sampler:
+#      percentage: 0.2
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 6000
+  ribbon-isolation-strategy: thread
+  routes:
+    iacmp-biz-ams:
+      path: /ams/**
+      serviceId: iacmp-biz-ams
+
+    iacmp-biz-cms:
+      path: /cms/**
+      serviceId: iacmp-biz-cms
+
+  add-host-header: true
+
+security:
+  oauth2:
+    client:
+      client-id: vole
+      client-secret: 123456
+    resource:
+      jwt:
+        key-uri: ${security.auth.server}/oauth/token_key #解析jwt令牌所需要密钥的地址
+
+ignore:
+  urls:
+    - /authentication/**
+    - /css/*.css
+    - /js/*.js
+    - /actuator/**
+    - /hystrix/**
+    - /metrics/**
+    - /loggers/**
+    - /mobile/cookie
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('详情')"/>
+</head>
+
+<body class="white-bg">
+<div id="printBox">
+    <div id="printBtnDiv" style="margin-left: 20px;margin-top: 10px;">
+        <button id="printBtn" class="btn btn-info" onclick="doPrint()"><span class='glyphicon glyphicon-print'></span>&nbsp;打印
+        </button>
+        <button class="btn btn-success" onclick="enclosureQuery()"><span class='glyphicon glyphicon-print'></span>&nbsp;查看附件
+        </button>
+        <button class="btn btn-success" onclick="imageQuery()"><span class='glyphicon glyphicon-print'></span>&nbsp;查看影像
+        </button>
+        <!--<button class="btn btn-success" onclick="$.operate.detail(\'' + row.dealNum + '\')"><span class='glyphicon glyphicon-print'></span>&nbsp;查看附件</button>-->
+    </div>
+    <div id="printInfoCont" class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <!--<input id="pkEntryDtl" name="pkEntryDtl" th:field="*{pkEntryDtl}"  type="hidden">-->
+                        <h3 style="text-align: center">记账凭证</h3>
+                        <!--<img style="width: 100px" src="/js/baixin.jpg" alt="">-->
+                        <span style="margin-left: 10px" id="tallyDt"></span>
+                        <div><span style="float: right">流水号：<span style="float: right" id="dealNum"></span></span>
+                            <div style="clear:both;"></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table style="width: 99%; margin-left: 5px; table-layout: fixed;"
+                                   class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <td width="8%"></td>
+                                    <td width="27%">账号</td>
+                                    <td width="10%">科目</td>
+                                    <td width="10%">机构号</td>
+                                    <td width="10%">来源系统</td>
+                                    <td width="10%">币种</td>
+                                    <td>借方金额</td>
+                                    <td>贷方金额</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item,itemStart : ${debList}">
+                                      <span th:if="${itemStart.index} == 0">
+                                        <td th:rowspan="${itemStart.size}">借方</td>
+                                        <td th:text="${item.dealAcct}"></td>
+                                        <td th:text="${item.subjId}"></td>
+                                        <td id="dealAcct" th:text="${item.asstOrg}"></td>
+                                        <td th:text="${item.asstSrcSys}"></td>
+                                        <td>人民币</td>
+                                        <td id="locDebAmt"
+                                            th:text="${#numbers.formatDecimal(item.locDebAmt,1,'COMMA',2,'POINT')}"></td>
+                                        <td id="locCrdAmt"
+                                            th:text="${#numbers.formatDecimal(item.locCrdAmt,1,'COMMA',2,'POINT')}"></td>
+                                    </span>
+                                    <span th:if="${itemStart.index} != 0">
+                                        <td th:text="${item.dealAcct}"></td>
+                                        <td th:text="${item.subjId}"></td>
+                                        <td id="asstOrg" th:text="${item.asstOrg}"></td>
+                                        <td th:text="${item.asstSrcSys}"></td>
+                                        <td>人民币</td>
+                                        <td id="locDebAmt"
+                                            th:text="${#numbers.formatDecimal(item.locDebAmt,1,'COMMA',2,'POINT')}"></td>
+                                        <td id="locCrdAmt"
+                                            th:text="${#numbers.formatDecimal(item.locCrdAmt,1,'COMMA',2,'POINT')}"></td>
+                                     </span>
+                                </tr>
+
+                                <tr th:each="item,itemStart : ${crdList}">
+                                      <span th:if="${itemStart.index} == 0">
+                                        <td th:rowspan="${itemStart.size}">贷方</td>
+                                        <td th:text="${item.dealAcct}"></td>
+                                        <td th:text="${item.subjId}"></td>
+                                        <td id="dealAcct" th:text="${item.asstOrg}"></td>
+                                        <td th:text="${item.asstSrcSys}"></td>
+                                        <td>人民币</td>
+                                        <td id="locDebAmt"
+                                            th:text="${#numbers.formatDecimal(item.locDebAmt,1,'COMMA',2,'POINT')}"></td>
+                                        <td id="locCrdAmt"
+                                            th:text="${#numbers.formatDecimal(item.locCrdAmt,1,'COMMA',2,'POINT')}"></td>
+                                    </span>
+                                    <span th:if="${itemStart.index} != 0">
+                                        <td th:text="${item.dealAcct}"></td>
+                                        <td th:text="${item.subjId}"></td>
+                                        <td id="asstOrg" th:text="${item.asstOrg}"></td>
+                                        <td th:text="${item.asstSrcSys}"></td>
+                                        <td>人民币</td>
+                                        <td id="locDebAmt"
+                                            th:text="${#numbers.formatDecimal(item.locDebAmt,1,'COMMA',2,'POINT')}"></td>
+                                        <td id="locCrdAmt"
+                                            th:text="${#numbers.formatDecimal(item.locCrdAmt,1,'COMMA',2,'POINT')}"></td>
+
+                                     </span>
+                                </tr>
+
+                                <tr>
+                                    <td>金额合计</td>
+                                    <td colspan="5"></td>
+                                    <td id="debListTotal"></td>
+                                    <td id="crdListTotal"></td>
+                                </tr>
+                                <tr>
+                                    <td>摘要</td>
+                                    <td colspan="7" id="entryCont"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <!--<span style="margin-left: 10px">授权:</span>
+                            <span style="margin-left: 20%">复核: <span th:text="*{auditor}"></span></span>
+                            <span style="margin-left: 20%">记账: <span th:text="*{bookkeeper}"></span></span>
+                            <span style="margin-left: 20%">制单人: <span th:text="*{preparer}"></span></span>-->
+                            <div id="table-footer">
+                                <span></span>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<!--附件-->
+<div id="enclosureBox">
+    <div style="margin-left: 20px;margin-top: 10px;">
+        <button class="btn btn-success" id="enclosureReturn" onclick=""><span
+                class='glyphicon glyphicon-chevron-left'></span>&nbsp;返回
+        </button>
+    </div>
+    <div id="enclosure" class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table table-bordered table-striped" id="bootstrap-table"
+                           data-mobile-responsive="true">
+                        <thead align="center">
+                        <tr>
+                            <td>分类</td>
+                            <td>文件名</td>
+                            <td>来源系统</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody id="enclosureTbody" align="center">
+                        <tr>
+                            <td colspan="3">正努力加载数据中。。。</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 影像start -->
+<div id="imageBox">
+    <div style="margin-left: 20px;margin-top: 10px;">
+        <button class="btn btn-success" id="imageReturn" onclick=""><span
+                class='glyphicon glyphicon-chevron-left'></span>&nbsp;返回
+        </button>
+    </div>
+    <div id="imageBox" class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table table-bordered table-striped" id="bootstrap-table"
+                           data-mobile-responsive="true">
+                        <thead align="center">
+                        <tr>
+                            <td>分类</td>
+                            <td>文件ID</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody id="imageTbody" align="center">
+                        <tr>
+                            <td colspan="3">正努力加载数据中。。。</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<!--<th:block th:include="include :: printPrintArea-js" />-->
+
+<script th:inline="javascript">
+    var result = parent.$('#form-gftEntryDtl-search').serialize().split("&");
+    console.log(result)
+
+    var prefix = ctx + "accounting/ledger/gftEntryDtl";
+    window.onload = function () {
+        $("#enclosureBox").hide();
+        $("#imageBox").hide();
+    };
+
+    var debList = [[${debList}]];
+    var crdList = [[${crdList}]];
+    //console.log([[${debList}]]);
+    var debListTotal = 0;
+    var crdListTotal = 0;
+
+    for (var i = 0; i < debList.length; i++) {
+        debListTotal += debList[i].locDebAmt;
+        crdListTotal += debList[i].locCrdAmt;
+    }
+    for (var i = 0; i < crdList.length; i++) {
+        debListTotal += crdList[i].locDebAmt;
+        crdListTotal += crdList[i].locCrdAmt;
+    }
+    $("#debListTotal").text(formatMoney(debListTotal))
+    $("#crdListTotal").text(formatMoney(crdListTotal))
+
+    // 摘要
+    $("#entryCont").text(debList[0].entryCont)
+    // 记账日期
+    $("#tallyDt").text(debList[0].tallyDt);
+    // 流水号
+    $("#dealNum").text(debList[0].dealNum);
+    // 授权等
+    var tableFooterHtml = "  <span style=\"margin-left: 10px\">授权:</span>\n" +
+        "                        <span style=\"margin-left: 20%\">复核: <span>" + (debList[0].auditor == null ? "-" : debList[0].auditor) + "</span></span>\n" +
+        "                        <span style=\"margin-left: 20%\">记账: <span>" + (debList[0].bookkeeper == null ? "-" : debList[0].bookkeeper) + "</span></span>\n" +
+        "                        <span style=\"margin-left: 20%\">制单人: <span>" + (debList[0].preparer == null ? "-" : debList[0].preparer) + "</span></span>"
+    $("#table-footer").append(tableFooterHtml);
+
+    $("#enclosureReturn").click(function () {
+        $("#printBox").show().siblings().hide();
+    });
+    $("#printReturn").click(function () {
+        $("#printBox").show().siblings().hide();
+    });
+    $("#imageReturn").click(function () {
+        $("#printBox").show().siblings().hide();
+    });
+
+    // 查看附件
+    function enclosureQuery() {
+        $("#enclosureBox").show().siblings().hide();
+        $.ajax({
+            url: prefix + '/listAms/' + debList[0].dealNum,
+            dataType: 'json',
+            type: 'POST',
+            success: function (res) {
+                datas = res.data;
+                $("#enclosureTbody").html(getEncTable(datas));
+            },
+            // console.log(datas)
+            error: function (jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            }
+        })
+    }
+
+    // 查看影像
+    function imageQuery() {
+        $("#imageBox").show().siblings().hide();
+        ;
+        $.ajax({
+            url: prefix + '/listUip/' + debList[0].dealNum,
+            dataType: 'json',
+            type: 'POST',
+            success: function (res) {
+                datas = res.data;
+                $("#imageTbody").html(getImgTable(datas));
+            },
+            // console.log(datas)
+            error: function (jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            }
+        })
+    }
+
+    // 附件表格拼接
+    function getEncTable(lists) {
+        var _html = '';
+        var _btn = ['<i class="fa fa-close" ></i> 关闭'];
+        for (var i = 0; i < lists.length; i++) {
+            var _url = lists[i].filePath;
+            var options = {
+
+                btn: _btn,
+                url: _url,
+                width: '',
+                height: '',
+                yes: function (index, layero) {
+                    layer.close(index)
+                }
+            };
+            var _options = JSON.stringify(options).split("}")[0] + ', "yes":  function (index, layero) { layer.close(index) } }';
+            _html += '   <tr>\n' +
+                '              <td>' + (lists[i].billName == null ? "-" : lists[i].billName) + '</td>\n' +
+                '              <td>' + (lists[i].fileName == null ? "-" : lists[i].fileName) + '</td>\n' +
+                '              <td>' + (lists[i].systemFlag == null ? "-" : lists[i].systemFlag) + '</td>\n' +
+                '              <td><a class="btn btn-success btn-xs " id="openDetail" onclick=\' $.modal.openOptions( ' + _options + ' )\'> ' +
+                '                    <i class="fa fa-edit"></i>浏览</a></td>' +
+                '         </tr>';
+
+        }
+        return _html;
+    }
+
+    // 影像表格
+    function getImgTable(lists) {
+        var _html = '';
+        var _btn = ['<i class="fa fa-close" ></i> 关闭'];
+        for (var i = 0; i < lists.length; i++) {
+            var _url = lists[i].fileUrl;
+            var options = {
+                btn: _btn,
+                url: _url,
+                width: '',
+                height: '',
+                yes: function (index, layero) {
+                    layer.close(index)
+                }
+            };
+            var _options = JSON.stringify(options).split("}")[0] + ', "yes":  function (index, layero) { layer.close(index) } }';
+            _html += '   <tr>\n' +
+                '              <td>' + lists[i].billType + '</td>\n' +
+                '              <td>' + lists[i].fileId + '</td>\n' +
+                '              <td><a class="btn btn-success btn-xs " id="openDetail" onclick=\' $.modal.openOptions( ' + _options + ' )\'> ' +
+                '                    <i class="fa fa-edit"></i>浏览</a></td>' +
+                '         </tr>';
+        }
+        return _html;
+    }
+
+    // 金额格式化公式
+    function formatMoney(value, type) {
+        if (value == null || value == '') {
+            return '';
+        }
+        if (type == null || type == '') {
+            type = 2;
+        }
+        return value.toFixed(type).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    };
+</script>
+<script type="text/javascript">
+    function doPrint() {
+        $("#printInfoCont").print({
+            globalStyles: true,//是否包含父文档的样式，默认为true
+            mediaPrint: false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+            stylesheet: null,//外部样式表的URL地址，默认为null
+            noPrintSelector: "printBtnDiv",//不想打印的元素的jQuery选择器，默认为".no-print"
+            iframe: true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+            append: null,//将内容添加到打印内容的后面
+            prepend: null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+            deferred: $.Deferred()
+        });
+        // $("#printArea").printArea();
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('部门档案树选择')"/>
+    <th:block th:include="include :: ztree-css"/>
+</head>
+<style>
+    body {
+        height: auto;
+        font-family: "Microsoft YaHei";
+    }
+
+    button {
+        font-family: "SimSun", "Helvetica Neue", Helvetica, Arial;
+    }
+</style>
+<body class="hold-transition box box-main">
+<input id="treeId" name="treeId" type="hidden" th:value="${dept?.deptId}"/>
+<input id="treeName" name="treeName" type="hidden" th:value="${dept?.deptName}"/>
+
+<div class="wrapper">
+
+    <div class="form-group col-sm-12">
+        <div class="form-group col-sm-6">
+            <!--style="float: left"-->
+            <div id="treeDept" class="ztree treeselect"></div>
+        </div>
+        <div class="form-group col-sm-6">
+            <!--style="float: right"-->
+            <div id="treeArchType" class="ztree treeselect"></div>
+            <input id="billNodes" name="billNodes" type="hidden" value=""/>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: ztree-js"/>
+<script th:inline="javascript">
+    $(function () {
+        var url = ctx + "param/amsBill/treeData";
+        var options = {
+            id: 'treeDept',
+            url: url,
+            expandLevel: 2,
+            onClick: zOnClick
+        };
+        $.tree.init(options);
+
+    });
+
+    //zTree节点的点击事件回调函数
+    function zOnClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+
+        var url = ctx + "param/amsBill/treeArchives/0";
+        var options = {
+            id: 'treeArchType',
+            url: url,
+            expand: true,
+            expandLevel: 2,
+            check: {
+                enable: true,             // 置 zTree 的节点上是否显示 checkbox / radio
+                nocheckInherit: true,      // 设置子节点是否自动继承
+            },
+            onCheck: zonCheck
+        };
+        $.tree.init(options);
+    }
+
+    //zTree节点checkbox勾选事件回调函数
+    function zonCheck(event, treeId, treeNodes) {
+        var rTreeObj = $.fn.zTree.getZTreeObj(treeId);
+        var billCodes = "";
+        var rnodes = rTreeObj.getCheckedNodes(true);
+        for (var i = 0; i < rnodes.length; i++) {
+            if (rnodes[i].isParent) {
+                var node = rTreeObj.getNodesByParam("id", rnodes[i].id, null)
+                var count = 0;
+                for (var j = 0; j < node.length; j++) {
+                    if (node[j].checked) {
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    alert("请选择该类型下的子类型");
+                    return;
+                }
+            }
+            billCodes += rnodes[i].id + ",";
+        }
+        billCodes = billCodes.substring(0, billCodes.length - 1);
+        $("#billNodes").val(billCodes);
+    }
+
+</script>
+</body>
+</html>

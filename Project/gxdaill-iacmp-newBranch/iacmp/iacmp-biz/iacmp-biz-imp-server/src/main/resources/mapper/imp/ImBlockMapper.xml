@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImBlockMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImBlock" id="ImBlockResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="templateBlockId" column="TEMPLATE_BLOCK_ID"/>
+        <result property="ecmFileId" column="ECM_FILE_ID"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="ocrValue" column="OCRVALUE"/>
+        <result property="status" column="STATUS"/>
+        <result property="inputValue" column="INPUT_VALUE"/>
+        <result property="blockId" column="BLOCK_ID"/>
+    </resultMap>
+
+    <sql id="selectImBlockVo">
+        select ID, CODE, NAME, TEMPLATE_BLOCK_ID, ECM_FILE_ID, IMAGE_ID, OCRVALUE, STATUS, INPUT_VALUE, BLOCK_ID from
+        im_block
+    </sql>
+
+    <select id="selectImBlockList" parameterType="net.northking.iacmp.imp.domain.ImBlock" resultMap="ImBlockResult">
+        <include refid="selectImBlockVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="templateBlockId != null  and templateBlockId != '' ">and TEMPLATE_BLOCK_ID = #{templateBlockId}
+            </if>
+            <if test="ecmFileId != null  and ecmFileId != '' ">and ECM_FILE_ID = #{ecmFileId}</if>
+            <if test="imageId != null  and imageId != '' ">and IMAGE_ID = #{imageId}</if>
+            <if test="ocrValue != null  and ocrValue != '' ">and OCRVALUE = #{ocrValue}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="inputValue != null  and inputValue != '' ">and INPUT_VALUE = #{inputValue}</if>
+            <if test="blockId != null ">and BLOCK_ID = #{blockId}</if>
+        </where>
+    </select>
+
+    <select id="selectImBlockById" parameterType="String" resultMap="ImBlockResult">
+        <include refid="selectImBlockVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImBlock" parameterType="net.northking.iacmp.imp.domain.ImBlock">
+        insert into im_block
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="templateBlockId != null  and templateBlockId != ''  ">TEMPLATE_BLOCK_ID,</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID,</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID,</if>
+            <if test="ocrValue != null  and ocrValue != ''  ">OCRVALUE,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="inputValue != null  and inputValue != ''  ">INPUT_VALUE,</if>
+            <if test="blockId != null  ">BLOCK_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="templateBlockId != null  and templateBlockId != ''  ">#{templateBlockId},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">#{ecmFileId},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="ocrValue != null  and ocrValue != ''  ">#{ocrValue},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="inputValue != null  and inputValue != ''  ">#{inputValue},</if>
+            <if test="blockId != null  ">#{blockId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImBlock" parameterType="net.northking.iacmp.imp.domain.ImBlock">
+        update im_block
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="templateBlockId != null  and templateBlockId != ''  ">TEMPLATE_BLOCK_ID = #{templateBlockId},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID = #{ecmFileId},</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID = #{imageId},</if>
+            <if test="ocrValue != null  and ocrValue != ''  ">OCRVALUE = #{ocrValue},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="inputValue != null  and inputValue != ''  ">INPUT_VALUE = #{inputValue},</if>
+            <if test="blockId != null  ">BLOCK_ID = #{blockId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBlockById" parameterType="String">
+        delete from im_block where ID = #{id}
+    </delete>
+
+    <delete id="deleteImBlockByIds" parameterType="String">
+        delete from im_block where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

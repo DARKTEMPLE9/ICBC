@@ -98,96 +98,96 @@ module.exports =
     return __webpack_require__(__webpack_require__.s = 326);
     /******/
 })
-/************************************************************************/
-/******/({
+    /************************************************************************/
+    /******/({
 
-    /***/ 326:
-    /***/ (function (module, exports, __webpack_require__) {
+        /***/ 326:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        module.exports = __webpack_require__(327);
-
-
-        /***/
-    }),
-
-    /***/ 327:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            module.exports = __webpack_require__(327);
 
 
-        exports.__esModule = true;
+            /***/
+        }),
 
-        var _row = __webpack_require__(328);
+        /***/ 327:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        var _row2 = _interopRequireDefault(_row);
-
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {default: obj};
-        }
-
-        /* istanbul ignore next */
-        _row2.default.install = function (Vue) {
-            Vue.component(_row2.default.name, _row2.default);
-        };
-
-        exports.default = _row2.default;
-
-        /***/
-    }),
-
-    /***/ 328:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            "use strict";
 
 
-        exports.__esModule = true;
-        exports.default = {
-            name: 'ElRow',
+            exports.__esModule = true;
 
-            componentName: 'ElRow',
+            var _row = __webpack_require__(328);
 
-            props: {
-                tag: {
-                    type: String,
-                    default: 'div'
-                },
-                gutter: Number,
-                type: String,
-                justify: {
-                    type: String,
-                    default: 'start'
-                },
-                align: {
-                    type: String,
-                    default: 'top'
-                }
-            },
+            var _row2 = _interopRequireDefault(_row);
 
-            computed: {
-                style: function style() {
-                    var ret = {};
-
-                    if (this.gutter) {
-                        ret.marginLeft = '-' + this.gutter / 2 + 'px';
-                        ret.marginRight = ret.marginLeft;
-                    }
-
-                    return ret;
-                }
-            },
-
-            render: function render(h) {
-                return h(this.tag, {
-                    class: ['el-row', this.justify !== 'start' ? 'is-justify-' + this.justify : '', this.align !== 'top' ? 'is-align-' + this.align : '', {'el-row--flex': this.type === 'flex'}],
-                    style: this.style
-                }, this.$slots.default);
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {default: obj};
             }
-        };
 
-        /***/
-    })
+            /* istanbul ignore next */
+            _row2.default.install = function (Vue) {
+                Vue.component(_row2.default.name, _row2.default);
+            };
 
-    /******/
-});
+            exports.default = _row2.default;
+
+            /***/
+        }),
+
+        /***/ 328:
+        /***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            exports.__esModule = true;
+            exports.default = {
+                name: 'ElRow',
+
+                componentName: 'ElRow',
+
+                props: {
+                    tag: {
+                        type: String,
+                        default: 'div'
+                    },
+                    gutter: Number,
+                    type: String,
+                    justify: {
+                        type: String,
+                        default: 'start'
+                    },
+                    align: {
+                        type: String,
+                        default: 'top'
+                    }
+                },
+
+                computed: {
+                    style: function style() {
+                        var ret = {};
+
+                        if (this.gutter) {
+                            ret.marginLeft = '-' + this.gutter / 2 + 'px';
+                            ret.marginRight = ret.marginLeft;
+                        }
+
+                        return ret;
+                    }
+                },
+
+                render: function render(h) {
+                    return h(this.tag, {
+                        class: ['el-row', this.justify !== 'start' ? 'is-justify-' + this.justify : '', this.align !== 'top' ? 'is-align-' + this.align : '', {'el-row--flex': this.type === 'flex'}],
+                        style: this.style
+                    }, this.$slots.default);
+                }
+            };
+
+            /***/
+        })
+
+        /******/
+    });

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <th:block th:include="include :: header('中关村银行')"/>
+</head>
+<body class="gray-bg">
+<div id="printBtnDiv" style="margin-left: 20px;margin-top: 10px;">
+    <button id="printBtn" class="btn btn-info" onclick="doPrint()"><span class='glyphicon glyphicon-print'></span>&nbsp;打印
+    </button>
+</div>
+<div id="printArea" style="margin: 0 auto;width: 200px;">
+
+    <table style="border:1px solid;border-collapse: collapse;text-align: center;margin-left:20px;width:100%;">
+        <tbody>
+        <tr style="height:100px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">
+            </td>
+        </tr>
+        <tr style="height:111px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">全&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;宗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号<br>&nbsp;<br><span
+                    th:text="${recGroupNum}"></span></td>
+        </tr>
+        <tr style="height:111px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度<br>&nbsp;<br><span
+                    th:text="${amsBox.boxYear}"></span></td>
+        </tr>
+        <tr style="height:111px;" th:switch="${amsBox.valPeriod}">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">保&nbsp;&nbsp;&nbsp;管&nbsp;&nbsp;&nbsp;期&nbsp;&nbsp;&nbsp;限<br>&nbsp;<br>
+                <span th:case="'10'">10年</span>
+                <span th:case="'30'">30年</span>
+                <span th:case="'99'">永久</span>
+            </td>
+        </tr>
+        <tr style="height:111px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">机&nbsp;&nbsp;构<br>&nbsp;<br><span
+                    th:text="${amsBox.orgName}"></span></td>
+        </tr>
+        <tr rowspan="2" style="height:100px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" rowspan="2">
+                起止<br>件号<br>&nbsp;<br><br>&nbsp;<br></td>
+            <td style="border:1px solid;font-size:20px;font-weight:bold;">室<br>&nbsp;<br><br></td>
+        </tr>
+        <tr style="height:111px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;">馆<br>&nbsp;<br><br></td>
+        </tr>
+        <tr style="height:111px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2">盒&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号<br>&nbsp;<br><span
+                    th:text="${amsBox.code}"></span></td>
+        </tr>
+        <tr style="height:100px;">
+            <td style="border:1px solid;font-size:20px;font-weight:bold;" colspan="2"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: printPrintArea-js"/>
+
+<script type="text/javascript">
+    function doPrint() {
+        $("#printInfoCont").print({
+            globalStyles: true,//是否包含父文档的样式，默认为true
+            mediaPrint: false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+            stylesheet: null,//外部样式表的URL地址，默认为null
+            noPrintSelector: "printBtnDiv",//不想打印的元素的jQuery选择器，默认为".no-print"
+            iframe: true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+            append: null,//将内容添加到打印内容的后面
+            prepend: null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+            deferred: $.Deferred()
+        });
+        // $("#printArea").printArea();
+    }
+
+</script>
+
+</body>
+
+</html>

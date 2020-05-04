@@ -20,5 +20,5 @@ public interface ExcelMapper {
 
     List<Export_a_1> queryExcel_a_1(@Param("row_id") String row_id);
 
-    List<Export_a_1_1> queryExcel_a_1_1(@Param("row_id")String row_id1);
+    List<Export_a_1_1> queryExcel_a_1_1(@Param("row_id") String row_id1);
 }

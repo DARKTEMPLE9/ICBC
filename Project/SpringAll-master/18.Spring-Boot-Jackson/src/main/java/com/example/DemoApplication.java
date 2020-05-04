@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @SpringBootApplication
 public class DemoApplication {
 
-	public static void main(String[] args) throws JsonProcessingException, IOException {
-		SpringApplication.run(DemoApplication.class, args);
+    public static void main(String[] args) throws JsonProcessingException, IOException {
+        SpringApplication.run(DemoApplication.class, args);
 
-	}
+    }
 }

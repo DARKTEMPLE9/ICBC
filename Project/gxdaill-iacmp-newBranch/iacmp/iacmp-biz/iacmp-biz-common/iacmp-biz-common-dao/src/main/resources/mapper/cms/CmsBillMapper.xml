@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsBillMapper">
+
+    <resultMap type="CmsBill" id="CmsBillResult">
+        <result property="id" column="ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="allPath" column="ALL_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="display" column="DISPLAY"/>
+        <result property="fileImageId" column="fileId"/>
+        <result property="manualUpload" column="MANUAL_UPLOAD"/>
+        <collection property="models" column="MODEL_ID" select="selectCmsModelsByCmsBillId"/>
+    </resultMap>
+
+    <resultMap type="CmsBill" id="CmsBillResult2">
+        <result property="id" column="ID"/>
+        <result property="fileImageBillId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="allPath" column="ALL_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="display" column="DISPLAY"/>
+        <result property="fileImageId" column="FILE_IMAGE_ID"/>
+        <result property="fileImageBillId" column="BILL_ID"/>
+        <result property="fileImageName" column="FILE_IMAGE_NAME"/>
+        <result property="fileImagePath" column="FILE_IMAGE_PATH"/>
+        <result property="serverUrl" column="FILE_PATH"/>
+        <result property="fileImageType" column="FILE_IMAGE_TYPE"/>
+        <result property="stringId" column="STRING_ID"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="manualUpload" column="MANUAL_UPLOAD"/>
+        <collection property="models" column="MODEL_ID" select="selectCmsModelsByCmsBillId"/>
+    </resultMap>
+
+    <sql id="selectCmsBillVo">
+        select ID, BILL_NAME, BILL_CODE, PARENT_ID, BILL_ORDER, LEAF, ALL_PATH, STATUS, CREATE_BY, CREATE_TIME,
+        UPDATE_BY, UPDATE_TIME, DISPLAY, MANUAL_UPLOAD from cms_bill
+    </sql>
+
+    <sql id="selectBillFileVo">
+        select ID ,ID as FILE_IMAGE_ID,FILE_ID, FILE_NAME as BILL_NAME, STATUS, BATCH_ID, CREATE_TIME,
+        UPDATE_TIME,FILE_PATH, FILE_TYPE as FILE_IMAGE_TYPE, BILL_ID,CREATE_USER,VERSION,MD5,TRG from cms_file
+    </sql>
+
+    <sql id="selectCmsImageVo">
+        select ID, ID as FILE_IMAGE_ID,IMAGE_ID, IMAGE_NO, IMAGE_NAME as BILL_NAME, RANDOM_NAME, STATUS, BATCH_ID,
+        CREATE_TIME, UPDATE_TIME , ORDER_NUM,BILL_ID, IMAGE_PATH,CREATE_USER, VERSION, METADATA,MD5,TRG from cms_image
+    </sql>
+
+    <select id="selectCmsBillList" parameterType="CmsBill" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="billName != null  and billName != '' ">and bill_name like concat('%', #{billName}, '%')</if>
+            <if test="billCode != null  and billCode != '' ">and bill_code like concat('%', #{billCode}, '%')</if>
+            <if test="parentId != null ">and PARENT_ID = #{parentId}</if>
+            <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+            <if test="leaf != null  and leaf != '' ">and LEAF = #{leaf}</if>
+            <if test="allPath != null  and allPath != '' ">and ALL_PATH = #{allPath}</if>
+            <if test="status != null  and status != '' ">and status like concat('%', #{status}, '%')</if>
+            <if test="createBy != null  and createBy != '' ">and CREATE_BY = #{createBy}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != '' ">and UPDATE_BY = #{updateBy}</if>
+            <if test="updateTime != null ">and UPDATE_TIME = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectCmsBillById" parameterType="Long" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertCmsBill" parameterType="CmsBill" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billName != null  and billName != ''  ">BILL_NAME,</if>
+            <if test="billCode != null  and billCode != ''  ">BILL_CODE,</if>
+            <if test="parentId != null  ">PARENT_ID,</if>
+            <if test="billOrder != null  ">BILL_ORDER,</if>
+            <if test="leaf != null  and leaf != ''  ">LEAF,</if>
+            <if test="allPath != null  and allPath != ''  ">ALL_PATH,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="display != null  ">DISPLAY,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billName != null  and billName != ''  ">#{billName},</if>
+            <if test="billCode != null  and billCode != ''  ">#{billCode},</if>
+            <if test="parentId != null  ">#{parentId},</if>
+            <if test="billOrder != null  ">#{billOrder},</if>
+            <if test="leaf != null  and leaf != ''  ">#{leaf},</if>
+            <if test="allPath != null  and allPath != ''  ">#{allPath},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="display != null  ">#{display},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsBill" parameterType="CmsBill">
+        update cms_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billName != null  and billName != ''  ">BILL_NAME = #{billName},</if>
+            <if test="billCode != null  and billCode != ''  ">BILL_CODE = #{billCode},</if>
+            <if test="parentId != null  ">PARENT_ID = #{parentId},</if>
+            <if test="billOrder != null  ">BILL_ORDER = #{billOrder},</if>
+            <if test="leaf != null  and leaf != ''  ">LEAF = #{leaf},</if>
+            <if test="allPath != null  and allPath != ''  ">ALL_PATH = #{allPath},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY = #{createBy},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY = #{updateBy},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="display != null  ">DISPLAY = #{display},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <update id="updateSubBillDisplay" parameterType="CmsBill">
+        update cms_bill set DISPLAY = #{display} where PARENT_ID = #{id}
+    </update>
+
+    <delete id="deleteCmsBillById" parameterType="Long">
+        delete from cms_bill where ID = #{id}
+    </delete>
+
+    <delete id="deleteCmsBillByIds" parameterType="String">
+        delete from cms_bill where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBillAll" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        order by parent_id,bill_order
+    </select>
+
+    <select id="selectBillAllByUserId" parameterType="Long" resultMap="CmsBillResult">
+        select distinct b.id, b.bill_name, b.bill_code, b.parent_id, b.leaf, b.status
+        from cms_bill b
+        left join cms_role_bill rb on b.id = rb.bill_id
+        left join cms_user_role ur on rb.role_id = ur.role_id
+        LEFT JOIN cms_role ro on ur.role_id = ro.id
+        where ur.user_id = #{userId}
+        order by b.parent_id, b.bill_order
+    </select>
+
+    <select id="selectBillTree" parameterType="Long" resultType="String">
+        select concat(b.id, b.bill_name) as bill_name
+        from cms_bill b
+        left join cms_role_bill rb on b.id = rb.bill_id
+        where rb.role_id = #{roleId}
+        order by b.parent_id, b.bill_order
+    </select>
+    <select id="selectModelBillTree" parameterType="Long" resultType="String">
+        select concat(b.id, b.bill_name) as bill_name
+        from cms_bill b
+        left join cms_model_bill mb on b.id = mb.bill_id
+        where mb.model_id = #{modelId}
+        order by b.parent_id, b.bill_order
+    </select>
+
+    <select id="selectBillListByUserId" parameterType="CmsBill" resultMap="CmsBillResult">
+        select distinct b.id, b.bill_name, b.bill_code, b.parent_id, b.leaf, b.status
+        from cms_bill b
+        left join cms_role_bill rb on b.id = rb.bill_id
+        left join cms_user_role ur on rb.role_id = ur.role_id
+        LEFT JOIN cms_role ro on ur.role_id = ro.id
+        where ur.user_id = #{userId}
+        <if test="billName != null  and billName != '' ">and bill_name like concat('%', #{billName}, '%')</if>
+        <if test="billCode != null  and billCode != '' ">and bill_code like concat('%', #{billCode}, '%')</if>
+        <if test="parentId != null ">and PARENT_ID = #{parentId}</if>
+        <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+        <if test="status != null  and status != '' ">and status like concat('%', #{status}, '%')</if>
+        order by b.parent_id, b.bill_order
+    </select>
+
+    <select id="selectCountBillByParentId" parameterType="Long" resultType="Integer">
+        select count(1) from cms_bill where parent_id = #{billId}
+    </select>
+    <!--查询某节点下所有叶子结点-->
+    <!--<select id="selectCmsBillByParentId" resultMap="CmsBillResult">
+        select * from cms_bill where FIND_IN_SET(id,queryChildrenAreaInfo(#{id})) and leaf = 0
+    </select>-->
+    <!--根据code查询billid-->
+    <select id="selectCmsBillByCode" parameterType="String" resultMap="CmsBillResult">
+        select * from cms_bill where BILL_CODE = #{billCode}
+    </select>
+
+    <!--查询某一分类下文件的数量-->
+    <select id="selectFileNumByCode" resultType="java.lang.Integer">
+        select sum(n) from
+        (
+        select sum(1) as n from cms_bill b ,cms_file f where b.id=f.BILL_ID and b.BILL_CODE = #{billCode}
+        union all
+        select sum(1) as n from cms_bill b, cms_image m where b.ID = m.bill_id and b.BILL_CODE=#{billCode}
+        ) as t
+    </select>
+
+    <!--按照父id查询子文件分类的数量-->
+    <select id="selectFileNumByParentId" resultType="java.lang.Integer">
+        select count(1) from cms_bill where PARENT_ID = #{parentId}
+    </select>
+
+    <select id="selectBillAllVo" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        order by parent_id,bill_order
+    </select>
+
+    <select id="selectCmsBillListByModelAndLeaf" resultMap="CmsBillResult">
+        select * from cms_bill where id in (select bill_id from cms_model_bill WHERE MODEL_ID in
+        <foreach item="model" collection="modelId.split(',')" open="(" separator="," close=")">
+            #{model}
+        </foreach>
+        )
+        ORDER BY parent_id
+    </select>
+
+    <select id="selectFileImageBills" resultMap="CmsBillResult2">
+        select FILE_ID as ID ,FILE_ID as FILE_IMAGE_ID,FILE_ID as STRING_ID,FILE_NAME as BILL_NAME,FILE_NAME as
+        FILE_IMAGE_NAME,
+        FILE_TYPE as FILE_IMAGE_TYPE,FILE_PATH as FILE_IMAGE_PATH,BILL_ID from (select * from cms_file order by
+        CREATE_TIME desc) cms_file
+        where BATCH_ID = #{batchId} and BILL_ID = #{billId} and STATUS = '1' group by FILE_NAME
+        UNION ALL
+        (select IMAGE_ID as ID ,IMAGE_ID as FILE_IMAGE_ID,IMAGE_ID as STRING_ID,IMAGE_NAME as BILL_NAME,IMAGE_NAME as
+        FILE_IMAGE_NAME,
+        OCR_TYPE as FILE_IMAGE_TYPE, IMAGE_PATH as FILE_IMAGE_PATH,BILL_ID from (select * from cms_image order by
+        CREATE_TIME desc) cms_image
+        where BATCH_ID = #{batchId} and BILL_ID = #{billId} and STATUS = '0' group by IMAGE_NAME)
+    </select>
+
+    <!--按照父类id条件查询文件分类下的文件-->
+    <select id="selectFileBillsByFileParentId" resultMap="CmsBillResult2">
+        select cf.FILE_ID as ID,cf.FILE_ID as FILE_IMAGE_ID,cf.FILE_ID as STRING_ID,cf.FILE_ID, cf.FILE_NAME as
+        BILL_NAME, cf.STATUS, cf.BATCH_ID,
+        cf.CREATE_TIME, cf.UPDATE_TIME,cf.FILE_PATH as FILE_IMAGE_PATH, cf.FILE_TYPE as FILE_IMAGE_TYPE,
+        cf.BILL_ID,cf.TRG
+        from cms_file cf join cms_bill cb on cf.BILL_ID = cb.ID
+        where cf.BATCH_ID = #{batchId} and cf.BILL_ID in (select id from cms_bill where PARENT_ID = #{parentId})
+        group by cf.FILE_NAME order by cf.CREATE_TIME desc
+    </select>
+
+    <resultMap type="CmsBill" id="fileName">
+        <result property="id" column="ID"/>
+        <result property="fileImageBillId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="allPath" column="ALL_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="display" column="DISPLAY"/>
+        <result property="fileImageId" column="FILE_IMAGE_ID"/>
+        <result property="fileImagePath" column="IMAGE_PATH"/>
+        <result property="serverUrl" column="IMAGE_PATH"/>
+        <result property="fileImageType" column="FILE_IMAGE_TYPE"/>
+        <result property="stringId" column="STRING_ID"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="manualUpload" column="MANUAL_UPLOAD"/>
+        <collection property="models" column="MODEL_ID" select="selectCmsModelsByCmsBillId"/>
+    </resultMap>
+
+    <!--按照父类id条件查询文件分类下的影像-->
+    <select id="selectFileBillsByImageParentId" resultMap="fileName">
+        select ci.IMAGE_ID as ID, ci.IMAGE_ID as FILE_IMAGE_ID,ci.IMAGE_ID as STRING_ID,ci.IMAGE_ID, ci.IMAGE_NO,
+        ci.IMAGE_NAME as BILL_NAME,
+        ci.RANDOM_NAME, ci.STATUS, ci.BATCH_ID, ci.CREATE_TIME,ci.BILL_ID,ci.IMAGE_PATH,ci.TRG,ci.OCR_TYPE as
+        FILE_IMAGE_TYPE
+        from cms_image ci join cms_bill cb
+        where ci.BATCH_ID = #{batchId} and ci.BILL_ID in (select id from cms_bill where PARENT_ID = #{parentId})
+        group by ci.IMAGE_NAME order by ci.CREATE_TIME desc
+    </select>
+
+    <resultMap type="net.northking.iacmp.common.bean.vo.cms.CmsFileImageVO" id="FileImageVO">
+        <result property="id" column="ID"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="fileImageId" column="FILE_IMAGE_ID"/>
+        <result property="fileImageName" column="FILE_IMAGE_NAME"/>
+        <result property="fileImagePath" column="FILE_IMAGE_PATH"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="type" column="FILE_IMAGE_TYPE"/>
+        <result property="stringId" column="STRING_ID"/>
+    </resultMap>
+
+    <select id="selectFileImageOfBill" resultMap="FileImageVO">
+        select FILE_ID as STRING_ID, FILE_NAME as FILE_IMAGE_NAME,file_type as FILE_IMAGE_TYPE,
+        FILE_PATH as FILE_IMAGE_PATH,CREATE_TIME
+        from (select * from cms_file where status = '1' order by CREATE_TIME desc ) cms_file
+        where BILL_ID = #{billId} and BATCH_ID = #{batchId} group by FILE_NAME
+        UNION ALL
+        (select IMAGE_ID as STRING_ID,IMAGE_NAME as FILE_IMAGE_NAME,OCR_TYPE as file_image_type,IMAGE_PATH as
+        FILE_IMAGE_PATH,CREATE_TIME
+        from (select * from cms_image where status = '0' order by CREATE_TIME desc) cms_image
+        where BILL_ID = #{billId} and BATCH_ID = #{batchId} group by IMAGE_NAME)
+    </select>
+
+    <select id="selectFileByBatchId" resultMap="FileImageVO">
+        select FILE_ID as STRING_ID, FILE_NAME as FILE_IMAGE_NAME,file_type as FILE_IMAGE_TYPE,
+        FILE_PATH as FILE_IMAGE_PATH,BILL_NAME,CREATE_TIME
+        from (select c.*,b.BILL_NAME from cms_file c left join cms_bill b on c.BILL_ID = b.ID where c.status = '1' and
+        c.BILL_ID is not null order by c.CREATE_TIME desc ) cms_file
+        where BATCH_ID = #{batchId} group by FILE_NAME
+        UNION ALL
+        (select IMAGE_ID as STRING_ID,IMAGE_NAME as FILE_IMAGE_NAME,OCR_TYPE as file_image_type,
+        IMAGE_PATH as FILE_IMAGE_PATH,BILL_NAME,CREATE_TIME
+        from (select c.*,b.BILL_NAME from cms_image c left join cms_bill b on c.BILL_ID = b.ID where c.status = '0' and
+        c.BILL_ID is not null order by c.CREATE_TIME desc) cms_image
+        where BATCH_ID = #{batchId} group by IMAGE_NAME)
+    </select>
+
+    <!--根据项目batchId查询项目下所有文件的分类-->
+    <select id="selectBillsByFileBatchId" resultMap="CmsBillResult">
+        select DISTINCT * from cms_bill where id in (
+        select BILL_ID from cms_file where BATCH_ID = #{batchId}
+        union ALL
+        select BILL_ID from cms_image where BATCH_ID = #{batchId}
+        )
+
+    </select>
+
+    <!--批量查询分类-->
+    <select id="selectBillByIds" resultMap="CmsBillResult">
+        select DISTINCT * from cms_bill b where b.ID in
+        <foreach collection="allBillId" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        ORDER BY b.ID
+    </select>
+    <!--核对分类名称是否唯一-->
+    <select id="checkRoleNameUnique" parameterType="String" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        where bill_name=#{billName}
+    </select>
+
+    <select id="checkBillCodeUnique" parameterType="String" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        where bill_code = #{billCode}
+    </select>
+
+
+    <select id="selectAllCmsBill" resultMap="CmsBillResult">
+        <include refid="selectCmsBillVo"/>
+        where LEAF !='0'
+    </select>
+
+    <select id="selectAllCmsBills" resultMap="CmsBillResult">
+        SELECT b.ID, b.BILL_NAME, b.BILL_CODE, b.PARENT_ID, b.BILL_ORDER, b.LEAF, b.ALL_PATH,
+        b.STATUS,b.DISPLAY,b.MANUAL_UPLOAD
+        FROM cms_bill b LEFT JOIN cms_role_bill r ON b.ID = r.BILL_ID
+        <where>
+            <if test="dataRoleIds != null and dataRoleIds.size()>0 ">AND r.ROLE_ID IN
+                <foreach item="item" collection="dataRoleIds" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectCmsBillsByRoleId" parameterType="long" resultMap="CmsBillResult">
+        SELECT b.ID, b.BILL_NAME, b.BILL_CODE, b.PARENT_ID, b.BILL_ORDER, b.LEAF, b.ALL_PATH,
+        b.STATUS,b.DISPLAY,b.MANUAL_UPLOAD
+        FROM cms_bill b LEFT JOIN cms_role_bill r ON b.ID = r.BILL_ID
+        where r.ROLE_ID = #{roleId}
+    </select>
+
+    <select id="selectBillIdOfPairing" resultType="java.lang.String">
+        SELECT ID FROM cms_bill WHERE PARENT_ID IN (SELECT ID FROM cms_bill WHERE DISPLAY = '3')
+    </select>
+
+    <select id="selectBillIdOfUpload" resultType="java.lang.Long">
+        SELECT ID FROM cms_bill WHERE MANUAL_UPLOAD = '1'
+    </select>
+
+    <select id="selectBillIdOfHistory" resultType="java.lang.Long">
+        SELECT ID FROM cms_bill WHERE DISPLAY = '2'
+    </select>
+
+    <select id="selectBillIdsOfPairing" resultType="java.lang.Long">
+        SELECT ID FROM cms_bill WHERE PARENT_ID in (select ID from cms_bill where DISPLAY = '3');
+    </select>
+
+    <resultMap type="CmsBill" id="CmsBillResult5">
+        <result property="id" column="ID"/>
+        <result property="fileImageBillId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="allPath" column="ALL_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="display" column="DISPLAY"/>
+        <result property="fileImageId" column="FILE_IMAGE_ID"/>
+        <result property="fileImagePath" column="PATH"/>
+        <result property="fileImageType" column="FILE_IMAGE_TYPE"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="stringId" column="STRING_ID"/>
+        <result property="manualUpload" column="MANUAL_UPLOAD"/>
+        <collection property="models" column="MODEL_ID" select="selectCmsModelsByCmsBillId"/>
+    </resultMap>
+
+    <select id="selectNewFileByBatchIdBillId" resultMap="CmsBillResult5">
+        SELECT ID,FILE_ID as file_image_id,FILE_ID as STRING_ID,file_type as FILE_IMAGE_TYPE,file_path as path,
+        HADOOP_TYPE,CREATE_TIME
+        FROM cms_file WHERE BATCH_ID = #{batchId} and bill_Id = #{billId} and STATUS = '1'
+        order by CREATE_TIME desc limit 1
+    </select>
+
+    <select id="selectNewByImageBatchIdBillId" resultMap="CmsBillResult5">
+        SELECT ID,IMAGE_ID as file_image_id,IMAGE_ID as STRING_ID,ocr_type as FILE_IMAGE_TYPE,image_path as path,
+        HADOOP_TYPE,CREATE_TIME
+        FROM cms_image WHERE BATCH_ID = #{batchId} and bill_Id = #{billId} and STATUS = '0'
+        order by CREATE_TIME desc limit 1
+    </select>
+
+    <select id="selectBillIdByPmsId" resultType="java.lang.Long">
+        SELECT PMS_BILL_ID FROM cms_project_bill WHERE PMS_BATCH_ID = #{pmsBatchId}
+    </select>
+
+    <select id="selectBillMonitorNum" resultType="java.util.HashMap">
+        SELECT FILE_NUM as fileNum FROM cms_project_bill WHERE PMS_BATCH_ID = #{pmsBatchId} AND PMS_BILL_ID = #{billId}
+    </select>
+
+    <select id="updateBillMonitorNum" parameterType="java.util.HashMap">
+        UPDATE cms_project_bill SET FILE_NUM = #{fileNum} WHERE PMS_BATCH_ID = #{pmsBatchId} AND PMS_BILL_ID = #{billId}
+    </select>
+
+    <select id="insertBillMonitorNum" parameterType="java.util.HashMap">
+        INSERT INTO cms_project_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pmsBatchId != null">PMS_BATCH_ID,</if>
+            <if test="billId != null">PMS_BILL_ID,</if>
+            <if test="fileNum != null">FILE_NUM,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pmsBatchId != null">#{pmsBatchId},</if>
+            <if test="billId != null">#{billId},</if>
+            <if test="fileNum != null">#{fileNum},</if>
+        </trim>
+    </select>
+
+    <update id="updateManualUpload" parameterType="java.util.Map">
+        update cms_bill set MANUAL_UPLOAD = #{targetManual} where ID in
+        <foreach item="item" collection="billIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectIdByParentId" resultType="java.lang.String">
+        select ID from cms_bill where PARENT_ID = #{parentId}
+    </select>
+
+    <select id="selectBillOffOfModel" resultType="java.lang.Long">
+        select ID from cms_model_bill where model_id in
+        <foreach item="item" collection="modelIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and STATUS = '0'
+    </select>
+
+</mapper>

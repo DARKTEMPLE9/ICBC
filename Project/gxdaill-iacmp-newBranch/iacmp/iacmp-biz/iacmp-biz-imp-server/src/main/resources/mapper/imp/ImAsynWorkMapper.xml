@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImAsynWorkMapper">
+
+    <resultMap type="ImAsynWork" id="ImAsynWorkResult">
+        <result property="id" column="ID"/>
+        <result property="workId" column="WORK_ID"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="busino" column="BUSINO"/>
+        <result property="tranCode" column="TRAN_CODE"/>
+        <result property="paramMap" column="PARAM_MAP"/>
+    </resultMap>
+
+    <sql id="selectImAsynWorkVo">
+        select ID, WORK_ID, SYS_ID, BUSINO, TRAN_CODE, PARAM_MAP from im_asyn_work
+    </sql>
+
+    <select id="selectImAsynWorkList" parameterType="ImAsynWork" resultMap="ImAsynWorkResult">
+        <include refid="selectImAsynWorkVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="workId != null  and workId != '' ">and WORK_ID = #{workId}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="busino != null  and busino != '' ">and BUSINO = #{busino}</if>
+            <if test="tranCode != null  and tranCode != '' ">and TRAN_CODE = #{tranCode}</if>
+            <if test="paramMap != null  and paramMap != '' ">and PARAM_MAP = #{paramMap}</if>
+        </where>
+    </select>
+
+    <select id="selectImAsynWorkById" parameterType="Long" resultMap="ImAsynWorkResult">
+        <include refid="selectImAsynWorkVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImAsynWork" parameterType="ImAsynWork">
+        insert into im_asyn_work
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="workId != null  and workId != ''  ">WORK_ID,</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID,</if>
+            <if test="busino != null  and busino != ''  ">BUSINO,</if>
+            <if test="tranCode != null  and tranCode != ''  ">TRAN_CODE,</if>
+            <if test="paramMap != null  and paramMap != ''  ">PARAM_MAP,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="workId != null  and workId != ''  ">#{workId},</if>
+            <if test="sysId != null  and sysId != ''  ">#{sysId},</if>
+            <if test="busino != null  and busino != ''  ">#{busino},</if>
+            <if test="tranCode != null  and tranCode != ''  ">#{tranCode},</if>
+            <if test="paramMap != null  and paramMap != ''  ">#{paramMap},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImAsynWork" parameterType="ImAsynWork">
+        update im_asyn_work
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null  and workId != ''  ">WORK_ID = #{workId},</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID = #{sysId},</if>
+            <if test="busino != null  and busino != ''  ">BUSINO = #{busino},</if>
+            <if test="tranCode != null  and tranCode != ''  ">TRAN_CODE = #{tranCode},</if>
+            <if test="paramMap != null  and paramMap != ''  ">PARAM_MAP = #{paramMap},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImAsynWorkById" parameterType="Long">
+        delete from im_asyn_work where ID = #{id}
+    </delete>
+
+    <delete id="deleteImAsynWorkByIds" parameterType="String">
+        delete from im_asyn_work where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

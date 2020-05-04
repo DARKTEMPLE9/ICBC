@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改分类')"/>
+</head>
+<style>
+    .inputCss {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 1px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+        height: 32px !important;
+        overflow: hidden;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-cmsBill-edit" th:object="${cmsBill}">
+        <input id="iD" name="iD" th:field="*{id}" type="hidden">
+        <input id="leaf" name="leaf" th:field="*{leaf}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">上级节点：</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input type="text" th:value="${cmsParentBill.id}" id="parentId" name="parentId" hidden/>
+                    <input class="form-control" type="text" onclick="queryBillTree()" id="parentName"
+                           readonly="true" th:value="${cmsParentBill.billName}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型名称：</label>
+            <div class="col-sm-8">
+                <input id="billName" name="billName" th:field="*{billName}" class="form-control" type="text"
+                       placeholder="请输入40字以内" th:maxlength="40">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型编码：</label>
+            <div class="col-sm-8">
+                <input id="billCode" name="billCode" th:field="*{billCode}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">父节点：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="parentId" name="parentId" th:field="*{parentId}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型顺序：</label>
+            <div class="col-sm-8">
+                <input id="billOrder" name="billOrder" th:field="*{billOrder}" class="form-control" type="number"
+                       placeholder="请输入4位数字以内" th:maxlength="4">
+            </div>
+        </div>
+        <div class="form-group" id="displayBox">
+            <label class="col-sm-3 control-label">分类展示形式：</label>
+            <select style="margin-left: 15px" class="col-sm-3 inputCss" name="display" th:field="*{display}"
+                    th:with="type=${@dict.getType('cms_bill_display')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <div style="width:100%;padding:5px 5px 5px 5px;">
+                    <i id="sysStatus" style="padding: 6px 13px" class="fa fa-toggle-on text-info fa-2x"
+                       onclick="tag(this)"></i>
+                    <input name="status" id="status" value="1" type="hidden">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+
+    // 分类展示形式展示隐藏
+    $(function () {
+        // 展示初始状态
+        var status = [[${cmsBill.status}]];
+        if (status == 0) {
+            $("#sysStatus").removeClass("fa-toggle-on");
+            $("#sysStatus").addClass("fa-toggle-off");
+            $("#status").val("0")
+        } else if (status == 1) {
+            $("#sysStatus").removeClass("fa-toggle-off");
+            $("#sysStatus").addClass("fa-toggle-on");
+            $("#status").val("1")
+        }
+
+        var parentId = [[${cmsBill.parentId}]];
+        if (parentId == 0) {
+            $("#displayBox").hide()
+        }
+    })
+    var prefix = ctx + "cms/cmsBill";
+    $("#form-cmsBill-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    // 系统状态切换
+    function tag(e) {
+        var status = $("#status").val();
+        if (status == 0) {
+            $("#sysStatus").removeClass("fa-toggle-off");
+            $("#sysStatus").addClass("fa-toggle-on");
+            $("#status").val("1")
+        } else if (status == 1) {
+            $("#sysStatus").removeClass("fa-toggle-on");
+            $("#sysStatus").addClass("fa-toggle-off");
+            $("#status").val("0")
+        }
+    }
+
+    function queryBillTree() {
+        var url = prefix + "/billTree";
+        var options = {
+            title: '选择分类',
+            width: "380",
+            url: url,
+            callBack: doSubmitBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function submitHandler() {
+        var leaf = $("#leaf").val();
+        var display = $("#display").val();
+        if (leaf == '0' && display == '3') {
+            $.modal.alert("按日期成对请选择上一级分类修改");
+            return;
+        } else {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-cmsBill-edit').serialize());
+            }
+        }
+    }
+
+    function doSubmitBill(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#parentId").val(body.find('#treeId').val());
+        $("#parentName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

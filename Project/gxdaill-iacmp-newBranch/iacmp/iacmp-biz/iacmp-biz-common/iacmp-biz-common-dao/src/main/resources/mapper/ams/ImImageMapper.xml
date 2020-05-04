@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImImageMapper">
+
+    <resultMap type="ImImage" id="ImImageResult">
+        <result property="id" column="ID"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="serialNo" column="SERIALNO"/>
+        <result property="ecmFileId" column="ECM_FILE_ID"/>
+        <result property="width" column="WIDTH"/>
+        <result property="height" column="HEIGHT"/>
+        <result property="ImageBillId" column="IMAGE_BILL_ID"/>
+        <result property="compressFileId" column="COMPRESS_FILE_ID"/>
+        <result property="templateId" column="TEMPLATE_ID"/>
+        <result property="imageSize" column="IMAGE_SIZE"/>
+        <result property="imagePath" column="IMAGE_PATH"/>
+        <result property="imageServerUrl" column="IMAGE_SERVER_URL"/>
+        <result property="ocrResult" column="OCR_RESULT"/>
+        <result property="ocrStatus" column="OCR_STATUS"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createUserName" column="CREATE_USER_NAME"/>
+        <result property="deleteTime" column="DELETE_TIME"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="deleteUser" column="DELETE_USER"/>
+        <result property="deleteUserName" column="DELETE_USER_NAME"/>
+        <result property="pzNum" column="PZ_NUM"/>
+        <result property="imageSource" column="IMAGE_SOURCE"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="ocrType" column="OCR_TYPE"/>
+        <result property="imageId" column="image_id"/>
+        <result property="imageRealId" column="image_real_id"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+    </resultMap>
+
+    <sql id="selectImImageVo">
+        select ID, IMAGE_NAME, STATUS, BATCH_ID, CREATE_TIME, SERIALNO, ECM_FILE_ID, WIDTH, HEIGHT, IMAGE_BILL_ID,
+        COMPRESS_FILE_ID, TEMPLATE_ID, IMAGE_SIZE, IMAGE_PATH, IMAGE_SERVER_URL, OCR_RESULT, OCR_STATUS,
+        BILL_NAME, REMARK, CREATE_USER, CREATE_USER_NAME, DELETE_TIME, SYSTEM_FLAG, DELETE_USER, DELETE_USER_NAME,
+        PZ_NUM, IMAGE_SOURCE, SYS_FLAG_INT, OCR_TYPE, image_id,image_real_id,HADOOP_TYPE, SYS_ZONE, MD5 from im_image
+    </sql>
+
+    <select id="selectImImageList" parameterType="ImImage" resultMap="ImImageResult">
+        <include refid="selectImImageVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="imageName != null  and imageName != '' ">and IMAGE_NAME = #{imageName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="serialNo != null ">and SERIALNO = #{serialNo}</if>
+            <if test="ecmFileId != null  and ecmFileId != '' ">and ECM_FILE_ID = #{ecmFileId}</if>
+            <if test="width != null  and width != '' ">and WIDTH = #{width}</if>
+            <if test="height != null  and height != '' ">and HEIGHT = #{height}</if>
+            <if test="ImageBillId != null  and ImageBillId != '' ">and IMAGE_BILL_ID = #{ImageBillId}</if>
+            <if test="compressFileId != null  and compressFileId != '' ">and COMPRESS_FILE_ID = #{compressFileId}</if>
+            <if test="templateId != null  and templateId != '' ">and TEMPLATE_ID = #{templateId}</if>
+            <if test="imageSize != null ">and IMAGE_SIZE = #{imageSize}</if>
+            <if test="imagePath != null  and imagePath != '' ">and IMAGE_PATH = #{imagePath}</if>
+            <if test="ocrResult != null  and ocrResult != '' ">and OCR_RESULT = #{ocrResult}</if>
+            <if test="ocrStatus != null  and ocrStatus != '' ">and OCR_STATUS = #{ocrStatus}</if>
+            <if test="billName != null  and billName != '' ">and BILL_NAME = #{billName}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null  and createUser != '' ">and CREATE_USER = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != '' ">and CREATE_USER_NAME = #{createUserName}</if>
+            <if test="deleteTime != null ">and DELETE_TIME = #{deleteTime}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="deleteUser != null  and deleteUser != '' ">and DELETE_USER = #{deleteUser}</if>
+            <if test="deleteUserName != null  and deleteUserName != '' ">and DELETE_USER_NAME = #{deleteUserName}</if>
+            <if test="pzNum != null ">and PZ_NUM = #{pzNum}</if>
+            <if test="imageSource != null  and imageSource != '' ">and IMAGE_SOURCE = #{imageSource}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="ocrType != null  and ocrType != '' ">and OCR_TYPE = #{ocrType}</if>
+            <if test="imageId != null ">and image_id = #{imageId}</if>
+            <if test="imageRealId != null ">and image_real_id = #{imageRealId}</if>
+            <if test="md5 != null and md5 != '' ">and MD5 = #{md5}</if>
+        </where>
+    </select>
+
+    <select id="selectImImageById" parameterType="String" resultMap="ImImageResult">
+        <include refid="selectImImageVo"/>
+        where ID = #{id}
+    </select>
+
+    <!--通过id数组查询多个影像-->
+    <select id="selectImImageByIds" parameterType="String" resultMap="ImImageResult">
+        <include refid="selectImImageVo"/>
+        where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertImImage" parameterType="ImImage">
+        insert into im_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="serialNo != null  ">SERIALNO,</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID,</if>
+            <if test="width != null  and width != ''  ">WIDTH,</if>
+            <if test="height != null  and height != ''  ">HEIGHT,</if>
+            <if test="ImageBillId != null  and ImageBillId != ''  ">IMAGE_BILL_ID,</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID,</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID,</if>
+            <if test="imageSize != null  ">IMAGE_SIZE,</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH,</if>
+            <if test="imageServerUrl != null  and imageServerUrl != ''  ">IMAGE_SERVER_URL,</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">OCR_RESULT,</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">OCR_STATUS,</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER,</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME,</if>
+            <if test="deleteTime != null  ">DELETE_TIME,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">DELETE_USER,</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">DELETE_USER_NAME,</if>
+            <if test="pzNum != null  ">PZ_NUM,</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE,</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT,</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE,</if>
+            <if test="imageId != null  ">image_id,</if>
+            <if test="imageRealId != null  ">image_real_id,</if>
+            <if test="md5 != null and md5 != '' ">MD5,</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE,</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="imageName != null  and imageName != ''  ">#{imageName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="serialNo != null  ">#{serialNo},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">#{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">#{width},</if>
+            <if test="height != null  and height != ''  ">#{height},</if>
+            <if test="ImageBillId != null  and ImageBillId != ''  ">#{ImageBillId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">#{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">#{templateId},</if>
+            <if test="imageSize != null  ">#{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">#{imagePath},</if>
+            <if test="imageServerUrl != null  and imageServerUrl != ''  ">#{imageServerUrl},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">#{ocrResult},</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">#{ocrStatus},</if>
+            <if test="billName != null  and billName != ''  ">#{billName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">#{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">#{createUserName},</if>
+            <if test="deleteTime != null  ">#{deleteTime},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">#{deleteUser},</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">#{deleteUserName},</if>
+            <if test="pzNum != null  ">#{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">#{imageSource},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="ocrType != null  and ocrType != ''  ">#{ocrType},</if>
+            <if test="imageId != null  ">#{imageId},</if>
+            <if test="imageRealId != null  ">#{imageRealId},</if>
+            <if test="md5 != null and md5 != '' ">#{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">#{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">#{sysZone},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImImage" parameterType="ImImage">
+        update im_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME = #{imageName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="serialNo != null  ">SERIALNO = #{serialNo},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID = #{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">WIDTH = #{width},</if>
+            <if test="height != null  and height != ''  ">HEIGHT = #{height},</if>
+            <if test="ImageBillId != null  and ImageBillId != ''  ">IMAGE_BILL_ID = #{ImageBillId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID = #{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID = #{templateId},</if>
+            <if test="imageSize != null  ">IMAGE_SIZE = #{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH = #{imagePath},</if>
+            <if test="imageServerUrl != null  and imageServerUrl != ''  ">IMAGE_PATH = #{imageServerUrl},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">OCR_RESULT = #{ocrResult},</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">OCR_STATUS = #{ocrStatus},</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME = #{billName},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER = #{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME = #{createUserName},</if>
+            <if test="deleteTime != null  ">DELETE_TIME = #{deleteTime},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">DELETE_USER = #{deleteUser},</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">DELETE_USER_NAME = #{deleteUserName},</if>
+            <if test="pzNum != null  ">PZ_NUM = #{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE = #{imageSource},</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT = #{sysFlagInt},</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE = #{ocrType},</if>
+            <if test="imageId != null  ">image_id = #{imageId},</if>
+            <if test="imageRealId != null  ">image_real_id = #{imageRealId},</if>
+            <if test="md5 != null and md5 != '' ">MD5 = #{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE = #{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE = #{sysZone},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImImageById" parameterType="String">
+        delete from im_image where ID = #{id}
+    </delete>
+
+    <delete id="deleteImImageByIds" parameterType="String">
+        delete from im_image where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectImImagesByBatchId" parameterType="String" resultMap="ImImageResult">
+        <include refid="selectImImageVo"/>
+        where batch_id = #{batchId}
+    </select>
+
+    <select id="selectImImagesByBatchIdList" parameterType="String" resultMap="ImImageResult">
+        <include refid="selectImImageVo"/>
+        where batch_id in
+        <foreach item="batchId" collection="batchIds" open="(" separator="," close=")">
+            #{batchId}
+        </foreach>
+    </select>
+
+    <!--通过MD5值查图像数量-->
+    <select id="selectImImageByMd5" parameterType="String" resultType="java.lang.Integer">
+        select count(1) from im_image where MD5 = #{md5}
+    </select>
+
+    <select id="selectImImagesByBusiNo" parameterType="String" resultMap="ImImageResult">
+        <!--<include refid="selectImFileVo"/>-->
+        select image.ID, image.IMAGE_NAME, image.STATUS, image.BATCH_ID,
+        image.CREATE_TIME, image.SERIALNO, image.IMAGE_PATH, image.IMAGE_SERVER_URL,image.IMAGE_SIZE,
+        image.IMAGE_BILL_ID, image.BILL_NAME, image.REMARK,
+        image.CREATE_USER, image.CREATE_USER_NAME, image.SYSTEM_FLAG,
+        image.IMAGE_SOURCE, image.sys_flag_int, image.IMAGE_ID, image.MD5
+        from im_image image LEFT JOIN ams_batch ab on ab.BATCH_NO = image.BATCH_ID
+        where ab.busi_no = #{busiNo}
+    </select>
+
+    <update id="updateBatchId" parameterType="String">
+        update im_image
+        <trim prefix="SET" suffixOverrides=",">
+            BATCH_ID = #{batchId},
+        </trim>
+        where BATCH_ID = #{regId}
+    </update>
+</mapper>

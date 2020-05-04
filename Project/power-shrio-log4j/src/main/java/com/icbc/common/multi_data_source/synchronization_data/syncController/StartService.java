@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class StartService  implements ApplicationRunner ,Runnable{
+public class StartService implements ApplicationRunner, Runnable {
 
     @Autowired
     private MenuService menuService;

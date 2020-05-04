@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsSendEmailMapper">
+
+    <resultMap type="AmsSendEmail" id="AmsSendEmailResult">
+        <result property="emailId" column="EMAIL_ID"/>
+        <result property="sendUser" column="SEND_USER"/>
+        <result property="reviceUser" column="REVICE_USER"/>
+        <result property="reviceUserEmail" column="REVICE_USER_EMAIL"/>
+        <result property="status" column="STATUS"/>
+        <result property="sendUserEmail" column="SEND_USER_EMAIL"/>
+        <result property="exaAppId" column="EXA_APP_ID"/>
+        <result property="arcName" column="ARC_NAME"/>
+        <result property="sendEmailTime" column="SEND_EMAIL_TIME"/>
+    </resultMap>
+
+    <sql id="selectAmsSendEmailVo">
+        select EMAIL_ID, SEND_USER, REVICE_USER, REVICE_USER_EMAIL, STATUS, SEND_USER_EMAIL ,EXA_APP_ID , ARC_NAME
+        ,SEND_EMAIL_TIME from ams_send_email
+    </sql>
+
+    <select id="selectAmsSendEmailList" parameterType="AmsSendEmail" resultMap="AmsSendEmailResult">
+        <include refid="selectAmsSendEmailVo"/>
+        <where>
+            <if test="emailId != null ">and EMAIL_ID = #{emailId}</if>
+            <if test="sendUser != null  and sendUser != '' ">and SEND_USER = #{sendUser}</if>
+            <if test="reviceUser != null  and reviceUser != '' ">and REVICE_USER = #{reviceUser}</if>
+            <if test="reviceUserEmail != null  and reviceUserEmail != '' ">and REVICE_USER_EMAIL = #{reviceUserEmail}
+            </if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="sendUserEmail != null  and sendUserEmail != '' ">and SEND_USER_EMAIL = #{sendUserEmail}</if>
+            <if test="exaAppId != null  and exaAppId != '' ">and EXA_APP_ID = #{exaAppId}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME = #{arcName}</if>
+        </where>
+
+    </select>
+
+    <select id="selectAmsSendEmailById" parameterType="Integer" resultMap="AmsSendEmailResult">
+        <include refid="selectAmsSendEmailVo"/>
+        where EMAIL_ID = #{iD}
+    </select>
+
+    <insert id="insertAmsSendEmail" parameterType="AmsSendEmail" useGeneratedKeys="true" keyProperty="iD">
+        insert into ams_send_email
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sendUser != null  and sendUser != ''  ">SEND_USER,</if>
+            <if test="reviceUser != null  and reviceUser != ''  ">REVICE_USER,</if>
+            <if test="reviceUserEmail != null  and reviceUserEmail != ''  ">REVICE_USER_EMAIL,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="sendUserEmail != null  and sendUserEmail != ''  ">SEND_USER_EMAIL,</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID,</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME,</if>
+            <if test="sendEmailTime != null ">SEND_EMAIL_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sendUser != null  and sendUser != ''  ">#{sendUser},</if>
+            <if test="reviceUser != null  and reviceUser != ''  ">#{reviceUser},</if>
+            <if test="reviceUserEmail != null  and reviceUserEmail != ''  ">#{reviceUserEmail},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="sendUserEmail != null  and sendUserEmail != ''  ">#{sendUserEmail},</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">#{exaAppId},</if>
+            <if test="arcName != null  and arcName != ''  ">#{arcName},</if>
+            <if test="sendEmailTime != null ">#{sendEmailTime},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateAmsSendEmail" parameterType="AmsSendEmail">
+        update ams_send_email
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sendUser != null  and sendUser != ''  ">SEND_USER = #{sendUser},</if>
+            <if test="reviceUser != null  and reviceUser != ''  ">REVICE_USER = #{reviceUser},</if>
+            <if test="reviceUserEmail != null  and reviceUserEmail != ''  ">REVICE_USER_EMAIL = #{reviceUserEmail},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="sendUserEmail != null  and sendUserEmail != ''  ">SEND_USER_EMAIL = #{sendUserEmail},</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID = #{exaAppId},</if>
+        </trim>
+        where EMAIL_ID = #{iD}
+    </update>
+
+    <delete id="deleteAmsSendEmailById" parameterType="Integer">
+        delete from ams_send_email where EMAIL_ID = #{iD}
+    </delete>
+
+    <delete id="deleteAmsSendEmailByIds" parameterType="String">
+        delete from ams_send_email where EMAIL_ID in
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+    </delete>
+
+</mapper>

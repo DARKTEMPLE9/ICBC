@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsBorrowInfoMapper">
+
+    <resultMap type="AmsBorrowInfo" id="AmsBorrowInfoResult">
+        <result property="id" column="ID"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="arcName" column="ARC_NAME"/>
+        <result property="opDepName" column="OP_DEP_NAME"/>
+        <result property="appOpName" column="APP_OP_NAME"/>
+        <result property="appReason" column="APP_REASON"/>
+        <result property="appTime" column="APP_TIME"/>
+        <result property="borStaTime" column="BOR_STA_TIME"/>
+        <result property="borEndTime" column="BOR_END_TIME"/>
+        <result property="actReturnTime" column="ACT_RETURN_TIME"/>
+        <result property="exaAppInfoId" column="EXA_APP_INFO_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="opDepNo" column="OP_DEP_NO"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="useEffect" column="USE_EFFECT"/>
+        <result property="actReturnExp" column="ACT_RETURN_EXP"/>
+        <result property="usePurpose" column="USE_PURPOSE"/>
+        <result property="arcBillName" column="ARC_BILL_NAME"/>
+        <result property="arcBillCode" column="ARC_BILL_CODE"/>
+        <result property="appOpCode" column="APP_OP_CODE"/>
+        <result property="borType" column="BOR_TYPE"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="batchNo" column="BATCH_NO"/>
+        <result property="appDepName" column="APP_DEP_NAME"/>
+        <result property="appDepCode" column="APP_DEP_CODE"/>
+        <result property="borForm" column="BOR_FORM"/>
+        <result property="copyNum" column="COPY_NUM"/>
+        <result property="loanNum" column="LOAN_NUM"/>
+        <result property="archiveId" column="ARCHIVE_ID"/>
+        <result property="manaDepNo" column="MANA_DEP_NO"/>
+        <result property="manaDepName" column="MANA_DEP_NAME"/>
+        <result property="overdue" column="overdue"/>
+        <result property="returnOpTime" column="RETURN_OP_TIME"/>
+        <result property="returnOpType" column="RETURN_OP_TYPE"/>
+        <result property="oldExaAppInfoId" column="OLD_EXA_APP_INFO_ID"/>
+        <result property="agentCode" column="agent_CODE"/>
+        <result property="agentName" column="AGENT_NAME"/>
+        <result property="borDays" column="bor_Days"/>
+        <result property="borAttachment" column="bor_Attachment"/>
+        <result property="returnAttachment" column="return_Attachment"/>
+        <result property="agentOrgCode" column="agent_Org_Code"/>
+        <result property="agentOrgName" column="agent_Org_Name"/>
+        <result property="remark" column="remark"/>
+        <result property="arcStatus" column="arc_status"/>
+        <result property="returnPath" column="return_path"/>
+        <result property="arcBillDeptCode" column="ARC_BILL_DEPT_CODE"/>
+        <result property="arcBillDeptName" column="ARC_BILL_DEPT_NAME"/>
+        <result property="respOpName" column="RESP_OP_NAME"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="arcLevel" column="ARC_LEVEL"/>
+        <result property="arcCreTime" column="ARC_CRE_TIME"/>
+        <result property="childArcType" column="CHILD_ARC_TYPE"/>
+        <result property="outRemark" column="OUT_REMARK"/>
+        <result property="borTypel" column="BOR_TYPEL"/>
+        <result property="path" column="PATH"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="hasMoveBank" column="has_move_bank"/>
+        <result property="carrier" column="CARRIER"/>
+        <result property="filingDepaName" column="FILING_DEPA_NAME"/>
+        <result property="infoId" column="INFO_ID"/>
+    </resultMap>
+
+    <resultMap type="SysUser" id="SysUserResult">
+        <id property="userId" column="user_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="userName" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="phonenumber" column="phonenumber"/>
+        <result property="sex" column="sex"/>
+        <result property="avatar" column="avatar"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginDate" column="login_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <association property="dept" column="dept_id" javaType="SysDept" resultMap="deptResult"/>
+        <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
+    </resultMap>
+
+    <resultMap id="deptResult" type="SysDept">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="status" column="dept_status"/>
+    </resultMap>
+
+    <resultMap id="RoleResult" type="SysRole">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleKey" column="role_key"/>
+        <result property="roleSort" column="role_sort"/>
+        <result property="dataScope" column="data_scope"/>
+        <result property="status" column="role_status"/>
+    </resultMap>
+
+    <sql id="selectAmsBorrowInfoVo">
+        select a.VAL_PERIOD VAL_PERIOD,a.CARRIER CARRIER,a.FILING_DEPA_NAME FILING_DEPA_NAME,b.ID ID, b.ARC_NO ARC_NO,
+        b.ARC_NAME ARC_NAME, b.OP_DEP_NAME OP_DEP_NAME, b.APP_OP_NAME APP_OP_NAME, b.APP_REASON APP_REASON, b.APP_TIME
+        APP_TIME, b.BOR_STA_TIME BOR_STA_TIME, b.BOR_END_TIME BOR_END_TIME, b.ACT_RETURN_TIME ACT_RETURN_TIME,
+        b.EXA_APP_INFO_ID EXA_APP_INFO_ID, b.STATUS STATUS, b.OP_DEP_NO OP_DEP_NO, b.ARC_TYPE ARC_TYPE, b.USE_EFFECT
+        USE_EFFECT, b.ACT_RETURN_EXP ACT_RETURN_EXP, b.USE_PURPOSE USE_PURPOSE, b.ARC_BILL_NAME ARC_BILL_NAME,
+        b.ARC_BILL_CODE ARC_BILL_CODE, b.APP_OP_CODE APP_OP_CODE, b.BOR_TYPE BOR_TYPE, b.BATCH_ID BATCH_ID, b.BATCH_NO
+        BATCH_NO, b.APP_DEP_NAME APP_DEP_NAME, b.APP_DEP_CODE APP_DEP_CODE, b.BOR_FORM BOR_FORM, b.COPY_NUM COPY_NUM,
+        b.LOAN_NUM LOAN_NUM, b.ARCHIVE_ID ARCHIVE_ID, b.MANA_DEP_NO MANA_DEP_NO, b.MANA_DEP_NAME MANA_DEP_NAME,
+        b.overdue overdue, b.RETURN_OP_TIME RETURN_OP_TIME, b.RETURN_OP_TYPE RETURN_OP_TYPE, b.OLD_EXA_APP_INFO_ID
+        OLD_EXA_APP_INFO_ID, b.agent_CODE agent_CODE, b.AGENT_NAME AGENT_NAME, b.bor_Days bor_Days, b.bor_Attachment
+        bor_Attachment, b.return_Attachment return_Attachment, b.agent_Org_Code agent_Org_Code, b.agent_Org_Name
+        agent_Org_Name, b.remark remark, b.arc_status arc_status, b.return_path return_path, b.ARC_BILL_DEPT_CODE
+        ARC_BILL_DEPT_CODE, b.ARC_BILL_DEPT_NAME ARC_BILL_DEPT_NAME, b.RESP_OP_NAME RESP_OP_NAME, b.FILE_NO FILE_NO,
+        b.ARC_LEVEL ARC_LEVEL, b.ARC_CRE_TIME ARC_CRE_TIME, b.CHILD_ARC_TYPE CHILD_ARC_TYPE, b.OUT_REMARK OUT_REMARK,
+        b.BOR_TYPEL BOR_TYPEL, b.PATH PATH, b.FILE_NAME FILE_NAME from ams_archives a, ams_borrow_info b
+        where a.ID = b.ARCHIVE_ID
+    </sql>
+    <sql id="selectAmsBorrowInfoListVO">
+        SELECT
+        a.VAL_PERIOD VAL_PERIOD,
+        a.CARRIER CARRIER,
+        b.ID ID,
+        b.ARC_NO ARC_NO,
+        b.ARC_NAME ARC_NAME,
+        b.OP_DEP_NAME OP_DEP_NAME,
+        b.APP_OP_NAME APP_OP_NAME,
+        b.APP_REASON APP_REASON,
+        b.APP_TIME APP_TIME,
+        b.BOR_STA_TIME BOR_STA_TIME,
+        b.BOR_END_TIME BOR_END_TIME,
+        b.ACT_RETURN_TIME ACT_RETURN_TIME,
+        b.EXA_APP_INFO_ID EXA_APP_INFO_ID,
+        b.STATUS STATUS,
+        b.OP_DEP_NO OP_DEP_NO,
+        b.ARC_TYPE ARC_TYPE,
+        b.USE_EFFECT USE_EFFECT,
+        b.ACT_RETURN_EXP ACT_RETURN_EXP,
+        b.USE_PURPOSE USE_PURPOSE,
+        b.ARC_BILL_NAME ARC_BILL_NAME,
+        b.ARC_BILL_CODE ARC_BILL_CODE,
+        b.APP_OP_CODE APP_OP_CODE,
+        b.BOR_TYPE BOR_TYPE,
+        b.BATCH_ID BATCH_ID,
+        b.BATCH_NO BATCH_NO,
+        b.APP_DEP_NAME APP_DEP_NAME,
+        b.APP_DEP_CODE APP_DEP_CODE,
+        b.BOR_FORM BOR_FORM,
+        b.COPY_NUM COPY_NUM,
+        b.LOAN_NUM LOAN_NUM,
+        b.ARCHIVE_ID ARCHIVE_ID,
+        b.MANA_DEP_NO MANA_DEP_NO,
+        b.MANA_DEP_NAME MANA_DEP_NAME,
+        b.overdue overdue,
+        b.RETURN_OP_TIME RETURN_OP_TIME,
+        b.RETURN_OP_TYPE RETURN_OP_TYPE,
+        b.OLD_EXA_APP_INFO_ID OLD_EXA_APP_INFO_ID,
+        b.agent_CODE agent_CODE,
+        b.AGENT_NAME AGENT_NAME,
+        b.bor_Days bor_Days,
+        b.bor_Attachment bor_Attachment,
+        b.return_Attachment return_Attachment,
+        b.agent_Org_Code agent_Org_Code,
+        b.agent_Org_Name agent_Org_Name,
+        b.remark remark,
+        b.arc_status arc_status,
+        b.return_path return_path,
+        b.ARC_BILL_DEPT_CODE ARC_BILL_DEPT_CODE,
+        b.ARC_BILL_DEPT_NAME ARC_BILL_DEPT_NAME,
+        b.RESP_OP_NAME RESP_OP_NAME,
+        b.FILE_NO FILE_NO,
+        b.ARC_LEVEL ARC_LEVEL,
+        b.ARC_CRE_TIME ARC_CRE_TIME,
+        b.CHILD_ARC_TYPE CHILD_ARC_TYPE,
+        b.OUT_REMARK OUT_REMARK,
+        b.BOR_TYPEL BOR_TYPEL,
+        b.PATH PATH,
+        b.FILE_NAME FILE_NAME,
+        c.arc_has_move_bank has_move_bank
+        FROM
+        ams_archives a,
+        ams_borrow_info b,
+        ams_batch c
+        WHERE
+        a.ID = b.ARCHIVE_ID
+        AND
+        a.BATCH_ID = c.ID
+        AND
+        b.BATCH_ID = c.ID
+    </sql>
+
+
+    <select id="selectAmsBorrowInfoList" parameterType="AmsBorrowInfo" resultMap="AmsBorrowInfoResult">
+        <include refid="selectAmsBorrowInfoListVO"/>
+        <if test="id != null  and id != '' ">and b.ID = #{id}</if>
+        <if test="arcNo != null  and arcNo != '' ">and b.ARC_NO like concat(concat('%', #{arcNo}), '%')</if>
+        <if test="arcName != null  and arcName != '' ">and b.ARC_NAME like concat(concat('%', #{arcName}), '%')</if>
+        <if test="opDepName != null  and opDepName != '' ">and b.OP_DEP_NAME = #{opDepName}</if>
+        <if test="appOpName != null  and appOpName != '' ">and b.APP_OP_NAME = #{appOpName}</if>
+        <if test="appReason != null  and appReason != '' ">and b.APP_REASON = #{appReason}</if>
+        <if test="appTimeStart != null and appTimeStart != ''">
+            AND to_char(b.APP_TIME,'yyyy-mm-dd') &gt;= #{appTimeStart}
+        </if>
+        <if test="appTimeEnd != null and appTimeEnd != ''">
+            AND to_char(b.APP_TIME,'yyyy-mm-dd') &lt;= #{appTimeEnd}
+        </if>
+        <if test="borStaTimeStr != null and borStaTimeStr != ''">and b.BOR_STA_TIME &gt;=
+            to_date(#{borStaTimeStr},'yyyy-mm-dd')
+        </if>
+        <if test="borEndTimeStr != null and borEndTimeStr != ''">and b.BOR_END_TIME &lt;=
+            to_date(#{borEndTimeStr},'yyyy-mm-dd')
+        </if>
+        <if test="actReturnTime != null ">and b.ACT_RETURN_TIME = #{actReturnTime}</if>
+        <if test="exaAppInfoId != null  and exaAppInfoId != '' ">and b.EXA_APP_INFO_ID = #{exaAppInfoId}</if>
+        <if test="status != null  and status != '' ">and b.STATUS = #{status}</if>
+        <if test="opDepNo != null  and opDepNo != '' ">and b.OP_DEP_NO = #{opDepNo}</if>
+        <if test="arcType != null  and arcType != '' ">and b.ARC_TYPE = #{arcType}</if>
+        <if test="useEffect != null  and useEffect != '' ">and b.USE_EFFECT = #{useEffect}</if>
+        <if test="actReturnExp != null  and actReturnExp != '' ">and b.ACT_RETURN_EXP = #{actReturnExp}</if>
+        <if test="usePurpose != null  and usePurpose != '' ">and b.USE_PURPOSE = #{usePurpose}</if>
+        <if test="arcBillName != null  and arcBillName != '' ">and b.ARC_BILL_NAME = #{arcBillName}</if>
+        <if test="arcBillCode != null  and arcBillCode != '' ">and b.ARC_BILL_CODE = #{arcBillCode}</if>
+        <if test="appOpCode != null  and appOpCode != '' ">and b.APP_OP_CODE = #{appOpCode}</if>
+        <if test="borType != null  and borType != '' ">and b.BOR_TYPE = #{borType}</if>
+        <if test="batchId != null  and batchId != '' ">and b.BATCH_ID = #{batchId}</if>
+        <if test="batchNo != null  and batchNo != '' ">and b.BATCH_NO = #{batchNo}</if>
+        <if test="appDepName != null  and appDepName != '' ">and b.APP_DEP_NAME = #{appDepName}</if>
+        <if test="appDepCode != null  and appDepCode != '' ">and b.APP_DEP_CODE = #{appDepCode}</if>
+        <if test="borForm != null  and borForm != '' ">and b.BOR_FORM = #{borForm}</if>
+        <if test="copyNum != null ">and b.COPY_NUM = #{copyNum}</if>
+        <if test="loanNum != null ">and b.LOAN_NUM = #{loanNum}</if>
+        <if test="archiveId != null  and archiveId != '' ">and b.ARCHIVE_ID = #{archiveId}</if>
+        <if test="manaDepNo != null  and manaDepNo != '' ">and b.MANA_DEP_NO = #{manaDepNo}</if>
+        <if test="manaDepName != null  and manaDepName != '' ">and b.MANA_DEP_NAME = #{manaDepName}</if>
+        <if test="overdue != null  and overdue != '' ">and b.overdue = #{overdue}</if>
+        <if test="returnOpTime != null ">and b.RETURN_OP_TIME = #{returnOpTime}</if>
+        <if test="returnOpType != null  and returnOpType != '' ">and b.RETURN_OP_TYPE = #{returnOpType}</if>
+        <if test="oldExaAppInfoId != null  and oldExaAppInfoId != '' ">and b.OLD_EXA_APP_INFO_ID =
+            #{oldExaAppInfoId}
+        </if>
+        <if test="agentCode != null  and agentCode != '' ">and b.agent_CODE = #{agentCode}</if>
+        <if test="agentName != null  and agentName != '' ">and b.AGENT_NAME = #{agentName}</if>
+        <if test="borDays != null  and borDays != '' ">and b.bor_Days = #{borDays}</if>
+        <if test="borAttachment != null  and borAttachment != '' ">and b.bor_Attachment = #{borAttachment}</if>
+        <if test="returnAttachment != null  and returnAttachment != '' ">and b.return_Attachment =
+            #{returnAttachment}
+        </if>
+        <if test="agentOrgCode != null  and agentOrgCode != '' ">and b.agent_Org_Code = #{agentOrgCode}</if>
+        <if test="agentOrgName != null  and agentOrgName != '' ">and b.agent_Org_Name = #{agentOrgName}</if>
+        <if test="remark != null  and remark != '' ">and b.remark = #{remark}</if>
+        <if test="arcStatus != null  and arcStatus != '' ">and b.arc_status = #{arcStatus}</if>
+        <if test="returnPath != null  and returnPath != '' ">and b.return_path = #{returnPath}</if>
+        <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and b.ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+        </if>
+        <if test="arcBillDeptName != null  and arcBillDeptName != '' ">and b.ARC_BILL_DEPT_NAME = #{arcBillDeptName}
+        </if>
+        <if test="respOpName != null  and respOpName != '' ">and b.RESP_OP_NAME like concat(concat('%', #{respOpName}),
+            '%')
+        </if>
+        <if test="fileNo != null  and fileNo != '' ">and b.FILE_NO like concat(concat('%', #{fileNo}), '%')</if>
+        <if test="arcLevel != null  and arcLevel != '' ">and b.ARC_LEVEL = #{arcLevel}</if>
+        <if test="arcCreTime != null ">and b.ARC_CRE_TIME = #{arcCreTime}</if>
+        <if test="childArcType != null  and childArcType != '' ">and b.CHILD_ARC_TYPE = #{childArcType}</if>
+        <if test="outRemark != null  and outRemark != '' ">and b.OUT_REMARK = #{outRemark}</if>
+        <if test="borTypel != null  and borTypel != '' ">and b.BOR_TYPEL = #{borTypel}</if>
+        <if test="path != null  and path != '' ">and b.PATH = #{path}</if>
+        <if test="fileName != null  and fileName != '' ">and b.FILE_NAME = #{fileName}</if>
+        <if test="valPeriod != null  and valPeriod != '' ">and a.VAL_PERIOD = #{valPeriod}</if>
+        <if test="hasMoveBank != null  and hasMoveBank != '' ">and c.arc_has_move_bank = #{hasMoveBank}</if>
+    </select>
+
+    <select id="selectAmsBorrowList" resultMap="AmsBorrowInfoResult">
+        <include refid="selectAmsBorrowInfoListVO"/>
+        <if test="amsBorrowInfo.id != null  and amsBorrowInfo.id != '' ">and b.ID = #{amsBorrowInfo.id}</if>
+        <if test="amsBorrowInfo.arcNo != null  and amsBorrowInfo.arcNo != '' ">and b.ARC_NO like concat(concat('%',
+            #{amsBorrowInfo.arcNo}), '%')
+        </if>
+        <if test="amsBorrowInfo.arcName != null  and amsBorrowInfo.arcName != '' ">and b.ARC_NAME like
+            concat(concat('%', #{amsBorrowInfo.arcName}), '%')
+        </if>
+        <if test="amsBorrowInfo.opDepName != null  and amsBorrowInfo.opDepName != '' ">and b.OP_DEP_NAME =
+            #{amsBorrowInfo.opDepName}
+        </if>
+        <if test="amsBorrowInfo.appOpName != null  and amsBorrowInfo.appOpName != '' ">and b.APP_OP_NAME =
+            #{amsBorrowInfo.appOpName}
+        </if>
+        <if test="amsBorrowInfo.appReason != null  and amsBorrowInfo.appReason != '' ">and b.APP_REASON =
+            #{amsBorrowInfo.appReason}
+        </if>
+        <if test="amsBorrowInfo.appTimeStart != null and amsBorrowInfo.appTimeStart != ''">
+            AND to_char(b.APP_TIME,'yyyy-mm-dd') &gt;= #{amsBorrowInfo.appTimeStart}
+        </if>
+        <if test="amsBorrowInfo.appTimeEnd != null and amsBorrowInfo.appTimeEnd != ''">
+            AND to_char(b.APP_TIME,'yyyy-mm-dd') &lt;= #{amsBorrowInfo.appTimeEnd}
+        </if>
+        <if test="amsBorrowInfo.borStaTimeStr != null and amsBorrowInfo.borStaTimeStr != ''">and b.BOR_STA_TIME &gt;=
+            to_DATE(#{amsBorrowInfo.borStaTimeStr},'yyyy-mm-dd')
+        </if>
+        <if test="amsBorrowInfo.borEndTimeStr != null and amsBorrowInfo.borEndTimeStr != ''">and b.BOR_END_TIME &lt;=
+            to_DATE(#{amsBorrowInfo.borEndTimeStr},'yyyy-mm-dd')
+        </if>
+        <if test="amsBorrowInfo.actReturnTime != null ">and b.ACT_RETURN_TIME = #{amsBorrowInfo.actReturnTime}</if>
+        <if test="amsBorrowInfo.exaAppInfoId != null  and amsBorrowInfo.exaAppInfoId != '' ">and b.EXA_APP_INFO_ID =
+            #{amsBorrowInfo.exaAppInfoId}
+        </if>
+        <if test="amsBorrowInfo.status != null  and amsBorrowInfo.status != '' ">and b.STATUS =
+            #{amsBorrowInfo.status}
+        </if>
+        <if test="amsBorrowInfo.opDepNo != null  and amsBorrowInfo.opDepNo != '' ">and b.OP_DEP_NO =
+            #{amsBorrowInfo.opDepNo}
+        </if>
+        <if test="amsBorrowInfo.arcType != null  and amsBorrowInfo.arcType != '' ">and b.ARC_TYPE =
+            #{amsBorrowInfo.arcType}
+        </if>
+        <if test="amsBorrowInfo.useEffect != null  and amsBorrowInfo.useEffect != '' ">and b.USE_EFFECT =
+            #{amsBorrowInfo.useEffect}
+        </if>
+        <if test="amsBorrowInfo.actReturnExp != null  and amsBorrowInfo.actReturnExp != '' ">and b.ACT_RETURN_EXP =
+            #{amsBorrowInfo.actReturnExp}
+        </if>
+        <if test="amsBorrowInfo.usePurpose != null  and amsBorrowInfo.usePurpose != '' ">and b.USE_PURPOSE =
+            #{amsBorrowInfo.usePurpose}
+        </if>
+        <if test="amsBorrowInfo.arcBillName != null  and amsBorrowInfo.arcBillName != '' ">and b.ARC_BILL_NAME =
+            #{amsBorrowInfo.arcBillName}
+        </if>
+        <if test="amsBorrowInfo.arcBillCode != null  and amsBorrowInfo.arcBillCode != '' ">and b.ARC_BILL_CODE =
+            #{amsBorrowInfoarcBillCode}
+        </if>
+        <if test="amsBorrowInfo.appOpCode != null  and amsBorrowInfo.appOpCode != '' ">and b.APP_OP_CODE =
+            #{amsBorrowInfo.appOpCode}
+        </if>
+        <if test="amsBorrowInfo.borType != null  and amsBorrowInfo.borType != '' ">and b.BOR_TYPE =
+            #{amsBorrowInfo.borType}
+        </if>
+        <if test="amsBorrowInfo.batchId != null  and amsBorrowInfo.batchId != '' ">and b.BATCH_ID =
+            #{amsBorrowInfo.batchId}
+        </if>
+        <if test="amsBorrowInfo.batchNo != null  and amsBorrowInfo.batchNo != '' ">and b.BATCH_NO =
+            #{amsBorrowInfo.batchNo}
+        </if>
+        <if test="amsBorrowInfo.appDepName != null  and amsBorrowInfo.appDepName != '' ">and b.APP_DEP_NAME =
+            #{amsBorrowInfo.appDepName}
+        </if>
+        <if test="deptList.size()>0">
+            and b.APP_DEP_CODE in
+            <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="amsBorrowInfo.borForm != null  and amsBorrowInfo.borForm != '' ">and b.BOR_FORM =
+            #{amsBorrowInfo.borForm}
+        </if>
+        <if test="amsBorrowInfo.copyNum != null ">and b.COPY_NUM = #{amsBorrowInfo.copyNum}</if>
+        <if test="amsBorrowInfo.loanNum != null ">and b.LOAN_NUM = #{amsBorrowInfo.loanNum}</if>
+        <if test="amsBorrowInfo.archiveId != null  and amsBorrowInfo.archiveId != '' ">and b.ARCHIVE_ID =
+            #{amsBorrowInfo.archiveId}
+        </if>
+        <if test="amsBorrowInfo.manaDepNo != null  and amsBorrowInfo.manaDepNo != '' ">and b.MANA_DEP_NO =
+            #{amsBorrowInfo.manaDepNo}
+        </if>
+        <if test="amsBorrowInfo.manaDepName != null  and amsBorrowInfo.manaDepName != '' ">and b.MANA_DEP_NAME =
+            #{amsBorrowInfo.manaDepName}
+        </if>
+        <if test="amsBorrowInfo.overdue != null  and amsBorrowInfo.overdue != '' ">and b.overdue =
+            #{amsBorrowInfo.overdue}
+        </if>
+        <if test="amsBorrowInfo.returnOpTime != null ">and b.RETURN_OP_TIME = #{amsBorrowInfo.returnOpTime}</if>
+        <if test="amsBorrowInfo.returnOpType != null  and amsBorrowInfo.returnOpType != '' ">and b.RETURN_OP_TYPE =
+            #{amsBorrowInfo.returnOpType}
+        </if>
+        <if test="amsBorrowInfo.oldExaAppInfoId != null  and amsBorrowInfo.oldExaAppInfoId != '' ">and
+            b.OLD_EXA_APP_INFO_ID =
+            #{amsBorrowInfo.oldExaAppInfoId}
+        </if>
+        <if test="amsBorrowInfo.agentCode != null  and amsBorrowInfo.agentCode != '' ">and b.agent_CODE =
+            #{amsBorrowInfo.agentCode}
+        </if>
+        <if test="amsBorrowInfo.agentName != null  and amsBorrowInfo.agentName != '' ">and b.AGENT_NAME =
+            #{amsBorrowInfo.agentName}
+        </if>
+        <if test="amsBorrowInfo.borDays != null  and amsBorrowInfo.borDays != '' ">and b.bor_Days =
+            #{amsBorrowInfo.borDays}
+        </if>
+        <if test="amsBorrowInfo.borAttachment != null  and amsBorrowInfo.borAttachment != '' ">and b.bor_Attachment =
+            #{amsBorrowInfo.borAttachment}
+        </if>
+        <if test="amsBorrowInfo.returnAttachment != null  and amsBorrowInfo.returnAttachment != '' ">and
+            b.return_Attachment =
+            #{amsBorrowInfo.returnAttachment}
+        </if>
+        <if test="amsBorrowInfo.agentOrgCode != null  and amsBorrowInfo.agentOrgCode != '' ">and b.agent_Org_Code =
+            #{amsBorrowInfo.agentOrgCode}
+        </if>
+        <if test="amsBorrowInfo.agentOrgName != null  and amsBorrowInfo.agentOrgName != '' ">and b.agent_Org_Name =
+            #{amsBorrowInfo.agentOrgName}
+        </if>
+        <if test="amsBorrowInfo.remark != null  and amsBorrowInfo.remark != '' ">and b.remark =
+            #{amsBorrowInfo.remark}
+        </if>
+        <if test="amsBorrowInfo.arcStatus != null  and amsBorrowInfo.arcStatus != '' ">and b.arc_status =
+            #{amsBorrowInfo.arcStatus}
+        </if>
+        <if test="amsBorrowInfo.returnPath != null  and amsBorrowInfo.returnPath != '' ">and b.return_path =
+            #{amsBorrowInfo.returnPath}
+        </if>
+        <if test="amsBorrowInfo.arcBillDeptCode != null  and amsBorrowInfo.arcBillDeptCode != '' ">and
+            b.ARC_BILL_DEPT_CODE = #{amsBorrowInfo.arcBillDeptCode}
+        </if>
+        <if test="amsBorrowInfo.arcBillDeptName != null  and amsBorrowInfo.arcBillDeptName != '' ">and
+            b.ARC_BILL_DEPT_NAME = #{amsBorrowInfo.arcBillDeptName}
+        </if>
+        <if test="amsBorrowInfo.respOpName != null  and amsBorrowInfo.respOpName != '' ">and b.RESP_OP_NAME like
+            concat(concat('%', #{amsBorrowInfo.respOpName}), '%')
+        </if>
+        <if test="amsBorrowInfo.fileNo != null  and amsBorrowInfo.fileNo != '' ">and b.FILE_NO like concat(concat('%',
+            #{amsBorrowInfo.fileNo}), '%')
+        </if>
+        <if test="amsBorrowInfo.arcLevel != null  and amsBorrowInfo.arcLevel != '' ">and b.ARC_LEVEL =
+            #{amsBorrowInfo.arcLevel}
+        </if>
+        <if test="amsBorrowInfo.arcCreTime != null ">and b.ARC_CRE_TIME = #{amsBorrowInfo.arcCreTime}</if>
+        <if test="amsBorrowInfo.childArcType != null  and amsBorrowInfo.childArcType != '' ">and b.CHILD_ARC_TYPE =
+            #{amsBorrowInfo.childArcType}
+        </if>
+        <if test="amsBorrowInfo.outRemark != null  and amsBorrowInfo.outRemark != '' ">and b.OUT_REMARK =
+            #{amsBorrowInfo.outRemark}
+        </if>
+        <if test="amsBorrowInfo.borTypel != null  and amsBorrowInfo.borTypel != '' ">and b.BOR_TYPEL =
+            #{amsBorrowInfo.borTypel}
+        </if>
+        <if test="amsBorrowInfo.path != null  and amsBorrowInfo.path != '' ">and b.PATH = #{amsBorrowInfo.path}</if>
+        <if test="amsBorrowInfo.fileName != null  and amsBorrowInfo.fileName != '' ">and b.FILE_NAME =
+            #{amsBorrowInfo.fileName}
+        </if>
+        <if test="amsBorrowInfo.valPeriod != null  and amsBorrowInfo.valPeriod != '' ">and a.VAL_PERIOD =
+            #{amsBorrowInfo.valPeriod}
+        </if>
+        <if test="amsBorrowInfo.hasMoveBank != null  and amsBorrowInfo.hasMoveBank != '' ">and c.arc_has_move_bank =
+            #{amsBorrowInfo.hasMoveBank}
+        </if>
+    </select>
+
+    <select id="selectAmsBorrowInfoById" parameterType="String" resultMap="AmsBorrowInfoResult">
+        <include refid="selectAmsBorrowInfoVo"/>
+        and b.ID = #{id}
+    </select>
+    <select id="selectAmsBorrowInfoByexaAppId" parameterType="String" resultMap="AmsBorrowInfoResult">
+        <include refid="selectAmsBorrowInfoVo"/>
+        and b.EXA_APP_INFO_ID = #{exaAppId}
+    </select>
+    <!--确保存在重复借阅时只取一条记录-->
+    <select id="selectAmsBorrowInfoByarcId" parameterType="String" resultMap="AmsBorrowInfoResult">
+        <include refid="selectAmsBorrowInfoVo"/>
+        and b.ARC_NO = #{id}
+        GROUP BY a.VAL_PERIOD,a.CARRIER,a.FILING_DEPA_NAME,b.ID,
+        b.ARC_NO, b.ARC_NAME, b.OP_DEP_NAME, b.APP_OP_NAME,
+        b.APP_REASON, b.APP_TIME, b.BOR_STA_TIME, b.BOR_END_TIME,
+        b.ACT_RETURN_TIME, b.EXA_APP_INFO_ID, b.STATUS, b.OP_DEP_NO,
+        b.ARC_TYPE, b.USE_EFFECT, b.ACT_RETURN_EXP, b.USE_PURPOSE,
+        b.ARC_BILL_NAME, b.ARC_BILL_CODE, b.APP_OP_CODE, b.BOR_TYPE,
+        b.BATCH_ID, b.BATCH_NO, b.APP_DEP_NAME, b.APP_DEP_CODE,
+        b.BOR_FORM, b.COPY_NUM, b.LOAN_NUM, b.ARCHIVE_ID, b.MANA_DEP_NO,
+        b.MANA_DEP_NAME, b.overdue, b.RETURN_OP_TIME, b.RETURN_OP_TYPE, b.OLD_EXA_APP_INFO_ID,
+        b.agent_CODE, b.AGENT_NAME, b.bor_Days, b.bor_Attachment,
+        b.return_Attachment, b.agent_Org_Code, b.agent_Org_Name,
+        b.remark, b.arc_status, b.return_path, b.ARC_BILL_DEPT_CODE,
+        b.ARC_BILL_DEPT_NAME, b.RESP_OP_NAME, b.FILE_NO, b.ARC_LEVEL,
+        b.ARC_CRE_TIME, b.CHILD_ARC_TYPE, b.OUT_REMARK, b.BOR_TYPEL,
+        b.PATH, b.FILE_NAME
+    </select>
+
+    <insert id="insertAmsBorrowInfo" parameterType="AmsBorrowInfo">
+        insert into ams_borrow_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO,</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME,</if>
+            <if test="opDepName != null  and opDepName != ''  ">OP_DEP_NAME,</if>
+            <if test="appOpName != null  and appOpName != ''  ">APP_OP_NAME,</if>
+            <if test="appReason != null  and appReason != ''  ">APP_REASON,</if>
+            <if test="appTime != null  ">APP_TIME,</if>
+            <if test="borStaTime != null  ">BOR_STA_TIME,</if>
+            <if test="borEndTime != null  ">BOR_END_TIME,</if>
+            <if test="actReturnTime != null  ">ACT_RETURN_TIME,</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">EXA_APP_INFO_ID,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">OP_DEP_NO,</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE,</if>
+            <if test="useEffect != null  and useEffect != ''  ">USE_EFFECT,</if>
+            <if test="actReturnExp != null  and actReturnExp != ''  ">ACT_RETURN_EXP,</if>
+            <if test="usePurpose != null  and usePurpose != ''  ">USE_PURPOSE,</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">ARC_BILL_NAME,</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">ARC_BILL_CODE,</if>
+            <if test="appOpCode != null  and appOpCode != ''  ">APP_OP_CODE,</if>
+            <if test="borType != null  and borType != ''  ">BOR_TYPE,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO,</if>
+            <if test="appDepName != null  and appDepName != ''  ">APP_DEP_NAME,</if>
+            <if test="appDepCode != null  and appDepCode != ''  ">APP_DEP_CODE,</if>
+            <if test="borForm != null  and borForm != ''  ">BOR_FORM,</if>
+            <if test="copyNum != null  ">COPY_NUM,</if>
+            <if test="loanNum != null  ">LOAN_NUM,</if>
+            <if test="archiveId != null  and archiveId != ''  ">ARCHIVE_ID,</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">MANA_DEP_NO,</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">MANA_DEP_NAME,</if>
+            <if test="overdue != null  and overdue != ''  ">overdue,</if>
+            <if test="returnOpTime != null  ">RETURN_OP_TIME,</if>
+            <if test="returnOpType != null  and returnOpType != ''  ">RETURN_OP_TYPE,</if>
+            <if test="oldExaAppInfoId != null  and oldExaAppInfoId != ''  ">OLD_EXA_APP_INFO_ID,</if>
+            <if test="agentCode != null  and agentCode != ''  ">agent_CODE,</if>
+            <if test="agentName != null  and agentName != ''  ">AGENT_NAME,</if>
+            <if test="borDays != null  and borDays != ''  ">bor_Days,</if>
+            <if test="borAttachment != null  and borAttachment != ''  ">bor_Attachment,</if>
+            <if test="returnAttachment != null  and returnAttachment != ''  ">return_Attachment,</if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">agent_Org_Code,</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">agent_Org_Name,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="arcStatus != null  and arcStatus != ''  ">arc_status,</if>
+            <if test="returnPath != null  and returnPath != ''  ">return_path,</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">ARC_BILL_DEPT_CODE,</if>
+            <if test="arcBillDeptName != null  and arcBillDeptName != ''  ">ARC_BILL_DEPT_NAME,</if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME,</if>
+            <if test="fileNo != null  and fileNo != ''  ">FILE_NO,</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">ARC_LEVEL,</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME,</if>
+            <if test="childArcType != null  and childArcType != ''  ">CHILD_ARC_TYPE,</if>
+            <if test="outRemark != null  and outRemark != ''  ">OUT_REMARK,</if>
+            <if test="borTypel != null  and borTypel != ''  ">BOR_TYPEL,</if>
+            <if test="path != null  and path != ''  ">PATH,</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="arcNo != null  and arcNo != ''  ">#{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">#{arcName},</if>
+            <if test="opDepName != null  and opDepName != ''  ">#{opDepName},</if>
+            <if test="appOpName != null  and appOpName != ''  ">#{appOpName},</if>
+            <if test="appReason != null  and appReason != ''  ">#{appReason},</if>
+            <if test="appTime != null  ">#{appTime},</if>
+            <if test="borStaTime != null  ">#{borStaTime},</if>
+            <if test="borEndTime != null  ">#{borEndTime},</if>
+            <if test="actReturnTime != null  ">#{actReturnTime},</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">#{exaAppInfoId},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">#{opDepNo},</if>
+            <if test="arcType != null  and arcType != ''  ">#{arcType},</if>
+            <if test="useEffect != null  and useEffect != ''  ">#{useEffect},</if>
+            <if test="actReturnExp != null  and actReturnExp != ''  ">#{actReturnExp},</if>
+            <if test="usePurpose != null  and usePurpose != ''  ">#{usePurpose},</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">#{arcBillName},</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">#{arcBillCode},</if>
+            <if test="appOpCode != null  and appOpCode != ''  ">#{appOpCode},</if>
+            <if test="borType != null  and borType != ''  ">#{borType},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="batchNo != null  and batchNo != ''  ">#{batchNo},</if>
+            <if test="appDepName != null  and appDepName != ''  ">#{appDepName},</if>
+            <if test="appDepCode != null  and appDepCode != ''  ">#{appDepCode},</if>
+            <if test="borForm != null  and borForm != ''  ">#{borForm},</if>
+            <if test="copyNum != null  ">#{copyNum},</if>
+            <if test="loanNum != null  ">#{loanNum},</if>
+            <if test="archiveId != null  and archiveId != ''  ">#{archiveId},</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">#{manaDepNo},</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">#{manaDepName},</if>
+            <if test="overdue != null  and overdue != ''  ">#{overdue},</if>
+            <if test="returnOpTime != null  ">#{returnOpTime},</if>
+            <if test="returnOpType != null  and returnOpType != ''  ">#{returnOpType},</if>
+            <if test="oldExaAppInfoId != null  and oldExaAppInfoId != ''  ">#{oldExaAppInfoId},</if>
+            <if test="agentCode != null  and agentCode != ''  ">#{agentCode},</if>
+            <if test="agentName != null  and agentName != ''  ">#{agentName},</if>
+            <if test="borDays != null  and borDays != ''  ">#{borDays},</if>
+            <if test="borAttachment != null  and borAttachment != ''  ">#{borAttachment},</if>
+            <if test="returnAttachment != null  and returnAttachment != ''  ">#{returnAttachment},</if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">#{agentOrgCode},</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">#{agentOrgName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="arcStatus != null  and arcStatus != ''  ">#{arcStatus},</if>
+            <if test="returnPath != null  and returnPath != ''  ">#{returnPath},</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">#{arcBillDeptCode},</if>
+            <if test="arcBillDeptName != null  and arcBillDeptName != ''  ">#{arcBillDeptName},</if>
+            <if test="respOpName != null  and respOpName != ''  ">#{respOpName},</if>
+            <if test="fileNo != null  and fileNo != ''  ">#{fileNo},</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">#{arcLevel},</if>
+            <if test="arcCreTime != null  ">#{arcCreTime},</if>
+            <if test="childArcType != null  and childArcType != ''  ">#{childArcType},</if>
+            <if test="outRemark != null  and outRemark != ''  ">#{outRemark},</if>
+            <if test="borTypel != null  and borTypel != ''  ">#{borTypel},</if>
+            <if test="path != null  and path != ''  ">#{path},</if>
+            <if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsBorrowInfo" parameterType="AmsBorrowInfo">
+        update ams_borrow_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO = #{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME = #{arcName},</if>
+            <if test="opDepName != null  and opDepName != ''  ">OP_DEP_NAME = #{opDepName},</if>
+            <if test="appOpName != null  and appOpName != ''  ">APP_OP_NAME = #{appOpName},</if>
+            <if test="appReason != null  and appReason != ''  ">APP_REASON = #{appReason},</if>
+            <if test="appTime != null  ">APP_TIME = #{appTime},</if>
+            <if test="borStaTime != null  ">BOR_STA_TIME = #{borStaTime},</if>
+            <if test="borEndTime != null  ">BOR_END_TIME = #{borEndTime},</if>
+            <if test="actReturnTime != null  ">ACT_RETURN_TIME = #{actReturnTime},</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">EXA_APP_INFO_ID = #{exaAppInfoId},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">OP_DEP_NO = #{opDepNo},</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE = #{arcType},</if>
+            <if test="useEffect != null  and useEffect != ''  ">USE_EFFECT = #{useEffect},</if>
+            <if test="actReturnExp != null  and actReturnExp != ''  ">ACT_RETURN_EXP = #{actReturnExp},</if>
+            <if test="usePurpose != null  and usePurpose != ''  ">USE_PURPOSE = #{usePurpose},</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">ARC_BILL_NAME = #{arcBillName},</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">ARC_BILL_CODE = #{arcBillCode},</if>
+            <if test="appOpCode != null  and appOpCode != ''  ">APP_OP_CODE = #{appOpCode},</if>
+            <if test="borType != null  and borType != ''  ">BOR_TYPE = #{borType},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO = #{batchNo},</if>
+            <if test="appDepName != null  and appDepName != ''  ">APP_DEP_NAME = #{appDepName},</if>
+            <if test="appDepCode != null  and appDepCode != ''  ">APP_DEP_CODE = #{appDepCode},</if>
+            <if test="borForm != null  and borForm != ''  ">BOR_FORM = #{borForm},</if>
+            <if test="copyNum != null  ">COPY_NUM = #{copyNum},</if>
+            <if test="loanNum != null  ">LOAN_NUM = #{loanNum},</if>
+            <if test="archiveId != null  and archiveId != ''  ">ARCHIVE_ID = #{archiveId},</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">MANA_DEP_NO = #{manaDepNo},</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">MANA_DEP_NAME = #{manaDepName},</if>
+            <if test="overdue != null  and overdue != ''  ">overdue = #{overdue},</if>
+            <if test="returnOpTime != null  ">RETURN_OP_TIME = #{returnOpTime},</if>
+            <if test="returnOpType != null  and returnOpType != ''  ">RETURN_OP_TYPE = #{returnOpType},</if>
+            <if test="oldExaAppInfoId != null  and oldExaAppInfoId != ''  ">OLD_EXA_APP_INFO_ID = #{oldExaAppInfoId},
+            </if>
+            <if test="agentCode != null  and agentCode != ''  ">agent_CODE = #{agentCode},</if>
+            <if test="agentName != null  and agentName != ''  ">AGENT_NAME = #{agentName},</if>
+            <if test="borDays != null  and borDays != ''  ">bor_Days = #{borDays},</if>
+            <if test="borAttachment != null  and borAttachment != ''  ">bor_Attachment = #{borAttachment},</if>
+            <if test="returnAttachment != null  and returnAttachment != ''  ">return_Attachment = #{returnAttachment},
+            </if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">agent_Org_Code = #{agentOrgCode},</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">agent_Org_Name = #{agentOrgName},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="arcStatus != null  and arcStatus != ''  ">arc_status = #{arcStatus},</if>
+            <if test="returnPath != null  and returnPath != ''  ">return_path = #{returnPath},</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">ARC_BILL_DEPT_CODE = #{arcBillDeptCode},
+            </if>
+            <if test="arcBillDeptName != null  and arcBillDeptName != ''  ">ARC_BILL_DEPT_NAME = #{arcBillDeptName},
+            </if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME = #{respOpName},</if>
+            <if test="fileNo != null  and fileNo != ''  ">FILE_NO = #{fileNo},</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">ARC_LEVEL = #{arcLevel},</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME = #{arcCreTime},</if>
+            <if test="childArcType != null  and childArcType != ''  ">CHILD_ARC_TYPE = #{childArcType},</if>
+            <if test="outRemark != null  and outRemark != ''  ">OUT_REMARK = #{outRemark},</if>
+            <if test="borTypel != null  and borTypel != ''  ">BOR_TYPEL = #{borTypel},</if>
+            <if test="path != null  and path != ''  ">PATH = #{path},</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME = #{fileName},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsBorrowInfoById" parameterType="String">
+        delete from ams_borrow_info where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsBorrowInfoByIds" parameterType="String">
+        delete from ams_borrow_info where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAppUsersBySysUser" parameterType="SysUser" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.avatar, u.phonenumber, u.status,
+        u.create_time,
+        d.dept_name
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        where u.del_flag = '0'
+        <if test="userId != null and userId != ''">
+            <if test="userId != '0'">
+                AND u.user_id=#{userId}
+            </if>
+        </if>
+        <if test="deptId != null and deptId != ''">
+            <if test="deptId != '0'">
+                AND u.dept_id=#{deptId}
+            </if>
+        </if>
+        <if test="loginName != null and loginName != ''">
+            AND u.login_name like concat(concat('%', #{loginName}), '%')
+        </if>
+        <if test="phonenumber != null and phonenumber != ''">
+            AND u.phonenumber like concat(concat('%', #{phonenumber}), '%')
+        </if>
+    </select>
+</mapper>

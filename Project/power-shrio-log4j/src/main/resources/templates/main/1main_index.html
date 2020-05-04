@@ -30,8 +30,9 @@
                 </h1>
             </div>
             <ul class="nav" id="nav">
-                <li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode" @click="getMenuList(item)">
-                        <a style="padding-top: 12px">{{item.menuObj.menuName}}}</a>
+                <li v-for="item in accessedMenus.children" :id="'it_' + item.menuObj.menuCode"
+                    @click="getMenuList(item)">
+                    <a style="padding-top: 12px">{{item.menuObj.menuName}}}</a>
                 </li>
             </ul>
         </div>
@@ -39,8 +40,8 @@
             <div></div>
         </div>
     </div>
-    
-    
+
+
 </div>
 
 

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案鉴定列表')"/>
+    <style>
+        .select-list label {
+            width: 92px;
+        }
+
+        .select-list li {
+            height: 30px !important;
+            overflow: hidden;
+            display: block;
+
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+
+                        <li>
+                            <label>档案名称：</label>
+                            <input type="text" name="name" id="name"/>
+                        </li>
+                        <li>
+                            <label>责任者：</label>
+                            <input type="text" style="" id="respOpName" name="respOpName"
+                                   onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                   placeholder="请选择责任者" readonly/>
+                        </li>
+
+                        <li>
+                            <div>
+                                <label>档案类型：</label>
+                                <input type="text" id="arcBillName" name="arcBillName"
+                                       onclick="selectArcBillTree();arcBillName.blur();return false;"
+                                       readonly="readonly" placeholder="请选择档案类型" style="cursor: pointer"/>
+                            </div>
+                        </li>
+                        <li>
+                            <label> 密级：</label>
+                            <select id="arcLevel" name="arcLevel">
+                                <option selected="selected" value="">全部</option>
+                                <option value="01">绝密</option>
+                                <option value="02">机密</option>
+                                <option value="03">秘密</option>
+                                <option value="04">内部</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>所属部门：</label>
+                            <input type="text" id="opDepName" name="opDepName"
+                                   onclick="selectDeptTree('opDepName');opDepName.blur();" readonly="readonly"
+                                   placeholder="请选择部门" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <label>归档部门名称：</label>
+                            <input type="text" id="filingDepaName" name="filingDepaName"
+                                   onclick="selectDeptTree('filingDepaName');filingDepaName.blur();"
+                                   readonly="readonly"
+                                   placeholder="请选择部门" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <div class="usrDiv">
+                                <label>保管期限：</label>
+                                <select name="valPeriod" id="valPeriod">
+                                    <option value="">所有</option>
+                                    <option value="10">10年</option>
+                                    <option value="30">30年</option>
+                                    <option value="99">永久</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>档案编号：</label>
+                            <input class="fileNo_comm" type="text" name="arcNo" id="arcNo"/>
+                        </li>
+                        <li>
+                            <div class="usrDiv">
+                                <label>是否涉及费用：</label>
+                                <select name="expenseInvolve" id="expenseInvolve">
+                                    <option value="">全部</option>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>页数：</label>
+                            <input id="arcPageNum" name="arcPageNum" type="text" maxlength="9">
+                        </li>
+                        <li>
+                            <label>份数：</label>
+                            <input type="text" name="arcNum" maxlength="9"/>
+                        </li>
+                        <li>
+                            <label>档案形态：</label>
+                            <select name="arcType" id="arcType">
+                                <option value="">全部</option>
+                                <option value="10">电子形态</option>
+                                <option value="20">实物形态</option>
+                            </select>
+                        </li>
+                        <li>
+                            <div class="select-time">
+                                <label>归档日期：</label>
+                                <input type="text" style="margin-left: 3px;width: 93px;"
+                                       class="input-sm form-control"
+                                       id="startTime" placeholder="" name="filingTimeStart"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="endTime"
+                                       placeholder="" name="filingTimeEnd"/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="select-time">
+                                <label>形成日期：</label>
+                                <input type="text" style="margin-left: 3px;width: 93px;"
+                                       class="input-sm form-control"
+                                       id="arcCreTimeStart" placeholder="" name="arcCreTimeStart"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="arcCreTimeEnd"
+                                       placeholder="" name="arcCreTimeEnd"/>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-danger multiple disabled" onclick="destroy()" shiro:hasPermission="archManage:archDestroy:destroy">-->
+            <!--<i class="fa fa-remove"></i> 销毁-->
+            <!--</a>-->
+            <a class="btn btn-primary multiple disabled" onclick="persist(400,190)"
+               shiro:hasPermission="archManage:archDestroy:stay">
+                <i class="fa fa-check"></i>保留
+            </a>
+            <a class="btn btn-success multiple disabled" onclick="printLook()"
+               shiro:hasPermission="archManage:archDestroy:printLook">
+                <i class="glyphicon glyphicon-print"></i> 打印
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:detail')}]];
+    var editFlag = [[${@permission.hasPermi('archManage:archDestroy:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:archDestroy:remove')}]];
+    var prefix = ctx + "archManage/archDestroy";
+    var period = [[${@dict.getType('archive_period')}]];
+    var myTransApplyStatus = [[${@dict.getType('myTransApply_status')}]]
+    var arcType = [[${@dict.getType('archive_type')}]];
+    var involve = [[${@dict.getType('expense_involve')}]];
+    var carrier = [[${@dict.getType('carrier')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+
+
+    /*选择人*/
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /*选择档案类型*/
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBillName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    /*选择部门*/
+
+    function selectDeptTree(id) {
+        var url = prefix + "/deptTree?id=" + id;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#treeName').val());
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+
+    // 日期框js,本页面有两个日期框，一个调用js，另一个在此处定义
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var startDate1 = laydate.render({
+                elem: '#arcCreTimeStart',
+                max: 0,
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    $('#arcCreTimeEnd').val("")
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate1.config.min.year = date.year;
+                        endDate1.config.min.month = date.month - 1;
+                        endDate1.config.min.date = date.date;
+                    } else {
+                        endDate1.config.min.year = '';
+                        endDate1.config.min.month = '';
+                        endDate1.config.min.date = '';
+                    }
+                }
+            });
+            var endDate1 = laydate.render({
+                elem: '#arcCreTimeEnd',
+                theme: 'molv',
+                max: 0,
+                trigger: 'click'
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "档案鉴定",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    sortable: true
+                },
+                {
+                    field: 'opDepName',
+                    title: '所属部门',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillName',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'bill',
+                    title: '是否到期',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (item.bill == '2') {
+                            return '<span class="label label-danger">未过期</span>';
+                        } else if (item.bill == '1') {
+                            return '<span class="label label-info">已过期</span>';
+                        }
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '档案状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(myTransApplyStatus
+                            , item.status);
+                    }
+                },
+                {
+                    field: 'expenseInvolve',
+                    title: '是否涉及费用',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(involve
+                            , item.expenseInvolve);
+                    }
+                },
+                {
+                    field: 'arcPageNum',
+                    title: '页数',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcNum',
+                    title: '份数',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'carrier',
+                    title: '载体形式',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(carrier, item.carrier);
+                    }
+                },
+                {
+                    field: 'arcType',
+                    title: '档案形态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(arcType, item.arcType);
+                    }
+                },
+                {
+                    field: 'filingTime',
+                    title: '归档日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '形成日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'filingDepaName',
+                    title: '归档部门',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'batchId',
+                    title: '著录ID',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a title="详情" class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                        actions.push('<a title="销毁" class="btn btn-danger btn-xs ' + '" href="javascript:void(0)" onclick="destroy(\'' + row.id + '\')"><i class="fa fa-remove"></i></a> ');
+                        return actions.join('');
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    });
+
+
+    //档案销毁
+    // function destroy(id, width, height) {
+    //     // var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+    //     // if (rows.length == 0) {
+    //     //     $.modal.alertWarning("请至少选择一条记录");
+    //     //     return;
+    //     // }
+    //     // var options = {
+    //     //     title: "销毁",
+    //     //     width: width,
+    //     //     height: height,
+    //     //     url: prefix + "/remark" +id,
+    //     //     skin: 'layui-layer-gray',
+    //     //     btn: ['确定', '取消'],
+    //     //     yes: function (index, layero) {
+    //     //         //alert("OK")
+    //     //         getRemark();
+    //     //         layer.close(index);
+    //     //     }
+    //     // };
+    //     // $.modal.openOptions(options);
+    //     // 自定义弹出层全屏开始
+    //     var index = layer.open({
+    //         type: 2,
+    //         area: [width + 'px', height + 'px'],
+    //         fix: false,
+    //         //不固定
+    //         maxmin: true,
+    //         shade: 0.3,
+    //         title: '销毁',
+    //         // content: prefix + "/remark" +id,
+    //         content: prefix + "/remark/" + id,
+    //         btn: ['确定', '关闭'],
+    //         // 弹层外区域关闭
+    //         shadeClose: true,
+    //         yes: function(index, layero) {
+    //             // 弹出层的确定按钮调用本页面方法
+    //             getRemark();
+    //             // layer.close(index);
+    //             // 弹出层的确定按钮调用弹出层的remark的submitHandler方法
+    //             // var iframeWin = layero.find('iframe')[0];
+    //             // iframeWin.contentWindow.submitHandler(index, layero);
+    //         },
+    //         cancel: function(index) {
+    //             return true;
+    //         }
+    //     });
+    //     layer.full(index);
+    //     // 弹出层全屏结束
+    // }
+
+    function destroy(id) {
+        // createMenuItem(prefix+"/record/"+id, "新增著录");
+        var url = prefix + "/remark/" + id;
+        $.modal.parentTab("销毁", url);
+    }
+
+    function getRemark() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+
+        remark = $("iframe[id^='layui-layer-iframe']").contents().find("#outRemark").val();
+        if (remark === "" || remark == null) {
+            $("iframe[id^='layui-layer-iframe']").contents().find("#tapDiv").empty();
+            var tapHtml = '<font face="微软雅黑" size="2" color="red" >请输入信息!</font>';
+            $("iframe[id^='layui-layer-iframe']").contents().find("#tapDiv").html(tapHtml);
+        } else {
+            $.modal.confirm("确认要销毁选中的" + rows.length + "条数据吗?", function () {
+                var url = prefix + "/destroy";
+                var data = {"ids": rows.join(), "destroyReason": remark};
+                $.operate.submit(url, "post", "json", data);
+            });
+        }
+    }
+
+    //档案保留
+    function persist(width, height) {
+        // var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var rows = $("#bootstrap-table").bootstrapTable('getSelections')
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        //已过期档案可继续保留，待废弃档案不能继续保留
+        for (var i = 0; i < rows.length; i++) {
+            var status = rows[i].status;
+            if (status == '9') {//待废弃档案
+                $.modal.alertWarning("待废弃档案不能继续保留操作！");
+                return;
+            }
+        }
+        var options = {
+            title: "保留",
+            width: width,
+            height: height,
+            url: prefix + "/toStay",
+            skin: 'layui-layer-gray',
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //alert("OK")
+                getStayTime();
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+        // var valPeriod = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
+        //     return row[$.table._option.columns[6].field];
+        // });
+        // //createMenuItem(prefix+"/stay?tids="+rows.join()+"&valPeriod="+valPeriod,'档案保留');
+        // $.modal.confirm("确认要保留选中的" + rows.length + "条数据吗?", function() {
+        //     var url = prefix+"/stay";
+        //     var data = { "ids": rows.join()};
+        //     //var data = { "valPeriod":valPeriod}
+        // 	$.operate.submit(url, "post", "json", data);
+        // });
+    }
+
+    function getStayTime() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var valPeriod = $("#stayTime").val();
+        $.modal.confirm("确认要保留选中的" + rows.length + "条数据吗?", function () {
+            var url = prefix + "/stay";
+            var data = {"ids": rows.join(), "valPeriod": valPeriod};
+            //var data = { "valPeriod":valPeriod}
+            $.operate.submit(url, "post", "json", data);
+        });
+    }
+
+    //打印预览
+    function printLook() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        createMenuItem(prefix + "/printLook?ids=" + rows.join(), '打印预览');
+    }
+
+
+    // 数字限制
+    $("input[name='arcPageNum']").keyup(function () {
+        var val = $(this).val();
+        if (val.length == 1) {
+            $(this).val(val.replace(/[^1-9]/g, ''));
+        } else {
+            $(this).val(val.replace(/\D/g, ''));
+
+            if (val.substring(0, 1) == '0') {
+                $(this).val('');
+            }
+        }
+    });
+    // 数字限制
+    $("input[name='arcNum']").keyup(function () {
+        var val = $(this).val();
+        if (val.length == 1) {
+            $(this).val(val.replace(/[^1-9]/g, ''));
+        } else {
+            $(this).val(val.replace(/\D/g, ''));
+
+            if (val.substring(0, 1) == '0') {
+                $(this).val('');
+            }
+        }
+    });
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBillName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+
+    // 详情页
+    function openDetail(id) {
+        var url = ctx + "amsArcReportcontroller/amsArchives/detail/" + id;
+        $.modal.openTab("档案登记详情", url);
+    }
+</script>
+</body>
+</html>

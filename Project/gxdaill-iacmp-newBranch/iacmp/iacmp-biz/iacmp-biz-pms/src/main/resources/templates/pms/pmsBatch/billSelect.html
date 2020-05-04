@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('分类选择')"/>
+    <th:block th:include="include :: ztree-css"/>
+</head>
+<style>
+    body {
+        height: auto;
+        font-family: "Microsoft YaHei";
+    }
+
+    button {
+        font-family: "SimSun", "Helvetica Neue", Helvetica, Arial;
+    }
+</style>
+<body class="hold-transition box box-main">
+<input id="treeId" name="treeId" type="hidden"/>
+<input id="treeName" name="treeName" type="hidden"/>
+<div class="wrapper">
+    <div class="treeShowHideButton" onclick="$.tree.toggleSearch();">
+        <label id="btnShow" title="显示搜索" style="display:none;">︾</label>
+        <label id="btnHide" title="隐藏搜索">︽</label>
+    </div>
+    <div class="treeSearchInput" id="search">
+        <label for="keyword">关键字：</label><input type="text" class="empty" id="keyword" maxlength="50">
+        <button class="btn" id="btn" onclick="$.tree.searchNode()"> 搜索</button>
+    </div>
+    <div class="treeExpandCollapse">
+        <!--隐藏域，为了接收目录选择-->
+        <input type="text" id="catalogId" hidden>
+        <a href="#" onclick="$.tree.expand()">展开</a> /
+        <a href="#" onclick="$.tree.collapse()">折叠</a>
+    </div>
+    <div id="tree" class="ztree treeselect"></div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<input id="pmsBatchId" name="pmsBatchId" th:value="${pmsBatchId}" type="hidden">
+<input id="billId" name="billId" th:value="${billId}" type="hidden">
+<input id="fileImageNames" name="fileImageNames" th:value="${fileImageNames}" type="hidden">
+<script type="text/javascript" th:inline="javascript">
+    var prefix = ctx + "pms/pmsBatch";
+    $(function () {
+        var pmsBatchId = document.getElementById("pmsBatchId").value;
+        var url = ctx + "pms/pmsBatch/initBillSelect?pmsBatchId=" + pmsBatchId;
+        var options = {
+            url: url,
+            expandLevel: 0,
+            onClick: zOnClick,
+            onDblClick: onDblClick
+        };
+        $.tree.init(options);
+    });
+
+    function zOnClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+    }
+
+    // 鼠标双击事件
+    function onDblClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $('#catalogId').val($("#treeId").val())
+        // debugger;
+        var fileImageNames = [[${fileImageNames}]];
+        var billIds = [[${billIds}]];
+        var pmsBatchId = [[${pmsBatchId}]];
+        console.log(treeNode.id);
+        var targetBillId = $("#catalogId").val().split("_")[4];
+        var pairBillIds = [[${pairBillIds}]];
+        if (pairBillIds.indexOf(targetBillId) > -1) {
+            var trg = "";
+            var dateReg = /(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
+            layer.prompt({
+                    title: '此分类为按日期成对展示，请输入日期',
+                    value: "\" type=\"text\" class=\"form-control\" placeholder=\"yyyy-MM-dd\"",
+                },
+                function (text, index) {
+                    trg = text;
+                    // 取消
+                    if (trg == undefined) {
+                        return;
+                    } else {
+                        if (!dateReg.test(trg)) {
+                            $.modal.alertError("输入格式有误，请重新输入，如：2019-12-18");
+                            return;
+                        } else {
+                            $.ajax({
+                                type: "post",
+                                url: prefix + "/choiceBill",
+                                data: {
+                                    pmsBatchId: pmsBatchId,
+                                    billIds: billIds,
+                                    fileImageNames: fileImageNames,
+                                    targetBillId: targetBillId,
+                                    trg: trg
+                                },
+                                success: function (result) {
+                                    $.modal.alert("更新成功!");
+                                    // 关闭当前弹层方法
+                                    var index = parent.layer.index; //获取当前弹层的索引号
+                                    parent.layer.close(index); //关闭当前弹层
+                                    window.parent.closeAllLay();
+                                },
+                                error: function () {
+
+                                },
+                            });
+                        }
+                    }
+                    layer.close(index);
+                });
+        } else {
+            $.ajax({
+                type: "post",
+                url: prefix + "/choiceBill",
+                data: {
+                    pmsBatchId: pmsBatchId,
+                    billIds: billIds,
+                    fileImageNames: fileImageNames,
+                    targetBillId: targetBillId
+                },
+                success: function (result) {
+                    $.modal.alert("更新成功!");
+                    // 关闭当前弹层方法
+                    var index = parent.layer.index; //获取当前弹层的索引号
+                    parent.layer.close(index); //关闭当前弹层
+                    window.parent.closeAllLay();
+                },
+                error: function () {
+
+                },
+            });
+        }
+    }
+</script>
+</body>
+</html>

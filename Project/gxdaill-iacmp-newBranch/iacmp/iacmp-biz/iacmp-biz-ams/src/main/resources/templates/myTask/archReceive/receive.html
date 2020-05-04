@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('打印标签')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsBatch-edit" th:object="${amsBatch}">
+        <input id="id" name="id" type="hidden" th:value="${id}">
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">注入批次号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="batchNo" name="batchNo" th:field="*{batchNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">部门代码：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="orgCode" name="orgCode" th:field="*{orgCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">部门名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="orgName" name="orgName" th:field="*{orgName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">创建时间：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="crtTime" name="crtTime" th:value="${#dates.format(amsBatch.crtTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">创建人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="crtNo" name="crtNo" th:field="*{crtNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">创建人名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="crtName" name="crtName" th:field="*{crtName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">修改时间：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="modTime" name="modTime" th:field="*{modTime}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">修改人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="modNo" name="modNo" th:field="*{modNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">修改人名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="modName" name="modName" th:field="*{modName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案当前状态（0-已删除;1-已著录;2-申请中;3-待入盒;4-待入库;5-已入库;6-退回）：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="status" name="status" th:field="*{status}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcNo" name="arcNo" th:field="*{arcNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcName" name="arcName" th:field="*{arcName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案移交人：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcTransfer" name="arcTransfer" th:field="*{arcTransfer}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">备注：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">上交人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="turnInNo" name="turnInNo" th:field="*{turnInNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">上交人名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="turnInName" name="turnInName" th:field="*{turnInName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">接收人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="receiveNo" name="receiveNo" th:field="*{receiveNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">接收人名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="receiveName" name="receiveName" th:field="*{receiveName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">退回原因：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="returnReason" name="returnReason" th:field="*{returnReason}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">审批信息ID：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="apprInfoId" name="apprInfoId" th:field="*{apprInfoId}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">责任部门：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="respDepaName" name="respDepaName" th:field="*{respDepaName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">责任人：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="respOpName" name="respOpName" th:field="*{respOpName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div th:if="${amsBatch.arcBill == '实物档案'||amsBatch.arcBill == '声像档案'}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">文件编号：</label>
+                <div class="col-sm-8">
+                    <input id="arcCodeDialog" name="arcCode" class="form-control" type="text" readonly
+                           th:field="*{arcCode}"/>
+                </div>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">份数：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcNum" name="arcNum" th:field="*{arcNum}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">页数：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcPageNum" name="arcPageNum" th:field="*{arcPageNum}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">密级 01-绝密、02-机密、03-秘密、04-内部：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcLevel" name="arcLevel" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">形成日期：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcCreTime" name="arcCreTime" th:value="${#dates.format(amsBatch.arcCreTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">归档部门：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="filingDepa" name="filingDepa" th:field="*{filingDepa}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">保管期限：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="valPeriod" name="valPeriod" th:field="*{valPeriod}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">主题词：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="themeSpeech" name="themeSpeech" th:field="*{themeSpeech}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">开本：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="cutting" name="cutting" th:field="*{cutting}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">语种：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="language" name="language" th:field="*{language}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">载体形式：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="carrier" name="carrier" th:field="*{carrier}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">并列题名：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="otherName" name="otherName" th:field="*{otherName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">转发文号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="forwardNo" name="forwardNo" th:field="*{forwardNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">转发文件名：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="forwardName" name="forwardName" th:field="*{forwardName}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">收文编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="receiptNo" name="receiptNo" th:field="*{receiptNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">附注：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="eTC" name="eTC" th:field="*{eTC}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">附件数：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="etcNum" name="etcNum" th:field="*{etcNum}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">实物分类：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="practType" name="practType" th:field="*{practType}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">实物描述：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="practDesc" name="practDesc" th:field="*{practDesc}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">版本：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="edition" name="edition" th:field="*{edition}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">A4数：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="afourNum" name="afourNum" th:field="*{afourNum}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">文本：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcText" name="arcText" th:field="*{arcText}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">来源单位或个人：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="originType" name="originType" th:field="*{originType}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div th:if="${amsBatch.arcBill == '实物档案'||amsBatch.arcBill == '声像档案'}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">存放地点：</label>
+                <div class="col-sm-8">
+                    <input id="saveAddressDialog" name="saveAddress" class="form-control" type="text" required>
+                </div>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">媒体类别：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="medelType" name="medelType" th:field="*{medelType}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">媒体编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="medelCode" name="medelCode" th:field="*{medelCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">归档日期：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="filingTime" name="filingTime" th:field="*{filingTime}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">是否涉及费用  0-否 1-是：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="expenseInvolve" name="expenseInvolve" th:field="*{expenseInvolve}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案类别：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcBill" name="arcBill" th:field="*{arcBill}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案形态（10-电子形态;20-实物形态;）：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcFormat" name="arcFormat" th:field="*{arcFormat}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">来源方式：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="originMode" name="originMode" th:field="*{originMode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">摘要：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcAbstract" name="arcAbstract" th:field="*{arcAbstract}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">责任部门编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="respDepaCode" name="respDepaCode" th:field="*{respDepaCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">责任者编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="respOpCode" name="respOpCode" th:field="*{respOpCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">档案类型编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcBillCode" name="arcBillCode" th:field="*{arcBillCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">归档单位编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="filingDepaCode" name="filingDepaCode" th:field="*{filingDepaCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">部门档案类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcBillDept" name="arcBillDept" th:field="*{arcBillDept}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">部门档案类型编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcBillDeptCode" name="arcBillDeptCode" th:field="*{arcBillDeptCode}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">授予单位：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="conferIns" name="conferIns" th:field="*{conferIns}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">接收单位：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="receiveIns" name="receiveIns" th:field="*{receiveIns}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">照片号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="photoNo" name="photoNo" th:field="*{photoNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">底片号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="negativesNo" name="negativesNo" th:field="*{negativesNo}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">摄影者：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="photographer" name="photographer" th:field="*{photographer}" class="form-control"-->
+        <!--type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">参见号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="indexMark" name="indexMark" th:field="*{indexMark}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="bill" name="bill" th:field="*{bill}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">描述：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcDesc" name="arcDesc" th:field="*{arcDesc}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">版权：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcCopyright" name="arcCopyright" th:field="*{arcCopyright}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">格式：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcLayout" name="arcLayout" th:field="*{arcLayout}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">业务类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="serviceType" name="serviceType" th:field="*{serviceType}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">关键字：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="keyWord" name="keyWord" th:field="*{keyWord}" class="form-control" type="text" readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收意见：</label>
+            <div class="col-sm-8">
+                <input id="receivingOpinionDialog" name="receivingOpinion" class="form-control" type="text">
+            </div>
+        </div>
+
+    </form>
+
+
+    <!--<div class="row" th:if="${amsBatch.arcBill == '实物档案'||amsBatch.arcBill == '声像档案'}" style="margin-top: 100px">-->
+    <!--<div class="col-sm-offset-5 col-sm-10" id="toolbar" role="group">-->
+    <!--<a class="btn btn-info" onclick="printLabel()">-->
+    <!--<i class="fa fa-search"></i>&nbsp;打印标签-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "myTask/archReceive";
+    $("#form-amsBatch-edit").validate({
+        rules: {
+            saveAddress: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/receiveOp", $('#form-amsBatch-edit').serialize());
+        }
+    }
+
+    function printLabel(width, height) {
+        var id = $("#id").val()
+        var options = {
+            title: '打印标签',
+            width: width,
+            height: height,
+            url: prefix + "/printl/" + id,
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        }
+
+        $.modal.openOptions(options);
+    }
+
+
+</script>
+</body>
+</html>

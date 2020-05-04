@@ -8,18 +8,18 @@ import cn.hutool.core.util.HashUtil;
  * @author loolly
  */
 public class DefaultFilter extends AbstractFilter {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public DefaultFilter(long maxValue, int machineNumber) {
-		super(maxValue, machineNumber);
-	}
+    public DefaultFilter(long maxValue, int machineNumber) {
+        super(maxValue, machineNumber);
+    }
 
-	public DefaultFilter(long maxValue) {
-		super(maxValue);
-	}
+    public DefaultFilter(long maxValue) {
+        super(maxValue);
+    }
 
-	@Override
-	public long hash(String str) {
-		return HashUtil.javaDefaultHash(str) % size;
-	}
+    @Override
+    public long hash(String str) {
+        return HashUtil.javaDefaultHash(str) % size;
+    }
 }

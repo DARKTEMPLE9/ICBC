@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImBillMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImBill" id="ImBillResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="code" column="CODE"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="isLostType" column="IS_LOST_TYPE"/>
+        <result property="isLeaf" column="IS_LEAF"/>
+        <result property="product" column="PRODUCT"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="dictCode" column="DICT_CODE"/>
+    </resultMap>
+
+    <sql id="selectImBillVo">
+        select ID, NAME, CODE, SYS_ID, PARENT_ID, BILL_ORDER, SYS_CODE, IS_LOST_TYPE, IS_LEAF, PRODUCT, BILL_ID,
+        DICT_CODE from im_bill
+    </sql>
+
+    <select id="selectImBillList" parameterType="net.northking.iacmp.imp.domain.ImBill" resultMap="ImBillResult">
+        <include refid="selectImBillVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+            <if test="sysCode != null  and sysCode != '' ">and SYS_CODE = #{sysCode}</if>
+            <if test="isLostType != null  and isLostType != '' ">and IS_LOST_TYPE = #{isLostType}</if>
+            <if test="isLeaf != null  and isLeaf != '' ">and IS_LEAF = #{isLeaf}</if>
+            <if test="product != null  and product != '' ">and PRODUCT = #{product}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+            <if test="dictCode != null  and dictCode != '' ">and DICT_CODE = #{dictCode}</if>
+        </where>
+    </select>
+
+    <select id="selectImBillListAll" resultMap="ImBillResult">
+        <include refid="selectImBillVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+            <if test="sysCode != null  and sysCode != '' ">and SYS_CODE = #{sysCode}</if>
+            <if test="isLostType != null  and isLostType != '' ">and IS_LOST_TYPE = #{isLostType}</if>
+            <if test="isLeaf != null  and isLeaf != '' ">and IS_LEAF = #{isLeaf}</if>
+            <if test="product != null  and product != '' ">and PRODUCT = #{product}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+            <if test="dictCode != null  and dictCode != '' ">and DICT_CODE = #{dictCode}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="selectImBillCount" resultType="Integer">
+        select count(1) from im_bill
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+            <if test="sysCode != null  and sysCode != '' ">and SYS_CODE = #{sysCode}</if>
+            <if test="isLostType != null  and isLostType != '' ">and IS_LOST_TYPE = #{isLostType}</if>
+            <if test="isLeaf != null  and isLeaf != '' ">and IS_LEAF = #{isLeaf}</if>
+            <if test="product != null  and product != '' ">and PRODUCT = #{product}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+            <if test="dictCode != null  and dictCode != '' ">and DICT_CODE = #{dictCode}</if>
+        </where>
+    </select>
+
+    <select id="checkDistingct" resultType="Integer">
+        select count(1) from im_bill where code = #{code} and sys_id = #{sysId}
+    </select>
+
+    <select id="selectImBillById" parameterType="String" resultMap="ImBillResult">
+        <include refid="selectImBillVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="imBillById" resultType="Map">
+        select id, name, code, sys_id, parent_id, bill_order, sys_code, is_lost_type, is_leaf, product, bill_id,
+        dict_code from im_bill
+        where id = #{imBillId}
+    </select>
+
+    <insert id="insertImBill">
+        insert into im_bill(id,name,code,sys_id,bill_order,sys_code,is_lost_type,is_leaf,product,dict_code)
+        values (#{id},#{name},#{code},#{sysId},#{billOrder},#{sysCode},#{lostType},#{isLeaf},#{product},#{dictCode})
+    </insert>
+
+    <update id="updateImBill" parameterType="net.northking.iacmp.imp.domain.ImBill">
+        update im_bill set code = #{code},name = #{name},sys_id = #{sysId},dict_code = #{dictCode},bill_order =
+        #{billOrder}
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBillById" parameterType="String">
+        delete from im_bill where ID = #{billId}
+    </delete>
+
+    <delete id="deleteImBillByIds" parameterType="String">
+        delete from im_bill where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

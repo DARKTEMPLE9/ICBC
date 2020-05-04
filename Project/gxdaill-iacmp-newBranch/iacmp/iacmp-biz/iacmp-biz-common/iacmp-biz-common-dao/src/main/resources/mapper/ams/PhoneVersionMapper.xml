@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.PhoneVersionMapper">
+
+    <resultMap type="PhoneVersion" id="PhoneVersionResult">
+        <result property="id" column="ID"/>
+        <result property="versionNo" column="VERSION_NO"/>
+        <result property="url" column="URL"/>
+        <result property="title" column="TITLE"/>
+        <result property="sTATE" column="STATE"/>
+        <result property="fLAG" column="FLAG"/>
+        <result property="phoneType" column="PHONE_TYPE"/>
+        <result property="pversionId" column="pversion_id"/>
+    </resultMap>
+
+    <sql id="selectPhoneVersionVo">
+        select ID, VERSION_NO, URL, TITLE, STATE, FLAG, PHONE_TYPE, pversion_id from phone_version
+    </sql>
+
+    <select id="selectPhoneVersionList" parameterType="PhoneVersion" resultMap="PhoneVersionResult">
+        <include refid="selectPhoneVersionVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="versionNo != null  and versionNo != '' ">and VERSION_NO = #{versionNo}</if>
+            <if test="url != null  and url != '' ">and URL = #{url}</if>
+            <if test="title != null  and title != '' ">and TITLE = #{title}</if>
+            <if test="sTATE != null  and sTATE != '' ">and STATE = #{sTATE}</if>
+            <if test="fLAG != null  and fLAG != '' ">and FLAG = #{fLAG}</if>
+            <if test="phoneType != null  and phoneType != '' ">and PHONE_TYPE = #{phoneType}</if>
+            <if test="pversionId != null ">and pversion_id = #{pversionId}</if>
+        </where>
+    </select>
+
+    <select id="selectPhoneVersionById" parameterType="String" resultMap="PhoneVersionResult">
+        <include refid="selectPhoneVersionVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertPhoneVersion" parameterType="PhoneVersion">
+        insert into phone_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="versionNo != null  and versionNo != ''  ">VERSION_NO,</if>
+            <if test="url != null  and url != ''  ">URL,</if>
+            <if test="title != null  and title != ''  ">TITLE,</if>
+            <if test="sTATE != null  and sTATE != ''  ">STATE,</if>
+            <if test="fLAG != null  and fLAG != ''  ">FLAG,</if>
+            <if test="phoneType != null  and phoneType != ''  ">PHONE_TYPE,</if>
+            <if test="pversionId != null  ">pversion_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="versionNo != null  and versionNo != ''  ">#{versionNo},</if>
+            <if test="url != null  and url != ''  ">#{url},</if>
+            <if test="title != null  and title != ''  ">#{title},</if>
+            <if test="sTATE != null  and sTATE != ''  ">#{sTATE},</if>
+            <if test="fLAG != null  and fLAG != ''  ">#{fLAG},</if>
+            <if test="phoneType != null  and phoneType != ''  ">#{phoneType},</if>
+            <if test="pversionId != null  ">#{pversionId},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePhoneVersion" parameterType="PhoneVersion">
+        update phone_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="versionNo != null  and versionNo != ''  ">VERSION_NO = #{versionNo},</if>
+            <if test="url != null  and url != ''  ">URL = #{url},</if>
+            <if test="title != null  and title != ''  ">TITLE = #{title},</if>
+            <if test="sTATE != null  and sTATE != ''  ">STATE = #{sTATE},</if>
+            <if test="fLAG != null  and fLAG != ''  ">FLAG = #{fLAG},</if>
+            <if test="phoneType != null  and phoneType != ''  ">PHONE_TYPE = #{phoneType},</if>
+            <if test="pversionId != null  ">pversion_id = #{pversionId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deletePhoneVersionById" parameterType="String">
+        delete from phone_version where ID = #{id}
+    </delete>
+
+    <delete id="deletePhoneVersionByIds" parameterType="String">
+        delete from phone_version where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.PhoneUserMapper">
+
+    <resultMap type="PhoneUser" id="PhoneUserResult">
+        <result property="id" column="ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="phoneNum" column="PHONE_NUM"/>
+        <result property="token" column="TOKEN"/>
+        <result property="userPass" column="USER_PASS"/>
+        <result property="puserId" column="puser_id"/>
+    </resultMap>
+
+    <sql id="selectPhoneUserVo">
+        select ID, USER_NAME, USER_CODE, PHONE_NUM, TOKEN, USER_PASS, puser_id from phone_user
+    </sql>
+
+    <select id="selectPhoneUserList" parameterType="PhoneUser" resultMap="PhoneUserResult">
+        <include refid="selectPhoneUserVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="userName != null  and userName != '' ">and USER_NAME = #{userName}</if>
+            <if test="userCode != null  and userCode != '' ">and USER_CODE = #{userCode}</if>
+            <if test="phoneNum != null  and phoneNum != '' ">and PHONE_NUM = #{phoneNum}</if>
+            <if test="token != null  and token != '' ">and TOKEN = #{token}</if>
+            <if test="userPass != null  and userPass != '' ">and USER_PASS = #{userPass}</if>
+            <if test="puserId != null ">and puser_id = #{puserId}</if>
+        </where>
+    </select>
+
+    <select id="selectPhoneUserById" parameterType="String" resultMap="PhoneUserResult">
+        <include refid="selectPhoneUserVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertPhoneUser" parameterType="PhoneUser">
+        insert into phone_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="userName != null  and userName != ''  ">USER_NAME,</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE,</if>
+            <if test="phoneNum != null  and phoneNum != ''  ">PHONE_NUM,</if>
+            <if test="token != null  and token != ''  ">TOKEN,</if>
+            <if test="userPass != null  and userPass != ''  ">USER_PASS,</if>
+            <if test="puserId != null  ">puser_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="userName != null  and userName != ''  ">#{userName},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="phoneNum != null  and phoneNum != ''  ">#{phoneNum},</if>
+            <if test="token != null  and token != ''  ">#{token},</if>
+            <if test="userPass != null  and userPass != ''  ">#{userPass},</if>
+            <if test="puserId != null  ">#{puserId},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePhoneUser" parameterType="PhoneUser">
+        update phone_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null  and userName != ''  ">USER_NAME = #{userName},</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE = #{userCode},</if>
+            <if test="phoneNum != null  and phoneNum != ''  ">PHONE_NUM = #{phoneNum},</if>
+            <if test="token != null  and token != ''  ">TOKEN = #{token},</if>
+            <if test="userPass != null  and userPass != ''  ">USER_PASS = #{userPass},</if>
+            <if test="puserId != null  ">puser_id = #{puserId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deletePhoneUserById" parameterType="String">
+        delete from phone_user where ID = #{id}
+    </delete>
+
+    <delete id="deletePhoneUserByIds" parameterType="String">
+        delete from phone_user where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

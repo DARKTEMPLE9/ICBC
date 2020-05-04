@@ -6461,8 +6461,8 @@
 
                 if (
                     // MouseUp is called for both, navigator and scrollbar (that order),
-                // which causes calling afterSetExtremes twice. Prevent first call
-                // by checking if scrollbar is going to set new extremes (#6334)
+                    // which causes calling afterSetExtremes twice. Prevent first call
+                    // by checking if scrollbar is going to set new extremes (#6334)
                     (navigator.hasDragged && (!scrollbar || !scrollbar.hasDragged)) ||
                     e.trigger === 'scrollbar'
                 ) {

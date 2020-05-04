@@ -15,6 +15,7 @@ public class DemoApplication {
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
     }
+
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }

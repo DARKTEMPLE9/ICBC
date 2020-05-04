@@ -11,17 +11,17 @@ package cn.hutool.crypto;
  * @since 3.0.8
  */
 public enum Padding {
-	/**
-	 * 无补码
-	 */
-	NoPadding,
-	/**
-	 * 0补码，即不满block长度时使用0填充
-	 */
-	ZeroPadding,
-	ISO10126Padding,
-	OAEPPadding,
-	PKCS1Padding,
-	PKCS5Padding,
-	SSL3Padding
+    /**
+     * 无补码
+     */
+    NoPadding,
+    /**
+     * 0补码，即不满block长度时使用0填充
+     */
+    ZeroPadding,
+    ISO10126Padding,
+    OAEPPadding,
+    PKCS1Padding,
+    PKCS5Padding,
+    SSL3Padding
 }

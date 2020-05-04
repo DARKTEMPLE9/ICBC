@@ -98,406 +98,406 @@ module.exports =
     return __webpack_require__(__webpack_require__.s = 392);
     /******/
 })
-/************************************************************************/
-/******/({
+    /************************************************************************/
+    /******/({
 
-    /***/ 19:
-    /***/ (function (module, exports) {
+        /***/ 19:
+        /***/ (function (module, exports) {
 
-        module.exports = require("element-ui/lib/utils/resize-event");
+            module.exports = require("element-ui/lib/utils/resize-event");
 
-        /***/
-    }),
+            /***/
+        }),
 
-    /***/ 3:
-    /***/ (function (module, exports) {
+        /***/ 3:
+        /***/ (function (module, exports) {
 
-        module.exports = require("element-ui/lib/utils/dom");
+            module.exports = require("element-ui/lib/utils/dom");
 
-        /***/
-    }),
+            /***/
+        }),
 
-    /***/ 37:
-    /***/ (function (module, exports) {
+        /***/ 37:
+        /***/ (function (module, exports) {
 
-        module.exports = require("element-ui/lib/utils/scrollbar-width");
+            module.exports = require("element-ui/lib/utils/scrollbar-width");
 
-        /***/
-    }),
+            /***/
+        }),
 
-    /***/ 392:
-    /***/ (function (module, exports, __webpack_require__) {
+        /***/ 392:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        module.exports = __webpack_require__(393);
-
-
-        /***/
-    }),
-
-    /***/ 393:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            module.exports = __webpack_require__(393);
 
 
-        exports.__esModule = true;
+            /***/
+        }),
 
-        var _main = __webpack_require__(394);
+        /***/ 393:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        var _main2 = _interopRequireDefault(_main);
-
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {default: obj};
-        }
-
-        /* istanbul ignore next */
-        _main2.default.install = function (Vue) {
-            Vue.component(_main2.default.name, _main2.default);
-        };
-
-        exports.default = _main2.default;
-
-        /***/
-    }),
-
-    /***/ 394:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            "use strict";
 
 
-        exports.__esModule = true;
+            exports.__esModule = true;
 
-        var _resizeEvent = __webpack_require__(19);
+            var _main = __webpack_require__(394);
 
-        var _scrollbarWidth = __webpack_require__(37);
+            var _main2 = _interopRequireDefault(_main);
 
-        var _scrollbarWidth2 = _interopRequireDefault(_scrollbarWidth);
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {default: obj};
+            }
 
-        var _util = __webpack_require__(8);
+            /* istanbul ignore next */
+            _main2.default.install = function (Vue) {
+                Vue.component(_main2.default.name, _main2.default);
+            };
 
-        var _bar = __webpack_require__(395);
+            exports.default = _main2.default;
 
-        var _bar2 = _interopRequireDefault(_bar);
+            /***/
+        }),
 
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {default: obj};
-        }
+        /***/ 394:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        /* istanbul ignore next */
+            "use strict";
+
+
+            exports.__esModule = true;
+
+            var _resizeEvent = __webpack_require__(19);
+
+            var _scrollbarWidth = __webpack_require__(37);
+
+            var _scrollbarWidth2 = _interopRequireDefault(_scrollbarWidth);
+
+            var _util = __webpack_require__(8);
+
+            var _bar = __webpack_require__(395);
+
+            var _bar2 = _interopRequireDefault(_bar);
+
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {default: obj};
+            }
+
+            /* istanbul ignore next */
 // reference https://github.com/noeldelgado/gemini-scrollbar/blob/master/index.js
 
-        exports.default = {
-            name: 'ElScrollbar',
+            exports.default = {
+                name: 'ElScrollbar',
 
-            components: {Bar: _bar2.default},
+                components: {Bar: _bar2.default},
 
-            props: {
-                native: Boolean,
-                wrapStyle: {},
-                wrapClass: {},
-                viewClass: {},
-                viewStyle: {},
-                noresize: Boolean, // 如果 container 尺寸不会发生变化，最好设置它可以优化性能
-                tag: {
-                    type: String,
-                    default: 'div'
-                }
-            },
-
-            data: function data() {
-                return {
-                    sizeWidth: '0',
-                    sizeHeight: '0',
-                    moveX: 0,
-                    moveY: 0
-                };
-            },
-
-
-            computed: {
-                wrap: function wrap() {
-                    return this.$refs.wrap;
-                }
-            },
-
-            render: function render(h) {
-                var gutter = (0, _scrollbarWidth2.default)();
-                var style = this.wrapStyle;
-
-                if (gutter) {
-                    var gutterWith = '-' + gutter + 'px';
-                    var gutterStyle = 'margin-bottom: ' + gutterWith + '; margin-right: ' + gutterWith + ';';
-
-                    if (Array.isArray(this.wrapStyle)) {
-                        style = (0, _util.toObject)(this.wrapStyle);
-                        style.marginRight = style.marginBottom = gutterWith;
-                    } else if (typeof this.wrapStyle === 'string') {
-                        style += gutterStyle;
-                    } else {
-                        style = gutterStyle;
+                props: {
+                    native: Boolean,
+                    wrapStyle: {},
+                    wrapClass: {},
+                    viewClass: {},
+                    viewStyle: {},
+                    noresize: Boolean, // 如果 container 尺寸不会发生变化，最好设置它可以优化性能
+                    tag: {
+                        type: String,
+                        default: 'div'
                     }
-                }
-                var view = h(this.tag, {
-                    class: ['el-scrollbar__view', this.viewClass],
-                    style: this.viewStyle,
-                    ref: 'resize'
-                }, this.$slots.default);
-                var wrap = h(
-                    'div',
-                    {
-                        ref: 'wrap',
-                        style: style,
-                        on: {
-                            'scroll': this.handleScroll
-                        },
+                },
 
-                        'class': [this.wrapClass, 'el-scrollbar__wrap', gutter ? '' : 'el-scrollbar__wrap--hidden-default']
-                    },
-                    [[view]]
-                );
-                var nodes = void 0;
+                data: function data() {
+                    return {
+                        sizeWidth: '0',
+                        sizeHeight: '0',
+                        moveX: 0,
+                        moveY: 0
+                    };
+                },
 
-                if (!this.native) {
-                    nodes = [wrap, h(
-                        _bar2.default,
-                        {
-                            attrs: {
-                                move: this.moveX,
-                                size: this.sizeWidth
-                            }
-                        },
-                        []
-                    ), h(
-                        _bar2.default,
-                        {
-                            attrs: {
-                                vertical: true,
-                                move: this.moveY,
-                                size: this.sizeHeight
-                            }
-                        },
-                        []
-                    )];
-                } else {
-                    nodes = [h(
+
+                computed: {
+                    wrap: function wrap() {
+                        return this.$refs.wrap;
+                    }
+                },
+
+                render: function render(h) {
+                    var gutter = (0, _scrollbarWidth2.default)();
+                    var style = this.wrapStyle;
+
+                    if (gutter) {
+                        var gutterWith = '-' + gutter + 'px';
+                        var gutterStyle = 'margin-bottom: ' + gutterWith + '; margin-right: ' + gutterWith + ';';
+
+                        if (Array.isArray(this.wrapStyle)) {
+                            style = (0, _util.toObject)(this.wrapStyle);
+                            style.marginRight = style.marginBottom = gutterWith;
+                        } else if (typeof this.wrapStyle === 'string') {
+                            style += gutterStyle;
+                        } else {
+                            style = gutterStyle;
+                        }
+                    }
+                    var view = h(this.tag, {
+                        class: ['el-scrollbar__view', this.viewClass],
+                        style: this.viewStyle,
+                        ref: 'resize'
+                    }, this.$slots.default);
+                    var wrap = h(
                         'div',
                         {
                             ref: 'wrap',
-                            'class': [this.wrapClass, 'el-scrollbar__wrap'],
-                            style: style
-                        },
-                        [[view]]
-                    )];
-                }
-                return h('div', {class: 'el-scrollbar'}, nodes);
-            },
-
-
-            methods: {
-                handleScroll: function handleScroll() {
-                    var wrap = this.wrap;
-
-                    this.moveY = wrap.scrollTop * 100 / wrap.clientHeight;
-                    this.moveX = wrap.scrollLeft * 100 / wrap.clientWidth;
-                },
-                update: function update() {
-                    var heightPercentage = void 0,
-                        widthPercentage = void 0;
-                    var wrap = this.wrap;
-                    if (!wrap) return;
-
-                    heightPercentage = wrap.clientHeight * 100 / wrap.scrollHeight;
-                    widthPercentage = wrap.clientWidth * 100 / wrap.scrollWidth;
-
-                    this.sizeHeight = heightPercentage < 100 ? heightPercentage + '%' : '';
-                    this.sizeWidth = widthPercentage < 100 ? widthPercentage + '%' : '';
-                }
-            },
-
-            mounted: function mounted() {
-                if (this.native) return;
-                this.$nextTick(this.update);
-                !this.noresize && (0, _resizeEvent.addResizeListener)(this.$refs.resize, this.update);
-            },
-            beforeDestroy: function beforeDestroy() {
-                if (this.native) return;
-                !this.noresize && (0, _resizeEvent.removeResizeListener)(this.$refs.resize, this.update);
-            }
-        };
-
-        /***/
-    }),
-
-    /***/ 395:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
-
-
-        exports.__esModule = true;
-
-        var _dom = __webpack_require__(3);
-
-        var _util = __webpack_require__(396);
-
-        /* istanbul ignore next */
-        exports.default = {
-            name: 'Bar',
-
-            props: {
-                vertical: Boolean,
-                size: String,
-                move: Number
-            },
-
-            computed: {
-                bar: function bar() {
-                    return _util.BAR_MAP[this.vertical ? 'vertical' : 'horizontal'];
-                },
-                wrap: function wrap() {
-                    return this.$parent.wrap;
-                }
-            },
-
-            render: function render(h) {
-                var size = this.size,
-                    move = this.move,
-                    bar = this.bar;
-
-
-                return h(
-                    'div',
-                    {
-                        'class': ['el-scrollbar__bar', 'is-' + bar.key],
-                        on: {
-                            'mousedown': this.clickTrackHandler
-                        }
-                    },
-                    [h(
-                        'div',
-                        {
-                            ref: 'thumb',
-                            'class': 'el-scrollbar__thumb',
+                            style: style,
                             on: {
-                                'mousedown': this.clickThumbHandler
+                                'scroll': this.handleScroll
                             },
 
-                            style: (0, _util.renderThumbStyle)({size: size, move: move, bar: bar})
+                            'class': [this.wrapClass, 'el-scrollbar__wrap', gutter ? '' : 'el-scrollbar__wrap--hidden-default']
                         },
-                        []
-                    )]
-                );
-            },
+                        [[view]]
+                    );
+                    var nodes = void 0;
 
-
-            methods: {
-                clickThumbHandler: function clickThumbHandler(e) {
-                    this.startDrag(e);
-                    this[this.bar.axis] = e.currentTarget[this.bar.offset] - (e[this.bar.client] - e.currentTarget.getBoundingClientRect()[this.bar.direction]);
+                    if (!this.native) {
+                        nodes = [wrap, h(
+                            _bar2.default,
+                            {
+                                attrs: {
+                                    move: this.moveX,
+                                    size: this.sizeWidth
+                                }
+                            },
+                            []
+                        ), h(
+                            _bar2.default,
+                            {
+                                attrs: {
+                                    vertical: true,
+                                    move: this.moveY,
+                                    size: this.sizeHeight
+                                }
+                            },
+                            []
+                        )];
+                    } else {
+                        nodes = [h(
+                            'div',
+                            {
+                                ref: 'wrap',
+                                'class': [this.wrapClass, 'el-scrollbar__wrap'],
+                                style: style
+                            },
+                            [[view]]
+                        )];
+                    }
+                    return h('div', {class: 'el-scrollbar'}, nodes);
                 },
-                clickTrackHandler: function clickTrackHandler(e) {
-                    var offset = Math.abs(e.target.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]);
-                    var thumbHalf = this.$refs.thumb[this.bar.offset] / 2;
-                    var thumbPositionPercentage = (offset - thumbHalf) * 100 / this.$el[this.bar.offset];
 
-                    this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
+
+                methods: {
+                    handleScroll: function handleScroll() {
+                        var wrap = this.wrap;
+
+                        this.moveY = wrap.scrollTop * 100 / wrap.clientHeight;
+                        this.moveX = wrap.scrollLeft * 100 / wrap.clientWidth;
+                    },
+                    update: function update() {
+                        var heightPercentage = void 0,
+                            widthPercentage = void 0;
+                        var wrap = this.wrap;
+                        if (!wrap) return;
+
+                        heightPercentage = wrap.clientHeight * 100 / wrap.scrollHeight;
+                        widthPercentage = wrap.clientWidth * 100 / wrap.scrollWidth;
+
+                        this.sizeHeight = heightPercentage < 100 ? heightPercentage + '%' : '';
+                        this.sizeWidth = widthPercentage < 100 ? widthPercentage + '%' : '';
+                    }
                 },
-                startDrag: function startDrag(e) {
-                    e.stopImmediatePropagation();
-                    this.cursorDown = true;
 
-                    (0, _dom.on)(document, 'mousemove', this.mouseMoveDocumentHandler);
-                    (0, _dom.on)(document, 'mouseup', this.mouseUpDocumentHandler);
-                    document.onselectstart = function () {
-                        return false;
-                    };
+                mounted: function mounted() {
+                    if (this.native) return;
+                    this.$nextTick(this.update);
+                    !this.noresize && (0, _resizeEvent.addResizeListener)(this.$refs.resize, this.update);
                 },
-                mouseMoveDocumentHandler: function mouseMoveDocumentHandler(e) {
-                    if (this.cursorDown === false) return;
-                    var prevPage = this[this.bar.axis];
-
-                    if (!prevPage) return;
-
-                    var offset = (this.$el.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]) * -1;
-                    var thumbClickPosition = this.$refs.thumb[this.bar.offset] - prevPage;
-                    var thumbPositionPercentage = (offset - thumbClickPosition) * 100 / this.$el[this.bar.offset];
-
-                    this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
-                },
-                mouseUpDocumentHandler: function mouseUpDocumentHandler(e) {
-                    this.cursorDown = false;
-                    this[this.bar.axis] = 0;
-                    (0, _dom.off)(document, 'mousemove', this.mouseMoveDocumentHandler);
-                    document.onselectstart = null;
+                beforeDestroy: function beforeDestroy() {
+                    if (this.native) return;
+                    !this.noresize && (0, _resizeEvent.removeResizeListener)(this.$refs.resize, this.update);
                 }
-            },
+            };
 
-            destroyed: function destroyed() {
-                (0, _dom.off)(document, 'mouseup', this.mouseUpDocumentHandler);
-            }
-        };
+            /***/
+        }),
 
-        /***/
-    }),
+        /***/ 395:
+        /***/ (function (module, exports, __webpack_require__) {
 
-    /***/ 396:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            "use strict";
 
 
-        exports.__esModule = true;
-        exports.renderThumbStyle = renderThumbStyle;
-        var BAR_MAP = exports.BAR_MAP = {
-            vertical: {
-                offset: 'offsetHeight',
-                scroll: 'scrollTop',
-                scrollSize: 'scrollHeight',
-                size: 'height',
-                key: 'vertical',
-                axis: 'Y',
-                client: 'clientY',
-                direction: 'top'
-            },
-            horizontal: {
-                offset: 'offsetWidth',
-                scroll: 'scrollLeft',
-                scrollSize: 'scrollWidth',
-                size: 'width',
-                key: 'horizontal',
-                axis: 'X',
-                client: 'clientX',
-                direction: 'left'
-            }
-        };
+            exports.__esModule = true;
 
-        function renderThumbStyle(_ref) {
-            var move = _ref.move,
-                size = _ref.size,
-                bar = _ref.bar;
+            var _dom = __webpack_require__(3);
 
-            var style = {};
-            var translate = 'translate' + bar.axis + '(' + move + '%)';
+            var _util = __webpack_require__(396);
 
-            style[bar.size] = size;
-            style.transform = translate;
-            style.msTransform = translate;
-            style.webkitTransform = translate;
+            /* istanbul ignore next */
+            exports.default = {
+                name: 'Bar',
 
-            return style;
-        };
+                props: {
+                    vertical: Boolean,
+                    size: String,
+                    move: Number
+                },
 
-        /***/
-    }),
+                computed: {
+                    bar: function bar() {
+                        return _util.BAR_MAP[this.vertical ? 'vertical' : 'horizontal'];
+                    },
+                    wrap: function wrap() {
+                        return this.$parent.wrap;
+                    }
+                },
 
-    /***/ 8:
-    /***/ (function (module, exports) {
+                render: function render(h) {
+                    var size = this.size,
+                        move = this.move,
+                        bar = this.bar;
 
-        module.exports = require("element-ui/lib/utils/util");
 
-        /***/
-    })
+                    return h(
+                        'div',
+                        {
+                            'class': ['el-scrollbar__bar', 'is-' + bar.key],
+                            on: {
+                                'mousedown': this.clickTrackHandler
+                            }
+                        },
+                        [h(
+                            'div',
+                            {
+                                ref: 'thumb',
+                                'class': 'el-scrollbar__thumb',
+                                on: {
+                                    'mousedown': this.clickThumbHandler
+                                },
 
-    /******/
-});
+                                style: (0, _util.renderThumbStyle)({size: size, move: move, bar: bar})
+                            },
+                            []
+                        )]
+                    );
+                },
+
+
+                methods: {
+                    clickThumbHandler: function clickThumbHandler(e) {
+                        this.startDrag(e);
+                        this[this.bar.axis] = e.currentTarget[this.bar.offset] - (e[this.bar.client] - e.currentTarget.getBoundingClientRect()[this.bar.direction]);
+                    },
+                    clickTrackHandler: function clickTrackHandler(e) {
+                        var offset = Math.abs(e.target.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]);
+                        var thumbHalf = this.$refs.thumb[this.bar.offset] / 2;
+                        var thumbPositionPercentage = (offset - thumbHalf) * 100 / this.$el[this.bar.offset];
+
+                        this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
+                    },
+                    startDrag: function startDrag(e) {
+                        e.stopImmediatePropagation();
+                        this.cursorDown = true;
+
+                        (0, _dom.on)(document, 'mousemove', this.mouseMoveDocumentHandler);
+                        (0, _dom.on)(document, 'mouseup', this.mouseUpDocumentHandler);
+                        document.onselectstart = function () {
+                            return false;
+                        };
+                    },
+                    mouseMoveDocumentHandler: function mouseMoveDocumentHandler(e) {
+                        if (this.cursorDown === false) return;
+                        var prevPage = this[this.bar.axis];
+
+                        if (!prevPage) return;
+
+                        var offset = (this.$el.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]) * -1;
+                        var thumbClickPosition = this.$refs.thumb[this.bar.offset] - prevPage;
+                        var thumbPositionPercentage = (offset - thumbClickPosition) * 100 / this.$el[this.bar.offset];
+
+                        this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
+                    },
+                    mouseUpDocumentHandler: function mouseUpDocumentHandler(e) {
+                        this.cursorDown = false;
+                        this[this.bar.axis] = 0;
+                        (0, _dom.off)(document, 'mousemove', this.mouseMoveDocumentHandler);
+                        document.onselectstart = null;
+                    }
+                },
+
+                destroyed: function destroyed() {
+                    (0, _dom.off)(document, 'mouseup', this.mouseUpDocumentHandler);
+                }
+            };
+
+            /***/
+        }),
+
+        /***/ 396:
+        /***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            exports.__esModule = true;
+            exports.renderThumbStyle = renderThumbStyle;
+            var BAR_MAP = exports.BAR_MAP = {
+                vertical: {
+                    offset: 'offsetHeight',
+                    scroll: 'scrollTop',
+                    scrollSize: 'scrollHeight',
+                    size: 'height',
+                    key: 'vertical',
+                    axis: 'Y',
+                    client: 'clientY',
+                    direction: 'top'
+                },
+                horizontal: {
+                    offset: 'offsetWidth',
+                    scroll: 'scrollLeft',
+                    scrollSize: 'scrollWidth',
+                    size: 'width',
+                    key: 'horizontal',
+                    axis: 'X',
+                    client: 'clientX',
+                    direction: 'left'
+                }
+            };
+
+            function renderThumbStyle(_ref) {
+                var move = _ref.move,
+                    size = _ref.size,
+                    bar = _ref.bar;
+
+                var style = {};
+                var translate = 'translate' + bar.axis + '(' + move + '%)';
+
+                style[bar.size] = size;
+                style.transform = translate;
+                style.msTransform = translate;
+                style.webkitTransform = translate;
+
+                return style;
+            };
+
+            /***/
+        }),
+
+        /***/ 8:
+        /***/ (function (module, exports) {
+
+            module.exports = require("element-ui/lib/utils/util");
+
+            /***/
+        })
+
+        /******/
+    });

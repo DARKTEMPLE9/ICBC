@@ -2,15 +2,14 @@
 var elNav = document.getElementById("nav");
 var elLi = elNav.getElementsByTagName('li');
 var domLi = document.querySelectorAll(".header #nav li");
-for(var i=0; i<elLi.length; i++){
-    elLi[i].addEventListener('click', function() {
-       for(var j=0; j<elLi.length; j++){
-           removeClass(elLi[j], "active");
-       }
-       addClass(this, "active");
+for (var i = 0; i < elLi.length; i++) {
+    elLi[i].addEventListener('click', function () {
+        for (var j = 0; j < elLi.length; j++) {
+            removeClass(elLi[j], "active");
+        }
+        addClass(this, "active");
     }, false);
 }
-
 
 
 /*domLi.forEach(function(v, i) {
@@ -26,23 +25,26 @@ for(var i=0; i<elLi.length; i++){
 });*/
 
 //添加
-function addClass (elements, className) {
-     if(!hasClass(elements,className)){
-         elements.className += " " + className;
-     }
+function addClass(elements, className) {
+    if (!hasClass(elements, className)) {
+        elements.className += " " + className;
+    }
 }
+
 //删除
-function removeClass (elements, className) {
-     if(hasClass(elements,className)){
-         let newArr = elements.className.split(" ");
-         newArr.splice(newArr.indexOf(className), 1);
-         elements.className = newArr.join(" ");
-     }
+function removeClass(elements, className) {
+    if (hasClass(elements, className)) {
+        let newArr = elements.className.split(" ");
+        newArr.splice(newArr.indexOf(className), 1);
+        elements.className = newArr.join(" ");
+    }
 }
+
 //是否存在
-function hasClass (elements, cName) {
+function hasClass(elements, cName) {
     return elements.className.indexOf(cName) > -1;
 }
+
 //侧栏
 /*
 resize();

@@ -98,128 +98,128 @@ module.exports =
     return __webpack_require__(__webpack_require__.s = 329);
     /******/
 })
-/************************************************************************/
-/******/({
+    /************************************************************************/
+    /******/({
 
-    /***/ 329:
-    /***/ (function (module, exports, __webpack_require__) {
+        /***/ 329:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        module.exports = __webpack_require__(330);
-
-
-        /***/
-    }),
-
-    /***/ 330:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            module.exports = __webpack_require__(330);
 
 
-        exports.__esModule = true;
+            /***/
+        }),
 
-        var _col = __webpack_require__(331);
+        /***/ 330:
+        /***/ (function (module, exports, __webpack_require__) {
 
-        var _col2 = _interopRequireDefault(_col);
-
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {default: obj};
-        }
-
-        /* istanbul ignore next */
-        _col2.default.install = function (Vue) {
-            Vue.component(_col2.default.name, _col2.default);
-        };
-
-        exports.default = _col2.default;
-
-        /***/
-    }),
-
-    /***/ 331:
-    /***/ (function (module, exports, __webpack_require__) {
-
-        "use strict";
+            "use strict";
 
 
-        exports.__esModule = true;
+            exports.__esModule = true;
 
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-            return typeof obj;
-        } : function (obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
+            var _col = __webpack_require__(331);
 
-        exports.default = {
-            name: 'ElCol',
+            var _col2 = _interopRequireDefault(_col);
 
-            props: {
-                span: {
-                    type: Number,
-                    default: 24
-                },
-                tag: {
-                    type: String,
-                    default: 'div'
-                },
-                offset: Number,
-                pull: Number,
-                push: Number,
-                xs: [Number, Object],
-                sm: [Number, Object],
-                md: [Number, Object],
-                lg: [Number, Object],
-                xl: [Number, Object]
-            },
-
-            computed: {
-                gutter: function gutter() {
-                    var parent = this.$parent;
-                    while (parent && parent.$options.componentName !== 'ElRow') {
-                        parent = parent.$parent;
-                    }
-                    return parent ? parent.gutter : 0;
-                }
-            },
-            render: function render(h) {
-                var _this = this;
-
-                var classList = [];
-                var style = {};
-
-                if (this.gutter) {
-                    style.paddingLeft = this.gutter / 2 + 'px';
-                    style.paddingRight = style.paddingLeft;
-                }
-
-                ['span', 'offset', 'pull', 'push'].forEach(function (prop) {
-                    if (_this[prop] || _this[prop] === 0) {
-                        classList.push(prop !== 'span' ? 'el-col-' + prop + '-' + _this[prop] : 'el-col-' + _this[prop]);
-                    }
-                });
-
-                ['xs', 'sm', 'md', 'lg', 'xl'].forEach(function (size) {
-                    if (typeof _this[size] === 'number') {
-                        classList.push('el-col-' + size + '-' + _this[size]);
-                    } else if (_typeof(_this[size]) === 'object') {
-                        (function () {
-                            var props = _this[size];
-                            Object.keys(props).forEach(function (prop) {
-                                classList.push(prop !== 'span' ? 'el-col-' + size + '-' + prop + '-' + props[prop] : 'el-col-' + size + '-' + props[prop]);
-                            });
-                        })();
-                    }
-                });
-
-                return h(this.tag, {
-                    class: ['el-col', classList],
-                    style: style
-                }, this.$slots.default);
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {default: obj};
             }
-        };
 
-        /***/
-    })
+            /* istanbul ignore next */
+            _col2.default.install = function (Vue) {
+                Vue.component(_col2.default.name, _col2.default);
+            };
 
-    /******/
-});
+            exports.default = _col2.default;
+
+            /***/
+        }),
+
+        /***/ 331:
+        /***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            exports.__esModule = true;
+
+            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+                return typeof obj;
+            } : function (obj) {
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+
+            exports.default = {
+                name: 'ElCol',
+
+                props: {
+                    span: {
+                        type: Number,
+                        default: 24
+                    },
+                    tag: {
+                        type: String,
+                        default: 'div'
+                    },
+                    offset: Number,
+                    pull: Number,
+                    push: Number,
+                    xs: [Number, Object],
+                    sm: [Number, Object],
+                    md: [Number, Object],
+                    lg: [Number, Object],
+                    xl: [Number, Object]
+                },
+
+                computed: {
+                    gutter: function gutter() {
+                        var parent = this.$parent;
+                        while (parent && parent.$options.componentName !== 'ElRow') {
+                            parent = parent.$parent;
+                        }
+                        return parent ? parent.gutter : 0;
+                    }
+                },
+                render: function render(h) {
+                    var _this = this;
+
+                    var classList = [];
+                    var style = {};
+
+                    if (this.gutter) {
+                        style.paddingLeft = this.gutter / 2 + 'px';
+                        style.paddingRight = style.paddingLeft;
+                    }
+
+                    ['span', 'offset', 'pull', 'push'].forEach(function (prop) {
+                        if (_this[prop] || _this[prop] === 0) {
+                            classList.push(prop !== 'span' ? 'el-col-' + prop + '-' + _this[prop] : 'el-col-' + _this[prop]);
+                        }
+                    });
+
+                    ['xs', 'sm', 'md', 'lg', 'xl'].forEach(function (size) {
+                        if (typeof _this[size] === 'number') {
+                            classList.push('el-col-' + size + '-' + _this[size]);
+                        } else if (_typeof(_this[size]) === 'object') {
+                            (function () {
+                                var props = _this[size];
+                                Object.keys(props).forEach(function (prop) {
+                                    classList.push(prop !== 'span' ? 'el-col-' + size + '-' + prop + '-' + props[prop] : 'el-col-' + size + '-' + props[prop]);
+                                });
+                            })();
+                        }
+                    });
+
+                    return h(this.tag, {
+                        class: ['el-col', classList],
+                        style: style
+                    }, this.$slots.default);
+                }
+            };
+
+            /***/
+        })
+
+        /******/
+    });

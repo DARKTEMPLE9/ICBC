@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('在线借阅历史列表')"/>
+</head>
+<body>
+
+<div class="container-div">
+    <div class="row">
+
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+
+                        <li>
+                            档案题名：<input type="text" name="arcName" style="margin-left: 5px;"/>
+                        </li>
+
+                        <li>
+                            责任者：<input id="respOpName" style="margin-left: 40px" type="text" name="respOpName"
+                                       onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                       placeholder="请选择责任者"/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--所属部门：<input type="text" name="opDepName"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--申请人：<input type="text" name="appOpName"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--借阅事由：<input type="text" name="appReason"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div>
+                                档案类型：<select name="arcType" th:with="type=${@dict.getType('archive_type')}"
+                                             style="margin-left: 23px">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            状态：<select name="status" th:with="type=${@dict.getType('borrow_status')}"
+                                       style="margin-left: 30px">
+                            <option value="">所有</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+
+                        <!--<li>-->
+                        <!--档案状态：<input type="text" name="arcStatus"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            档案编号：<input style="margin-left: 27px" type="text" name="arcNo"/>
+                        </li>
+
+                        <li>
+                            文件编号：<input style="margin-left: 25px" type="text" name="fileNo"/>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>申请时间： </label>
+                                <input type="text" style="margin-left: 3px;" class="input-sm form-control"
+                                       id="laydate-startTime" placeholder="" name="appTimeStart"/>
+                                <span>-</span>
+                                <input type="text" class="input-sm form-control" id="laydate-endTime" placeholder=""
+                                       name="appTimeEnd"/>
+                            </div>
+                        </li>
+
+                        <!--<li>-->
+                        <!--<div class="select-time">-->
+                        <!--<label>借阅时间： </label>-->
+                        <!--<input type="text" id="laydate-startTime1" placeholder="" name="borStaTimeStr" style="margin-left: 26px;"/>-->
+                        <!--<span>-</span>-->
+                        <!--<input type="text" style="width: 93px;" class="input-sm form-control" id="laydate-endTime1" placeholder="" name="borEndTimeStr"/>-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<div class="select-time">-->
+                        <!--<label>借阅结束日期： </label>-->
+                        <!--<input type="text" style="width: 93px;" class="input-sm form-control" id="laydate-startTime2" placeholder="" name="borEndTimeStart"/>-->
+                        <!--<span>-</span>-->
+                        <!--<input type="text" style="width: 93px;" class="input-sm form-control" id="laydate-endTime2" placeholder="" name="borEndTimeEnd"/>-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <input type="hidden" th:value="${path}" id="path"/>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+
+</div>
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('borrow:amsBorrowInfo:edit')}]];
+    var borrowStatus = [[${@dict.getType('borrow_status')}]];
+
+    var parId = "elec";
+    var totalPagesFlag = "Data";
+    var prefix = ctx + "borrow/amsBorrowInfo";
+
+    //请求路径参数
+    var path = $("#path").val();
+    if (path == "elec") {
+        _url = "/list/elec";
+    }
+
+    // 日期框js
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            var startDate = laydate.render({
+                elem: '#laydate-startTime',
+                max: $('#laydate-endTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var startDate1 = laydate.render({
+                elem: '#laydate-startTime1',
+                max: $('#laydate-endTime1').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var startDate2 = laydate.render({
+                elem: '#laydate-startTime2',
+                max: $('#laydate-endTime2').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+
+            var endDate = laydate.render({
+                elem: '#laydate-endTime',
+                min: $('#laydate-startTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                // done: function(value, date) {
+                //     // 开始时间小于结束时间
+                //     if (value !== '') {
+                //         startDate.config.max.year = date.year;
+                //         startDate.config.max.month = date.month - 1;
+                //         startDate.config.max.date = date.date;
+                //     } else {
+                //         startDate.config.max.year = '';
+                //         startDate.config.max.month = '';
+                //         startDate.config.max.date = '';
+                //     }
+                // }
+            });
+            var endDate1 = laydate.render({
+                elem: '#laydate-endTime1',
+                min: $('#laydate-startTime1').val(),
+                theme: 'molv',
+                trigger: 'click',
+                // done: function(value, date) {
+                //     // 开始时间小于结束时间
+                //     if (value !== '') {
+                //         startDate.config.max.year = date.year;
+                //         startDate.config.max.month = date.month - 1;
+                //         startDate.config.max.date = date.date;
+                //     } else {
+                //         startDate.config.max.year = '';
+                //         startDate.config.max.month = '';
+                //         startDate.config.max.date = '';
+                //     }
+                // }
+            });
+            var endDate2 = laydate.render({
+                elem: '#laydate-endTime2',
+                min: $('#laydate-startTime2').val(),
+                theme: 'molv',
+                trigger: 'click',
+                // done: function(value, date) {
+                //     // 开始时间小于结束时间
+                //     if (value !== '') {
+                //         startDate.config.max.year = date.year;
+                //         startDate.config.max.month = date.month - 1;
+                //         startDate.config.max.date = date.date;
+                //     } else {
+                //         startDate.config.max.year = '';
+                //         startDate.config.max.month = '';
+                //         startDate.config.max.date = '';
+                //     }
+                // }
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + _url,
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "在线查阅历史",
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人',
+                    sortable: true
+                },
+                {
+                    field: 'appDepName',
+                    title: '申请部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true
+                },
+                {
+                    field: 'arcName',
+                    title: '档案题名',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'borDays',
+                    title: '借阅天数',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowStatus, item.status);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+
+                        actions.push('<a class="btn btn-danger btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        //queryMore();
+    });
+
+    /* 选择责任者 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function showTalModel() {
+        $("#myTalModal").modal("show");
+    }
+
+    function myQuery() {
+        var url = "";
+        var data = calDataAjax("myForm", false);
+        if (!data) {
+            return;
+        }
+        url = "amsBorrowInfo!query.do?params=" + parId;
+        NorthkingCRUD.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            data: data,
+            beforeSend: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                NorthkingCRUD
+                    .commonErrorHandler(jqXHR, textStatus, errorThrown);
+            },
+            success: function (json) {
+                showBorPojos(json);
+                NorthkingCRUD.Manage.selectFirst();
+                NorthkingCRUD.Manage.showPagination(json);
+                NorthkingCRUD.Manage.changeColor();
+                var d = document.getElementById("paginationNav");
+                if (d) {
+                    d.style.display = "";
+                }
+            }
+        });
+    }
+
+    function calDataAjax(formId, checkValid) {
+        var data = {};
+        var ips = $(".submitInput", formId ? ("#" + formId) : null);
+        if (ips) {
+            for (var i = 0; i < ips.length; i++) {
+                var key = ips[i].name || ips[i].id;
+                var es = getCheckedRadioValue(key, formId);
+                var e;
+                if (es && es.length) {
+                    e = es[0];
+                    data[key] = e.value;
+                    if (e.id) {
+                        e = $("#" + e.id);
+                    }
+                } else {
+                    if (!$("input[name='" + key + "'][type='checkbox']").length) {
+                        e = $("#" + key);
+                        data[key] = e.val();
+                        if (!data[key]) {
+                            data[key] = ips[i].value;
+                        }
+                    }
+
+                }
+                if (checkValid) {
+                    if (e.attr("notNull") == "true") {
+                        if (isNull(data[key])) {
+                            if (!e.parent().parent().hasClass("error")) {
+                                e
+                                    .focus()
+                                    .after(
+                                        "<span style='color:#F00;' id='err_" + key
+                                        + "'>不能为空</span>")
+                                    .parent().parent().addClass("error");
+                            } else {
+                                e.focus();
+                            }
+                            ;
+                            return false;
+                        }
+                    }
+                }
+                if (e.parent().parent().hasClass("error")) {
+                    e.focus().parent().parent().removeClass("error");
+                    $("#err_" + key).remove();
+                }
+            }
+        }
+        ;
+        return data;
+    }
+
+    /**查看借阅信息
+     *
+     */
+    function viewBor(img) {
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        var id = row[0].id;
+        var borType = row[0].borType;
+        //alert(" row[0] id is " + id)
+        var options = {
+            title: "备注",
+            width: 876,
+            height: 568,
+            url: prefix + "/detail/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['取消'],
+            yes: function (index, layero) {
+                //alert("OK")
+                //getRemark();
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+
+    }
+
+    function onclickInput(obj, elEvent) {
+        var dataType = obj.dataType || obj.getAttribute("dataType");
+        if (dataType == "date" || dataType == "timestamp") {
+            if (!obj.binded) {
+                obj.binded = true;
+                obj.datePicker = new Pikaday({
+                    //i18n : NorthkingCRUD.i18n,
+                    field: obj,
+                    format: NorthkingCRUD.dateFormat.toUpperCase()
+                });
+                obj.datePicker.show();
+            }
+
+            // this.datePicker = putDateByObj(obj, this);
+            if (elEvent) {
+                elEvent.cancelBubble = true;
+            }
+        }
+    }
+
+    function getCheckedRadioValue(name, formId) {
+        return $("input[name='" + name + "']:checked", formId ? ("#" + formId)
+            : null);
+    }
+
+    //档案类型数据字典
+    function queryMore() {
+        NorthkingCRUD.ajax({
+            type: "post",
+            url: "amsParam!queryBillParam.do",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                arcLevelParam(data);
+                arcLevelParam1(data);
+
+            }
+        });
+    }
+
+    /* 初始化借阅状态查询下拉框 */
+    function arcLevelParam(data) {
+        var bowStatus = data.amsParamMap.BORROW_STATUS;
+        var html = "<option value=''>全部</option>";
+        for (var i = 0; i < bowStatus.length; i++) {
+            html += "<option value='" + bowStatus[i].paramCode + "'>"
+                + bowStatus[i].paramName + "</option>";
+            bowArray[bowStatus[i].paramCode] = bowStatus[i].paramName;
+        }
+        // html+="<option value='' style='display:none'></option>";
+        $("#status").append(html);
+        $("#status").selectpicker("refresh");
+    }
+
+    /* 初始化查询下拉框 */
+    function arcLevelParam1(data) {
+        var arcLevel = data.amsParamMap.ARC_LEVEL;
+        var html = "<option value=''>全部</option>";
+        for (var i = 0; i < arcLevel.length; i++) {
+            html += "<option value='" + arcLevel[i].paramCode + "'>" + arcLevel[i].paramName + "</option>";
+        }
+        //html+="<option value='' style='display:none'></option>";
+        $("#arcLevel").append(html);
+        $("#arcLevel").selectpicker("refresh");
+    }
+
+    /* 档案类型选择 */
+    function arcBillTree() {
+        chooseFunc = "arcBillFunc";
+        var h4 = document.getElementById('h4');
+        h4.innerHTML = '选择档案类型';
+        amsBillTree();
+        $("#chooseBillModal").modal('show');
+    }
+
+    function amsBillTree() {
+        NorthkingCRUD.ajax({
+            url: "amsBill!queryBillByUserOrgan.do",
+            type: "post",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                $.fn.zTree.init($("#treeDemo"), setting, data.tree);
+                var TreeObj = $.fn.zTree.getZTreeObj("treeDemo");
+                TreeObj.expandAll(true);
+            }
+        });
+    }
+
+    //树的提交事件
+    function confirm1() {
+        arcBillChooseFunc();
+        $("#chooseBillModal").modal('hide');
+
+    }
+
+    /* 档案类型反显  */
+    function arcBillChooseFunc() {
+        document.getElementById("arcBillCode").value = "";
+        document.getElementById("arcBillDeptCode").value = "";
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getSelectedNodes();
+        if (nodes[0].isParent) {
+            var arcBill = nodes[0].name;
+            var arcBillCode = nodes[0].code;
+            document.getElementById("arcBillName").value = arcBill;
+            document.getElementById("arcBillCode").value = arcBillCode;
+            return;
+        } else {
+            var arcBill = nodes[0].name;
+            var arcBillCode = nodes[0].code;
+            document.getElementById("arcBillName").value = arcBill;
+            document.getElementById("arcBillDeptCode").value = arcBillCode;
+        }
+    }
+
+</script>
+
+</body>
+</html>

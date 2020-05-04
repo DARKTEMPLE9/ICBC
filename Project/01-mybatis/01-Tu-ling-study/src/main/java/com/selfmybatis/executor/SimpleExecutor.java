@@ -4,8 +4,8 @@ package com.selfmybatis.executor;
 import com.selfmybatis.session.Configuration;
 
 /*
-* 执行器
-* */
+ * 执行器
+ * */
 public class SimpleExecutor implements Executor {
 
     private Configuration configuration;

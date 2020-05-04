@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 public class TokenFormController {
 
     /*
-    * 跳转至新增页面测试token生成及其作用产生
-    * */
+     * 跳转至新增页面测试token生成及其作用产生
+     * */
     @RequestMapping(value = "/toAddForm", method = {RequestMethod.GET, RequestMethod.POST})
     @Token(save = true)
     public ModelAndView toAddForm(HttpServletRequest request) {
@@ -24,7 +24,6 @@ public class TokenFormController {
         request.getSession().getAttribute("token");
         return modelAndView;
     }
-
 
 
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfProcAct2SmRoleMapper">
+
+    <resultMap type="WfProcAct2SmRole" id="WfProcAct2SmRoleResult">
+        <result property="id" column="ID"/>
+        <result property="procActId" column="PROC_ACT_ID"/>
+        <result property="roleCode" column="ROLE_CODE"/>
+    </resultMap>
+
+    <sql id="selectWfProcAct2SmRoleVo">
+        select ID, PROC_ACT_ID, ROLE_CODE from wf_proc_act2_sm_role
+    </sql>
+
+    <select id="selectWfProcAct2SmRoleList" parameterType="WfProcAct2SmRole" resultMap="WfProcAct2SmRoleResult">
+        <include refid="selectWfProcAct2SmRoleVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="procActId != null  and procActId != '' ">and PROC_ACT_ID = #{procActId}</if>
+            <if test="roleCode != null  and roleCode != '' ">and ROLE_CODE = #{roleCode}</if>
+        </where>
+    </select>
+
+    <select id="selectWfProcAct2SmRoleById" parameterType="String" resultMap="WfProcAct2SmRoleResult">
+        <include refid="selectWfProcAct2SmRoleVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfProcAct2SmRole" parameterType="WfProcAct2SmRole">
+        insert into wf_proc_act2_sm_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="procActId != null  and procActId != ''  ">PROC_ACT_ID,</if>
+            <if test="roleCode != null  and roleCode != ''  ">ROLE_CODE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="procActId != null  and procActId != ''  ">#{procActId},</if>
+            <if test="roleCode != null  and roleCode != ''  ">#{roleCode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfProcAct2SmRole" parameterType="WfProcAct2SmRole">
+        update wf_proc_act2_sm_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="procActId != null  and procActId != ''  ">PROC_ACT_ID = #{procActId},</if>
+            <if test="roleCode != null  and roleCode != ''  ">ROLE_CODE = #{roleCode},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfProcAct2SmRoleById" parameterType="String">
+        delete from wf_proc_act2_sm_role where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfProcAct2SmRoleByIds" parameterType="String">
+        delete from wf_proc_act2_sm_role where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

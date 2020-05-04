@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案类型列表')"/>
+    <th:block th:include="include :: ztree-css"/>
+    <style>
+        /*更改样式*/
+        .pull-right {
+            margin-right: 450px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+
+                <div class="select-list">
+                    <ul class="clearfix">
+
+                        <li>
+                            档案类型编码：<input type="text" name="code"/>
+                        </li>
+
+                        <li>
+                            档案类型名称：<input type="text" name="name"/>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+
+            <a class="btn btn-success" onclick="queryLimitBill()" shiro:hasPermission="param:amsBill:add">
+                <i class="fa fa-search"></i> 查看限制检索类型
+            </a>
+            <a class="btn btn-primary single disabled" onclick="addLimitBill()" shiro:hasPermission="param:amsBill:add">
+                <i class="fa fa-plus"></i> 限制检索类型
+            </a>
+
+            <a class="btn btn-success single disabled" onclick="addChild()" shiro:hasPermission="param:amsBill:add">
+                <i class="fa fa-save"></i> 新增子类型
+            </a>
+            <a class="btn btn-primary single disabled" onclick="editChild()" shiro:hasPermission="param:amsBill:edit"
+               id="billUpdate">
+                <i class="fa fa-edit"></i> 修改子类型
+            </a>
+            <a class="btn btn-info single disabled" onclick="detailBill()" shiro:hasPermission="param:amsBill:detail">
+                <i class="fa fa-search"></i> 查看子类型
+            </a>
+            <a class="btn btn-danger single disabled" onclick="removeBill()" shiro:hasPermission="param:amsBill:remove">
+                <i class="fa fa-remove"></i> 删除子类型
+            </a>
+
+
+            <input id="parentId" name="parentId" type="hidden" value=""/>
+            <input id="treeName" name="parentName" type="hidden" value="若依科技"/>
+
+        </div>
+        <div class="col-sm-12 select-table table-striped" style="position: relative">
+            <table id="bootstrap-table" data-mobile-responsive="true" class="col-sm-6"
+                   style="float: left; width: 600px"></table>
+            <!--<select id="amsBillSel" class="form-control col-sm-6" multiple="multiple"-->
+            <!--style="float: right;width: 400px;display: inline;vertical-align: top;margin-top: -445px;-->
+            <!--height: 340px;position: absolute;/* bottom: 50px; */right: 50px;top: 504px;z-index: 999;overflow: auto;"> &lt;!&ndash; size="18" style="width: 400px"&ndash;&gt;-->
+            <!--</select>-->
+
+            <div style="float: right;width: 300px;display: inline;vertical-align: top;margin-top: -445px;
+								height: 340px;position: absolute;/* bottom: 50px; */right: 50px;top: 504px;z-index: 999;overflow: auto;">
+                <div class="box-tools">
+                    <a type="button" class="btn btn-box-tool menuItem" style="margin-left: 210px;"
+                       href="#" onclick="addAmsBill()" title="新增子类型">
+                        <span> 档案子类型 </span>
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </div>
+                <div style="border-top: 1px solid #eee;">
+                    <div id="treeAmsBill" class="ztree treeselect"></div>
+                </div>
+                <input id="treeId" name="treeId" type="hidden"/>
+                <input id="treeName" name="treeName" type="hidden"/>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<th:block th:include="include :: ztree-js"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('param:amsBill:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('param:amsBill:remove')}]];
+    var prefix = ctx + "param/amsBill";
+
+    $(function () {
+
+        //加载子类档案类型tree
+        initTab();
+
+        //加载子类档案类型
+        //getTreeBill();
+
+        $("#bootstrap-table").on("check.bs.table", function () {         //点击radio触发事件
+            var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+            //console.log(" childBill id is " + childBill[0]["id"]);
+            var _billId = childBill[0]["id"];
+            var _name = childBill[0]["name"];
+            // getTreeBill(_billId,_name);
+            loadAmsBill(_billId, _name);
+        });
+
+    });
+
+    function initTab() {
+        var options = {
+            url: prefix + "/child/list",
+            exportUrl: prefix + "/export",
+            showSearch: false,
+            showRefresh: false,
+            showColumns: false,
+            expandAll: false,
+            expandFirst: false,
+            showToggle: false,
+            modalName: "档案子类型",
+            // showExport: true,
+            columns: [{
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '档案类型编码',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '档案类型名称',
+                    sortable: true
+                }
+            ],
+            onLoadSuccess: function (data) {
+                //加载时清空
+                $("#treeAmsBill").empty();
+            }
+        };
+
+        $.table.init(options);
+    }
+
+    /*子类档案类型*/
+    function getTreeBill(id, name) {
+        $("#amsBillSel").empty();
+
+        var billedId = id;
+        var name = name;
+
+        var depotHtml = "";
+        $.ajax({
+            method: 'post',
+            url: prefix + '/queryChildBill',
+            data: {
+                billId: billedId
+            },
+            success: function (message) {
+                //console.log(" message is " + message)
+                $("#amsBillSel").empty();
+                depotHtml = depotHtml
+                    + '<optgroup id="' + billedId + '" label="' + name + '">';
+
+                $.each(message.childBillList, function (i, item) {
+                    var showName = item.code
+                        + "-"
+                        + item.name;
+                    depotHtml = depotHtml
+                        + '<option id="' + item.id + '" name="' + item.code + '" label="' + showName + '">';
+                });
+
+                depotHtml = depotHtml
+                    + '</optgroup>';
+
+                $("#amsBillSel").append(depotHtml);
+            },
+            error: function () {
+                alert("出现异常");
+            }
+        });
+    }
+
+    /*新增*/
+    function addChild() {
+        var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+        var pid = childBill[0]["id"];
+        var pname = childBill[0]["name"];
+
+        if (pid != "" && pid != undefined) {
+            var addChildUrl = prefix + "/child/add/" + pid + "/" + pname;
+            var title = "新增档案子类型";
+            openEditModal(addChildUrl, title);
+        } else {
+            $.modal.alertWarning("请选择一条记录");
+        }
+    }
+
+    /*修改*/
+    function editChild() {
+        var childId = $("#treeId").val();
+        //if ($("#amsBillSel option:selected").length == 1){
+        if (childId != "") {
+            var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+            var pid = childBill[0]["id"];
+            var pname = childBill[0]["name"];
+
+            newUpdate(pname);
+        } else {
+            $.modal.alertWarning("请选择一条记录");
+        }
+
+    }
+
+    function newUpdate(pname) {
+        // var cked = $("#amsBillSel").find("option:selected").attr("id");
+        // if (cked && cked.length) {
+        id = $("#treeId").val();
+        // }
+        var editChildUrl = prefix + "/child/edit/" + id + "/" + pname;
+        var title = "修改档案子类型";
+
+        openEditModal(editChildUrl, title);
+    }
+
+    /*删除*/
+    function removeBill() {
+
+        var childId = $("#treeId").val();
+        //if ($("#amsBillSel option:selected").length == 1){
+        if (childId != "") {
+
+            $.modal.confirm("确认要删除?", function () {
+                url = prefix + "/child/remove";
+
+                var data = {"ids": childId};
+
+                // var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+                // var pid = childBill[0]["id"];
+                // var pname = childBill[0]["name"];
+
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    // beforeSend: function () {
+                    // 	$.modal.loading("正在处理中，请稍后...");
+                    // },
+                    success: function (result) {
+                        //重新加载档案子类型
+                        var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+                        var _billId = childBill[0]["id"];
+                        var _name = childBill[0]["name"];
+                        loadAmsBill(_billId, _name);
+                    }
+                });
+
+            });
+
+        } else {
+            $.modal.alertWarning("请选择一条记录");
+        }
+    }
+
+    /*详情*/
+    function detailBill() {
+        if ($("#amsBillSel option:selected").length == 1) {
+            var childId = $("#amsBillSel").find("option:selected").attr("id");
+            var detailChildUrl = prefix + "/child/detail/" + childId;
+            var title = "档案子类型详情";
+            openNormalModal(detailChildUrl, title);
+        } else {
+            $.modal.alertWarning("请选择一条记录");
+        }
+    }
+
+    /*查看限制检索类型*/
+    function queryLimitBill() {
+        var limitBillUrl = prefix + "/toSmSecret";
+        var title = "查看限制检索类型";
+        openNormalModal(limitBillUrl, title);
+    }
+
+    function addLimitBill() {
+        var parentBill = $("#bootstrap-table").bootstrapTable('getSelections');
+        var pid = parentBill[0]["id"];
+        var childId = $("#amsBillSel").find("option:selected").attr("id");
+        $.ajax({
+            method: 'post',
+            url: prefix + '/child/addSmSecret',
+            data: {
+                arcBillCodeReq: pid,
+                arcBillDeptCodeReq: childId
+            },
+            success: function (data) {
+                console.log("success data is" + data);
+                // $.modal.alertSuccess(msg);
+                if (data.code == 0) {
+                    $.modal.msgSuccess(data.msg);
+                }
+                if (data.code == 301) {
+                    $.modal.msgWarning(data.msg);
+                }
+            },
+            error: function () {
+                $.modal.alertWarning("添加限制检索类型异常");
+            }
+        });
+    }
+
+    //编辑 Modal
+    function openEditModal(_url, title) {
+        var options = {
+            title: title,
+            width: 800,
+            height: 405,
+            url: _url,
+            // skin: 'layui-layer-gray',
+            btn: ['确定', '关闭'],
+            yes: function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler(index, layero);
+                var name = iframeWin.contentWindow.$("#name").val();
+                if (name == "") {
+                    return;
+                }
+                $.modal.msgSuccess("操作成功");
+
+                //重新加载档案子类型
+                var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+                var _billId = childBill[0]["id"];
+                var _name = childBill[0]["name"];
+                loadAmsBill(_billId, _name);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    //详情 Modal
+    function openNormalModal(_url, title) {
+        var options = {
+            title: title,
+            width: 800,
+            height: 405,
+            url: _url,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    //tree Start
+    // $();
+    function loadAmsBill(id, name) {
+        // var url = ctx + "param/amsBill/treeData";
+        // var options = {
+        // 	id: 'treeDept',
+        // 	url: url,
+        // 	expandLevel: 2,
+        // 	onClick : zOnClick
+        // };
+        // $.tree.init(options);
+
+        var url = ctx + "param/amsBill/treeArchives/" + id;
+        var options = {
+            id: 'treeAmsBill',
+            url: url,
+            // expand:true,
+            expandLevel: 1,
+            check: {
+                enable: false,             // 置 zTree 的节点上是否显示 checkbox / radio
+                nocheckInherit: true,      // 设置子节点是否自动继承
+            },
+            view: {
+                addHoverDom: addHoverDom,
+                selectedMulti: false
+            },
+            edit: {
+                enable: true,
+                editNameSelectAll: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onAsyncSuccess: function () {
+                    // var zTreeObj = $("#treeAmsBill");
+                    // showztreemenuNum(true,zTreeObj,3);
+                }
+            },
+            onCheck: zonCheck,
+            onClick: zOnClick
+        };
+        var setting = {
+            view: options.view
+        };
+
+        $.tree.init(options, setting);
+    }
+
+    //zTree节点的点击事件回调函数
+    function zOnClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+    }
+
+    //zTree节点checkbox勾选事件回调函数
+    function zonCheck(event, treeId, treeNodes) {
+        var rTreeObj = $.fn.zTree.getZTreeObj(treeId);
+        var billCodes = "";
+        var rnodes = rTreeObj.getCheckedNodes(true);
+        for (var i = 0; i < rnodes.length; i++) {
+            if (rnodes[i].isParent) {
+                var node = rTreeObj.getNodesByParam("id", rnodes[i].id, null)
+                var count = 0;
+                for (var j = 0; j < node.length; j++) {
+                    if (node[j].checked) {
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    alert("请选择该类型下的子类型");
+                    return;
+                }
+            }
+            billCodes += rnodes[i].id + ",";
+        }
+        billCodes = billCodes.substring(0, billCodes.length - 1);
+        $("#billNodes").val(billCodes);
+    }
+
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            $.ajax({
+                async: false,
+                type: "post",
+                dataType: "text",
+                url: "../../Ashx/FlowTypeHandler.ashx?Type=add&pId=" + treeNode.id + "&_" + Math.random(),
+                success: function (data) {
+                    if (data != "0") {
+                        zTree.addNodes(treeNode, {id: data, pId: treeNode.id, name: "新类型请编辑"});
+                    } else {
+                        alert("添加失败");
+                    }
+                }
+            });
+            return false;
+        });
+    };
+
+    function showztreemenuNum(b, childnodes, l) {
+        if (b) {
+            var rootnodes = zTreeObj.getNodes();
+            showztreemenuNum(false, rootnodes, l);//递归
+        } else {
+            var len = -1;
+            if (!isNull(childnodes) && !isNull((len = childnodes.length)) && len > 0) {
+                if (l < childnodes[0].level) {
+                    return;
+                }
+                for (var i = 0; i < len; i++) {
+                    zTreeObj.expandNode(childnodes[i], true, false, false, true);
+                    var child = childnodes[i].children;
+                    showztreemenuNum(false, child, l);//递归
+                }
+            }
+        }
+    };
+
+    function addAmsBill() {
+        var childId = $("#treeId").val();
+        if (childId != "") {
+            var childBill = $("#bootstrap-table").bootstrapTable('getSelections');
+            var pid = childBill[0]["id"];
+            var url = prefix + "/subBillTree/" + pid;
+            $.modal.openTab("档案子类型管理", url);
+        } else {
+            $.modal.alertWarning("请选择一条记录");
+        }
+    }
+
+    //tree End
+
+</script>
+</body>
+</html>

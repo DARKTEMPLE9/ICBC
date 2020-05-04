@@ -14,6 +14,7 @@ public interface PmsBrandService {
     List<PmsBrand> listAllBrand();
 
     int createBrand(PmsBrandParam pmsBrandParam);
+
     @Transactional
     int updateBrand(Long id, PmsBrandParam pmsBrandParam);
 

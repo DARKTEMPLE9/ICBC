@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改档案')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsArcReg-edit" th:object="${amsArcReg}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <h4 class="form-header h4">基本信息</h4>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">档案名称:</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">登记人名称:</label>
+            <div class="col-sm-8">
+                <input id="regOpName" name="regOpName" th:field="*{regOpName}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">登记时间:</label>
+            <div class="col-sm-8">
+                <input id="regTime" name="regTime" th:value="${#dates.format(amsArcReg.regTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">是否移交行档室:</label>
+            <div class="col-sm-8" th:switch="*{hasMoveBank}">
+                <input name="hasMoveBank" th:case="0" value="否" class="form-control" type="text" readonly disabled>
+                <input name="hasMoveBank" th:case="1" value="是" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">登记份数:</label>
+            <div class="col-sm-8">
+                <input id="regArcNum" name="regArcNum" th:field="*{regArcNum}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">登记页数:</label>
+            <div class="col-sm-8">
+                <input id="recPageNum" name="recPageNum" th:field="*{recPageNum}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">文件编号:</label>
+            <div class="col-sm-8">
+                <input id="arcCode" name="arcCode" th:field="*{arcCode}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">接收人名称:</label>
+            <div class="col-sm-8">
+                <input id="recOpName" name="recOpName" th:field="*{recOpName}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">接收人机构名称:</label>
+            <div class="col-sm-8">
+                <input id="recOrgName" name="recOrgName" th:field="*{recOrgName}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">接收时间:</label>
+            <div class="col-sm-8">
+                <input id="recTime" name="recTime" th:value="${#dates.format(amsArcReg.recTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">接收备注:</label>
+            <div class="col-sm-8">
+                <input id="recRemark" name="recRemark" th:field="*{recRemark}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">登记备注:</label>
+            <div class="col-sm-8">
+                <input id="regRemark" name="regRemark" th:field="*{regRemark}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">修改时间:</label>
+            <div class="col-sm-8">
+                <input id="modTime" name="modTime" th:value="${#dates.format(amsArcReg.modTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "archCollection/amsArcReg";
+    $("#form-amsArcReg-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsArcReg-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

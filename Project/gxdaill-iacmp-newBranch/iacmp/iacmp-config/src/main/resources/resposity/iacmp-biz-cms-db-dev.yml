@@ -1,0 +1,79 @@
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #driverClassName: com.mysql.jdbc.Driver
+    druid:
+      # 主库数据源 172.19.187.147:3306/ams?
+      master:
+        url: jdbc:mysql://localhost:3306/lcms?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: Zn1995
+        #                url: jdbc:mysql://10.3.12.34:6213/cms?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        #                username: bx_cms
+        #                password: 05ed4b7b586c33f9f575c545ba5456a3
+        driverClassName: com.mysql.jdbc.Driver
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+        driverClassName:
+      # 影像平台垂直库数据源
+      imp-vertical:
+        # 从数据源开关/默认关闭
+        enabled: true
+        url: jdbc:mysql://10.3.6.11:6223/uip?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        username: uip
+        password: ee750db4f550de435c94ba699d
+        driverClassName: com.mysql.jdbc.Driver
+      # 影像平台水平库数据源
+      imp-horizontal:
+        # 从数据源开关/默认关闭
+        enabled: true
+        url: jdbc:mysql://10.2.32.254:4018/uipsub0?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        username: bx_imp
+        password: 817eaff441faf470c41a818ae409c0a6
+        driverClassName: com.mysql.jdbc.Driver
+      # 初始连接数
+      initialSize: 20
+      # 最小连接池数量
+      minIdle: 20
+      # 最大连接池数量
+      maxActive: 50
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      #validationQuery: SELECT 1 FROM DUAL
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username:
+        login-password:
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true

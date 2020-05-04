@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsModelMapper">
+
+    <resultMap type="CmsModel" id="CmsModelResult">
+        <result property="id" column="ID"/>
+        <result property="modelName" column="MODEL_NAME"/>
+        <result property="modelCode" column="MODEL_CODE"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="status" column="STATUS"/>
+        <result property="remark" column="REMARK"/>
+        <association property="dept" column="DEPT_ID" select="queryDept"/>
+        <collection property="billList" column="ID" ofType="net.northking.iacmp.common.bean.domain.cms.CmsBill"
+                    select="iacmp.biz.common.dao.mapper.cms.CmsModelBillMapper.selectCmsBillsByCmsModelId"/>
+    </resultMap>
+
+    <select id="queryDept" resultMap="deptResult">
+        select * from sys_dept where DEPT_ID =#{id}
+    </select>
+
+    <resultMap type="CmsBill" id="CmsBillResult">
+        <id property="id" column="ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="leaf" column="LEAF"/>
+        <result property="allPath" column="ALL_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="fileNum" column="FILE_NUM"/>
+    </resultMap>
+
+    <resultMap id="deptResult" type="net.northking.iacmp.system.domain.SysDept">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="status" column="dept_status"/>
+    </resultMap>
+
+    <resultMap id="cmsModelBillDTO" type="net.northking.iacmp.common.bean.dto.cms.CmsModelBillDTO">
+        <result property="cmsModeName" column="model_name"/>
+        <result property="cmsModeCode" column="model_code"/>
+        <result property="cmsBillName" column="bill_name"/>
+        <result property="cmaBillCode" column="bill_code"/>
+    </resultMap>
+
+    <sql id="selectCmsModelVo">
+        select ID, MODEL_NAME, MODEL_CODE, DEPT_ID, CREATE_BY, CREATE_TIME,status, UPDATE_BY, UPDATE_TIME, REMARK from
+        cms_model
+    </sql>
+
+    <sql id="selectCmsModelAndDept">
+        select u.id, u.dept_id, u.model_name,u.status, u.model_code, u.create_by, u.create_time, u.update_by,
+        u.update_time,u.remark, d.dept_name, d.leader from cms_model u
+        left join sys_dept d on u.dept_id = d.dept_id
+    </sql>
+
+    <select id="selectCmsModelDTO" resultMap="cmsModelBillDTO">
+        select a.model_name,a.model_code,b.bill_name,b.bill_code from cms_model a RIGHT JOIN cms_model_bill d on a.id =
+        d.model_id LEFT JOIN cms_bill b on b.id = d.bill_id
+        where d.model_id = #{id}
+    </select>
+
+    <select id="selectCmsModelList" parameterType="CmsModel" resultMap="CmsModelResult">
+        <include refid="selectCmsModelAndDept"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="modelName != null  and modelName != '' ">and MODEL_NAME like concat('%', #{modelName}, '%')</if>
+            <if test="modelCode != null  and modelCode != '' ">and MODEL_CODE like concat('%', #{modelCode}, '%')</if>
+            <if test="createBy != null  and createBy != '' ">and u.CREATE_BY = #{createBy}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != '' ">and UPDATE_BY = #{updateBy}</if>
+            <if test="updateTime != null ">and UPDATE_TIME = #{updateTime}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="deptId != null and deptId != 0">
+                AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET
+                (#{deptId},ancestors) ))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCmsModelById" parameterType="Long" resultMap="CmsModelResult">
+        <include refid="selectCmsModelAndDept"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertCmsModel" parameterType="CmsModel" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelName != null  and modelName != ''  ">MODEL_NAME,</if>
+            <if test="modelCode != null  and modelCode != ''  ">MODEL_CODE,</if>
+            <if test="deptId != null  ">DEPT_ID,</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY,</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelName != null  and modelName != ''  ">#{modelName},</if>
+            <if test="modelCode != null  and modelCode != ''  ">#{modelCode},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            sysdate
+        </trim>
+    </insert>
+
+    <update id="updateCmsModel" parameterType="CmsModel">
+        update cms_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelName != null  and modelName != ''  ">MODEL_NAME = #{modelName},</if>
+            <if test="modelCode != null  and modelCode != ''  ">MODEL_CODE = #{modelCode},</if>
+            <if test="deptId != null  ">DEPT_ID = #{deptId},</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY = #{createBy},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY = #{updateBy},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteCmsModelById" parameterType="Long">
+        delete from cms_model where ID = #{id}
+    </delete>
+
+    <delete id="deleteCmsModelByIds" parameterType="String">
+        delete from cms_model where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCmsModelByCode" parameterType="String" resultMap="CmsModelResult">
+        <include refid="selectCmsModelVo"/>
+        where MODEL_CODE =#{modelCode}
+    </select>
+
+    <select id="selectCmsModelByName" parameterType="String" resultMap="CmsModelResult">
+        <include refid="selectCmsModelVo"/>
+        where MODEL_NAME =#{modelName}
+    </select>
+</mapper>

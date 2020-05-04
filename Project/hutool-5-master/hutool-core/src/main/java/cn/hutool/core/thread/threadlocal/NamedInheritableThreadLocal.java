@@ -9,20 +9,20 @@ package cn.hutool.core.thread.threadlocal;
  */
 public class NamedInheritableThreadLocal<T> extends InheritableThreadLocal<T> {
 
-	private final String name;
+    private final String name;
 
-	/**
-	 * 构造
-	 * 
-	 * @param name 名字
-	 */
-	public NamedInheritableThreadLocal(String name) {
-		this.name = name;
-	}
+    /**
+     * 构造
+     *
+     * @param name 名字
+     */
+    public NamedInheritableThreadLocal(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return this.name;
-	}
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
 }

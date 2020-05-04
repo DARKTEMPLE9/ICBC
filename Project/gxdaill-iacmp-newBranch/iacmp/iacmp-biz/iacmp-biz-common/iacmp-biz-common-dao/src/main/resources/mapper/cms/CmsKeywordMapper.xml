@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsKeywordMapper">
+
+    <resultMap type="CmsKeyword" id="CmsKeywordResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="sysId" column="SYS_CODE"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="nUMBER" column="NUMBER"/>
+        <result property="keyword" column="KEYWORD"/>
+        <result property="trgCode" column="TRG_CODE"/>
+    </resultMap>
+
+    <sql id="selectCmsKeywordVo">
+        select ID, NAME, SYS_CODE, DEPT_ID, NUMBER, KEYWORD, TRG_CODE from cms_keyword
+    </sql>
+
+    <select id="selectCmsKeywordList" parameterType="CmsKeyword" resultMap="CmsKeywordResult">
+        <include refid="selectCmsKeywordVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_CODE = #{sysId}</if>
+            <if test="deptId != null ">and DEPT_ID = #{deptId}</if>
+            <if test="nUMBER != null ">and NUMBER = #{nUMBER}</if>
+            <if test="keyword != null  and keyword != '' ">and KEYWORD = #{keyword}</if>
+            <if test="trgCode != null  and trgCode != '' ">and TRG_CODE = #{trgCode}</if>
+        </where>
+    </select>
+
+    <select id="selectCmsKeywordById" parameterType="Long" resultMap="CmsKeywordResult">
+        <include refid="selectCmsKeywordVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertCmsKeyword" parameterType="CmsKeyword" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_keyword
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_CODE,</if>
+            <if test="deptId != null  ">DEPT_ID,</if>
+            <if test="nUMBER != null  ">NUMBER,</if>
+            <if test="keyword != null  and keyword != ''  ">KEYWORD,</if>
+            <if test="trgCode != null  and trgCode != ''  ">TRG_CODE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="sysId != null  and sysId != ''  ">#{sysId},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="nUMBER != null  ">#{nUMBER},</if>
+            <if test="keyword != null  and keyword != ''  ">#{keyword},</if>
+            <if test="trgCode != null  and trgCode != ''  ">#{trgCode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsKeyword" parameterType="CmsKeyword">
+        update cms_keyword
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_CODE = #{sysId},</if>
+            <if test="deptId != null  ">DEPT_ID = #{deptId},</if>
+            <if test="nUMBER != null  ">NUMBER = #{nUMBER},</if>
+            <if test="keyword != null  and keyword != ''  ">KEYWORD = #{keyword},</if>
+            <if test="trgCode != null  and trgCode != ''  ">TRG_CODE = #{trgCode},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteCmsKeywordById" parameterType="Long">
+        delete from cms_keyword where ID = #{id}
+    </delete>
+
+    <delete id="deleteCmsKeywordByIds" parameterType="String">
+        delete from cms_keyword where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增分类')"/>
+</head>
+<style>
+    .inputCss {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 1px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+        height: 32px !important;
+        overflow: hidden;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-cmsBill-add" style="position: relative;">
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">上级节点：</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input type="text" th:value="${bill.id}" id="parentId" name="parentId" hidden/>
+                    <input class="form-control" type="text" onclick="queryBillTree()" id="parentName"
+                           readonly="true" th:value="${bill.billName}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型名称：</label>
+            <div class="col-sm-8">
+                <input id="billName" name="billName" class="form-control" type="text" required placeholder="请输入40字以内"
+                       th:maxlength="40">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型编码：</label>
+            <div class="col-sm-8">
+                <input id="billCode" name="billCode" class="form-control" type="text" required placeholder="请输入20字以内"
+                       th:maxlength="20">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">显示排序：</label>
+            <div class="col-sm-8">
+                <input id="billOrder" name="billOrder" class="form-control" type="number" required
+                       placeholder="请输入4位数字以内" th:maxlength="4">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">分类展示形式：</label>
+            <select style="margin-left: 15px" class="col-sm-3 inputCss" name="display"
+                    th:with="type=${@dict.getType('cms_bill_display')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <div style="width:100%;padding:5px 5px 5px 5px;">
+                    <i id="sysStatus" style="padding: 6px 13px" class="fa fa-toggle-on text-info fa-2x"
+                       onclick="tag(this)"></i>
+                    <input name="status" id="status" value="1" type="hidden">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+
+    var prefix = ctx + "cms/cmsBill"
+    $("#form-cmsBill-add").validate({
+        rules: {
+            onkeyup: false,
+            billName: {
+                remote: {
+                    url: ctx + "cms/cmsBill/checkBillNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "billName": function () {
+                            return $.common.trim($("#billName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            billCode: {
+                remote: {
+                    url: ctx + "cms/cmsBill/checkBillCodeUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "billCode": function () {
+                            return $.common.trim($("#billCode").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            roleSort: {
+                digits: true
+            },
+        },
+        messages: {
+            "billName": {
+                remote: "分类名称已经存在"
+            },
+            "billCode": {
+                remote: "分类编码已经存在"
+            }
+        },
+        focusCleanup: true
+    });
+
+
+    var addFlag = false;
+
+    // 系统状态切换
+    function tag(e) {
+        if (addFlag == false) {
+            $("#sysStatus").removeClass("fa-toggle-on");
+            $("#sysStatus").addClass("fa-toggle-off");
+            $("#status").val("0")
+        } else {
+            $("#sysStatus").removeClass("fa-toggle-off");
+            $("#sysStatus").addClass("fa-toggle-on");
+            $("#status").val("1")
+        }
+        addFlag = !addFlag
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-cmsBill-add').serialize());
+        }
+    }
+
+    function queryBillTree() {
+        var url = prefix + "/billTree";
+        var options = {
+            title: '选择分类',
+            width: "380",
+            url: url,
+            callBack: doSubmitBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitBill(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#parentId").val(body.find('#treeId').val());
+        $("#parentName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+</script>
+</body>
+</html>

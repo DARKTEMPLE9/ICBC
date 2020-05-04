@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('档案接收')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsArcReg-edit" th:object="${amsArcReg}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <a class="btn btn-success" style="float: right;margin-left: 10px;margin-right: 50px" onclick="returnThis()">
+                退回
+            </a>
+            <a class="btn btn-success" style="float: right" onclick="submitHandler()">
+                确定
+            </a>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">登记人名称：</label>
+            <div class="col-sm-8">
+                <input id="regOpName" name="regOpName" th:field="*{regOpName}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">登记份数：</label>
+            <div class="col-sm-8">
+                <input id="regArcNum" name="regArcNum" th:field="*{regArcNum}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">登记页数：</label>
+            <div class="col-sm-8">
+                <input id="recPageNum" name="recPageNum" th:field="*{recPageNum}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">登记时间：</label>
+            <div class="col-sm-8">
+                <input id="regTime" name="regTime" th:field="*{regTime}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">登记备注：</label>
+            <div class="col-sm-8">
+                <input id="regRemark" name="regRemark" th:field="*{regRemark}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收意见：</label>
+            <div class="col-sm-8">
+                <input id="recRemark" name="recRemark" th:field="*{recRemark}" class="form-control" type="text">
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "archCollection/amsArcReg";
+    $("#form-amsArcReg-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    // 确定按钮
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/receive", $('#form-amsArcReg-edit').serialize());
+        }
+    }
+
+    // 退回按钮
+    function returnThis() {
+        // var id = data.split('-')[0];
+        var thisStatus = ${amsArcReg.recRemark}
+            console.log(thisStatus)
+        if (status == '30') {
+            alert("已接收，请勿重复操作！");
+            return;
+        } else if (status == '40') {
+            alert("已退回，无法进行接收！");
+            return;
+        }
+
+    }
+
+
+</script>
+</body>
+</html>

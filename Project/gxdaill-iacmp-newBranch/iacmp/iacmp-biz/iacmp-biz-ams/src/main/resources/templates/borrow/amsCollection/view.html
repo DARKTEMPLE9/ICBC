@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('查看专题库')"/>
+</head>
+<body class="white-bg">
+<div class="container-div">
+    <div class="row">
+        <input type="hidden" id="archivesId" th:value="${archivesId}"/>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "borrow/amsCollection";
+    var id = $("#archivesId").val();
+    $(function () {
+        var options = {
+            url: prefix + "/arcList/" + id,
+            exportUrl: prefix + "/export",
+            modalName: "专题库中档案",
+            // showExport: true,
+            columns: [{
+                checkbox: false
+            },
+                // {
+                // 	field : 'id',
+                // 	title : '档案Id',
+                // 	visible: false
+                // },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillName',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '形成日期',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '档案状态',
+                    sortable: true
+                },
+                {
+                    field: 'filingDepaName',
+                    title: '归档单位',
+                    sortable: true
+                },
+
+                {
+                    field: 'arcType',
+                    title: '能否在线查阅',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (row.arcType == 20) {
+                            return "否";
+                        } else {
+                            return "是";
+                        }
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    $("#form-amsCollection-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsCollection-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('查询库')"/>
+</head>
+<body class="gray-bg">
+<div class="col-sm-12 search-collapse">
+    <form id="formId">
+        <div class="select-list">
+            <ul>
+                <li>
+                    库柜名称：<input style="margin-left: 25px" type="text" name="name"/>
+                </li>
+
+                <li>
+                    所属库房：<input style="margin-right: 30px" type="text" name="depName"/>
+                </li>
+                <li>
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div class="container-div">
+    <div class="row">
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="submitHandler()">
+                <i class="fa fa-plus"></i> 确认
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('archManage:arrange:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:arrange:remove')}]];
+    var prefix = ctx + "archManage/archStore";
+    var ids = [[${ids}]]
+    $(function () {
+        var options = {
+            url: prefix + "/queryCab",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "库柜",
+            showExport: true,
+            queryParams: {"ids": ids},
+            columns: [{
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '库柜编码',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '库柜名称',
+                    sortable: true
+                }, {
+                    field: 'depName',
+                    title: '所属库房',
+                    sortable: true
+                },
+                {
+                    field: 'orgName',
+                    title: '所属部门',
+                    visible: false
+                },
+                {
+                    field: 'dutyMan',
+                    title: '责任人',
+                    visible: false
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function submitHandler() {
+        var cabId = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        console.log(cabId)
+        if (cabId.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        $.operate.save(prefix + "/intoCab?ids=" + ids + "&id=" + cabId);
+
+        // var url = prefix + "/intoCab?ids="+ids+"&id="+cabId;
+        // $.ajax({
+        //     url: url,
+        //     type: "post",
+        //     success: function(result) {
+        //         console.log("result=" + result + " ,result.msg=" + result.msg);
+        //         if(result.msg=="error"){
+        //             $.modal.alertWarning(" 库房库柜数量已到达上限！");
+        //         }else {
+        //             //重新加载档案子类型
+        //             $.modal.alertSuccess(" 入库成功！");
+        //         }
+        //     }
+        // });
+    }
+</script>
+</body>
+</html>

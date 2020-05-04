@@ -1,7 +1,6 @@
 /**
  * 自定义Cookie
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.http.cookie;

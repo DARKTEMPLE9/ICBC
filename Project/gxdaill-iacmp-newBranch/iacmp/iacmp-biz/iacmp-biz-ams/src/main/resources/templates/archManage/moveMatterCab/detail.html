@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('实物类型档案移库详情')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-batch-edit">
+        <div class="form-group col-sm-11">
+            <label class="col-sm-2 control-label">序号：</label>
+            <div class="col-sm-10">
+                <input id="id" name="id" th:value="${amsArchives.id}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-11">
+            <label class="col-sm-2 control-label">文件编号：</label>
+            <div class="col-sm-10">
+                <input id="arcNo" name="arcNo" th:value="${amsArchives.arcNo}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:value="${amsArchives.name}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">载体形式：</label>
+            <div class="col-sm-8" th:switch="${amsArchives.carrier}">
+                <input id="carrier" name="carrier" th:case="01" value="纸质档案" class="form-control" type="text" readonly
+                       disabled>
+                <input id="carrier1" name="carrier" th:case="02" value="音像档案" class="form-control" type="text" readonly
+                       disabled>
+                <input id="carrier2" name="carrier" th:case="03" value="电子档案" class="form-control" type="text" readonly
+                       disabled>
+                <input id="carrier3" name="carrier" th:case="04" value="实物档案" class="form-control" type="text" readonly
+                       disabled>
+                <input id="carrier4" name="carrier" th:case="99" value="其他档案" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">是否电子化：</label>
+            <div class="col-sm-8" th:switch="${amsArchives.arcType}">
+                <input id="arcType" name="arcType" th:case="10" value="是" class="form-control" type="text" readonly
+                       disabled>
+                <input id="arcType1" name="arcType" th:case="20" value="否" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">形成日期：</label>
+            <div class="col-sm-8">
+                <input id="arcCreTime" name="arcCreTime" class="form-control"
+                       th:value="${#dates.format(amsArchives.arcCreTime,'yyyy-MM-dd')}" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案状态：</label>
+            <div class="col-sm-8" th:switch="${amsArchives.status}">
+                <input id="status" name="status" th:case="10" value="已销毁" class="form-control" type="text" readonly
+                       disabled>
+                <input id="status1" name="status" th:case="9" value="待废弃" class="form-control" type="text" readonly
+                       disabled>
+                <input id="status2" name="status" th:case="8" value="已废弃" class="form-control" type="text" readonly
+                       disabled>
+                <input id="status3" name="status" th:case="7" value="已出库" class="form-control" type="text" readonly
+                       disabled>
+                <input id="status4" name="status" th:case="5" value="已入库" class="form-control" type="text" readonly
+                       disabled>
+                <input id="status5" name="status" th:case="*" value=" " class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">归档单位：</label>
+            <div class="col-sm-8">
+                <input id="filingDepaName" name="filingDepaName" th:value="${amsArchives.filingDepaName}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">存放地点：</label>
+            <div class="col-sm-8">
+                <input id="storageLocation" name="storageLocation" th:value="${amsArchives.storageLocation}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">是否移交行档室：</label>
+            <div class="col-sm-8" th:switch="${amsArchives.hasMoveBank}">
+                <input name="hasMoveBank" th:case="0" value="否" class="form-control" type="text" readonly disabled>
+                <input name="hasMoveBank" th:case="1" value="是" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+</script>
+</body>
+</html>

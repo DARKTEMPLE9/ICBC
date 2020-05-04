@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('查看库柜')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsCabinet-edit" th:object="${amsCabinet}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库柜编码：</label>
+            <div class="col-sm-8">
+                <input id="code" name="code" th:field="*{code}" class="form-control" type="text" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库柜名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库柜责任人：</label>
+            <div class="col-sm-8">
+                <input id="dutyMan" name="dutyMan" th:field="*{dutyMan}" class="form-control" type="text"
+                       readonly="readonly">
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">库房名称：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="depId" name="depId" th:field="*{depId}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">库房编码：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="depCode" name="depCode" th:field="*{depCode}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属库房：</label>
+            <div class="col-sm-8">
+                <input id="depName" name="depName" th:field="*{depName}" class="form-control" type="text"
+                       readonly="readonly">
+            </div>
+        </div>
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">库房类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="depType" name="depType" th:field="*{depType}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库柜状态：</label>
+            <div class="col-sm-8">
+                <!--<input id="status" name="status" th:field="*{status}"  class="form-control" type="text" readonly="readonly">-->
+                <input name="status" th:if="*{status} == '0'" class="form-control" type="text" value="未满"
+                       readonly="readonly">
+                <input name="status" th:if="*{status} == '1'" class="form-control" type="text" value="已满"
+                       readonly="readonly">
+                <input name="status" th:if="*{status} == '99'" class="form-control" type="text" value="废弃"
+                       readonly="readonly">
+            </div>
+        </div>
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">档案类型：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="arcType" name="arcType" th:field="*{arcType}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">库房状态：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="depStatus" name="depStatus" th:field="*{depStatus}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

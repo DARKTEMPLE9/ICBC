@@ -23,7 +23,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
 
     private String token = "";
 
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object handler) throws Exception   {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
@@ -58,10 +58,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
     }
 
 
-
     /*
-    * 对比Session中的token也页面传来的token,一致则可以提交，不一致无法进行后续操作
-    * */
+     * 对比Session中的token也页面传来的token,一致则可以提交，不一致无法进行后续操作
+     * */
     private boolean isRepeatSubmit(HttpServletRequest request) {
         if (request.getSession(false) == null) {
             return true;
@@ -81,8 +80,8 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
     }
 
     /*
-    * 只拦截带token注解的返回
-    * */
+     * 只拦截带token注解的返回
+     * */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return returnType.hasMethodAnnotation(Token.class);
@@ -93,17 +92,17 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
         ServletServerHttpRequest servletServerHttpRequest = (ServletServerHttpRequest) request;
         if (("".equals(body.getToken()) || body.getToken() == null) && !body.isSuccess()) {
             token = UUID.randomUUID().toString().replace("1", "");
-            HashSet<String> tokens = addToken(token,servletServerHttpRequest.getServletRequest().getSession(false).getAttribute("tokenSet"));
-            servletServerHttpRequest.getServletRequest().getSession(false).setAttribute("tokenSet",tokens);
+            HashSet<String> tokens = addToken(token, servletServerHttpRequest.getServletRequest().getSession(false).getAttribute("tokenSet"));
+            servletServerHttpRequest.getServletRequest().getSession(false).setAttribute("tokenSet", tokens);
             body.setToken(token);
         }
         return body;
     }
 
     /*
-    * newToken 新加入的token
-    * arrayTokens session中的token字符集合
-    * */
+     * newToken 新加入的token
+     * arrayTokens session中的token字符集合
+     * */
     private HashSet<String> addToken(String newToken, Object arrayTokens) {
         HashSet<String> tokens = (HashSet<String>) arrayTokens;
         if (tokens == null || tokens.size() == 0) {
@@ -116,9 +115,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter implements Respo
     }
 
     /*
-    * localToken  当前传入的token
-    * arrayTokens  session中的token字符集合
-    * */
+     * localToken  当前传入的token
+     * arrayTokens  session中的token字符集合
+     * */
     private void removeToken(String localToken, Object arrayTokens) {
         HashSet<String> tokens = (HashSet<String>) arrayTokens;
         tokens.remove(localToken);

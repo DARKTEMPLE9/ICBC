@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImTemplateDefMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImTemplateDef" id="ImTemplateDefResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="pyszm" column="PYSZM"/>
+        <result property="tdefId" column="TDEF_ID"/>
+    </resultMap>
+
+    <sql id="selectImTemplateDefVo">
+        select ID, CODE, NAME, PYSZM, TDEF_ID from im_template_def
+    </sql>
+
+    <select id="selectImTemplateDefList" resultMap="ImTemplateDefResult">
+        <include refid="selectImTemplateDefVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="pyszm != null  and pyszm != '' ">and PYSZM = #{pyszm}</if>
+            <if test="tdefId != null ">and TDEF_ID = #{tdefId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(1) from im_template_def
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="pyszm != null  and pyszm != '' ">and PYSZM = #{pyszm}</if>
+            <if test="tdefId != null ">and TDEF_ID = #{tdefId}</if>
+        </where>
+    </select>
+
+    <select id="checkBeforeUpdate" resultType="Integer">
+        select count(1) from im_template_def
+        <where>
+            <if test="id != null  and id != '' ">and ID != #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="pyszm != null  and pyszm != '' ">and PYSZM = #{pyszm}</if>
+            <if test="tdefId != null ">and TDEF_ID = #{tdefId}</if>
+        </where>
+    </select>
+
+    <select id="selectImTemplateDefById" parameterType="String" resultType="Map">
+        select id, code, name, pyszm, tdef_id from im_template_def
+        where id = #{id}
+    </select>
+
+    <insert id="insertImTemplateDef">
+        insert into im_template_def
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="pyszm != null  and pyszm != ''  ">PYSZM,</if>
+            <if test="tdefId != null  ">TDEF_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="pyszm != null  and pyszm != ''  ">#{pyszm},</if>
+            <if test="tdefId != null  ">#{tdefId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImTemplateDef">
+        update im_template_def
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="pyszm != null  and pyszm != ''  ">PYSZM = #{pyszm},</if>
+            <if test="tdefId != null  ">TDEF_ID = #{tdefId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImTemplateDefById" parameterType="String">
+        delete from im_template_def where ID = #{id}
+    </delete>
+
+    <delete id="deleteImTemplateDefByIds" parameterType="String">
+        delete from im_template_def where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

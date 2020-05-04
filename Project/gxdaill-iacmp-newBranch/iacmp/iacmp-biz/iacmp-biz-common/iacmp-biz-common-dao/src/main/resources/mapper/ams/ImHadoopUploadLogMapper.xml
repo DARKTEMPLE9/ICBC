@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImHadoopUploadLogMapper">
+
+    <resultMap type="ImHadoopUploadLog" id="ImHadoopUploadLogResult">
+        <result property="id" column="id"/>
+        <result property="imageId" column="imageId"/>
+        <result property="imagePath" column="imagePath"/>
+        <result property="uploadFlag" column="upload_flag"/>
+        <result property="uploadTime" column="upload_time"/>
+        <result property="uploadOvertime" column="upload_overtime"/>
+        <result property="failCount" column="fail_count"/>
+        <result property="systemFlag" column="system_flag"/>
+        <result property="failReason" column="fail_reason"/>
+        <result property="fileSize" column="fileSize"/>
+        <result property="fileType" column="fileType"/>
+        <result property="imageName" column="IMAGENAME"/>
+        <result property="isSmall" column="isSmall"/>
+        <result property="hlogId" column="hlog_id"/>
+    </resultMap>
+
+    <sql id="selectImHadoopUploadLogVo">
+        select id, imageId, imagePath, upload_flag, upload_time, upload_overtime, fail_count, system_flag, fail_reason,
+        fileSize, fileType, IMAGENAME, isSmall, hlog_id from im_hadoop_upload_log
+    </sql>
+
+    <select id="selectImHadoopUploadLogList" parameterType="ImHadoopUploadLog" resultMap="ImHadoopUploadLogResult">
+        <include refid="selectImHadoopUploadLogVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and id = #{id}</if>
+            <if test="imageId != null  and imageId != '' ">and imageId = #{imageId}</if>
+            <if test="imagePath != null  and imagePath != '' ">and imagePath = #{imagePath}</if>
+            <if test="uploadFlag != null ">and upload_flag = #{uploadFlag}</if>
+            <if test="uploadTime != null ">and upload_time = #{uploadTime}</if>
+            <if test="uploadOvertime != null ">and upload_overtime = #{uploadOvertime}</if>
+            <if test="failCount != null ">and fail_count = #{failCount}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and system_flag = #{systemFlag}</if>
+            <if test="failReason != null  and failReason != '' ">and fail_reason = #{failReason}</if>
+            <if test="fileSize != null ">and fileSize = #{fileSize}</if>
+            <if test="fileType != null ">and fileType = #{fileType}</if>
+            <if test="imageName != null  and imageName != '' ">and IMAGENAME = #{imageName}</if>
+            <if test="isSmall != null ">and isSmall = #{isSmall}</if>
+            <if test="hlogId != null ">and hlog_id = #{hlogId}</if>
+        </where>
+    </select>
+
+    <select id="selectImHadoopUploadLogById" parameterType="String" resultMap="ImHadoopUploadLogResult">
+        <include refid="selectImHadoopUploadLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertImHadoopUploadLog" parameterType="ImHadoopUploadLog">
+        insert into im_hadoop_upload_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="imageId != null  and imageId != ''  ">imageId,</if>
+            <if test="imagePath != null  and imagePath != ''  ">imagePath,</if>
+            <if test="uploadFlag != null  ">upload_flag,</if>
+            <if test="uploadTime != null  ">upload_time,</if>
+            <if test="uploadOvertime != null  ">upload_overtime,</if>
+            <if test="failCount != null  ">fail_count,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">system_flag,</if>
+            <if test="failReason != null  and failReason != ''  ">fail_reason,</if>
+            <if test="fileSize != null  ">fileSize,</if>
+            <if test="fileType != null  ">fileType,</if>
+            <if test="imageName != null  and imageName != ''  ">IMAGENAME,</if>
+            <if test="isSmall != null  ">isSmall,</if>
+            <if test="hlogId != null  ">hlog_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="imagePath != null  and imagePath != ''  ">#{imagePath},</if>
+            <if test="uploadFlag != null  ">#{uploadFlag},</if>
+            <if test="uploadTime != null  ">#{uploadTime},</if>
+            <if test="uploadOvertime != null  ">#{uploadOvertime},</if>
+            <if test="failCount != null  ">#{failCount},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="failReason != null  and failReason != ''  ">#{failReason},</if>
+            <if test="fileSize != null  ">#{fileSize},</if>
+            <if test="fileType != null  ">#{fileType},</if>
+            <if test="imageName != null  and imageName != ''  ">#{imageName},</if>
+            <if test="isSmall != null  ">#{isSmall},</if>
+            <if test="hlogId != null  ">#{hlogId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImHadoopUploadLog" parameterType="ImHadoopUploadLog">
+        update im_hadoop_upload_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageId != null  and imageId != ''  ">imageId = #{imageId},</if>
+            <if test="imagePath != null  and imagePath != ''  ">imagePath = #{imagePath},</if>
+            <if test="uploadFlag != null  ">upload_flag = #{uploadFlag},</if>
+            <if test="uploadTime != null  ">upload_time = #{uploadTime},</if>
+            <if test="uploadOvertime != null  ">upload_overtime = #{uploadOvertime},</if>
+            <if test="failCount != null  ">fail_count = #{failCount},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">system_flag = #{systemFlag},</if>
+            <if test="failReason != null  and failReason != ''  ">fail_reason = #{failReason},</if>
+            <if test="fileSize != null  ">fileSize = #{fileSize},</if>
+            <if test="fileType != null  ">fileType = #{fileType},</if>
+            <if test="imageName != null  and imageName != ''  ">IMAGENAME = #{imageName},</if>
+            <if test="isSmall != null  ">isSmall = #{isSmall},</if>
+            <if test="hlogId != null  ">hlog_id = #{hlogId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteImHadoopUploadLogById" parameterType="String">
+        delete from im_hadoop_upload_log where id = #{id}
+    </delete>
+
+    <delete id="deleteImHadoopUploadLogByIds" parameterType="String">
+        delete from im_hadoop_upload_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

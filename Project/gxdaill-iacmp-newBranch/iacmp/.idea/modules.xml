@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams-server/iacmp-biz-ams-server1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams-server/iacmp-biz-ams-server1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams/iacmp-biz-ams1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams/iacmp-biz-ams1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms-server/iacmp-biz-cms-server1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms-server/iacmp-biz-cms-server1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms/iacmp-biz-cms1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms/iacmp-biz-cms1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-bean/iacmp-biz-common-bean1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-bean/iacmp-biz-common-bean1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-core/iacmp-biz-common-core1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-core/iacmp-biz-common-core1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-dao/iacmp-biz-common-dao1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-dao/iacmp-biz-common-dao1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-elasticsearch/iacmp-biz-elasticsearch1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-elasticsearch/iacmp-biz-elasticsearch1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-framework/iacmp-biz-framework1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-framework/iacmp-biz-framework1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-generator/iacmp-biz-generator1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-generator/iacmp-biz-generator1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp-server/iacmp-biz-imp-server1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp-server/iacmp-biz-imp-server1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp/iacmp-biz-imp1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp/iacmp-biz-imp1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-pms/iacmp-biz-pms1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-pms/iacmp-biz-pms1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-quartz/iacmp-biz-quartz1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-quartz/iacmp-biz-quartz1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-system/iacmp-biz-system1.iml" filepath="$PROJECT_DIR$/iacmp-biz/iacmp-biz-system/iacmp-biz-system1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-common/iacmp-common.iml" filepath="$PROJECT_DIR$/iacmp-common/iacmp-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-common/iacmp-common-aop/iacmp-common-aop.iml" filepath="$PROJECT_DIR$/iacmp-common/iacmp-common-aop/iacmp-common-aop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-common/iacmp-common-fs/iacmp-common-fs.iml" filepath="$PROJECT_DIR$/iacmp-common/iacmp-common-fs/iacmp-common-fs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-common/iacmp-common-utils/iacmp-common-utils.iml" filepath="$PROJECT_DIR$/iacmp-common/iacmp-common-utils/iacmp-common-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-config/iacmp-config1.iml" filepath="$PROJECT_DIR$/iacmp-config/iacmp-config1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-eureka/iacmp-eureka1.iml" filepath="$PROJECT_DIR$/iacmp-eureka/iacmp-eureka1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-gateway/iacmp-gateway1.iml" filepath="$PROJECT_DIR$/iacmp-gateway/iacmp-gateway1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-http-chunk/iacmp-http-chunk1.iml" filepath="$PROJECT_DIR$/iacmp-http-chunk/iacmp-http-chunk1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-http-chunk/iacmp-http-chunk2.iml" filepath="$PROJECT_DIR$/iacmp-http-chunk/iacmp-http-chunk2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-monitor/iacmp-monitor1.iml" filepath="$PROJECT_DIR$/iacmp-monitor/iacmp-monitor1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-parent.iml" filepath="$PROJECT_DIR$/iacmp-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iacmp-turbine/iacmp-turbine1.iml" filepath="$PROJECT_DIR$/iacmp-turbine/iacmp-turbine1.iml" />
+    </modules>
+  </component>
+</project>

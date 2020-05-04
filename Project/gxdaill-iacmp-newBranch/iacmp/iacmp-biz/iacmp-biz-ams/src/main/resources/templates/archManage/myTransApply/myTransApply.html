@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('移交申请')"/>
+    <style>
+        .select-list li {
+            height: 30px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .select-list li label {
+            width: 90px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label for="arcName">档案名称：</label>
+                            <input style="" id="arcName" type="text" name="arcName"/>
+                        </li>
+
+                        <li>
+                            <label for="arcBill">档案类型：</label>
+                            <input type="text" id="arcBill" name="arcBill"
+                                   onclick="selectArcBillTree();arcBill.blur();return false;"
+                                   readonly="readonly" placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+
+                        <li>
+                            <label for="respOpName">责任者：</label>
+                            <input style="" type="text" id="respOpName" name="respOpName"
+                                   onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                   placeholder="请选择责任者" readonly/>
+                        </li>
+
+                        <li>
+                            <label for="crtName">著录人员：</label> <input style="" type="text" id="crtName" name="crtName"
+                                                                      onclick="selectUser('crtName');crtName.blur();return false;"
+                                                                      placeholder="请选择著录人员" readonly/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--<label for="arcCode">文件编号：</label>-->
+                        <!--<input type="text" id="arcCode" name="arcCode"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <label for="arcLevel">密级：</label>
+                            <select style="" id="arcLevel" name="arcLevel" th:with="type=${@dict.getType('arcLevel')}">
+                                <option value="" selected="selected">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label for="originMode">来源：</label>
+                            <input id="originMode" style="" type="text" name="originMode"/>
+                        </li>
+
+                        <li>
+                            <label for="arcPageNum">页数：</label>
+                            <input style="" id="arcPageNum" type="text" name="arcPageNum"
+                                   oninput="value=value.replace(/[^\d]/g,'')"/>
+                        </li>
+                        <li>
+                            <label for="arcNum">份数：</label>
+                            <input style="" id="arcNum" type="text" name="arcNum"
+                                   oninput="value=value.replace(/[^\d]/g,'')"/>
+                        </li>
+                        <li>
+                            <label for="valPeriod">保管期限：</label>
+                            <select id="valPeriod" name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option selected="selected" value="">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="arcFormat">是否电子化：</label>
+                            <select id="arcFormat" name="arcFormat">
+                                <option selected="selected" value="">全部</option>
+                                <option value="10">是</option>
+                                <option value="20">否</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="expenseInvolve">是否涉及费用:</label>
+                            <select style="" id="expenseInvolve" name="expenseInvolve"
+                                    th:with="type=${@dict.getType('expense_involve')}">
+                                <option value="" selected="selected">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <!--<li>-->
+                        <!--<label for="bill">分类：</label>-->
+                        <!--<input style="" type="text" id="bill" name="bill"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="photographer">摄录人员：</label>-->
+                        <!--<input type="text" id="photographer" name="photographer"-->
+                        <!--onclick="selectUser('photographer')" placeholder="请选择摄录人员" readonly/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<div class="select-time">-->
+                        <!--<label for="arcCreTimeStart">形成/拍摄日期: </label>-->
+                        <!--<input type="text" style="width: 93px;margin-left:3px;" class="input-sm "-->
+                        <!--id="arcCreTimeStart" placeholder="" name="arcCreTimeStart"/>-->
+                        <!--<span>-</span>-->
+                        <!--<input type="text" style="width: 93px;" class="input-sm " id="arcCreTimeEnd"-->
+                        <!--placeholder="" name="arcCreTimeEnd"/>-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                        <li>
+                            <label for="status">状态：</label>
+                            <select style="" id="status" name="status">
+                                <option selected="selected" value="">全部</option>
+                                <!--<option value="0">已删除</option>-->
+                                <option value="1">已著录</option>
+                                <option value="2">申请中</option>
+                                <option value="3">待入盒</option>
+                                <option value="4">待入库</option>
+                                <option value="5">已入库</option>
+                                <option value="6">已退回</option>
+                                <option value="7">已出库</option>
+                                <option value="8">已废弃</option>
+                                <option value="9">待废弃</option>
+                            </select>
+                        </li>
+
+                        <!--<li>-->
+                        <!--<label for="practType">实物类别：</label>-->
+                        <!--<input type="text" id="practType" name="practType"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="isNoMedium">有无介质：</label>-->
+                        <!--<input style="" type="text" id="isNoMedium" name="isNoMedium"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="orgName">所属部门：</label>-->
+                        <!--<input type="text" id="orgName" name="orgName" onclick="selectDeptTree()"-->
+                        <!--readonly="readonly" placeholder="请选择部门" style="cursor: pointer"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="conferIns">授予单位：</label>-->
+                        <!--<input type="text" id="conferIns" name="conferIns"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="receiveIns">接收单位：</label>-->
+                        <!--<input style="" type="text" id="receiveIns" name="receiveIns"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="caption">文字说明：</label>-->
+                        <!--<input style="" type="text" id="caption" name="caption"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label for="photoNo">照片号：</label>-->
+                        <!--<input style="" id="photoNo" type="text" name="photoNo"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="select-time">
+                                <label>著录日期：</label>
+                                <input type="text" style="width: 93px;margin-left:3px;" class="input-sm form-control"
+                                       id="startTime" placeholder="" name="crtTimeStart"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control" id="endTime"
+                                       placeholder="" name="crtTimeEnd"/>
+                            </div>
+                        </li>
+
+                        <!-- <li>
+                             <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                     class="fa fa-search"></i>&nbsp;搜索</a>
+                             <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                     class="fa fa-refresh"></i>&nbsp;重置</a>
+                         </li>-->
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--<div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="archManage:myTransApply:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>-->
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('archManage:myTransApply:detail')}]];
+    var prefix = ctx + "archManage/myTransApply";
+    var myTransApplyStatus = [[${@dict.getType('myTransApply_status')}]];
+    var period = [[${@dict.getType('archive_period')}]];
+    var arcLevel = [[${@dict.getType('arcLevel')}]];
+    var electronize = [[${@dict.getType('electronize')}]];
+    var involve = [[${@dict.getType('expense_involve')}]];
+
+    <!--选择用户-->
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: ctx + "archManage/transApply/{id}",
+            modalName: "我的移交申请",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                // {
+                //     field: 'orgName',
+                //     title: '所属部门',
+                //     sortable: true
+                // },
+                {
+                    field: 'arcBill',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                // {
+                //     field: 'arcBillDept',
+                //     title: '二级类目',
+                //     sortable: true
+                // },
+                {
+                    field: 'crtTime',
+                    title: '著录日期',
+                    sortable: true
+                },
+                {
+                    field: 'crtName',
+                    title: '著录人员',
+                    sortable: true
+                },
+                {
+                    field: 'arcCode',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcLevel',
+                    title: '密级',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(arcLevel, item.arcLevel);
+                    }
+                },
+                {
+                    field: 'originMode',
+                    title: '来源',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'arcFormat',
+                    title: '是否电子化',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(electronize, item.arcFormat);
+                    }
+                },
+                {
+                    field: 'expenseInvolve',
+                    title: '是否涉及费用',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(involve, item.expenseInvolve);
+                    }
+                },
+                {
+                    field: 'arcNum',
+                    title: '份数',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcPageNum',
+                    title: '页数',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(myTransApplyStatus
+                            , item.status);
+                    }
+                },
+                {
+                    field: 'turnInTime',
+                    title: '移交日期',
+                    sortable: true
+                },
+                {
+                    field: 'receivingTime',
+                    title: '接收日期',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        //actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = ctx + "archManage/transApply/" + id;
+        $.modal.openTab("我的移交申请详情", url);
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBill").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#orgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

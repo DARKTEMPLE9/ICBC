@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .select-list label {
+        width: 80px;
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('档案移库')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" th:object="${amsBox}">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label>盒号：</label>
+                            <input type="text" name="code"/>
+                        </li>
+
+                        <li>
+                            <label>档案盒名称：</label>
+                            <input type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>所属年份：</label>
+                                <input type="text" style="width: 200px;" class="input-sm form-control" id="yearDate"
+                                       placeholder="" name="boxYear"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <label>档案类型：</label>
+                            <input type="text" id="arcType" name="arcType"
+                                   onclick="selectArcBillTree();arcType.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+
+                        <li>
+                            <label>库柜名称：</label>
+                            <input type="text" name="cabName"/>
+                        </li>
+
+                        <li>
+                            <label>保管期限：</label>
+                            <select id="valPeriod" name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option selected="selected" value="">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label>状态：</label>
+                            <select id="status" name="status">
+                                <option selected="selected" value="">全部</option>
+                                <option value="5">未满</option>
+                                <option value="6">已满</option>
+                                <option value="7">废弃</option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label>库房名称：</label>
+                            <input type="text" name="depName"/>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="jumpToBoxWithCab()" shiro:hasPermission="archManage:moveCab:moveCab">
+                <i class="fa fa-plus"></i> 移动库房
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('archManage:myTransApply:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:myTransApply:remove')}]];
+    var prefix = ctx + "archManage/moveCab";
+    var period = [[${@dict.getType('archive_period')}]];
+    var moveCabStatus = [[${@dict.getType('moveCab_status')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "档案移库",
+            showExport: true,
+            columns: [{
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '盒号',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '档案盒名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'orgName',
+                    title: '所属部门',
+                    visible: false
+                },
+                {
+                    field: 'boxYear',
+                    title: '所属年份',
+                    sortable: true
+                }, {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+                }, {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(moveCabStatus, item.status);
+                    }
+
+                }, {
+                    field: 'cabName',
+                    title: '库柜名称',
+                    sortable: true
+                },
+                {
+                    field: 'storageLocation',
+                    title: '存放地点',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        console.log(item)
+                    }
+                },
+                {
+                    field: 'depName',
+                    title: '库房名称',
+                    sortable: true
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function jumpToBoxWithCab() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if ($.common.isEmpty(rows)) {
+            $.modal.alertWarning("请选择一条记录");
+            return;
+        }
+        createMenuItem(prefix + "/jumpToBoxCab?boxId=" + rows.join(), "移库")
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcType").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+</script>
+</body>
+</html>

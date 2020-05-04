@@ -1,7 +1,6 @@
 /**
  * DBCP封装
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.db.ds.dbcp;

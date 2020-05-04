@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('详情')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-gftEntryDtl-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">记账日期：</label>
+            <div class="col-sm-8">
+                <input id="tallyDt" name="tallyDt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="gftEntryDtlId" name="gftEntryDtlId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">交易流水号：</label>
+            <div class="col-sm-8">
+                <input id="dealNum" name="dealNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">账簿编号：</label>
+            <div class="col-sm-8">
+                <input id="bookId" name="bookId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">凭证类别：</label>
+            <div class="col-sm-8">
+                <input id="voucherCate" name="voucherCate" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">凭证号：</label>
+            <div class="col-sm-8">
+                <input id="voucherId" name="voucherId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">交易账户：</label>
+            <div class="col-sm-8">
+                <input id="dealAcct" name="dealAcct" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审核人：</label>
+            <div class="col-sm-8">
+                <input id="auditor" name="auditor" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">制单人：</label>
+            <div class="col-sm-8">
+                <input id="preparer" name="preparer" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">记账人：</label>
+            <div class="col-sm-8">
+                <input id="bookkeeper" name="bookkeeper" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">会计年度：</label>
+            <div class="col-sm-8">
+                <input id="acctsYear" name="acctsYear" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">会计月份：</label>
+            <div class="col-sm-8">
+                <input id="acctsMonth" name="acctsMonth" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">调整期间：</label>
+            <div class="col-sm-8">
+                <input id="adjPeriod" name="adjPeriod" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审核日期：</label>
+            <div class="col-sm-8">
+                <input id="auditDt" name="auditDt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">制单日期：</label>
+            <div class="col-sm-8">
+                <input id="prepareDt" name="prepareDt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附属单据：</label>
+            <div class="col-sm-8">
+                <input id="addBillNum" name="addBillNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">制单系统：</label>
+            <div class="col-sm-8">
+                <input id="prepareSys" name="prepareSys" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">分录号：</label>
+            <div class="col-sm-8">
+                <input id="entryId" name="entryId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">分录摘要：</label>
+            <div class="col-sm-8">
+                <input id="entryCont" name="entryCont" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">会计科目：</label>
+            <div class="col-sm-8">
+                <input id="subjId" name="subjId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">辅助核算项部门：</label>
+            <div class="col-sm-8">
+                <input id="asstOrg" name="asstOrg" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">辅助核算项来源系统：</label>
+            <div class="col-sm-8">
+                <input id="asstSrcSys" name="asstSrcSys" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">币种编号：</label>
+            <div class="col-sm-8">
+                <input id="ccyId" name="ccyId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">汇率：</label>
+            <div class="col-sm-8">
+                <input id="exRate" name="exRate" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发生额方向：</label>
+            <div class="col-sm-8">
+                <input id="amtDir" name="amtDir" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">原币借方发生额：</label>
+            <div class="col-sm-8">
+                <input id="oriDebAmt" name="oriDebAmt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">原币贷方发生额：</label>
+            <div class="col-sm-8">
+                <input id="oriCrdAmt" name="oriCrdAmt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">本币借方发生额：</label>
+            <div class="col-sm-8">
+                <input id="locDebAmt" name="locDebAmt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">本币贷方发生额：</label>
+            <div class="col-sm-8">
+                <input id="locCrdAmt" name="locCrdAmt" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否年末结转：</label>
+            <div class="col-sm-8">
+                <input id="isEyearTurn" name="isEyearTurn" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否表外：</label>
+            <div class="col-sm-8">
+                <input id="isOff" name="isOff" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def1" name="def1" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def2" name="def2" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def3" name="def3" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def4" name="def4" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def5" name="def5" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def6" name="def6" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def7" name="def7" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def8" name="def8" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def9" name="def9" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="def10" name="def10" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">：</label>
+            <div class="col-sm-8">
+                <input id="ts" name="ts" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "iacmp/gftEntryDtl"
+    $("#form-gftEntryDtl-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-gftEntryDtl-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改流程代理')"/>
+</head>
+<style>
+    .timeInput {
+        height: 30px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(221, 221, 221);
+        border-image: initial;
+        border-radius: 4px;
+        background: transparent;
+        outline: none;
+        padding-left: 10px;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-wfAgent-edit" th:object="${wfAgent}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">委托人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="trustorCode" name="trustorCode" th:field="*{trustorCode}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">委托人名：</label>
+            <div class="col-sm-8">
+                <input id="trustorName" name="trustorName" th:field="*{trustorName}" class="form-control" type="text"
+                       onclick="selectUser('trustorName')">
+            </div>
+        </div>
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">代理人号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="agentCode" name="agentCode" th:field="*{agentCode}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人名：</label>
+            <div class="col-sm-8">
+                <input id="agentName" name="agentName" th:field="*{agentName}" class="form-control" type="text"
+                       onclick="selectUser('agentName')">
+            </div>
+        </div>
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">代理人部门号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="agentOrgCode" name="agentOrgCode" th:field="*{agentOrgCode}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">代理人部门名：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="agentOrgName" name="agentOrgName" th:field="*{agentOrgName}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="select-time">
+            <label class="col-sm-3 control-label">代理时间：</label>
+            <div class="col-sm-8">
+                <input type="text" class="timeInput" id="agentStartDate" placeholder="开始时间" name="agentStartDate"
+                       th:value="${#dates.format(wfAgent.agentStartDate,'yyyy-MM-dd')}" style="margin-left: -8px"/>
+                <span>-</span>
+                <input type="text" class="timeInput" id="agentEndDate" placeholder="结束时间" name="agentEndDate"
+                       th:value="${#dates.format(wfAgent.agentEndDate,'yyyy-MM-dd')}"/>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "cms/wfAgent";
+    $("#form-wfAgent-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-wfAgent-edit').serialize());
+        }
+    }
+
+    /* 选择（委托/代理）用户 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "wfAgent" + "/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                if (id == 'trustorName') {
+                    $('#trustorCode').val(body.find('#thisRowCode').val());
+                } else if (id == 'agentName') {
+                    $('#agentCode').val(body.find('#thisRowCode').val());
+                    $('#agentOrgCode').val(body.find('#thisDeptCode').val());
+                    $('#agentOrgName').val(body.find('#thisDeptName').val());
+                }
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 时间框定义
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startDate = laydate.render({
+            elem: '#agentStartDate',
+            min: 'nowTime', //今天及以后
+            // max: $('#borDays').val(),
+            theme: 'molv',
+            trigger: 'click',
+            done: function (value, date) {
+                // 结束时间大于开始时间
+                if (value !== '') {
+                    endDate.config.min.year = date.year;
+                    endDate.config.min.month = date.month - 1;
+                    endDate.config.min.date = date.date;
+                } else {
+                    endDate.config.min.year = '';
+                    endDate.config.min.month = '';
+                    endDate.config.min.date = '';
+                }
+            }
+        })
+        var endDate = laydate.render({
+            elem: '#agentEndDate',
+            theme: 'molv',
+            trigger: 'click',
+            min: $('#agentStartDate').val(),
+            done: function (value, date) {
+                // 开始时间小于结束时间
+                if (value !== '') {
+                    startDate.config.max.year = date.year;
+                    startDate.config.max.month = date.month - 1;
+                    startDate.config.max.date = date.date;
+                } else {
+                    startDate.config.max.year = '';
+                    startDate.config.max.month = '';
+                    startDate.config.max.date = '';
+                }
+            }
+        });
+
+    })
+</script>
+</body>
+</html>

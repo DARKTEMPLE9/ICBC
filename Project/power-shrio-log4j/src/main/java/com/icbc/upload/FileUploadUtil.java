@@ -21,97 +21,97 @@ public class FileUploadUtil {
 
     public static boolean copyFile(File srcFile, File dstDir) {
 
-            FileInputStream fileInput = null;
-            FileOutputStream fileOutInput = null;
-            FileChannel fileIn = null;
-            FileChannel fileOut = null;
-            try {
-                String suffix, nameBody;
-                if (!srcFile.exists() || srcFile.isDirectory()) {
-                    return false;
-                }
-                if (!dstDir.getCanonicalFile().exists()) {
-                    dstDir.getCanonicalFile().mkdirs();
-                }
-                String oldFileName = srcFile.getName();
-                Pattern suffixPattern = Pattern.compile("\\.\\w+");
-                Matcher matcher = suffixPattern.matcher(oldFileName);
+        FileInputStream fileInput = null;
+        FileOutputStream fileOutInput = null;
+        FileChannel fileIn = null;
+        FileChannel fileOut = null;
+        try {
+            String suffix, nameBody;
+            if (!srcFile.exists() || srcFile.isDirectory()) {
+                return false;
+            }
+            if (!dstDir.getCanonicalFile().exists()) {
+                dstDir.getCanonicalFile().mkdirs();
+            }
+            String oldFileName = srcFile.getName();
+            Pattern suffixPattern = Pattern.compile("\\.\\w+");
+            Matcher matcher = suffixPattern.matcher(oldFileName);
 
-                if (matcher.find()) {
-                    nameBody = oldFileName.substring(0, matcher.start());
-                    suffix = oldFileName.substring(matcher.start());
-                } else {
-                    nameBody = oldFileName;
-                    suffix = "";
-                }
-                int fileNumber = 0;
-                File newFile = new File(dstDir, oldFileName);
-                while (newFile.exists()) {
-                    fileNumber++;
+            if (matcher.find()) {
+                nameBody = oldFileName.substring(0, matcher.start());
+                suffix = oldFileName.substring(matcher.start());
+            } else {
+                nameBody = oldFileName;
+                suffix = "";
+            }
+            int fileNumber = 0;
+            File newFile = new File(dstDir, oldFileName);
+            while (newFile.exists()) {
+                fileNumber++;
 
-                    String newFileName = nameBody + "-copy" + fileNumber + suffix;
-                    newFile = new File(dstDir, newFileName);
+                String newFileName = nameBody + "-copy" + fileNumber + suffix;
+                newFile = new File(dstDir, newFileName);
+            }
+            fileInput = new FileInputStream(srcFile);
+            fileOutInput = new FileOutputStream(newFile);
+            fileIn = fileInput.getChannel();
+            fileOut = fileOutInput.getChannel();
+            fileIn.transferTo(0L, fileIn.size(), fileOut);
+        } catch (Exception e) {
+            if (fileInput != null)
+                try {
+                    fileInput.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
-                fileInput = new FileInputStream(srcFile);
-                fileOutInput = new FileOutputStream(newFile);
-                fileIn = fileInput.getChannel();
-                fileOut = fileOutInput.getChannel();
-                fileIn.transferTo(0L, fileIn.size(), fileOut);
-            } catch (Exception e) {
-                if (fileInput != null)
-                    try {
-                        fileInput.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                if (fileIn != null)
-                    try {
-                        fileIn.close();
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
-                    }
-                if (fileOutInput != null)
-                    try {
-                        fileOutInput.close();
-                    } catch (IOException e3) {
-                        e3.printStackTrace();
-                    }
-                if (fileOut != null) {
-                    try {
-                        fileOut.close();
-                    } catch (IOException e4) {
-                        e4.printStackTrace();
-                    }
+            if (fileIn != null)
+                try {
+                    fileIn.close();
+                } catch (IOException e2) {
+                    e2.printStackTrace();
                 }
-
-            } finally {
-
-                if (fileInput != null)
-                    try {
-                        fileInput.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                if (fileIn != null)
-                    try {
-                        fileIn.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                if (fileOutInput != null)
-                    try {
-                        fileOutInput.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                if (fileOut != null) {
-                    try {
-                        fileOut.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            if (fileOutInput != null)
+                try {
+                    fileOutInput.close();
+                } catch (IOException e3) {
+                    e3.printStackTrace();
+                }
+            if (fileOut != null) {
+                try {
+                    fileOut.close();
+                } catch (IOException e4) {
+                    e4.printStackTrace();
                 }
             }
+
+        } finally {
+
+            if (fileInput != null)
+                try {
+                    fileInput.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (fileIn != null)
+                try {
+                    fileIn.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (fileOutInput != null)
+                try {
+                    fileOutInput.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (fileOut != null) {
+                try {
+                    fileOut.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 
         return true;
@@ -169,7 +169,7 @@ public class FileUploadUtil {
                 /*int random6 = (int) ((Math.random() * 9.0D + 1.0D) * 100000.0D);
                 String fileName = DateTimeUtil.farmat(new Date(), "yyyyMMddHHmmssSSS") + random6;
 */
-                String tmpFilePath = temporaryPath +File.separator+ uploadFileName;
+                String tmpFilePath = temporaryPath + File.separator + uploadFileName;
 
                 String filterStr = tmpFilePath;
                 File tmpFile = new File(filterStr);

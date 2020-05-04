@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增影像批次')"/>
+</head>
+<style>
+    .inputCss {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 1px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+        height: 32px !important;
+        overflow: hidden;
+    }
+
+    .form-group input {
+        height: 32px !important;
+        overflow: hidden;
+        display: block;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pmsBatch-add">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★项目名称：</label>
+            <div class="col-sm-7">
+                <input id="projectName" name="projectName" class="form-control" type="text" required maxlength="255"
+                       placeholder="最大输入255位">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★项目编号：</label>
+            <div class="col-sm-7">
+                <input id="operationCode" name="operationCode" class="form-control" type="text" required maxlength="64"
+                       placeholder="最大输入64位">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★预算编号：</label>
+            <div class="col-sm-7">
+                <input id="budgetId" name="budgetId" class="form-control" type="text" required maxlength="100"
+                       placeholder="最大输入100位">
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display:none;">
+            <label class="col-sm-5 control-label"></label>
+            <div class="col-sm-7">
+                <input id="projectManager" name="projectManager"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★科技项目经理：</label>
+            <div class="col-sm-7">
+                <input id="projectManager2" onclick="selectUser('projectManager');projectManager2.blur();return false;"
+                       name="projectManager2"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6" style="display:none;">
+            <label class="col-sm-5 control-label"></label>
+            <div class="col-sm-7">
+                <input id="productManager" name="productManager"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★项目产品经理：</label>
+            <div class="col-sm-7">
+                <input id="productManager2" onclick="selectUser('productManager');productManager2.blur();return false;"
+                       name="productManager2"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-5 control-label"></label>
+            <div class="col-sm-7">
+                <input id="attriDept" onclick="selectDept('attriDept')" name="attriDept" class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★归属部门：</label>
+            <div class="col-sm-7">
+                <input id="attriDept2" onclick="selectDept('attriDept');attriDept2.blur();return false;"
+                       name="attriDept2" class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-5 control-label"></label>
+            <div class="col-sm-7">
+                <input id="modelList" name="modelList" class="form-control" type="text"
+                       required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★模型选择：</label>
+            <div class="col-sm-7">
+                <input id="modelList2" onclick="selectModels('modelList');modelList2.blur();return false;"
+                       name="modelList2" class="form-control" type="text"
+                       required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">创建人：</label>
+            <div class="col-sm-7">
+                <input id="createBy" name="createBy" class="form-control" th:value="*{userName}" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none;">
+            <label class="col-sm-5 control-label">★部门编号：</label>
+            <div class="col-sm-7">
+                <input id="deptId" name="deptId" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-5 control-label"></label>
+            <div class="col-sm-7">
+                <input id="buildDept" onclick="selectDept('buildDept')" name="buildDept" class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★承建部门：</label>
+            <div class="col-sm-7">
+                <input id="buildDept2" style="height: 31px"
+                       onclick="selectDept('buildDept');buildDept2.blur();return false" name="buildDept2"
+                       class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+        <!--<div class="form-group col-sm-6">-->
+        <!--<label class="col-sm-5 control-label">所属系统：</label>-->
+        <!--<div class="col-sm-7">-->
+        <!--<input id="sysId" name="sysId" class="form-control" th:field="*{cmsSystem.sysCode}" type="text"-->
+        <!--readonly>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★系统级别：</label>
+            <select style="margin-left: 15px" class="col-sm-6 inputCss" name="sysLevel"
+                    th:with="type=${@dict.getType('pms_batch_sysLevel')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★项目状态：</label>
+            <select style="margin-left: 15px" class="col-sm-6 inputCss" name="status"
+                    th:with="type=${@dict.getType('pms_batch_status')}" required>
+                <option value="">未选择</option>
+                <option value="0">未启动</option>
+                <option value="2">已结项</option>
+                <option value="3">实施中</option>
+                <option value="4">取消</option>
+                <!--                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+                <!--                        th:value="${dict?.dictValue}"></option>-->
+            </select>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label">★系统类型：</label>
+            <select style="margin-left: 15px" class="col-sm-6 inputCss" name="sysType"
+                    th:with="type=${@dict.getType('pms_batch_sysType')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "pms/pmsBatch"
+    $("#form-pmsBatch-add").validate({
+        rules: {
+            onkeyup: false,
+            // projectName: {
+            //     remote: {
+            //         url: prefix + "/checkProjectNameUnique",
+            //         type: "post",
+            //         dataType: "json",
+            //         data: {
+            //             "projectName": function () {
+            //                 return $.common.trim($("#projectName").val());
+            //             }
+            //         },
+            //         dataFilter: function (data, type) {
+            //             return $.validate.unique(data);
+            //         }
+            //     }
+            // },
+            operationCode: {
+                remote: {
+                    url: prefix + "/checkOperationCodeUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "operationCode": function () {
+                            return $.common.trim($("#operationCode").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            // budgetId: {
+            //     remote: {
+            //         url: prefix + "/checkBudgetIdUnique",
+            //         type: "post",
+            //         dataType: "json",
+            //         data: {
+            //             "budgetId": function () {
+            //                 return $.common.trim($("#budgetId").val());
+            //             }
+            //         },
+            //         dataFilter: function (data, type) {
+            //             return $.validate.unique(data);
+            //         }
+            //     }
+            // },
+            roleSort: {
+                digits: true
+            },
+        },
+        messages: {
+            // "projectName": {
+            //     remote: "项目名称已经存在"
+            // },
+            "operationCode": {
+                remote: "项目编号已经存在"
+            },
+            // "budgetId": {
+            //     remote: "预算编号已经存在"
+            // }
+        },
+        focusCleanup: true
+    });
+
+    //  确定
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.ajax({
+                url: prefix + "/getAddPmsParams",
+                data: $('#form-pmsBatch-add').serialize(),
+                type: 'POST',
+                success: function (result) {
+                    $.ajax({
+                        url: ctx + "file/acsService",
+                        contentType: "json/application",
+                        dataType: "json",
+                        data: JSON.stringify(result.jsonParam),
+                        type: "post",
+                        success: function (result) {
+                            $.modal.alert("添加成功");
+                            $.operate.successCallback(result)
+                        },
+                        err: function () {
+
+                        }
+                    });
+                },
+            });
+        }
+    }
+
+    // 时间框，批次创建时间调用commomjs,修改时间自己定义
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var singleTime = laydate.render({
+            elem: '#updateTime',
+            max: 0,
+            theme: 'molv',
+            trigger: 'click'
+        });
+    })
+
+    /*选择人*/
+    function selectUser(id, width, height) {
+        var options = {
+            title: '选择用户',
+            width: width,
+            height: height,
+            id: id,
+            url: ctx + "pms/pmsBatch/selectUser/" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisLoginName').val());
+                $('#' + id + "2").val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /*选择部门*/
+    function selectDept(id, width, height) {
+        var options = {
+            title: '选择部门',
+            width: width,
+            height: height,
+            id: id,
+            url: ctx + "pms/pmsBatch/selectDeptTree/" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#treeId').val());
+                $('#' + id + "2").val(body.find('#treeName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /*选择模型*/
+    // function selectModels(id,width,height) {
+    //     var options = {
+    //         title: '选择模型',
+    //         width: width,
+    //         height: height,
+    //         id: id,
+    //         url: ctx + "pms/pmsBatch/selectModel/" + id,
+    //         btn: ['确定', '关闭'],
+    //         shadeClose: true,
+    //         yes: function(index, layero) {
+    //             var body = layer.getChildFrame('body', index);
+    //             $('#' + id).val(body.find('#treeName').val());
+    //             layer.close(index);
+    //         },
+    //         cancel: function(index) {
+    //             return true;
+    //         }
+    //     };
+    //     $.modal.openOptions(options);
+    // }
+
+
+    function selectModels(id, width, height) {
+        $.modal.open("选择模型", ctx + "pms/pmsBatch/selectModel/" + id);
+    }
+
+</script>
+</body>
+</html>

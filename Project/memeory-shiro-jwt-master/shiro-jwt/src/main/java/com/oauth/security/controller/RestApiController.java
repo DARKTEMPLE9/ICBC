@@ -17,57 +17,57 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RestApiController {
 
-  @RequestMapping("/add")
-  @RequiresPermissions(Permissions.INSERT)
-  public RestResponse<String> add() {
-    return RestResponse.OK("add success");
-  }
+    @RequestMapping("/add")
+    @RequiresPermissions(Permissions.INSERT)
+    public RestResponse<String> add() {
+        return RestResponse.OK("add success");
+    }
 
-  @PostMapping("/find")
-  @RequiresPermissions(Permissions.SELECT)
-  public RestResponse<String> find() {
-    return RestResponse.OK("find success");
-  }
+    @PostMapping("/find")
+    @RequiresPermissions(Permissions.SELECT)
+    public RestResponse<String> find() {
+        return RestResponse.OK("find success");
+    }
 
-  @PostMapping("/update")
-  @RequiresPermissions(Permissions.UPDATE)
-  public RestResponse<String> update() {
-    return RestResponse.OK("update success");
+    @PostMapping("/update")
+    @RequiresPermissions(Permissions.UPDATE)
+    public RestResponse<String> update() {
+        return RestResponse.OK("update success");
 
-  }
+    }
 
-  @PostMapping("/delete")
-  @RequiresPermissions(Permissions.DELETE)
-  public RestResponse<String> delete() {
-    return RestResponse.OK("delete success");
+    @PostMapping("/delete")
+    @RequiresPermissions(Permissions.DELETE)
+    public RestResponse<String> delete() {
+        return RestResponse.OK("delete success");
 
-  }
+    }
 
-  @PostMapping("/find/_user")
-  @RequiresRoles(Roles.USER)
-  public RestResponse<String> user() {
-    return RestResponse.OK("user success");
+    @PostMapping("/find/_user")
+    @RequiresRoles(Roles.USER)
+    public RestResponse<String> user() {
+        return RestResponse.OK("user success");
 
-  }
+    }
 
-  @PostMapping("/find/_admin")
-  @RequiresRoles(Roles.ADMIN)
-  public RestResponse<String> admin() {
-    return RestResponse.OK("admin success");
+    @PostMapping("/find/_admin")
+    @RequiresRoles(Roles.ADMIN)
+    public RestResponse<String> admin() {
+        return RestResponse.OK("admin success");
 
-  }
+    }
 
-  @GetMapping("/list")
-  @RequiresRoles(Roles.USER)
-  @RequiresPermissions(Permissions.SELECT)
-  public RestResponse<String> list() {
-    return RestResponse.OK("list success");
+    @GetMapping("/list")
+    @RequiresRoles(Roles.USER)
+    @RequiresPermissions(Permissions.SELECT)
+    public RestResponse<String> list() {
+        return RestResponse.OK("list success");
 
-  }
+    }
 
-  @RequestMapping("/access")
-  public RestResponse<String> test() {
-    return RestResponse.OK("access success");
-  }
+    @RequestMapping("/access")
+    public RestResponse<String> test() {
+        return RestResponse.OK("access success");
+    }
 
 }

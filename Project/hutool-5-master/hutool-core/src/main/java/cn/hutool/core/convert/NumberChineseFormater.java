@@ -13,5 +13,5 @@ package cn.hutool.core.convert;
  * @deprecated 请使用 {@link NumberChineseFormatter}
  **/
 @Deprecated
-public class NumberChineseFormater extends NumberChineseFormatter{
+public class NumberChineseFormater extends NumberChineseFormatter {
 }

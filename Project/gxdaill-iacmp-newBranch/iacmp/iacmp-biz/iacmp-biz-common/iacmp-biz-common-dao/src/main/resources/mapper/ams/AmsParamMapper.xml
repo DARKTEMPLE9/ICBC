@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsParamMapper">
+
+    <resultMap type="AmsParam" id="AmsParamResult">
+        <result property="paramId" column="PARAM_ID"/>
+        <result property="id" column="ID"/>
+        <result property="paramSpeciesCode" column="PARAM_SPECIES_CODE"/>
+        <result property="paramSpeciesName" column="PARAM_SPECIES_NAME"/>
+        <result property="paramCode" column="PARAM_CODE"/>
+        <result property="paramName" column="PARAM_NAME"/>
+        <result property="remark" column="REMARK"/>
+    </resultMap>
+
+    <sql id="selectAmsParamVo">
+        select PARAM_ID, ID, PARAM_SPECIES_CODE, PARAM_SPECIES_NAME, PARAM_CODE, PARAM_NAME, REMARK from ams_param
+    </sql>
+
+    <select id="selectAmsParamList" parameterType="AmsParam" resultMap="AmsParamResult">
+        <include refid="selectAmsParamVo"/>
+        <where>
+            <if test="paramId != null  and paramId != '' ">and PARAM_ID = #{paramId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="paramSpeciesCode != null  and paramSpeciesCode != '' ">
+                and PARAM_SPECIES_CODE like concat('%', concat(#{paramSpeciesCode}, '%'))
+            </if>
+            <if test="paramSpeciesName != null  and paramSpeciesName != '' ">
+                and PARAM_SPECIES_NAME like concat('%', concat(#{paramSpeciesName}, '%'))
+            </if>
+            <if test="paramCode != null  and paramCode != '' ">and PARAM_CODE like concat('%', concat(#{paramCode},
+                '%'))
+            </if>
+            <if test="paramName != null  and paramName != '' ">and PARAM_NAME like concat('%', concat(#{paramName},
+                '%'))
+            </if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsParamById" parameterType="String" resultMap="AmsParamResult">
+        <include refid="selectAmsParamVo"/>
+        where ID = #{id}
+    </select>
+    <insert id="insertAmsParam" parameterType="AmsParam">
+        insert into ams_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="paramSpeciesCode != null  and paramSpeciesCode != ''  ">PARAM_SPECIES_CODE,</if>
+            <if test="paramSpeciesName != null  and paramSpeciesName != ''  ">PARAM_SPECIES_NAME,</if>
+            <if test="paramCode != null  and paramCode != ''  ">PARAM_CODE,</if>
+            <if test="paramName != null  and paramName != ''  ">PARAM_NAME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="paramSpeciesCode != null  and paramSpeciesCode != ''  ">#{paramSpeciesCode},</if>
+            <if test="paramSpeciesName != null  and paramSpeciesName != ''  ">#{paramSpeciesName},</if>
+            <if test="paramCode != null  and paramCode != ''  ">#{paramCode},</if>
+            <if test="paramName != null  and paramName != ''  ">#{paramName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsParam" parameterType="AmsParam">
+        update ams_param
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paramSpeciesCode != null  and paramSpeciesCode != ''  ">PARAM_SPECIES_CODE =
+                #{paramSpeciesCode},
+            </if>
+            <if test="paramSpeciesName != null  and paramSpeciesName != ''  ">PARAM_SPECIES_NAME =
+                #{paramSpeciesName},
+            </if>
+            <if test="paramCode != null  and paramCode != ''  ">PARAM_CODE = #{paramCode},</if>
+            <if test="paramName != null  and paramName != ''  ">PARAM_NAME = #{paramName},</if>
+            <if test="remark != null ">REMARK = #{remark},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsParamById" parameterType="String">
+        delete from ams_param where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsParamByIds" parameterType="String">
+        delete from ams_param where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

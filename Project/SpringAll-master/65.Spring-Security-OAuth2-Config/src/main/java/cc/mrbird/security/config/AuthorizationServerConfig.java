@@ -66,7 +66,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(3600)
                 .refreshTokenValiditySeconds(864000)
                 .scopes("all", "a", "b", "c")
-            .and()
+                .and()
                 .withClient("test2")
                 .secret(new BCryptPasswordEncoder().encode("test2222"))
                 .accessTokenValiditySeconds(7200);

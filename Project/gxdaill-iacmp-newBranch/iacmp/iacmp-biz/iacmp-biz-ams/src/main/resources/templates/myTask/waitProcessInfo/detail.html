@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改审批')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <button style="float: right;margin-top: -7px" type="button" class="btn btn-info" onclick="selectUsersToParent()">
+        审批记录
+    </button>
+    <form class="form-horizontal m" id="form-amsProcessInfo-edit" th:object="${amsProcessInfo}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <h4 class="form-header h4">基本信息</h4>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">审批编号：</label>
+            <div class="col-sm-8">
+                <input id="exaAppId" name="exaAppId" th:field="*{exaAppId}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案编号：</label>
+            <div class="col-sm-8">
+                <input id="arcNo" name="arcNo" th:field="*{arcNo}" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="arcName" name="arcName" th:field="*{arcName}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">借阅类型：</label>
+            <div class="col-sm-8" th:switch="*{exaAppType}">
+                <input id="exaAppType" name="exaAppType" th:case="10" value="电子调阅" class="form-control" type="text"
+                       readonly disabled>
+                <input id="exaAppType" name="exaAppType" th:case="20" value="实物调阅" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请人：</label>
+            <div class="col-sm-8">
+                <input id="appOpName" name="appOpName" th:field="*{appOpName}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="appOrgName" name="appOrgName" th:field="*{appOrgName}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请时间：</label>
+            <div class="col-sm-8">
+                <input name="appTime" th:value="${#dates.format(amsProcessInfo?.appTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请借阅开始时间：</label>
+            <div class="col-sm-8">
+                <input id="appTimeStart" name="appTime"
+                       th:value="${#dates.format(amsProcessInfo?.borStaTime,'yyyy-MM-dd')}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请借阅结束时间：</label>
+            <div class="col-sm-8">
+                <input id="appTimeEnd" name="appTime"
+                       th:value="${#dates.format(amsProcessInfo?.borEndTime,'yyyy-MM-dd')}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">借阅天数：</label>
+            <div class="col-sm-8">
+                <input id="days" name="appTime" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">申请备注：</label>
+            <div class="col-sm-8">
+                <input id="appRemark" name="appRemark" th:field="*{appRemark}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">当前处理人名称：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOpName" name="nowDispOpName" th:field="*{nowDispOpName}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">当前处理人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOrgName" name="nowDispOrgName" th:field="*{nowDispOrgName}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">上次处理人名称：</label>
+            <div class="col-sm-8">
+                <input id="preDispOpName" name="preDispOpName" th:field="*{preDispOpName}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">上次处理人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="preDispOrgName" name="preDispOrgName" th:field="*{preDispOrgName}" class="form-control"
+                       type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">上次处理时间：</label>
+            <div class="col-sm-8">
+                <input id="preDispTime" name="preDispTime"
+                       th:value="${#dates.format(amsProcessInfo?.preDispTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">审批状态：</label>
+            <div class="col-sm-8" th:switch="*{exaAppStatus}">
+                <input id="exaAppStatus1" name="exaAppStatus" th:case="10" value="未提交" class="form-control" type="text"
+                       readonly disabled>
+                <input id="exaAppStatus2" name="exaAppStatus" th:case="20" value="审批中" class="form-control" type="text"
+                       readonly disabled>
+                <input id="exaAppStatus3" name="exaAppStatus" th:case="30" value="已审批" class="form-control" type="text"
+                       readonly disabled>
+                <input id="exaAppStatus3" name="exaAppStatus" th:case="*" value=" " class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-4 control-label">流程ID：</label>
+            <div class="col-sm-8">
+                <input id="processId" name="processId" th:field="*{processId}" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-4 control-label">当前流程节点ID：</label>
+            <div class="col-sm-8">
+                <input id="nowProcessId" name="nowProcessId" th:field="*{nowProcessId}" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-4 control-label">汇总审批状态：</label>
+            <div class="col-sm-8" th:switch="*{foSearch}">
+                <input id="foSearch1" name="foSearch" th:case="1" value="不为空" class="form-control" type="text" readonly
+                       disabled>
+                <input id="foSearch0" name="foSearch" th:case="0" value="为空" class="form-control" type="text" readonly
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案形态：</label>
+            <div class="col-sm-8" th:switch="*{arcFormat}">
+                <input id="arcFormat1" name="arcFormat" th:case="10" value="电子形态" class="form-control" type="text"
+                       readonly disabled>
+                <input id="arcFormat2" name="arcFormat" th:case="20" value="实物形态" class="form-control" type="text"
+                       readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-4 control-label">代理人名：</label>
+            <div class="col-sm-8">
+                <input id="agentName" name="agentName" th:field="*{agentName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group col-sm-6" style="display: none">
+            <label class="col-sm-4 control-label">借阅ID：</label>
+            <div class="col-sm-8">
+                <input id="borrowId" name="borrowId" th:field="*{borrowId}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "myTask/waitProcessInfo";
+
+    /* 查看审批意见 */
+    function selectUsersToParent(width, height) {
+        var id = [[${amsProcessInfo.id}]];
+        // $.operate.detail("审批记录", ctx + "myTask/waitProcessInfo/approvalHistory/" + id);
+        var options = {
+            title: "审批记录",
+            width: width,
+            height: height,
+            url: prefix + "/approvalHistory/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    $("#form-amsProcessInfo-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsProcessInfo-edit').serialize());
+        }
+    }
+
+    // 根据开始结束时间确定借阅天数
+    $(function () {
+        var startDate = Date.parse($("#appTimeStart").val());
+        var endDate = Date.parse($("#appTimeEnd").val());
+        var days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+        // return days;
+        $("#days").val(days)
+    })
+</script>
+</body>
+</html>

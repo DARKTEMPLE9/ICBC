@@ -11,6 +11,6 @@ public class Export_a {
 
     private Integer sex;
 
-    private  Double height;
+    private Double height;
 
 }

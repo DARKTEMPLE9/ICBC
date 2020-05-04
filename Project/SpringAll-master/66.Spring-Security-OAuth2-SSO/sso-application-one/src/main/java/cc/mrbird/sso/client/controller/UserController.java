@@ -19,13 +19,13 @@ public class UserController {
 
     @GetMapping("auth/test1")
     @PreAuthorize("hasAuthority('user:add')")
-    public String authTest1(){
+    public String authTest1() {
         return "您拥有'user:add'权限";
     }
 
     @GetMapping("auth/test2")
     @PreAuthorize("hasAuthority('user:update')")
-    public String authTest2(){
+    public String authTest2() {
         return "您拥有'user:update'权限";
     }
 }

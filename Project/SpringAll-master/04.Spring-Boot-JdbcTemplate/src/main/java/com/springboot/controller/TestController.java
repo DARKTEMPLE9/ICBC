@@ -14,30 +14,30 @@ import com.springboot.service.StudentService;
 @RestController
 public class TestController {
 
-	@Autowired
-	private StudentService studentService;
+    @Autowired
+    private StudentService studentService;
 
-	@RequestMapping(value = "/querystudent", method = RequestMethod.GET)
-	public Student queryStudentBySno(String sno) {
-		return this.studentService.queryStudentBySno(sno);
-	}
+    @RequestMapping(value = "/querystudent", method = RequestMethod.GET)
+    public Student queryStudentBySno(String sno) {
+        return this.studentService.queryStudentBySno(sno);
+    }
 
-	@RequestMapping(value = "/queryallstudent")
-	public List<Map<String, Object>> queryAllStudent() {
-		return this.studentService.queryStudentListMap();
-	}
-	
-	@RequestMapping(value = "/addstudent", method = RequestMethod.GET)
-	public int saveStudent(String sno,String name,String sex) {
-		Student student = new Student();
-		student.setSno(sno);
-		student.setName(name);
-		student.setSex(sex);
-		return this.studentService.add(student);
-	}
-	
-	@RequestMapping(value = "deletestudent", method = RequestMethod.GET)
-	public int deleteStudentBySno(String sno) {
-		return this.studentService.deleteBysno(sno);
-	}
+    @RequestMapping(value = "/queryallstudent")
+    public List<Map<String, Object>> queryAllStudent() {
+        return this.studentService.queryStudentListMap();
+    }
+
+    @RequestMapping(value = "/addstudent", method = RequestMethod.GET)
+    public int saveStudent(String sno, String name, String sex) {
+        Student student = new Student();
+        student.setSno(sno);
+        student.setName(name);
+        student.setSex(sex);
+        return this.studentService.add(student);
+    }
+
+    @RequestMapping(value = "deletestudent", method = RequestMethod.GET)
+    public int deleteStudentBySno(String sno) {
+        return this.studentService.deleteBysno(sno);
+    }
 }

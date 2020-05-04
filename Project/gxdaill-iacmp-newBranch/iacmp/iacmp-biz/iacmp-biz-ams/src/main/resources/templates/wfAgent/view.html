@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('流程代理列表')"/>
+</head>
+<style>
+    .select-list li {
+        height: 30px !important;
+        overflow: hidden;
+        display: block;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <!--<ul>-->
+                    <!--<li>-->
+                    <!--委托人号：<input type="text" name="trustorCode"/>-->
+                    <!--</li>-->
+                    <!--<li style="margin-left: 26px;">-->
+                    <!--代理人号：<input type="text" name="agentCode"/>-->
+                    <!--</li>-->
+                    <!---->
+                    <!--<li>-->
+                    <!--代理人部门号：<input type="text" name="agentOrgCode"/>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--代理人部门名：<input type="text" name="agentOrgName"/>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
+                    <!--<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+
+                    <ul class="clearfix">
+                        <li>
+                            <label for="">委托人名：</label>
+                            <input type="text" name="trustorName" id="trustorName" onclick="selectUser('trustor')"
+                                   placeholder="请选择委托人名" autocomplete="off"/>
+                            <input type="hidden" name="trustorCode" id="trustorCode"/>
+                        </li>
+                        <li>
+                            <label for="">代理人名：</label>
+                            <input type="text" name="agentName" id="agentName" onclick="selectUser('agent')"
+                                   placeholder="请选择代理人名" autocomplete="off"/>
+                            <input type="hidden" name="agentCode" id="agentCode"/>
+                        </li>
+                        <li class="select-time">
+                            <label>代理时间： </label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                   name="agentStartDate"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="agentEndDate"/>
+                        </li>
+                        <li>
+                            <label for="">代理状态：</label>
+                            <select name="agentStatus" th:with="type=${@dict.getType('agentStatus')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="cms:wfAgent:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cms:wfAgent:remove">-->
+            <!--<i class="fa fa-remove"></i> 删除-->
+            <!--</a>-->
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('cms:wfAgent:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('cms:wfAgent:remove')}]];
+    var prefix = ctx + "wfAgent";
+    var agentStatus = [[${@dict.getType('agentStatus')}]];
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            editUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "流程代理",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'trustorName',
+                    title: '委托人名',
+                    sortable: true
+                },
+                {
+                    field: 'agentName',
+                    title: '代理人名',
+                    sortable: true
+                },
+                {
+                    field: 'agentStartDate',
+                    title: '代理开始时间',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'agentEndDate',
+                    title: '代理结束时间',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'agentStatus',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(agentStatus, item.agentStatus);
+                    }
+                },
+
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    /* 分配用户-选择用户 */
+    /*选择人*/
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id + "Name").val(body.find('#thisRowName').val());
+                $('#' + id + "Code").val(body.find('#thisRowCode').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+</script>
+</body>
+</html>

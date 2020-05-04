@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.WorkItemMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.WorkItem" id="WorkItemResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="type" column="TYPE"/>
+        <result property="role" column="ROLE"/>
+        <result property="operator" column="OPERATOR"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="finishTime" column="FINISH_TIME"/>
+        <result property="acquireTime" column="ACQUIRE_TIME"/>
+        <result property="exOperator1" column="EX_OPERATOR1"/>
+        <result property="exOperator2" column="EX_OPERATOR2"/>
+        <result property="scanBatchId" column="SCAN_BATCH_ID"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="priority" column="PRIORITY"/>
+        <result property="bizDate" column="BIZ_DATE"/>
+        <result property="chWorkload" column="CH_WORKLOAD"/>
+        <result property="enWorkload" column="EN_WORKLOAD"/>
+        <result property="fieldNum" column="FIELD_NUM"/>
+        <result property="validOper" column="VALID_OPER"/>
+        <result property="validFieldNum" column="VALID_FIELD_NUM"/>
+        <result property="projectId" column="PROJECT_ID"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="processTime" column="PROCESS_TIME"/>
+        <result property="batchCtime" column="BATCH_CTIME"/>
+        <result property="imageBlockId" column="IMAGE_BLOCK_ID"/>
+        <result property="exWorkItemId" column="EX_WORK_ITEM_ID"/>
+        <result property="inputNo" column="INPUT_NO"/>
+        <result property="month" column="MONTH"/>
+        <result property="year" column="YEAR"/>
+        <result property="day" column="DAY"/>
+        <result property="operatorName" column="OPERATOR_NAME"/>
+        <result property="queueName" column="QUEUE_NAME"/>
+        <result property="obtainedTime" column="OBTAINED_TIME"/>
+        <result property="updateAss" column="UPDATE_ASS"/>
+        <result property="workId" column="WORK_ID"/>
+    </resultMap>
+
+    <sql id="selectWorkItemVo">
+        select ID, CODE, NAME, STATUS, DESCRIPTION, TYPE, ROLE, OPERATOR, CREATE_TIME, FINISH_TIME, ACQUIRE_TIME,
+        EX_OPERATOR1, EX_OPERATOR2, SCAN_BATCH_ID, BATCH_ID, IMAGE_ID, PRIORITY, BIZ_DATE, CH_WORKLOAD, EN_WORKLOAD,
+        FIELD_NUM, VALID_OPER, VALID_FIELD_NUM, PROJECT_ID, BILL_ID, PROCESS_TIME, BATCH_CTIME, IMAGE_BLOCK_ID,
+        EX_WORK_ITEM_ID, INPUT_NO, MONTH, YEAR, DAY, OPERATOR_NAME, QUEUE_NAME, OBTAINED_TIME, UPDATE_ASS, WORK_ID from
+        work_item
+    </sql>
+
+    <select id="selectWorkItemList" parameterType="net.northking.iacmp.imp.domain.WorkItem"
+            resultMap="WorkItemResult">
+        <include refid="selectWorkItemVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="description != null  and description != '' ">and DESCRIPTION = #{description}</if>
+            <if test="type != null  and type != '' ">and TYPE = #{type}</if>
+            <if test="role != null  and role != '' ">and ROLE = #{role}</if>
+            <if test="operator != null  and operator != '' ">and OPERATOR = #{operator}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="finishTime != null ">and FINISH_TIME = #{finishTime}</if>
+            <if test="acquireTime != null ">and ACQUIRE_TIME = #{acquireTime}</if>
+            <if test="exOperator1 != null  and exOperator1 != '' ">and EX_OPERATOR1 = #{exOperator1}</if>
+            <if test="exOperator2 != null  and exOperator2 != '' ">and EX_OPERATOR2 = #{exOperator2}</if>
+            <if test="scanBatchId != null  and scanBatchId != '' ">and SCAN_BATCH_ID = #{scanBatchId}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="imageId != null  and imageId != '' ">and IMAGE_ID = #{imageId}</if>
+            <if test="priority != null ">and PRIORITY = #{priority}</if>
+            <if test="bizDate != null ">and BIZ_DATE = #{bizDate}</if>
+            <if test="chWorkload != null ">and CH_WORKLOAD = #{chWorkload}</if>
+            <if test="enWorkload != null ">and EN_WORKLOAD = #{enWorkload}</if>
+            <if test="fieldNum != null ">and FIELD_NUM = #{fieldNum}</if>
+            <if test="validOper != null  and validOper != '' ">and VALID_OPER = #{validOper}</if>
+            <if test="validFieldNum != null ">and VALID_FIELD_NUM = #{validFieldNum}</if>
+            <if test="projectId != null  and projectId != '' ">and PROJECT_ID = #{projectId}</if>
+            <if test="billId != null  and billId != '' ">and BILL_ID = #{billId}</if>
+            <if test="processTime != null ">and PROCESS_TIME = #{processTime}</if>
+            <if test="batchCtime != null ">and BATCH_CTIME = #{batchCtime}</if>
+            <if test="imageBlockId != null  and imageBlockId != '' ">and IMAGE_BLOCK_ID = #{imageBlockId}</if>
+            <if test="exWorkItemId != null  and exWorkItemId != '' ">and EX_WORK_ITEM_ID = #{exWorkItemId}</if>
+            <if test="inputNo != null ">and INPUT_NO = #{inputNo}</if>
+            <if test="month != null ">and MONTH = #{month}</if>
+            <if test="year != null ">and YEAR = #{year}</if>
+            <if test="day != null ">and DAY = #{day}</if>
+            <if test="operatorName != null  and operatorName != '' ">and OPERATOR_NAME = #{operatorName}</if>
+            <if test="queueName != null  and queueName != '' ">and QUEUE_NAME = #{queueName}</if>
+            <if test="obtainedTime != null ">and OBTAINED_TIME = #{obtainedTime}</if>
+            <if test="updateAss != null  and updateAss != '' ">and UPDATE_ASS = #{updateAss}</if>
+            <if test="workId != null ">and WORK_ID = #{workId}</if>
+        </where>
+    </select>
+
+    <select id="selectWorkItemById" parameterType="String" resultMap="WorkItemResult">
+        <include refid="selectWorkItemVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWorkItem" parameterType="net.northking.iacmp.imp.domain.WorkItem">
+        insert into work_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION,</if>
+            <if test="type != null  and type != ''  ">TYPE,</if>
+            <if test="role != null  and role != ''  ">ROLE,</if>
+            <if test="operator != null  and operator != ''  ">OPERATOR,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="finishTime != null  ">FINISH_TIME,</if>
+            <if test="acquireTime != null  ">ACQUIRE_TIME,</if>
+            <if test="exOperator1 != null  and exOperator1 != ''  ">EX_OPERATOR1,</if>
+            <if test="exOperator2 != null  and exOperator2 != ''  ">EX_OPERATOR2,</if>
+            <if test="scanBatchId != null  and scanBatchId != ''  ">SCAN_BATCH_ID,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID,</if>
+            <if test="priority != null  ">PRIORITY,</if>
+            <if test="bizDate != null  ">BIZ_DATE,</if>
+            <if test="chWorkload != null  ">CH_WORKLOAD,</if>
+            <if test="enWorkload != null  ">EN_WORKLOAD,</if>
+            <if test="fieldNum != null  ">FIELD_NUM,</if>
+            <if test="validOper != null  and validOper != ''  ">VALID_OPER,</if>
+            <if test="validFieldNum != null  ">VALID_FIELD_NUM,</if>
+            <if test="projectId != null  and projectId != ''  ">PROJECT_ID,</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID,</if>
+            <if test="processTime != null  ">PROCESS_TIME,</if>
+            <if test="batchCtime != null  ">BATCH_CTIME,</if>
+            <if test="imageBlockId != null  and imageBlockId != ''  ">IMAGE_BLOCK_ID,</if>
+            <if test="exWorkItemId != null  and exWorkItemId != ''  ">EX_WORK_ITEM_ID,</if>
+            <if test="inputNo != null  ">INPUT_NO,</if>
+            <if test="month != null  ">MONTH,</if>
+            <if test="year != null  ">YEAR,</if>
+            <if test="day != null  ">DAY,</if>
+            <if test="operatorName != null  and operatorName != ''  ">OPERATOR_NAME,</if>
+            <if test="queueName != null  and queueName != ''  ">QUEUE_NAME,</if>
+            <if test="obtainedTime != null  ">OBTAINED_TIME,</if>
+            <if test="updateAss != null  and updateAss != ''  ">UPDATE_ASS,</if>
+            <if test="workId != null  ">WORK_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="description != null  and description != ''  ">#{description},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="role != null  and role != ''  ">#{role},</if>
+            <if test="operator != null  and operator != ''  ">#{operator},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="finishTime != null  ">#{finishTime},</if>
+            <if test="acquireTime != null  ">#{acquireTime},</if>
+            <if test="exOperator1 != null  and exOperator1 != ''  ">#{exOperator1},</if>
+            <if test="exOperator2 != null  and exOperator2 != ''  ">#{exOperator2},</if>
+            <if test="scanBatchId != null  and scanBatchId != ''  ">#{scanBatchId},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="priority != null  ">#{priority},</if>
+            <if test="bizDate != null  ">#{bizDate},</if>
+            <if test="chWorkload != null  ">#{chWorkload},</if>
+            <if test="enWorkload != null  ">#{enWorkload},</if>
+            <if test="fieldNum != null  ">#{fieldNum},</if>
+            <if test="validOper != null  and validOper != ''  ">#{validOper},</if>
+            <if test="validFieldNum != null  ">#{validFieldNum},</if>
+            <if test="projectId != null  and projectId != ''  ">#{projectId},</if>
+            <if test="billId != null  and billId != ''  ">#{billId},</if>
+            <if test="processTime != null  ">#{processTime},</if>
+            <if test="batchCtime != null  ">#{batchCtime},</if>
+            <if test="imageBlockId != null  and imageBlockId != ''  ">#{imageBlockId},</if>
+            <if test="exWorkItemId != null  and exWorkItemId != ''  ">#{exWorkItemId},</if>
+            <if test="inputNo != null  ">#{inputNo},</if>
+            <if test="month != null  ">#{month},</if>
+            <if test="year != null  ">#{year},</if>
+            <if test="day != null  ">#{day},</if>
+            <if test="operatorName != null  and operatorName != ''  ">#{operatorName},</if>
+            <if test="queueName != null  and queueName != ''  ">#{queueName},</if>
+            <if test="obtainedTime != null  ">#{obtainedTime},</if>
+            <if test="updateAss != null  and updateAss != ''  ">#{updateAss},</if>
+            <if test="workId != null  ">#{workId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWorkItem" parameterType="net.northking.iacmp.imp.domain.WorkItem">
+        update work_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION = #{description},</if>
+            <if test="type != null  and type != ''  ">TYPE = #{type},</if>
+            <if test="role != null  and role != ''  ">ROLE = #{role},</if>
+            <if test="operator != null  and operator != ''  ">OPERATOR = #{operator},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="finishTime != null  ">FINISH_TIME = #{finishTime},</if>
+            <if test="acquireTime != null  ">ACQUIRE_TIME = #{acquireTime},</if>
+            <if test="exOperator1 != null  and exOperator1 != ''  ">EX_OPERATOR1 = #{exOperator1},</if>
+            <if test="exOperator2 != null  and exOperator2 != ''  ">EX_OPERATOR2 = #{exOperator2},</if>
+            <if test="scanBatchId != null  and scanBatchId != ''  ">SCAN_BATCH_ID = #{scanBatchId},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID = #{imageId},</if>
+            <if test="priority != null  ">PRIORITY = #{priority},</if>
+            <if test="bizDate != null  ">BIZ_DATE = #{bizDate},</if>
+            <if test="chWorkload != null  ">CH_WORKLOAD = #{chWorkload},</if>
+            <if test="enWorkload != null  ">EN_WORKLOAD = #{enWorkload},</if>
+            <if test="fieldNum != null  ">FIELD_NUM = #{fieldNum},</if>
+            <if test="validOper != null  and validOper != ''  ">VALID_OPER = #{validOper},</if>
+            <if test="validFieldNum != null  ">VALID_FIELD_NUM = #{validFieldNum},</if>
+            <if test="projectId != null  and projectId != ''  ">PROJECT_ID = #{projectId},</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID = #{billId},</if>
+            <if test="processTime != null  ">PROCESS_TIME = #{processTime},</if>
+            <if test="batchCtime != null  ">BATCH_CTIME = #{batchCtime},</if>
+            <if test="imageBlockId != null  and imageBlockId != ''  ">IMAGE_BLOCK_ID = #{imageBlockId},</if>
+            <if test="exWorkItemId != null  and exWorkItemId != ''  ">EX_WORK_ITEM_ID = #{exWorkItemId},</if>
+            <if test="inputNo != null  ">INPUT_NO = #{inputNo},</if>
+            <if test="month != null  ">MONTH = #{month},</if>
+            <if test="year != null  ">YEAR = #{year},</if>
+            <if test="day != null  ">DAY = #{day},</if>
+            <if test="operatorName != null  and operatorName != ''  ">OPERATOR_NAME = #{operatorName},</if>
+            <if test="queueName != null  and queueName != ''  ">QUEUE_NAME = #{queueName},</if>
+            <if test="obtainedTime != null  ">OBTAINED_TIME = #{obtainedTime},</if>
+            <if test="updateAss != null  and updateAss != ''  ">UPDATE_ASS = #{updateAss},</if>
+            <if test="workId != null  ">WORK_ID = #{workId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWorkItemById" parameterType="String">
+        delete from work_item where ID = #{id}
+    </delete>
+
+    <delete id="deleteWorkItemByIds" parameterType="String">
+        delete from work_item where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -26,19 +26,19 @@ public class SendMessageController {
 
     // @GetMapping("send/{message}")
     // public void send(@PathVariable String message) {
-        // this.kafkaTemplate.send("test", message);
-        // ListenableFuture<SendResult<String, String>> future = this.kafkaTemplate.send("test", message);
-        // future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-        //     @Override
-        //     public void onSuccess(SendResult<String, String> result) {
-        //         logger.info("成功发送消息：{}，offset=[{}]", message, result.getRecordMetadata().offset());
-        //     }
-        //
-        //     @Override
-        //     public void onFailure(Throwable ex) {
-        //         logger.error("消息：{} 发送失败，原因：{}", message, ex.getMessage());
-        //     }
-        // });
+    // this.kafkaTemplate.send("test", message);
+    // ListenableFuture<SendResult<String, String>> future = this.kafkaTemplate.send("test", message);
+    // future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+    //     @Override
+    //     public void onSuccess(SendResult<String, String> result) {
+    //         logger.info("成功发送消息：{}，offset=[{}]", message, result.getRecordMetadata().offset());
+    //     }
+    //
+    //     @Override
+    //     public void onFailure(Throwable ex) {
+    //         logger.error("消息：{} 发送失败，原因：{}", message, ex.getMessage());
+    //     }
+    // });
     // }
 
     @GetMapping("send/{message}")

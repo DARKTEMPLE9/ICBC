@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('选择用户')"/>
+    <th:block th:include="include :: ztree-css"/>
+</head>
+
+<body class="gray-bg">
+<input id="thisRowCode" name="thisRowCode" type="hidden"/>
+<input id="thisRowName" name="thisRowName" type="hidden"/>
+<input id="thisDeptCode" name="thisDeptCode" type="hidden"/>
+<input id="thisDeptName" name="thisDeptName" type="hidden"/>
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form">
+                <div class="select-list">
+                    <input type="hidden" id="userId" name="userId" th:value="${userId}">
+                    <ul>
+                        <li>
+                            登录名称：<input type="text" name="loginName"/>
+                        </li>
+                        <li>
+                            手机号码：<input type="text" name="phonenumber"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: ztree-js"/>
+<script th:inline="javascript">
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "system/user";
+
+    $(function () {
+        var options = {
+            url: prefix + "/select/userList",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            importUrl: prefix + "/importData",
+            importTemplateUrl: prefix + "/importTemplate",
+            queryParams: queryParams,
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            clickToSelect: true,
+            rememberSelected: true,
+            onClickRow: onClickRow,
+            onDblClickRow: onDblClickRow,
+
+            columns: [{
+                field: 'userId',
+                title: '用户ID',
+                visible: false
+            },
+                {
+                    field: 'loginName',
+                    title: '登录名称',
+                    sortable: true
+                },
+                {
+                    field: 'dept.deptName',
+                    title: '部门'
+                },
+                {
+                    field: 'dept.deptId',
+                    title: '部门编码',
+                    visible: false
+                },
+                {
+                    field: 'userName',
+                    title: '用户名称'
+                },
+                {
+                    field: 'email',
+                    title: '邮箱'
+                },
+                {
+                    field: 'phonenumber',
+                    title: '手机'
+                },
+                {
+                    field: 'status',
+                    title: '用户状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        search.roleId = $("#roleId").val();
+        return search;
+    }
+
+    /* 添加用户-选择用户-提交 */
+    function submitHandler() {
+    }
+
+    function onClickRow(row, $element) {
+        var id = window.location.href.split('=')[1];
+        var thisRowName = row.userName;
+        $("#thisRowName").val(thisRowName);
+        var thisRowCode = row.loginName;
+        $("#thisRowCode").val(thisRowCode);
+
+        //部门编号 部门名称
+        var thisDeptCode = row.dept.deptId;
+        $("#thisDeptCode").val(thisDeptCode);
+        var thisDeptName = row.dept.deptName;
+        $("#thisDeptName").val(thisDeptName);
+
+        $element.siblings().css('background', 'transparent')
+        $element.css('background', '#e5e5e5');
+    }
+
+    function onDblClickRow(row, $element) {
+        var id = window.location.href.split('=')[1];
+        // alert(id)
+        var thisRowName = row.userName;
+        $("#thisRowName").val(thisRowName)
+        $('#' + id + 'Name').val($("#thisRowName").val())
+        parent.$('#' + id + 'Name').val($("#thisRowName").val())
+        var thisRowCode = row.loginName;
+        $("#thisRowCode").val(thisRowCode);
+        parent.$('#' + id + 'Code').val($("#thisRowCode").val())
+
+        //部门编号 部门名称
+        var thisDeptCode = row.dept.deptId;
+        $("#thisDeptCode").val(thisDeptCode);
+        parent.$('#' + id + 'OrgCode').val($("#thisDeptCode").val())
+        var thisDeptName = row.dept.deptName;
+        $("#thisDeptName").val(thisDeptName);
+        parent.$('#' + id + 'OrgName').val($("#thisDeptName").val())
+
+        var index = parent.layer.index; //获取当前弹层的索引号
+        parent.layer.close(index); //关闭当前弹层
+    }
+</script>
+</body>
+</html>

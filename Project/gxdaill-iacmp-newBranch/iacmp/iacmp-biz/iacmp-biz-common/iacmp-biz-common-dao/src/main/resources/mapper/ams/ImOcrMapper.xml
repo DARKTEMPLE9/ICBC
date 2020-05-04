@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImOcrMapper">
+
+    <resultMap type="ImOcr" id="ImOcrResult">
+        <result property="id" column="id"/>
+        <result property="imageId" column="image_id"/>
+        <result property="workitemId" column="workitem_id"/>
+        <result property="ocrResult" column="ocr_result"/>
+        <result property="ocrInfo" column="ocr_info"/>
+        <result property="ocrId" column="ocr_id"/>
+    </resultMap>
+
+    <sql id="selectImOcrVo">
+        select id, image_id, workitem_id, ocr_result, ocr_info, ocr_id from im_ocr
+    </sql>
+
+    <select id="selectImOcrList" parameterType="ImOcr" resultMap="ImOcrResult">
+        <include refid="selectImOcrVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and id = #{id}</if>
+            <if test="imageId != null  and imageId != '' ">and image_id = #{imageId}</if>
+            <if test="workitemId != null  and workitemId != '' ">and workitem_id = #{workitemId}</if>
+            <if test="ocrResult != null  and ocrResult != '' ">and ocr_result = #{ocrResult}</if>
+            <if test="ocrInfo != null  and ocrInfo != '' ">and ocr_info = #{ocrInfo}</if>
+            <if test="ocrId != null ">and ocr_id = #{ocrId}</if>
+        </where>
+    </select>
+
+    <select id="selectImOcrById" parameterType="String" resultMap="ImOcrResult">
+        <include refid="selectImOcrVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertImOcr" parameterType="ImOcr">
+        insert into im_ocr
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id,</if>
+            <if test="imageId != null  and imageId != ''  ">image_id,</if>
+            <if test="workitemId != null  and workitemId != ''  ">workitem_id,</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">ocr_result,</if>
+            <if test="ocrInfo != null  and ocrInfo != ''  ">ocr_info,</if>
+            <if test="ocrId != null  ">ocr_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="workitemId != null  and workitemId != ''  ">#{workitemId},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">#{ocrResult},</if>
+            <if test="ocrInfo != null  and ocrInfo != ''  ">#{ocrInfo},</if>
+            <if test="ocrId != null  ">#{ocrId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImOcr" parameterType="ImOcr">
+        update im_ocr
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageId != null  and imageId != ''  ">image_id = #{imageId},</if>
+            <if test="workitemId != null  and workitemId != ''  ">workitem_id = #{workitemId},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">ocr_result = #{ocrResult},</if>
+            <if test="ocrInfo != null  and ocrInfo != ''  ">ocr_info = #{ocrInfo},</if>
+            <if test="ocrId != null  ">ocr_id = #{ocrId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteImOcrById" parameterType="String">
+        delete from im_ocr where id = #{id}
+    </delete>
+
+    <delete id="deleteImOcrByIds" parameterType="String">
+        delete from im_ocr where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

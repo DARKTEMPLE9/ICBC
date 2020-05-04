@@ -1,4 +1,5 @@
 package com.icbc.common.system_menu.menuController;
+
 import com.icbc.common.system_menu.menuService.MenuService;
 import com.icbc.entity.mapper.menu.TreeNode;
 import com.icbc.utils.TreeUtils;
@@ -15,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /*
-* 首页菜单类
-* */
+ * 首页菜单类
+ * */
 @Controller
 @RequestMapping("menu")
 public class MenuController {
@@ -29,7 +30,7 @@ public class MenuController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping(value = "/setRedis",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/setRedis", method = {RequestMethod.GET, RequestMethod.POST})
     public void setRedis() {
         //redisTemplate.opsForSet().add("asd_fgh", 1231);
         redisTemplate.opsForSet().add("testredis", "qwe");
@@ -43,51 +44,53 @@ public class MenuController {
 
     /**
      * 跳转测试elementui-table页面
+     *
      * @return
      */
-    @RequestMapping(value = "/toTable",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView toTable(){
+    @RequestMapping(value = "/toTable", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView toTable() {
         ModelAndView view = new ModelAndView();
         view.setViewName("table-element/table-js");
         return view;
     }
 
     /*
-    * 测试获取JSON数据
-    * */
-    @RequestMapping(value= "/getJson",method = {RequestMethod.GET,RequestMethod.POST})
+     * 测试获取JSON数据
+     * */
+    @RequestMapping(value = "/getJson", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String getJson(){
+    public String getJson() {
         String s = "dataItemTaskList\":[{\"success\":true,\"dataItemId\":\"144002\",\"protocolId\":\"1\",\"mpedId\":\"9000001028765\",\"tmnlTaskId\":\"TK$9000001028765_608\",\"dataItemDescList\":null,\"dataItemName\":\"终端保电解除\",\"errNo\":1,\"errMessage\":null,\"mpedDesc\":null,\"mpedDescMap\":null}]";
         return s;
     }
 
     /*
-    * 跳转至EL-Tree-lazy页面
-    * */
-    @RequestMapping(value = "/toTreeLazy",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView toTreeLazy(){
+     * 跳转至EL-Tree-lazy页面
+     * */
+    @RequestMapping(value = "/toTreeLazy", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView toTreeLazy() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("userInfo/EL-Tree-lazy");
         return modelAndView;
     }
 
     /*
-    * 获取当前父节点下的子节点数据
-    * */
-    @RequestMapping(value = "/getTreeChild",method = {RequestMethod.GET,RequestMethod.POST})
+     * 获取当前父节点下的子节点数据
+     * */
+    @RequestMapping(value = "/getTreeChild", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public List<TreeNode> getTreeChild(String id){
+    public List<TreeNode> getTreeChild(String id) {
         List<TreeNode> childList = menuService.getTreeChild(id);
         return childList;
 
     }
+
     /*
-    * 获取全部父节点
-    * */
-    @RequestMapping(value = "/getTreeParent",method = {RequestMethod.GET,RequestMethod.POST})
+     * 获取全部父节点
+     * */
+    @RequestMapping(value = "/getTreeParent", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public List<TreeNode> getTreeParent(){
+    public List<TreeNode> getTreeParent() {
         List<TreeNode> treeList = menuService.getTreeParent();
 
         return treeList;
@@ -95,15 +98,16 @@ public class MenuController {
 
     /**
      * 首页树
+     *
      * @return
      */
-    @RequestMapping(value = "/getTree" ,method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public List<TreeUtils> getTree(){
-        List<TreeNode> treeList =  menuService.getTree();
+    public List<TreeUtils> getTree() {
+        List<TreeNode> treeList = menuService.getTree();
         List<TreeUtils> treeUtilsList = null;
         try {
-            treeUtilsList = TreeUtils.getTreeList(treeList,"id", "pid", "name");
+            treeUtilsList = TreeUtils.getTreeList(treeList, "id", "pid", "name");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,10 +117,11 @@ public class MenuController {
 
     /**
      * 跳转首页
+     *
      * @return
      */
-    @RequestMapping(value = "/toTest2",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView toTest2(){
+    @RequestMapping(value = "/toTest2", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView     toTest2() {
         ModelAndView view = new ModelAndView();
         view.setViewName("toTest2");
         return view;
@@ -124,10 +129,11 @@ public class MenuController {
 
     /**
      * 跳转员工信息管理
+     *
      * @return
      */
-    @RequestMapping(value = "/toStaffInfo",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView toStaffInfo(){
+    @RequestMapping(value = "/toStaffInfo", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView toStaffInfo() {
         ModelAndView view = new ModelAndView();
         view.setViewName("userInfo/staffInfo");
         return view;
@@ -135,18 +141,19 @@ public class MenuController {
 
     /**
      * 跳转首页
+     *
      * @return
      */
-    @RequestMapping(value = "/toMain",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView toMain(){
+    @RequestMapping(value = "/toMain", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView toMain() {
         ModelAndView view = new ModelAndView();
         view.setViewName("index");
         //logger.info("hello world");
         return view;
     }
 
-    @RequestMapping(value = "/test",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView testView(){
+    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView testView() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("TestModule");
         return modelAndView;

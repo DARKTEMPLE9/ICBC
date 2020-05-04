@@ -1,4 +1,5 @@
 package com.icbc.super_shopping.system_menu.controller;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -39,8 +40,8 @@ public class SystemMenuController {
     }
 
     /*
-    * 上传文件内存溢出问题  NIO在大文件及多个文件上传时处理内存溢出
-    * */
+     * 上传文件内存溢出问题  NIO在大文件及多个文件上传时处理内存溢出
+     * */
     @RequestMapping(value = {"/gradeUploadFile"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public boolean gradeUploadFile(HttpServletRequest request) {
@@ -59,7 +60,7 @@ public class SystemMenuController {
             String temporaryPath = "D:\\fileupload\\temp";
             String filePath = "D:\\fileupload\\file";
             uploadFileT = FileUploadUtil.uploadFileT(file, temporaryPath, request);
-            copyFileAdd(temporaryPath,filePath,fileName);
+            copyFileAdd(temporaryPath, filePath, fileName);
             return uploadFileT;
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,9 +69,9 @@ public class SystemMenuController {
     }
 
     /*
-    * 上传临时文件成功后 调用移动至正式目录
-    *
-    * */
+     * 上传临时文件成功后 调用移动至正式目录
+     *
+     * */
     private void copyFileAdd(String realPath, String dstDir, String gradeName) throws IOException {
         String path = realPath + File.separator + gradeName;
         File file = new File(path);
@@ -79,8 +80,8 @@ public class SystemMenuController {
     }
 
     /*
-    * 下载文件
-    * */
+     * 下载文件
+     * */
     @RequestMapping(value = {"/downloadTemporayFile"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void downloadTemporayFile(HttpServletRequest request, HttpServletResponse response, String fileName, String uploadFileName) {
         String decode = URLDecoder.decode(URLDecoder.decode(uploadFileName));
@@ -93,7 +94,7 @@ public class SystemMenuController {
             fileName = fileName.substring(0, fileName.lastIndexOf("."));
             String reg = "^[0-9]+(.[0-9]+)?$";
             if (fileName.matches(reg)) {
-                FileUploadUtil.downFilesEncoding(request, response, filePath, fileName, de,serverGBK,serverISO);
+                FileUploadUtil.downFilesEncoding(request, response, filePath, fileName, de, serverGBK, serverISO);
             } else {
                 throw new Exception("");
             }
@@ -101,7 +102,6 @@ public class SystemMenuController {
             e.printStackTrace();
         }
     }
-
 
 
     public String generalMenu(HttpServletRequest request, HttpServletResponse response, Model data) {
@@ -115,8 +115,8 @@ public class SystemMenuController {
 
 
     /*
-    * 跳转权限首页
-    * */
+     * 跳转权限首页
+     * */
     @RequestMapping(value = {"/toMenu0"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView toMenu() {
         ModelAndView mv = new ModelAndView();
@@ -151,13 +151,11 @@ public class SystemMenuController {
         try {
             Map<String, String[]> paramsMap = request.getParameterMap();
             for (Map.Entry<String, String[]> entry : paramsMap.entrySet()) {
-                data.addAttribute(entry.getKey(), ((String[])entry.getValue())[0]);
+                data.addAttribute(entry.getKey(), ((String[]) entry.getValue())[0]);
             }
-        } catch (Exception exception) {}
+        } catch (Exception exception) {
+        }
     }
-
-
-
 
 
 }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsCodeMapper">
+
+    <resultMap type="AmsCode" id="AmsCodeResult">
+        <result property="codeId" column="CODE_ID"/>
+        <result property="id" column="ID"/>
+        <result property="maxCode" column="MAX_CODE"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="type" column="TYPE"/>
+        <result property="nowTime" column="NOW_TIME"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="period" column="PERIOD"/>
+        <result property="crtOrgFlag" column="CRT_ORG_FLAG"/>
+        <result property="opOrgCode" column="OP_ORG_CODE"/>
+        <result property="arcType" column="ARC_TYPE"/>
+    </resultMap>
+
+    <sql id="selectAmsCodeVo">
+        select CODE_ID, ID, MAX_CODE, USER_CODE, TYPE, NOW_TIME, ORG_CODE, PERIOD, CRT_ORG_FLAG, OP_ORG_CODE, ARC_TYPE
+        from ams_code
+    </sql>
+
+    <select id="selectAmsCodeList" parameterType="AmsCode" resultMap="AmsCodeResult">
+        <include refid="selectAmsCodeVo"/>
+        <where>
+            <if test="codeId != null  and codeId != '' ">and CODE_ID = #{codeId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="maxCode != null ">and MAX_CODE = #{maxCode}</if>
+            <if test="userCode != null  and userCode != '' ">and USER_CODE = #{userCode}</if>
+            <if test="type != null  and type != '' ">and TYPE = #{type}</if>
+            <if test="nowTime != null  and nowTime != '' ">and NOW_TIME = #{nowTime}</if>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="period != null ">and PERIOD = #{period}</if>
+            <if test="crtOrgFlag != null  and crtOrgFlag != '' ">and CRT_ORG_FLAG = #{crtOrgFlag}</if>
+            <if test="opOrgCode != null  and opOrgCode != '' ">and OP_ORG_CODE = #{opOrgCode}</if>
+            <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsCodeById" parameterType="String" resultMap="AmsCodeResult">
+        <include refid="selectAmsCodeVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsCode" parameterType="AmsCode">
+        insert into ams_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="maxCode != null  ">MAX_CODE,</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE,</if>
+            <if test="type != null  and type != ''  ">TYPE,</if>
+            <if test="nowTime != null  and nowTime != ''  ">NOW_TIME,</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE,</if>
+            <if test="period != null  ">PERIOD,</if>
+            <if test="crtOrgFlag != null  and crtOrgFlag != ''  ">CRT_ORG_FLAG,</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE,</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="maxCode != null  ">#{maxCode},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="nowTime != null  and nowTime != ''  ">#{nowTime},</if>
+            <if test="orgCode != null  and orgCode != ''  ">#{orgCode},</if>
+            <if test="period != null  ">#{period},</if>
+            <if test="crtOrgFlag != null  and crtOrgFlag != ''  ">#{crtOrgFlag},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">#{opOrgCode},</if>
+            <if test="arcType != null  and arcType != ''  ">#{arcType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsCode" parameterType="AmsCode">
+        update ams_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="maxCode != null  ">MAX_CODE = #{maxCode},</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE = #{userCode},</if>
+            <if test="type != null  and type != ''  ">TYPE = #{type},</if>
+            <if test="nowTime != null  and nowTime != ''  ">NOW_TIME = #{nowTime},</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE = #{orgCode},</if>
+            <if test="period != null  ">PERIOD = #{period},</if>
+            <if test="crtOrgFlag != null  and crtOrgFlag != ''  ">CRT_ORG_FLAG = #{crtOrgFlag},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE = #{opOrgCode},</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE = #{arcType},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsCodeById" parameterType="String">
+        delete from ams_code where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsCodeByIds" parameterType="String">
+        delete from ams_code where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

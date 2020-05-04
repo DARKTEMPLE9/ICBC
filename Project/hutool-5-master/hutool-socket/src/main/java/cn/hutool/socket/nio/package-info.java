@@ -1,7 +1,6 @@
 /**
  * NIO相关封装
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.socket.nio;

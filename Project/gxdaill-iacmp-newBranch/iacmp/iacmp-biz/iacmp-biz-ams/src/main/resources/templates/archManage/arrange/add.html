@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('创建档案盒')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-batch-add" th:object="${amsBox}">
+        <input name="orgCode" type="hidden" id="treeId"/>
+        <input name="arcType" type="hidden" th:value="${amsBatch.arcBill}" id="arcType"/>
+        <input name="arcTypeCode" type="hidden" th:value="${amsBatch.arcBillCode}" id="arcTypeCode"/>
+        <input name="childTypeCode" type="hidden" th:value="${amsBatch.arcBillDeptCode}" id="childTypeCode"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">盒号：</label>
+            <div class="col-sm-8">
+                <input id="code" name="code" class="form-control" type="text" placeholder="请输入9位以内数字" required
+                       maxlength="9">
+                <span class="codeValidate" style="color: red;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">盒名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" class="form-control" type="text" required placeholder="请输入64字以内"
+                       th:maxlength="64">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">二级类目：</label>
+            <div class="col-sm-8">
+                <input id="childType" name="childType" th:value="${amsBatch.arcBillDept}" class="form-control"
+                       type="text" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属部门：</label>
+            <div class="col-sm-8">
+                <input id="orgName" name="orgName" onclick="selectDeptTree();orgName.blur();return false;"
+                       class="form-control" type="text"
+                       style="cursor: pointer" placeholder="请选择所属部门">
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">所属库房：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--&lt;!&ndash;<input id="treeName" name="orgName" onclick="selectDepot()" class="form-control" type="text"&ndash;&gt;-->
+        <!--&lt;!&ndash;readonly="readonly" style="cursor: pointer" placeholder="请选择所属库房">&ndash;&gt;-->
+        <!--<select id="depotList" class="form-control col-sm-6" onchange="selectDepot()" required onblur="validateDepot()">-->
+        <!--</select>-->
+        <!--&lt;!&ndash;hidden&ndash;&gt;-->
+        <!--<input type="hidden" id="depId" name="depId"/>-->
+        <!--<input type="hidden" id="depCode" name="depCode"/>-->
+        <!--<input type="hidden" id="depName" name="depName"/>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">保管期限：</label>
+            <div class="col-sm-8">
+                <select id="valPeriod" name="valPeriod" class="form-control" disabled>
+                    <option value="10" th:selected="${amsBatch.valPeriod == '10'}">10年</option>
+                    <option value="30" th:selected="${amsBatch.valPeriod == '30'}">30年</option>
+                    <option value="99" th:selected="${amsBatch.valPeriod == '99'}">永久</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属年份：</label>
+            <div class="col-sm-8">
+                <input id="boxYear" name="boxYear" th:value="${amsBox.boxYear}" class="form-control" type="text"
+                       required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text" placeholder="请输入200字以内"
+                       th:maxlength="200">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+    $(function () {
+        depotList();
+    });
+    var prefix = ctx + "archManage/arrange"
+    $("#form-batch-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    // 盒号只能输入以0开头的数字
+    $("input[name='code']").blur(function () {
+        var val = $(this).val();
+        if (val != "" && val != null) {
+            var re = /^[0-9]\d{0,9}$/;
+            if (!re.test(val)) {
+                $(this).val("");
+                $(this).siblings(".codeValidate").html("盒号只能输入10位数字")
+            } else {
+                $(this).siblings(".codeValidate").html('');
+            }
+        } else {
+            $(this).siblings(".codeValidate").html('');
+        }
+    });
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#orgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function submitHandler() {
+        //提交前将下拉框的disabled属性删除，这样才可以传值
+        $("#valPeriod").removeAttr("disabled");
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-batch-add').serialize());
+        }
+    }
+
+    //加载所属库房
+    function depotList() {
+        var prefix = ctx + "/param/amsDepot";
+        var depotHtml = "";
+        $.ajax({
+            method: 'post',
+            url: prefix + '/depotList/archManage/add',
+            success: function (message) {
+                //console.log(" message is " + message)
+                $("#depotList").empty();
+                // depotHtml = depotHtml
+                // 		+ '<optgroup id="'+ billedId +'" label="'+ name +'">';
+                var depId = "";
+                var showName = "";
+                var depCode = "";
+                $.each(message.depotList, function (i, item) {
+                    if (item.status != '99') {
+                        depId = item.id;
+                        showName = item.name;
+                        depCode = item.code;
+                        depotHtml = depotHtml
+                            + '<option id="' + item.id + '" value="' + item.code + '" label="' + showName + '">';
+                    }
+                });
+
+                depotHtml = '<option value="" label="请选择"></option>' + depotHtml;
+
+                $("#depotList").append(depotHtml);
+
+                //初始化库房编码/名称
+                $("#depId").val(depId);
+                $("#depName").val(showName);
+                $("#depCode").val(depCode);
+            },
+            error: function () {
+                alert("出现异常");
+            }
+        });
+    }
+
+    function selectDepot() {
+        var depName = $("#depotList").find("option:selected").attr("label"); //获取文本值
+        var depCode = $("#depotList").find("option:selected").val();  //获取value值
+        var depId = $("#depotList").find("option:selected").attr("id");  //获取id值
+
+        if (depId !== null) {
+            $("#depId").val(depId);
+        }
+        if (depName !== null) {
+            $("#depName").val(depName);
+        }
+        if (depCode !== null) {
+            $("#depCode").val(depCode);
+        }
+    }
+
+    function validateDepot() {
+        console.log(" length is " + $("#depotList").find("option").length);
+        var count = $("#depotList").find("option").length;
+        if (count <= 1) {
+            $.modal.alertWarning("当前没有库房，请选择或新建库房！");
+            return false;
+        } else {
+            return true
+        }
+    }
+</script>
+</body>
+</html>

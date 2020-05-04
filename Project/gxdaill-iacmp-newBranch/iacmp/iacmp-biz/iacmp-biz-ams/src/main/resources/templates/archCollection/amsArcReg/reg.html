@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('移交登记')"/>
+    <th:block th:include="include :: jasny-bootstrap-css"/>
+    <th:block th:include="include :: layout-latest-css"/>
+    <style>
+        .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+            background-color: #fff;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class='gray-bg' style="background-color: #ffffff;">
+<div class='container-div'>
+    <div class='row'>
+        <div class="col-sm-12 search-collapse">
+            <div class='h4' style="float:left;">
+                <b>移交登记</b>
+            </div>
+            <div style="float:right;margin-top:10px;" class="btn-group-sm">
+                <button title='批量导入' type='button' class='btn btn-info' id='myUpload' value='批量导入'
+                        shiro:authenticated="archCollection:amsArcReg:batchUpload" onclick="batchUpload()"
+                        style='margin-top: 0px; margin-bottom: 0px;'>
+                    <i class="glyphicon glyphicon-import"></i>&nbsp;批量导入
+                </button>
+            </div>
+            <hr size="1" width="100%" color="black" noshade="noshade"
+                style="margin-top: 0px; margin-bottom: 5px; height: 1px; background-color: lightgray;"/>
+            <div class="panelInput allDiv">
+                <form class="form-horizontal" id='myForm' role='form'>
+                    <div class="form-group" style="float:right;">
+                        <div class="col-sm-12 buttonsbar btn-group-sm">
+                            <button title='添加' type='button' class='btn btn-success' value='添加' onclick="addTr2()"
+                                    style='margin-top: 0px; margin-bottom: 0px;'>
+                                <i class="fa fa-plus"></i>&nbsp;添加
+                            </button>
+                            <button id="regDelte" title='删除' type='button' class='btn btn-danger' value='删除'
+                                    onclick="delTr(this)" style='margin-top: 0px; margin-bottom: 0px;'>
+                                <i class="fa fa-remove"></i>&nbsp;删除
+                            </button>
+                            <button title='提交' type='button' class='btn btn-primary' id='mySubmitForm' value='提交'
+                                    style='margin-top: 0px; margin-bottom: 0px;' onclick="submitAms(0)">
+                                <i class="fa fa-check"></i>&nbsp;提交
+                            </button>
+                            <button title='保存' type='button' class='btn btn-warning' id='mySave' value='保存'
+                                    onclick="submitAms(1)" ; style='margin-top: 0px; margin-bottom: 0px;'>
+                                <i class="fa fa-download"></i>&nbsp;保存
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bs-callout">
+                        <div class="form-group ">
+                            <div class="col-sm-11 buttonsbar"
+                                 style="text-align: center; margin: 0 auto;"></div>
+                        </div>
+                        <div class="addlike">
+                            <div class="form-group">
+                                <table id="addReg" style='width: 100%;margin-top:5px;'
+                                       class='table table-striped table-hover table-condensed table-bordered'>
+                                    <thead style="background-color: #efefef;">
+                                    <tr>
+                                        <td style='text-align: center; width: 30px'><input
+                                                id="allCkb" onclick="allChose('qperson','regcheck')"
+                                                type="checkbox" name="qperson"/></td>
+                                        <td style='text-align: left; font-weight:normal;font-family:Microsoft YaHei;font-size:12px;width: 40px'>
+                                            序号
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>名称：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>份数/件数：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>页数：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>文件编号：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>责任人：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'></font>形成时间：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>是否移交<br/>&nbsp;&nbsp;行档室：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            &nbsp;&nbsp;备注：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'>★</font>是否<br/>&nbsp;&nbsp;电子化：
+                                        </td>
+                                        <td style='text-align: left;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                                            <font class='JBFNotNull'></font>操作：
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 上传Excel的模态框 -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+     id="uploadExcel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left:25%;width:40%;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">登记上传</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/archCollection/amsArcReg/batchUpload" method="post" enctype="multipart/form-data"
+                      id="fileForm">
+                    <input type="file" class="btn btn-default" id="excelFile" name="excelFile"><br/>
+                    <input type="submit" class="btn btn-default" value="导入保存批量登记文件"
+                           style="background-color: #286090;font-family: 微软雅黑;color: white;">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--上传Excel的模态框   end -->
+
+<div th:include="include::footer"></div>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="是否保存已经填写的登记数据"> 是否保存已经填写的登记数据
+                &nbsp; <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i
+                    class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: jasny-bootstrap-js"/>
+<th:block th:include="include :: tableDragDrop-yjhVerification-js"/>
+
+<script th:inline="javascript">
+
+    var prefix = ctx + "archCollection/amsArcReg";
+    var count = 1;// 行数ID后缀 ,序号
+    var delid = "";// 删除的ID
+    var addid = "";// 添加ID的前缀
+    var regArray = {};
+    $(function () {
+        var options = {
+            importTemplateUrl: prefix + "/importTemplate",
+        }
+        $.table.init(options);
+    });
+
+    /*选择人员 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            // url: ctx + "system/user/selectUser?id=" + id,
+            url: prefix + "/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function addTr2() {
+        // 禁止IE浏览器缓存
+        $.ajaxSetup({cache: false});
+        $.ajax({
+            url: prefix + "/getRegId",
+            success: function (result) {
+                var row = $("#addReg").find("tr").length;
+
+                trHtml = '<tr ><td><div style="width:100%;padding:5px 5px 5px 5px;"><input type="checkbox" id ="regcheck'
+                    + count
+                    + '" name="regcheck" value='
+                    + count
+                    + '/></div></td><td><div style="width:100%;padding:5px 5px 5px 5px;">'
+                    + '<font style="font-family:cursive">' + row + '</font>'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                    + ' id="name'
+                    + count
+                    + '" name="name" value="" >'
+                    + '</div></td><td>'
+                    + '<div style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "'
+                    + '	notNull="true" type="text" dataType="number"'
+                    // + '	onkeyup="(this.value=function(){this.value=this.value.replace(/[^0-9-]+/,\'\');}).call(this)"'
+                    + ' oninput="value=value.replace(/[^\\d]/g,\'\')"'
+                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\');if(this.value.substring(0,1)==\'0\'){this.value=this.value.replace(this.value,\'\')}}"'
+                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                    + '	'
+                    + '	'
+                    + '	id="regArcNum'
+                    + count
+                    + '" name="regArcNum" value=""  maxlength="9" placeholder="非0开头数字">'
+                    + '</div></td><td>'
+                    + '<div style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "'
+                    + '	notNull="true" type="text" name="recPageNum"'
+                    // + '	onkeyup="(this.value=function(){this.value=this.value.replace(/[^0-9-]+/,\'\');}).call(this)"'
+                    + ' oninput="value=value.replace(/[^\\d]/g,\'\')"'
+                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\');if(this.value.substring(0,1)==\'0\'){this.value=this.value.replace(this.value,\'\')}}"'
+                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                    + '	'
+                    + '	'
+                    + 'id="recPageNum'
+                    + count
+                    + '" value="" maxlength="9" placeholder="非0开头数字">'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                    + '	id="arcCode'
+                    + count
+                    + '" name="arcCode" value="" maxlength="15"'
+                    + ' oninput="value=value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')" '
+                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,\'\')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')};if(this.value.substring(0,1)==\'0\'){this.value=this.value.replace(this.value,\'\')}"'
+                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,\'\')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')}">'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                    + ' id="respOpName'
+                    + count
+                    + '" name="respOpName" AUTOCOMPLETE="off"  onclick="selectUser(\'respOpName' + count + ' \');respOpName'
+                    + count
+                    + '.blur();return false;" value="" readonly="readonly">'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">' +
+                    '<input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                    + ' id="arcCreTime'
+                    + count
+                    + '" name="arcCreTime" value="" AUTOCOMPLETE="off" placeholder="yyyy-MM-dd" >'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                    + '<i id="hasMoveBankI' + count + '" style="padding: 6px 13px" class="fa fa-toggle-on text-info fa-2x" onclick="tag(this)"></i>'
+                    + '<input name="hasMoveBank" id="hasMoveBank'
+                    + count
+                    + '" value="1" type="hidden">'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                    + '	<input class="submitInput form-control "'
+                    + '	notNull="true" type="text" name="regRemark"'
+                    + '	maxlength="11" id="regRemark'
+                    + count
+                    + '" value=""  >'
+                    + '</div><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                    + '<i id="arcFormatI' + count + '" style="padding: 6px 13px" class="fa fa-toggle-on text-info fa-2x" onclick="tagArcFormat(this)"></i>'
+                    + '<input name="arcFormat" id="arcFormat'
+                    + count
+                    + '" value="10" type="hidden">'
+                    + '</div></td><td>'
+                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                    + '<i id="operation' + count + '" style="padding: 6px 13px" class="btn-info btn-xs glyphicon glyphicon-import" onclick="tagOperation(this)"></i>'
+                    + '</div></td><td style="display: none">'
+                    + '<div>'
+                    + '<input name="id" id="id'
+                    + count
+                    + '" value="' + result + '" type="hidden">'
+                    + '</div></td></tr>';
+
+                addTr(row, trHtml);
+                layui.use('laydate', function () {
+                    var laydate = layui.laydate;
+                    laydate.render({
+                        elem: '#arcCreTime' + count,
+                        type: 'date',
+                        theme: 'molv',
+                        trigger: 'click',
+                        max: 0
+                    });
+                });
+                addid += count + ",";
+                count++;
+            }
+
+        });
+
+    }
+
+    function initAddTr() {
+        var i = 0;
+        for (; i < 1; i++)
+            addTr2();
+    }
+
+    // 是否移交行档室事件
+    var addFlag = false;
+
+    function tag(e) {
+        var thisNum = e.id.slice(12)
+        var iName = "hasMoveBankI" + thisNum;
+        var inputName = "hasMoveBank" + thisNum;
+        if (addFlag == false) {
+            $("#" + iName).removeClass("fa-toggle-on");
+            $("#" + iName).addClass("fa-toggle-off");
+            $("#" + inputName).val("0")
+        } else {
+            $("#" + iName).removeClass("fa-toggle-off");
+            $("#" + iName).addClass("fa-toggle-on");
+            $("#" + inputName).val("1")
+        }
+        addFlag = !addFlag
+    }
+
+    // 是否电子化事件
+    var ArcFlag = false;
+
+    function tagArcFormat(e) {
+        var thisNum = e.id.slice(10)
+        var iName = "arcFormatI" + thisNum;
+        var inputName = "arcFormat" + thisNum;
+        var operationId = "operation" + thisNum;
+        if (ArcFlag == false) {
+            $("#" + iName).removeClass("fa-toggle-on");
+            $("#" + iName).addClass("fa-toggle-off");
+            $("#" + inputName).val("20");
+            $("#" + operationId).hide()
+        } else {
+            $("#" + iName).removeClass("fa-toggle-off");
+            $("#" + iName).addClass("fa-toggle-on");
+            $("#" + inputName).val("10");
+            $("#" + operationId).show()
+        }
+        ArcFlag = !ArcFlag
+    }
+
+    // 操作事件
+    function tagOperation(e) {
+
+        var thisNum = e.id.slice(9)
+        var iName = "id" + thisNum;
+        var regId = $("#" + iName).val();
+        createMenuItem(ctx + "archCollection/amsRecord/toUpload/" + regId + "/111", "扫描影像");
+
+    }
+
+    function addTr(row, trHtml) {
+        // 获取table最后一行 $("#tab tr:last")
+        // 获取table第一行 $("#tab tr").eq(0)
+        // 获取table倒数第二行 $("#tab tr").eq(-2)
+        row = row - 1;
+        var $tr = $("#addReg tr").eq(row);
+        if ($tr.size() == 0) {
+            alert("指定的table id或行数不存在！");
+            return;
+        }
+
+        $tr.after(trHtml);
+
+        //var table=document.getElementById("resultTable");
+        var table = document.getElementById("addReg");
+        colResizables(table);//调用拖拽表格方法
+
+        // var table=document.getElementsByTagName("table")[0];
+        makeSortable(table, 2, 1);//调用表格列排序
+
+    }
+
+    // 批量导入功能
+    function batchUpload() {
+        // arr,key用来接收原有的table数据
+        var arr = [];
+        var currentId = "importTpl";
+        layer.open({
+            type: 1,
+            area: ['400px', '230px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '导入档案数据',
+            content: $('#' + currentId).html(),
+            btn: ['<i class="glyphicon glyphicon-import"></i> 导入', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            btn1: function (index, layero) {
+                if ($("input[name='updateSupport']").prop("checked") == true) {
+                    if (confirm("请确保带★的必填项都已填充再执行此操作")) {
+                        var entity = [];
+                        $("#addReg").find("tr").each(function () {
+                            var tdArr = $(this).children();
+                            var chobj1 = tdArr.eq(2).find("input").val();
+                            var chobj2 = tdArr.eq(3).find("input").val();
+                            var chobj3 = tdArr.eq(4).find("input").val();
+                            var chobj4 = tdArr.eq(5).find("input").val();
+                            var chobj5 = tdArr.eq(6).find("input").val();
+                            var chobj6 = tdArr.eq(7).find("input").val();
+                            var chobj7 = tdArr.eq(8).find("input").val();
+                            var chobj8 = tdArr.eq(9).find("input").val();
+                            var chobj9 = tdArr.eq(10).find("input").val();
+                            var chobj11 = tdArr.eq(12).find("input").val();
+                            var key = {};
+                            key.name = chobj1;
+                            key.regArcNum = chobj2;
+                            key.recPageNum = chobj3;
+                            key.arcCode = chobj4;
+                            key.respOpName = chobj5;
+                            key.arcCreTime = chobj6;
+                            key.id = chobj11;
+                            if (chobj7 == "1") {
+                                key.hasMoveBank = "是"
+                            } else if (chobj7 == "0") {
+                                key.hasMoveBank = "否"
+                            }
+                            key.regRemark = chobj8;
+                            if (chobj9 == "10") {
+                                key.arcFormat = "是"
+                            } else if (chobj9 == "20") {
+                                key.arcFormat = "否"
+                            }
+                            entity.push(key);
+                        });
+                        arr = entity.slice(1);//第一行为标题，删除
+                    } else {
+                        return;
+                    }
+                }
+                var file = layero.find('#file').val();
+                if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))) {
+                    $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
+                    return false;
+                }
+                var index = layer.load(2, {shade: false});
+                $.modal.disable();
+                var formData = new FormData();
+                formData.append("file", $('#file')[0].files[0]);
+                formData.append("updateSupport", $("input[name='updateSupport']").is(':checked'));
+                $.ajax({
+                    url: ctx + "archCollection/amsArcReg/batchUpload",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (result) {
+                        // 原表格与excel数据合并
+                        Array.prototype.push.apply(arr, result.data)
+                        if (result.code == web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.msg);
+                            // $.table.refresh();
+                            var num = 1;
+                            count = 1;
+                            // var count = 1;
+                            // 清空现有表格
+                            $("input[name=regcheck]").parent().parent().parent().remove();
+                            // 循环追加
+                            arr.forEach(function (e) {
+                                // 校验份数，页数最多为9位
+                                var newRegArcNum = "";
+                                var newRecPageNum = "";
+                                var arcPageTest = /^[1-9]\d*$/;
+                                if (arcPageTest.test(e.regArcNum)) {
+                                    newRegArcNum = e.regArcNum;
+                                    if (newRegArcNum.length > 9) {
+                                        newRegArcNum = null;
+                                    }
+                                } else {
+                                    newRegArcNum = null;
+                                }
+                                if (arcPageTest.test(e.recPageNum)) {
+                                    newRecPageNum = e.regArcNum;
+                                    if (newRecPageNum.length > 9) {
+                                        newRecPageNum = null;
+                                    }
+                                } else {
+                                    newRecPageNum = null;
+                                }
+                                // 根据后端的返回值正则检验文件编号,时间，再赋值
+                                var newArcCode = ""
+
+                                var codeTest = /^[\a-\z\A-\Z1-9][\a-\z\A-\Z0-9-_]{0,15}/g;
+                                if (codeTest.test(e.arcCode)) {
+                                    newArcCode = e.arcCode;
+                                    if (newArcCode.length > 15) {
+                                        newArcCode = null;
+                                    }
+                                } else {
+                                    newArcCode = null
+                                }
+                                // 校验时间
+                                var newCreTime = e.arcCreTime;
+                                if (e.arcCreTime == null || e.arcCreTime == "") {
+                                    newCreTime = null;
+                                } else {
+                                    newCreTime = newCreTime.substring(0, 10);
+                                    // 获取导入的时间
+                                    var dB = newCreTime;
+                                    // 获取当前时间
+                                    var d = new Date();
+                                    var str = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();//获取当前实际日期
+                                    if (Date.parse(str) < Date.parse(dB)) {//时间戳对比
+                                        newCreTime = null;
+                                    }
+                                }
+                                // 去掉空格
+                                e.hasMoveBank = e.hasMoveBank.trim();
+                                e.arcFormat = e.arcFormat.trim();
+
+                                if (e.hasMoveBank == "否") {
+                                    e.hasMoveBank = "0"
+                                    moveBank = "fa-toggle-off"
+                                } else if (e.hasMoveBank == "是") {
+                                    e.hasMoveBank = "1"
+                                    moveBank = "fa-toggle-on"
+                                } else {
+                                    alert("第" + count + "行的是否移交行档室输入有误，赋值为默认值“否”，可自行修改");
+                                    e.hasMoveBank = "0"
+                                    moveBank = "fa-toggle-off"
+                                }
+
+                                // 是否隐藏操作按钮
+                                var hid = "";
+                                if (e.arcFormat == "否") {
+                                    e.arcFormat = "20"
+                                    format = "fa-toggle-off"
+                                    hid = "display:none"
+                                } else if (e.arcFormat == "是") {
+                                    e.arcFormat = "10"
+                                    format = "fa-toggle-on"
+                                } else {
+                                    alert("第" + count + "行的是否电子化输入有误，赋值为默认值“否”，可自行修改");
+                                    e.arcFormat = "20"
+                                    format = "fa-toggle-off"
+                                    hid = "display:none"
+                                }
+
+                                var row = $("#addReg").find("tr").length;
+                                trHtml = '<tr ><td><div style="width:100%;padding:5px 5px 5px 5px;"><input type="checkbox" id ="regcheck'
+                                    + count
+                                    + '" name="regcheck" value='
+                                    + count
+                                    + '/></div></td><td><div style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '<font style="font-family:cursive">' + count + '</font>'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                                    + ' id="name'
+                                    + count
+                                    + '" name="name" value="' + e.name + '" >'
+                                    + '</div></td><td>'
+                                    + '<div style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "'
+                                    + '	notNull="true" type="text" dataType="number"'
+                                    + ' oninput="value=value.replace(/[^\\d]/g,\'\')"'
+                                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                                    + ' '
+                                    + '	'
+                                    + '	id="regArcNum'
+                                    + count
+                                    + '" name="regArcNum" value="' + newRegArcNum + '"  maxlength="9">'
+                                    + '</div></td><td>'
+                                    + '<div style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "'
+                                    + '	notNull="true" type="text" name="recPageNum"'
+                                    + ' oninput="value=value.replace(/[^\\d]/g,\'\')"'
+                                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                                    + ' '
+                                    + '	'
+                                    + '	id="recPageNum'
+                                    + count
+                                    + '" value="' + newRecPageNum + '" maxlength="9">'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                                    + ' id="arcCode'
+                                    + count
+                                    + '" name="arcCode" value="' + newArcCode + '" maxlength="15"'
+                                    + ' oninput="value=value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')" '
+                                    + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,\'\')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')};if(this.value.substring(0,1)==\'0\'){this.value=this.value.replace(this.value,\'\')}"'
+                                    + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,\'\')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,\'\')}">'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;"><input class="submitInput form-control "  notNull="true" type="text" dataType="text"style="width:100%;"'
+                                    + ' id="respOpName'
+                                    + count
+                                    + '"onclick="respOpName'
+                                    + count
+                                    + '.blur();selectUser(\'respOpName' + count + '\');return false;" AUTOCOMPLETE="off" name="respOpName" value="' + e.respOpName + '" readonly="readonly">'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '<input class="submitInput form-control arcCreTime"  notNull="true" type="text" dataType="text" style="width:100%;"'
+                                    + ' id="arcCreTime' + count + '"name="arcCreTime" value="' + newCreTime + '" AUTOCOMPLETE="off" placeholder="yyyy-MM-dd" >'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '<i id="hasMoveBankI' + count + '" style="padding: 6px 13px" class="fa ' + moveBank + ' text-info fa-2x" onclick="tag(this)"></i>'
+                                    + '<input name="hasMoveBank" id="hasMoveBank'
+                                    + count
+                                    + '" value="' + e.hasMoveBank + '" type="hidden">'
+                                    + '</div></td><td>'
+
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '	<input class="submitInput form-control "'
+                                    + '	notNull="true" type="text" name="regRemark"'
+                                    + '	maxlength="11" id="regRemark'
+                                    + count
+                                    + '" value="' + e.regRemark + '">'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '<i id="arcFormatI' + count + '" style="padding: 6px 13px" class="fa ' + format + ' text-info fa-2x" onclick="tagArcFormat(this)"></i>'
+                                    + '<input name="arcFormat" id="arcFormat'
+                                    + count
+                                    + '" value="' + e.arcFormat + '" type="hidden">'
+                                    + '</div></td><td>'
+                                    + '<div  style="width:100%;padding:5px 5px 5px 5px;">'
+                                    + '<i id="operation' + count + '" class="btn-info btn-xs glyphicon glyphicon-import" style="padding: 6px 13px;' + hid + '" onclick="tagOperation(this)"></i>'
+                                    + '</div></td><td style="display: none">'
+                                    + '<div>'
+                                    + '<input name="id" id="id'
+                                    + count
+                                    + '" value="' + e.id + '" type="hidden">'
+                                    + '</div></td></tr>';
+                                addTr(row, trHtml);
+                                // 日期弹窗
+                                layui.use('laydate', function () {
+                                    var laydate = layui.laydate;
+                                    laydate.render({
+                                        elem: '#arcCreTime' + count,
+                                        type: 'date',
+                                        theme: 'molv',
+                                        trigger: 'click',
+                                        max: 0
+                                    });
+                                });
+                                addid += count + ",";
+                                count++;
+                            })
+                        } else if (result.code == web_status.WARNING) {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertWarning(result.msg)
+                        } else {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertError(result.msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    //批量导入档案
+    $('#excelFile').change(function (e) {
+        var files = e.target.files;
+        var fileReader = new FileReader();
+
+        fileReader.onload = function (ev) {
+            try {
+                var data = ev.target.result
+                var workbook = XLSX.read(data, {
+                    type: 'binary'
+                }) // 以二进制流方式读取得到整份excel表格对象
+                var persons = []; // 存储获取到的数据
+            } catch (e) {
+                console.log('文件类型不正确');
+                return;
+            }
+            // 表格的表格范围，可用于判断表头是否数量是否正确
+            var fromTo = '';
+            // 遍历每张表读取
+            for (var sheet in workbook.Sheets) {
+                if (workbook.Sheets.hasOwnProperty(sheet)) {
+                    fromTo = workbook.Sheets[sheet]['!ref'];
+                    console.log(fromTo);
+                    persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                    // break; // 如果只取第一张表，就取消注释这行
+                }
+            }
+            //在控制台打印出来表格中的数据
+            console.log(persons);
+        };
+        // 以二进制方式打开文件
+        fileReader.readAsBinaryString(files[0]);
+    });
+
+    window.onload = function () {
+        initAddTr();
+        // /*验证字段*/
+        validatorLab();
+    }
+
+    /*验证初始化方法*/
+    function validatorLab() {
+        initializeValidator('.allDiv');
+    }
+
+    // 是否移交行档室点击切换
+    var addFlag = false;
+
+    function tag(e) {
+        var thisNum = e.id.slice(12)
+        var iName = "hasMoveBankI" + thisNum;
+        var inputName = "hasMoveBank" + thisNum;
+        if (addFlag == false) {
+            $("#" + iName).removeClass("fa-toggle-on");
+            $("#" + iName).addClass("fa-toggle-off");
+            $("#" + inputName).val("0")
+        } else {
+            $("#" + iName).removeClass("fa-toggle-off");
+            $("#" + iName).addClass("fa-toggle-on");
+            $("#" + inputName).val("1")
+        }
+        addFlag = !addFlag
+    }
+
+    // 是否电子化点击切换
+    var ArcFlag = false;
+
+    function tagArcFormat(e) {
+        var thisNum = e.id.slice(10)
+        var iName = "arcFormatI" + thisNum;
+        var inputName = "arcFormat" + thisNum;
+        var operationId = "operation" + thisNum;
+        if (ArcFlag == false) {
+            $("#" + iName).removeClass("fa-toggle-on");
+            $("#" + iName).addClass("fa-toggle-off");
+            $("#" + inputName).val("20");
+            $("#" + operationId).hide()
+        } else {
+            $("#" + iName).removeClass("fa-toggle-off");
+            $("#" + iName).addClass("fa-toggle-on");
+            $("#" + inputName).val("10");
+            $("#" + operationId).show()
+        }
+        ArcFlag = !ArcFlag
+    }
+
+    // // 操作点击事件
+    // function tagOperation(e) {
+    //     alert(1)
+    //     var thisNum = e.id.slice(9)
+    //     var iName = "arcFormat"+ thisNum;
+    //     var operationId =  $("#"+iName);
+    //     console.log(iName);
+    //     console.log(operationId);
+    // }
+
+    /*档案提交*/
+    function submitAms(num) {
+
+        var userName = [[${UserName}]];
+        var userList = [[${userList}]];
+        var allUsers = []
+        for (var i = 0; i < userList.length; i++) {
+            allUsers.push(userList[i].userName)
+        }
+        if ($("input:checkbox:checked").val() == null) {
+            $.modal.alert('请选中某条记录！');
+            return;
+        }
+        var regList = new Array();
+        var chobj = $("input[name=regcheck]:checkbox");
+        var chobj1 = $("input[name=regArcNum]");
+        var chobj2 = $("input[name=recPageNum]");
+        var chobj3 = $("input[name=regRemark]");
+        var chobj4 = $("input[name=name]");
+        var chobj5 = $("input[name=arcCode]");
+        var chobj6 = $("input[name=respOpName]");
+        var chobj7 = $("input[name=arcCreTime]");
+        var chobj8 = $("input[name=hasMoveBank]");
+        var chobj9 = $("input[name=arcFormat]");
+        var chobj11 = $("input[name=id]");
+        var retFlag = true;
+        //判断是否有重复记录：如果存在，则全部不提交。
+        var subFlag = true;
+        var i = 0, j = 0;
+        var a = "";
+        var b = "";
+        var c = "";
+        var d = "";
+        var e = "";
+        var f = "";
+        var g = "";
+        var h = "";
+        chobj.each(function () {
+            if ($(this).prop('checked')) {
+                var regCode = {};
+                if ($(chobj1[i]).val() == "null" || $(chobj1[i]).val() == "") {
+                    $.modal.alert("有必填项未输入，请将信息补充完整");
+                    // $.modal.alert(1)
+                    retFlag = false;
+                    return retFlag;
+                }
+                if ($(chobj2[i]).val() == "null" || $(chobj2[i]).val() == "") {
+                    $.modal.alert("有必填项未输入，请将信息补充完整");
+                    // $.modal.alert(2)
+                    retFlag = false;
+                    return retFlag;
+                }
+                if ($(chobj4[i]).val() == "null" || $(chobj4[i]).val() == "") {
+                    $.modal.alert("有必填项未输入，请将信息补充完整");
+                    // $.modal.alert(4)
+                    retFlag = false;
+                    return retFlag;
+                }
+                if ($(chobj5[i]).val() == "null" || $(chobj5[i]).val() == "") {
+                    $.modal.alert("有必填项未输入，请将信息补充完整");
+                    // $.modal.alert(5)
+                    retFlag = false;
+                    return retFlag;
+                }
+                if ($(chobj6[i]).val() == "null" || $(chobj6[i]).val() == "") {
+                    $.modal.alert("有必填项未输入，请将信息补充完整");
+                    // $.modal.alert(6)
+                    retFlag = false;
+                    return retFlag;
+                }
+
+                if (allUsers.indexOf($(chobj6[i]).val()) == -1) {
+                    $.modal.alert("责任人有误");
+                    $(chobj6[i]).val("")
+                    retFlag = false;
+                    return retFlag;
+                }
+
+                if (i == 0) {
+                    a = $(chobj1[i]).val();
+                    b = $(chobj2[i]).val();
+                    c = $(chobj4[i]).val();
+                    d = $(chobj5[i]).val();
+                    e = $(chobj6[i]).val();
+                    f = $(chobj7[i]).val();
+                    g = $(chobj8[i]).val();
+                    h = $(chobj9[i]).val();
+                    regCode["regArcNum"] = $(chobj1[i]).val();
+                    regCode["recPageNum"] = $(chobj2[i]).val();
+                    regCode["regRemark"] = $(chobj3[i]).val();
+                    regCode["name"] = $(chobj4[i]).val();
+                    regCode["arcCode"] = $(chobj5[i]).val();
+                    regCode["respOpName"] = $(chobj6[i]).val();
+                    regCode["arcCreTime"] = $(chobj7[i]).val();
+                    regCode["hasMoveBank"] = $(chobj8[i]).val();
+                    regCode["arcFormat"] = $(chobj9[i]).val();
+                    regCode["id"] = $(chobj11[i]).val();
+                    regList.push(regCode);
+                    i++;
+                } else {
+                    if ((a == $(chobj1[i]).val()) && (b == $(chobj2[i]).val()) && (c == $(chobj4[i]).val()) && (d == $(chobj5[i]).val()) && (e == $(chobj6[i]).val()) && (f == $(chobj7[i]).val()) && (g == $(chobj8[i]).val()) && (h == $(chobj9[i]).val())) {
+                        if (confirm("数据重复，是否继续操作?")) {
+                            regCode["regArcNum"] = $(chobj1[i]).val();
+                            regCode["recPageNum"] = $(chobj2[i]).val();
+                            regCode["regRemark"] = $(chobj3[i]).val();
+                            regCode["name"] = $(chobj4[i]).val();
+
+                            regCode["arcCode"] = $(chobj5[i]).val();
+                            regCode["respOpName"] = $(chobj6[i]).val();
+                            regCode["arcCreTime"] = $(chobj7[i]).val();
+
+                            regCode["hasMoveBank"] = $(chobj8[i]).val();
+                            regCode["arcFormat"] = $(chobj9[i]).val();
+                            regCode["id"] = $(chobj11[i]).val();
+                            regList.push(regCode);
+                        } else {
+                            regCode["regArcNum"] = $(chobj1[i]).val();
+                            regCode["recPageNum"] = $(chobj2[i]).val();
+                            regCode["regRemark"] = $(chobj3[i]).val();
+                            regCode["name"] = $(chobj4[i]).val();
+
+                            regCode["arcCode"] = $(chobj5[i]).val();
+                            regCode["respOpName"] = $(chobj6[i]).val();
+                            regCode["arcCreTime"] = $(chobj7[i]).val();
+
+                            regCode["hasMoveBank"] = $(chobj8[i]).val();
+                            regCode["arcFormat"] = $(chobj9[i]).val();
+                            regCode["id"] = $(chobj11[i]).val();
+                            regArray[j] = regCode;
+                            j++;
+                            subFlag = false;
+                        }
+                    } else {
+                        regCode["regArcNum"] = $(chobj1[i]).val();
+                        regCode["recPageNum"] = $(chobj2[i]).val();
+                        regCode["regRemark"] = $(chobj3[i]).val();
+                        regCode["name"] = $(chobj4[i]).val();
+
+                        regCode["arcCode"] = $(chobj5[i]).val();
+                        regCode["respOpName"] = $(chobj6[i]).val();
+                        regCode["arcCreTime"] = $(chobj7[i]).val();
+
+                        regCode["hasMoveBank"] = $(chobj8[i]).val();
+                        regCode["arcFormat"] = $(chobj9[i]).val();
+                        regCode["id"] = $(chobj11[i]).val();
+                        regList.push(regCode);
+                    }
+                    i++;
+                }
+            } else {
+                var regCode = {};
+                regCode["regArcNum"] = $(chobj1[i]).val();
+                regCode["recPageNum"] = $(chobj2[i]).val();
+                regCode["regRemark"] = $(chobj3[i]).val();
+                regCode["name"] = $(chobj4[i]).val();
+                regCode["arcCode"] = $(chobj5[i]).val();
+                regCode["respOpName"] = $(chobj6[i]).val();
+                regCode["arcCreTime"] = $(chobj7[i]).val();
+
+                regCode["hasMoveBank"] = $(chobj8[i]).val();
+                regCode["arcFormat"] = $(chobj9[i]).val();
+                regCode["id"] = $(chobj11[i]).val();
+                regArray[j] = regCode;
+                i++;
+                j++;
+            }
+        });
+        if (!retFlag) {
+            return;
+        }
+        if (!subFlag) {
+            document.getElementById("mySubmitForm").disabled = "";
+            // NorthkingCRUD.Manage.bnSetDisabled('mySubmitForm', '');
+            return;
+        }
+        var addUrl = prefix + "/add";
+        $.ajax({
+            type: "POST",
+            url: addUrl,
+            dataType: "json",
+            traditional: true,
+            data: {
+                amsArcRegList: JSON.stringify(regList),
+                isSave: num
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+            },
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.alertSuccess('操作成功!移交记录共：' + result.data + '条');
+                    document.getElementById("mySubmitForm").disabled = "";
+                    var j = 1;
+                    // 全选按钮取消
+                    $("#allCkb").prop("checked", false);
+                    $("input[name=regcheck]:checkbox:checked").parent().parent().parent().remove()
+                    // 给序号重新赋值
+                    var num = 0;
+                    var editRow = 0;
+                    $("#addReg").find('tr').each(function () {
+                        if (editRow != 0) {
+                            num++;
+                            $(this).find("td:eq(1)").html("<div style=\"width:100%;padding:5px 5px 5px 5px;\"><font style=\"font-family:cursive\">" + num + "</font></div>");
+                        }
+                        editRow++;
+                    });
+                } else {
+                    $.modal.alertError(result.msg)
+                }
+            }
+        });
+    }
+
+    /*删除表格方法*/
+    function delTr() {
+        // var chobj= $("input[name='"+chname+"']:checkbox");
+        if ($("input:checkbox:checked").val() == null) {
+            $.modal.alert('请选中某条记录！');
+            return;
+        }
+
+        if (confirm("是否删除选中项？")) {
+            var chobj = $("input[name=regcheck]:checkbox");
+            chobj.each(function () {
+
+                if ($(this).prop("checked")) {
+                    delid += $(this).val() + ",";
+                    // console.log(delid)
+                    $(this).parent().parent().parent().remove();
+                }
+            });
+            // 给序号重新赋值
+            var num = 0;
+            var editRow = 0;
+            $("#addReg").find('tr').each(function () {
+                if (editRow != 0) {
+                    num++;
+                    $(this).find("td:eq(1)").html("<div style=\"width:100%;padding:5px 5px 5px 5px;\"><font style=\"font-family:cursive\">" + num + "</font></div>");
+                }
+                editRow++;
+            });
+        }
+    }
+
+    // input全选按钮
+    function allChose(name, itemname) {
+        if ($("input[name='" + name + "']:checkbox").prop("checked")) {
+            $("input[name='" + itemname + "']:checkbox").prop("checked", true);
+        } else
+            $("input[name='" + itemname + "']:checkbox").prop("checked", false);
+    }
+
+    // 日期弹窗
+    $(function () {
+        layui.use('laydate', function () {
+            // console.log('count'+ count)
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#arcCreTime1',
+                type: 'date',
+                theme: 'molv',
+                trigger: 'click',
+                max: 0
+            });
+        });
+    })
+</script>
+</html>

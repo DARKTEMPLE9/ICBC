@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hutool-cache" />
+        <module name="hutool-system" />
+        <module name="hutool-json" />
+        <module name="hutool-script" />
+        <module name="hutool-db" />
+        <module name="hutool-http" />
+        <module name="hutool-crypto" />
+        <module name="hutool-extra" />
+        <module name="hutool-log" />
+        <module name="hutool-socket" />
+        <module name="hutool-poi" />
+        <module name="hutool-all" />
+        <module name="mybatis" />
+        <module name="hutool-core" />
+        <module name="icbc" />
+        <module name="shiro-jwt" />
+        <module name="hutool-captcha" />
+        <module name="hutool-bloomFilter" />
+        <module name="hutool-setting" />
+        <module name="hutool-aop" />
+        <module name="hutool-dfa" />
+        <module name="Start-Spring-Boot" />
+        <module name="hutool-cron" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mybatis (1) (org.mybatis)" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="icbc" options="-parameters" />
+      <module name="shiro-jwt" options="-parameters" />
+    </option>
+  </component>
+</project>

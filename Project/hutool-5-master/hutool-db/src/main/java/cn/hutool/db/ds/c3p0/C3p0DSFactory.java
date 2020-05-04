@@ -12,44 +12,43 @@ import cn.hutool.setting.Setting;
 
 /**
  * Druid数据源工厂类
- * 
- * @author Looly
  *
+ * @author Looly
  */
 public class C3p0DSFactory extends AbstractDSFactory {
-	private static final long serialVersionUID = -6090788225842047281L;
-	
-	public static final String DS_NAME = "C3P0";
+    private static final long serialVersionUID = -6090788225842047281L;
 
-	/**
-	 * 构造，使用默认配置
-	 */
-	public C3p0DSFactory() {
-		this(null);
-	}
+    public static final String DS_NAME = "C3P0";
 
-	/**
-	 * 构造
-	 * 
-	 * @param setting 配置
-	 */
-	public C3p0DSFactory(Setting setting) {
-		super(DS_NAME, ComboPooledDataSource.class, setting);
-	}
-	
-	@Override
-	protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
-		final ComboPooledDataSource ds = new ComboPooledDataSource();
-		ds.setJdbcUrl(jdbcUrl);
-		try {
-			ds.setDriverClass(driver);
-		} catch (PropertyVetoException e) {
-			throw new DbRuntimeException(e);
-		}
-		ds.setUser(user);
-		ds.setPassword(pass);
-		poolSetting.toBean(ds);// 注入属性
-		
-		return ds;
-	}
+    /**
+     * 构造，使用默认配置
+     */
+    public C3p0DSFactory() {
+        this(null);
+    }
+
+    /**
+     * 构造
+     *
+     * @param setting 配置
+     */
+    public C3p0DSFactory(Setting setting) {
+        super(DS_NAME, ComboPooledDataSource.class, setting);
+    }
+
+    @Override
+    protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
+        final ComboPooledDataSource ds = new ComboPooledDataSource();
+        ds.setJdbcUrl(jdbcUrl);
+        try {
+            ds.setDriverClass(driver);
+        } catch (PropertyVetoException e) {
+            throw new DbRuntimeException(e);
+        }
+        ds.setUser(user);
+        ds.setPassword(pass);
+        poolSetting.toBean(ds);// 注入属性
+
+        return ds;
+    }
 }

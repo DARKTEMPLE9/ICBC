@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.MWorkerNodeMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.MWorkerNode" id="MWorkerNodeResult">
+        <result property="id" column="ID"/>
+        <result property="hostName" column="HOST_NAME"/>
+        <result property="port" column="PORT"/>
+        <result property="type" column="TYPE"/>
+        <result property="launchDate" column="LAUNCH_DATE"/>
+        <result property="modified" column="MODIFIED"/>
+        <result property="created" column="CREATED"/>
+    </resultMap>
+
+    <sql id="selectMWorkerNodeVo">
+        select ID, HOST_NAME, PORT, TYPE, LAUNCH_DATE, MODIFIED, CREATED from m_worker_node
+    </sql>
+
+    <select id="selectMWorkerNodeList" parameterType="net.northking.iacmp.imp.domain.MWorkerNode"
+            resultMap="MWorkerNodeResult">
+        <include refid="selectMWorkerNodeVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="hostName != null  and hostName != '' ">and HOST_NAME = #{hostName}</if>
+            <if test="port != null  and port != '' ">and PORT = #{port}</if>
+            <if test="type != null ">and TYPE = #{type}</if>
+            <if test="launchDate != null ">and LAUNCH_DATE = #{launchDate}</if>
+            <if test="modified != null ">and MODIFIED = #{modified}</if>
+            <if test="created != null ">and CREATED = #{created}</if>
+        </where>
+    </select>
+
+    <select id="selectMWorkerNodeById" parameterType="Long" resultMap="MWorkerNodeResult">
+        <include refid="selectMWorkerNodeVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertMWorkerNode" parameterType="net.northking.iacmp.imp.domain.MWorkerNode" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into m_worker_node
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hostName != null  and hostName != ''  ">HOST_NAME,</if>
+            <if test="port != null  and port != ''  ">PORT,</if>
+            <if test="type != null  ">TYPE,</if>
+            <if test="launchDate != null  ">LAUNCH_DATE,</if>
+            <if test="modified != null  ">MODIFIED,</if>
+            <if test="created != null  ">CREATED,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hostName != null  and hostName != ''  ">#{hostName},</if>
+            <if test="port != null  and port != ''  ">#{port},</if>
+            <if test="type != null  ">#{type},</if>
+            <if test="launchDate != null  ">#{launchDate},</if>
+            <if test="modified != null  ">#{modified},</if>
+            <if test="created != null  ">#{created},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMWorkerNode" parameterType="net.northking.iacmp.imp.domain.MWorkerNode">
+        update m_worker_node
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hostName != null  and hostName != ''  ">HOST_NAME = #{hostName},</if>
+            <if test="port != null  and port != ''  ">PORT = #{port},</if>
+            <if test="type != null  ">TYPE = #{type},</if>
+            <if test="launchDate != null  ">LAUNCH_DATE = #{launchDate},</if>
+            <if test="modified != null  ">MODIFIED = #{modified},</if>
+            <if test="created != null  ">CREATED = #{created},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteMWorkerNodeById" parameterType="Long">
+        delete from m_worker_node where ID = #{id}
+    </delete>
+
+    <delete id="deleteMWorkerNodeByIds" parameterType="String">
+        delete from m_worker_node where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

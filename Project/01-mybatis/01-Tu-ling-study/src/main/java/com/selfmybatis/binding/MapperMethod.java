@@ -1,7 +1,6 @@
 package com.selfmybatis.binding;
 
 
-
 /**
  * 把我们解析的sql（UserMapper）加载到类中
  */

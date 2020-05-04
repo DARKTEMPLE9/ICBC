@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('新增档案著录')"/>
+</head>
+<body class="white-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            库柜名称：<input type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            库房名称：<input type="text" name="depName"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="conFirm()">
+                确认
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+
+        <div th:include="include::footer"></div>
+        <script th:inline="javascript">
+            var editFlag = [[${@permission.hasPermi('iacmp:amsCabinet:edit')}]];
+            var removeFlag = [[${@permission.hasPermi('iacmp:amsCabinet:remove')}]];
+            var prefix = ctx + "iacmp/amsCabinet";
+            var a = [[${ids}]];
+            $(function () {
+                var options = {
+                    url: prefix + "/list",
+                    createUrl: prefix + "/add",
+                    updateUrl: prefix + "/edit/{id}",
+                    removeUrl: prefix + "/remove",
+                    exportUrl: prefix + "/export",
+                    modalName: "库柜",
+                    showExport: true,
+                    columns: [{
+                        checkbox: true
+                    },
+                        {
+                            field: 'id',
+                            title: '序号',
+                            visible: false
+                        },
+                        {
+                            field: 'code',
+                            title: '库柜编码',
+                            sortable: true
+                        },
+                        {
+                            field: 'name',
+                            title: '库柜名称',
+                            sortable: true
+                        },
+                        {
+                            field: 'depName',
+                            title: '库房名称',
+                            sortable: true
+                        },
+                        {
+                            field: 'dutyMan',
+                            title: '责任人',
+                            sortable: true
+                        }]
+                };
+                $.table.init(options);
+            });
+
+            function conFirm() {
+                var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                if (rows.length > 1) {
+                    $.modal.alertWarning("只能选择一条记录");
+                    return;
+                }
+                createMenuItem("archManage/archStore/conFirm?id=" + rows.join() + "&a=" + a, '档案盒入库');
+            }
+        </script>
+</body>
+</html>

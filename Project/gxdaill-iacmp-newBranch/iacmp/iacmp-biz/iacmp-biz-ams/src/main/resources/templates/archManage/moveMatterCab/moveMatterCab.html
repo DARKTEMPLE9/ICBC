@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('实物类型档案移库')"/>
+</head>
+
+<body style="background-color: #ffffff;">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form class="form-horizontal" id='myForm' role='form'>
+                <div class='container manage' id='container111'>
+                    <div class='row'>
+                        <div class="p70 ">
+                            <input type='hidden' class='submitInput' id='pageIndex' value='1'>
+                            <input type='hidden' class='submitInput' id='pageSize' value='10'>
+                            <div class="form-group">
+                                <div class="col-sm-12 text-right">
+                                </div>
+                            </div>
+                            <fieldset
+                                    style="width: 100%; padding: 10px; margin-top: 1px; border: 1px solid #1E7ACE; background: #fff">
+                                <legend style="width: 14%;">
+                                    <font style="font-size: 16px;"><b>实物类型档案移库</b> </font>
+                                </legend>
+
+                                <div class="form-group form-group-sm">
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">档案名称：</label>
+                                        <div class="col-sm-8">
+                                            <input name="name" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">档案类型：</label>
+                                        <div class="col-sm-8">
+                                            <input name="arcBillName" autocomplete="off" id="arcBillName"
+                                                   onclick="selectArcBillTree()" type="text" class="form-control"
+                                                   placeholder="请选择档案类型" style="cursor: pointer">
+                                            <input name="arcBillCode" id="arcBillCode" type="hidden"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">文件编号：</label>
+                                        <div class="col-sm-8">
+                                            <input name="arcNo" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">二级类目：</label>
+                                        <div class="col-sm-8">
+                                            <input name="arcBillDept" id="arcBillDept" onclick="selectMatterTypeTree()"
+                                                   type="text" class="form-control" autocomplete="off"
+                                                   placeholder="请选择二级类目" style="cursor: pointer">
+                                            <input name="arcBillDeptCode" id="arcBillDeptCode" type="hidden"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">所属部门：</label>
+                                        <div class="col-sm-8">
+                                            <!--<input type="text" id="opDepName" name="opDepName" onclick="selectDeptTree()" readonly placeholder="请选择部门" style="cursor: pointer"/>-->
+                                            <input name="opDepName" id="opDepName"
+                                                   onclick="selectDeptTree();opDepName.blur();return false;" type="text"
+                                                   class="form-control" autocomplete="off" placeholder="请选择部门"
+                                                   style="cursor: pointer">
+                                            <input name="opDepNo" id="opDepNo" type="hidden"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">载体形式：</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" name="carrier">
+                                                <option value="">全部</option>
+                                                <option value="01">纸质档案</option>
+                                                <option value="02">音像档案</option>
+                                                <option value="03">电子档案</option>
+                                                <option value="04">实物档案</option>
+                                                <option value="99">其他</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">责任者：</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" id="respOpName" name="respOpName"
+                                                   onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                                   placeholder="请选择责任者" autocomplete="off"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">保管期限：</label>
+                                        <div class="col-sm-8">
+                                            <select id="valPeriod" name="valPeriod" class="form-control"
+                                                    th:with="type=${@dict.getType('archive_period')}">
+                                                <option selected="selected" value="">全部</option>
+                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                        th:value="${dict.dictValue}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6" style="margin-left: 0;">
+                                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                                class="fa fa-search"></i>&nbsp;搜索</a>
+                                        <!--                                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formReset('myForm')"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+                                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formReset('myForm')"><i
+                                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="arcMoveCab()">
+                <i class="fa fa-plus"></i> 档案移库
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<script type="text/javascript" th:inline="javascript">
+    //var detailFlag = [[${@permission.hasPermi('archManage:moveMatterCab:detail')}]];
+    var prefix = ctx + "archManage/moveMatterCab";
+    var myTransApplyStatus = [[${@dict.getType('myTransApply_status')}]];
+    var carrier = [[${@dict.getType('carrier')}]];
+    var archivePeriod = [[${@dict.getType('archive_period')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+
+    /*选择人*/
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            detailUrl: prefix + "/{id}",
+            modalName: "实物类型档案移库",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcNo',
+                    title: '文件编号',
+                    visible: false
+                },
+                {
+                    field: 'arcBillName',
+                    title: '档案类型',
+                    visible: false
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '形成日期',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '档案状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(myTransApplyStatus, item.status);
+                    }
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    field: 'filingDepaName',
+                    title: '归档单位',
+                    sortable: true
+                },
+                {
+                    field: 'storageLocation',
+                    title: '存放地点',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'carrier',
+                    title: '载体形式',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        console.log(item)
+                        return $.table.selectDictLabel(carrier, item.carrier);
+                    }
+                },
+                {
+                    field: 'arcType',
+                    title: '是否电子化',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (item.arcType == '10') {
+                            return '<span class="label label-success">是</span>';
+                        } else if (item.arcType == '20') {
+                            return '<span class="label label-primary">否</span>';
+                        }
+                    }
+                },
+                {
+                    field: 'opDepName',
+                    title: '所属部门',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'arcBillDept',
+                    title: '二级类目',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs " href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')" shiro:hasPermission="archManage:moveMatterCab:detail"><i class="fa fa-search"></i>详情</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/" + id;
+        $.modal.openTab("实物类型档案移库详情", url);
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        // $("#treeId").val(body.find('#treeId').val());
+        // $("#arcBillName").val(body.find('#treeName').val());
+        $("#arcBillCode").val(body.find('#treeId').val());
+        $("#arcBillName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectMatterTypeTree() {
+        var url = prefix + "/matterTypeTree";
+        var options = {
+            title: '选择二级类目',
+            width: "380",
+            url: url,
+            callBack: doSubmitMatterType
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitMatterType(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#arcBillDeptCode").val(body.find('#treeId').val());
+        $("#arcBillDept").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#opDepNo").val(body.find('#treeId').val());
+        $("#opDepName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function arcMoveCab() {
+        // var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var rows = $("#bootstrap-table").bootstrapTable('getSelections');
+        var ids = "";
+        // alert(" rows's length " + rows.length);
+        if ($.common.isEmpty(rows)) {
+            $.modal.alertWarning("请选择一条记录");
+            return;
+        } else {
+            for (var i = 0; i < rows.length; i++) {
+                ids += rows[i]["id"];
+                if (i < (rows.length - 1)) {
+                    ids += ",";
+                }
+            }
+        }
+        createMenuItem(prefix + "/jumpToMatterCab?arcId=" + ids, "实物类型档案移库");
+    }
+
+    //重置form
+    function formReset(formId) {
+        var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+        $("#" + currentId)[0].reset();
+        //清空
+        $("#arcBillDeptCode").val('');
+        $("#arcBillCode").val('');
+        $("#opDepNo").val('');
+        $.btTable.bootstrapTable('refresh');
+    }
+
+</script>
+</body>
+
+</html>

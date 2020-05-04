@@ -79,7 +79,7 @@
                 <div> Spring-boot 学习之路</div>
             </el-header>
 
-            <el-main class="app-body" >
+            <el-main class="app-body">
 
                 <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
                     <el-tab-pane
@@ -90,8 +90,8 @@
                     >
                         <!--{{item.content}}-->
                         <!--<link rel="import" href="top.html" id="page1"/>-->
-                            <iframe :src="importSrc"  :style="{height:iframeHeight,width:iframeWidth}" scrolling="yes">
-                            </iframe>
+                        <iframe :src="importSrc" :style="{height:iframeHeight,width:iframeWidth}" scrolling="yes">
+                        </iframe>
                     </el-tab-pane>
                 </el-tabs>
                 <template>
@@ -116,8 +116,8 @@
                 activeIndex2: '1',
                 editableTabsValue2: '',
                 importSrc: '',
-                iframeWidth:'',
-                iframeHeight:'',
+                iframeWidth: '',
+                iframeHeight: '',
                 editableTabs2: [{
                     title: '首页',
                     name: '1',
@@ -154,7 +154,7 @@
                 /*获取点击子节点名称*/
                 var tabNameByNode = tab.name;
                 this.iframeWidth = '1500px';
-                this.iframeHeight='777px';
+                this.iframeHeight = '777px';
                 if (tab.childList == null) {
                     var hashCode = 0;
                     let newTabIndex = ++this.tabIndex + '';
@@ -189,12 +189,12 @@
                 if (activeName === targetName) {
                     tabs.forEach((tab, index) => {
                         if (tab.name === targetName) {
-                        let nextTab = tabs[index + 1] || tabs[index - 1];
-                        if (nextTab) {
-                            activeName = nextTab.name;
+                            let nextTab = tabs[index + 1] || tabs[index - 1];
+                            if (nextTab) {
+                                activeName = nextTab.name;
+                            }
                         }
-                    }
-                });
+                    });
                 }
 
                 this.editableTabsValue2 = activeName;

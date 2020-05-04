@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsCollectionMapper">
+
+    <resultMap type="AmsCollection" id="AmsCollectionResult">
+        <result property="colId" column="COL_ID"/>
+        <result property="name" column="NAME"/>
+        <result property="archivesId" column="ARCHIVES_ID"/>
+        <result property="searcher" column="SEARCHER"/>
+        <result property="fLAG" column="FLAG"/>
+        <result property="crtTime" column="CRT_TIME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="status" column="STATUS"/>
+        <result property="delTime" column="DEL_TIME"/>
+        <result property="arcBill" column="ARC_BILL"/>
+        <result property="arcBillDept" column="ARC_BILL_DEPT"/>
+        <result property="boxYear" column="BOX_YEAR"/>
+        <result property="valPeroid" column="VAL_PEROID"/>
+        <result property="specArch" column="SPEC_ARCH"/>
+    </resultMap>
+
+    <sql id="selectAmsCollectionVo">
+        select COL_ID, NAME, ARCHIVES_ID, SEARCHER, FLAG, CRT_TIME, REMARK, STATUS, DEL_TIME, ARC_BILL, ARC_BILL_DEPT,
+        BOX_YEAR, VAL_PEROID, SPEC_ARCH from ams_collection
+    </sql>
+
+    <select id="selectAmsCollectionList" parameterType="AmsCollection" resultMap="AmsCollectionResult">
+        <include refid="selectAmsCollectionVo"/>
+        <where>
+            <if test="colId != null ">and COL_ID = #{colId}</if>
+            <if test="name != null  and name != '' ">and NAME like concat('%',concat(#{name},'%'))</if>
+            <if test="archivesId != null  and archivesId != '' ">and ARCHIVES_ID = #{archivesId}</if>
+            <if test="searcher != null  and searcher != '' ">and SEARCHER = #{searcher}</if>
+            <if test="fLAG != null ">and FLAG = #{fLAG}</if>
+            <if test="crtTime != null ">and to_char(CRT_TIME,'yyyy-mm-dd') = to_char(#{crtTime},'yyyy-mm-dd')</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="delTime != null ">and to_char(DEL_TIME,'yyyy-mm-dd') = to_char(#{delTime},'yyyy-mm-dd')</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+            <if test="boxYear != null ">and BOX_YEAR like concat('%',concat(#{boxYear},'%'))</if>
+            <if test="valPeroid != null  and valPeroid != '' ">and VAL_PEROID like
+                concat('%',concat(#{valPeroid},'%'))
+            </if>
+            <if test="specArch != null  and specArch != '' ">and SPEC_ARCH = #{specArch}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsCollectionById" parameterType="Integer" resultMap="AmsCollectionResult">
+        <include refid="selectAmsCollectionVo"/>
+        where COL_ID = #{colId}
+    </select>
+
+    <insert id="insertAmsCollection" parameterType="AmsCollection">
+        insert into ams_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="archivesId != null  and archivesId != ''  ">ARCHIVES_ID,</if>
+            <if test="searcher != null  and searcher != ''  ">SEARCHER,</if>
+            <if test="fLAG != null  ">FLAG,</if>
+            <if test="crtTime != null  ">CRT_TIME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="delTime != null  ">DEL_TIME,</if>
+            <if test="arcBill != null  and arcBill != ''  ">ARC_BILL,</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">ARC_BILL_DEPT,</if>
+            <if test="boxYear != null  ">BOX_YEAR,</if>
+            <if test="valPeroid != null  and valPeroid != ''  ">VAL_PEROID,</if>
+            <if test="specArch != null  and specArch != ''  ">SPEC_ARCH,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="archivesId != null  and archivesId != ''  ">#{archivesId},</if>
+            <if test="searcher != null  and searcher != ''  ">#{searcher},</if>
+            <if test="fLAG != null  ">#{fLAG},</if>
+            <if test="crtTime != null  ">#{crtTime},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="delTime != null  ">#{delTime},</if>
+            <if test="arcBill != null  and arcBill != ''  ">#{arcBill},</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">#{arcBillDept},</if>
+            <if test="boxYear != null  ">#{boxYear},</if>
+            <if test="valPeroid != null  and valPeroid != ''  ">#{valPeroid},</if>
+            <if test="specArch != null  and specArch != ''  ">#{specArch},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsCollection" parameterType="AmsCollection">
+        update ams_collection
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="archivesId != null  and archivesId != ''  ">ARCHIVES_ID = #{archivesId},</if>
+            <if test="searcher != null  and searcher != ''  ">SEARCHER = #{searcher},</if>
+            <if test="fLAG != null  ">FLAG = #{fLAG},</if>
+            <if test="crtTime != null  ">CRT_TIME = #{crtTime},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="delTime != null  ">DEL_TIME = #{delTime},</if>
+            <if test="arcBill != null  and arcBill != ''  ">ARC_BILL = #{arcBill},</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">ARC_BILL_DEPT = #{arcBillDept},</if>
+            <if test="boxYear != null  ">BOX_YEAR = #{boxYear},</if>
+            <if test="valPeroid != null  and valPeroid != ''  ">VAL_PEROID = #{valPeroid},</if>
+            <if test="specArch != null  and specArch != ''  ">SPEC_ARCH = #{specArch},</if>
+        </trim>
+        where COL_ID = #{colId}
+    </update>
+
+    <delete id="deleteAmsCollectionById" parameterType="Integer">
+        delete from ams_collection where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsCollectionByIds" parameterType="String">
+        delete from ams_collection where ARCHIVES_ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

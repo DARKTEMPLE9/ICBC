@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('打印预览')"/>
+</head>
+<body>
+<div id="printBtnDiv" style="margin-left: 20px;margin-top: 10px;">
+    <button id="printBtn" class="btn btn-info" onclick="doPrint()"><span class='glyphicon glyphicon-print'></span>&nbsp;打印
+    </button>
+</div>
+<div id="printInfoCont">
+    <fieldset
+            style="margin-top:10px;margin-left: 20px; margin-right: 20px;border-width: 2px;border-color: #DDDDDD;border-style: solid;text-align: center; ">
+        <div id="arcRecTitileDiv">
+            <font face="仿宋" size="5px" style="">中关村银行股份有限公司</font><br>
+            <font face="仿宋" size="5px" style="">档案移交清单</font>
+        </div>
+        <br>
+        <div id="arcRecTableDiv" style="margin-left: 20px;margin-right: 20px">
+            <table id="arcRecTable" class="table table-striped table-hover table-condensed table-bordered"
+                   style="table-layout:fixed;">
+                <thead style="background-color: #efefef;margin-right: 20px;">
+                <tr>
+                    <th style='text-align: center;width:3%;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                        序号
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>名称
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>
+                        份数/件数
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>页数
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>登记人员
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>登记时间
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>接收人员
+                    </th>
+                    <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>接收时间
+                    </th>
+                </tr>
+                <tr th:each="amsPrintInfo,amsPrintInfoStart : ${printList}">
+
+                    <td th:text="${amsPrintInfoStart.index+1}"/>
+
+                    <td th:text="${amsPrintInfo.name}"/>
+                    <td th:text="${amsPrintInfo.regArcNum}"/>
+                    <td th:text="${amsPrintInfo.recPageNum}"/>
+                    <td th:text="${amsPrintInfo.regOpName}"/>
+                    <td th:text="${#dates.format(amsPrintInfo.regTime,'yyyy-MM-dd HH:mm:ss')}"/>
+                    <td th:text="${amsPrintInfo.recOpName}"/>
+                    <td th:text="${#dates.format(amsPrintInfo.recTime,'yyyy-MM-dd HH:mm:ss')}"/>
+
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div style="float: left;margin-left:18%;margin-top: -7px;">
+                <font id="preTime">清单生成日期：</font>
+                <span th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+
+            </div>
+            <div style="float: right;margin-right: 18%;margin-top: -7px;">
+                <font id="preOrgan" th:object="${loginUser}">所属部门：
+                    <span th:text="${loginUser.dept.deptName}"></span>
+                </font>
+            </div>
+            <div style="float: right;margin-right: 18%;margin-top: -7px;">
+                <font id="preUser" th:object="${loginUser}">清单生成人：
+                    <span th:text="${loginUser.userName}"></span>
+                </font>
+            </div>
+        </div>
+
+        <!-- 专题库表格 -->
+        <!--<div id="specialTable" style="margin-left: 20px;margin-right: 20px">-->
+        <!--<table id="specialsTable" class="table table-striped table-hover table-condensed table-bordered" style="table-layout:fixed;">-->
+        <!--<thead style="background-color: #efefef;margin-right: 20px;">-->
+        <!--<tr>-->
+        <!--<th style='text-align: center;width:4%;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>序号</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>档案名</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>责任者</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>文件编号</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>档案类型</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>形成日期</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>档案状态</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>归档单位</th>-->
+        <!--<th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>能否在线查阅</th>-->
+
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody></tbody>-->
+        <!--</table>-->
+        <!--<div style="float: left;margin-left:18%;margin-top: -7px;">-->
+        <!--<font id="preTimeSpecial">生成日期：</font>-->
+        <!--</div>-->
+
+        <!--<div style="float: right;margin-right: 18%;margin-top: -7px;">-->
+        <!--<font id="preUserSpecial">生成人：</font>-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <br>
+    </fieldset>
+</div>
+
+<th:block th:include="include :: printPrintArea-js"/>
+<script th:inline="javascript">
+
+    $(function () {
+        var a = [[${printList}]];
+    });
+</script>
+<script type="text/javascript">
+    function doPrint() {
+        $("#printInfoCont").print({
+            globalStyles: true,//是否包含父文档的样式，默认为true
+            mediaPrint: false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+            stylesheet: null,//外部样式表的URL地址，默认为null
+            noPrintSelector: "printBtnDiv",//不想打印的元素的jQuery选择器，默认为".no-print"
+            iframe: true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+            append: null,//将内容添加到打印内容的后面
+            prepend: null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+            deferred: $.Deferred()
+        });
+        // $("#printArea").printArea();
+    }
+
+</script>
+
+</body>
+</html>

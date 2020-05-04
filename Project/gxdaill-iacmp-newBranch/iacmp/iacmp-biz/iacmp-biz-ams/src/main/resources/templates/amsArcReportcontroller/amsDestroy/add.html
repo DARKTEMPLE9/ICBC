@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增档案销毁')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsDestroy-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁人号：</label>
+            <div class="col-sm-8">
+                <input id="opUserCode" name="opUserCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁人名：</label>
+            <div class="col-sm-8">
+                <input id="opUserName" name="opUserName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁人机构号：</label>
+            <div class="col-sm-8">
+                <input id="opOrgCode" name="opOrgCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁人机构名：</label>
+            <div class="col-sm-8">
+                <input id="opOrgName" name="opOrgName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁时间：</label>
+            <div class="col-sm-8">
+                <input id="opDate" name="opDate" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁原因：</label>
+            <div class="col-sm-8">
+                <input id="destroyReason" name="destroyReason" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案数量：</label>
+            <div class="col-sm-8">
+                <input id="archivesNum" name="archivesNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附件：</label>
+            <div class="col-sm-8">
+                <input id="destroyAttachment" name="destroyAttachment" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">销毁档案id：</label>
+            <div class="col-sm-8">
+                <input id="amsArcId" name="amsArcId" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "amsArcReportcontroller/amsDestroy"
+    $("#form-amsDestroy-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-amsDestroy-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

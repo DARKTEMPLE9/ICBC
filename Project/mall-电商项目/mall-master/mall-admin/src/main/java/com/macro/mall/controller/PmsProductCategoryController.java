@@ -33,7 +33,7 @@ public class PmsProductCategoryController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:productCategory:create')")
     public CommonResult create(@Validated @RequestBody PmsProductCategoryParam productCategoryParam,
-                         BindingResult result) {
+                               BindingResult result) {
         int count = productCategoryService.create(productCategoryParam);
         if (count > 0) {
             return CommonResult.success(count);
@@ -47,9 +47,9 @@ public class PmsProductCategoryController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
     public CommonResult update(@PathVariable Long id,
-                         @Validated
-                         @RequestBody PmsProductCategoryParam productCategoryParam,
-                         BindingResult result) {
+                               @Validated
+                               @RequestBody PmsProductCategoryParam productCategoryParam,
+                               BindingResult result) {
         int count = productCategoryService.update(id, productCategoryParam);
         if (count > 0) {
             return CommonResult.success(count);

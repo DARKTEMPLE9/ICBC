@@ -11,9 +11,12 @@
         real_amount) values
         <foreach collection="list" item="item" separator="," index="index">
             (#{item.orderId,jdbcType=BIGINT}, #{item.orderSn,jdbcType=VARCHAR}, #{item.productId,jdbcType=BIGINT},
-            #{item.productPic,jdbcType=VARCHAR}, #{item.productName,jdbcType=VARCHAR}, #{item.productBrand,jdbcType=VARCHAR},
-            #{item.productSn,jdbcType=VARCHAR}, #{item.productPrice,jdbcType=DECIMAL}, #{item.productQuantity,jdbcType=INTEGER},
-            #{item.productSkuId,jdbcType=BIGINT}, #{item.productCategoryId,jdbcType=BIGINT}, #{item.productSkuCode,jdbcType=VARCHAR},
+            #{item.productPic,jdbcType=VARCHAR}, #{item.productName,jdbcType=VARCHAR},
+            #{item.productBrand,jdbcType=VARCHAR},
+            #{item.productSn,jdbcType=VARCHAR}, #{item.productPrice,jdbcType=DECIMAL},
+            #{item.productQuantity,jdbcType=INTEGER},
+            #{item.productSkuId,jdbcType=BIGINT}, #{item.productCategoryId,jdbcType=BIGINT},
+            #{item.productSkuCode,jdbcType=VARCHAR},
             #{item.sp1,jdbcType=VARCHAR}, #{item.sp2,jdbcType=VARCHAR}, #{item.sp3,jdbcType=VARCHAR},
             #{item.promotionName,jdbcType=VARCHAR},
             #{item.promotionAmount,jdbcType=DECIMAL}, #{item.couponAmount,jdbcType=DECIMAL},

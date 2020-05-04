@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案类型列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+
+                <div class="select-list">
+                    <ul class="clearfix">
+
+                        <li>
+                            档案类型编码：<input type="text" name="code" placeholder="请输入64字以内" th:maxlength="64"/>
+                        </li>
+
+                        <li>
+                            档案类型名称：<input type="text" name="name" placeholder="请输入64字以内" th:maxlength="64"/>
+                        </li>
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="param:amsBill:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="param:amsBill:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-warning single disabled" onclick="selectDeptArchTree()">
+                <i class="fa fa-download"></i> 部门档案类型配置
+            </a>
+            <a class="btn btn-danger single disabled" onclick="removeBill()" shiro:hasPermission="param:amsBill:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+
+            <input id="treeId" name="parentId" type="hidden" value="1000"/>
+            <input id="treeName" name="parentName" type="hidden" value="中关村银行"/>
+
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('param:amsBill:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('param:amsBill:remove')}]];
+    var designFlag = [[${@permission.hasPermi('param:amsBill:design')}]];
+    var prefix = ctx + "param/amsBill";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "档案类型",
+            // showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '档案类型编码',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '档案类型名称',
+                    sortable: true
+                },
+                {
+                    field: 'parentName',
+                    title: '档案父类型',
+                    sortable: true
+                },
+                {
+                    field: 'mould',
+                    title: '模板代码',
+                    sortable: true
+                },
+                {
+                    field: '',
+                    title: '是否可用',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + designFlag + '" href="javascript:void(0)" onclick="designAmsBill(\'' + row.id + '\')"><i class="fa fa-edit"></i>模板设计</a> ');
+                        return actions.join('');
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    });
+
+    /*部门档案类型配置--选择部门与档案类型树*/
+    function selectDeptArchTree() {
+        var deptId = $("#treeId").val();
+        if (deptId > 0) {
+            var options = {
+                title: '部门档案类型配置菜单',
+                width: $(window).width() - 50,
+                url: prefix + "/selectDeptTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        } else {
+            $.modal.alertError("父部门不能选择");
+        }
+    }
+
+    //确定并提交
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowLastLevel(tree)) {
+            var body = layer.getChildFrame('body', index);
+            // $("#treeId").val(body.find('#treeId').val());
+            // $("#treeName").val(body.find('#treeName').val());
+            var organCode = body.find('#treeId').val();
+            var billCodes = body.find('#billNodes').val();
+
+            layer.close(index);
+        }
+
+        //配置部门档案类型
+        updateBillDept(organCode, billCodes);
+    }
+
+    function updateBillDept(organCode, billCodes) {
+        if (organCode != undefined && organCode != '') {
+            if (billCodes != undefined && billCodes != '') {
+                $.ajax({
+                    url: prefix + "/updateForBill",
+                    type: "post",
+                    data: {'organCode': organCode, 'billCodes': billCodes},
+                    dataType: "json",
+                    success: function (data) {
+                        $.modal.msgSuccess(data.msg);
+                    }
+                })
+            } else {
+                $.modal.alertError("请选择档案类型！");
+            }
+        } else {
+            $.modal.alertError("请选择部门！");
+        }
+    }
+
+    /*档案模板设计*/
+    function designAmsBill(rowId) {
+        createMenuItem(prefix + "/designAmsBill/" + rowId, "档案分类模型设计");
+    }
+
+    /*删除档案类型*/
+    function removeBill() {
+        var cked = $("#bootstrap-table").bootstrapTable('getSelections');
+
+        var billId = cked[0]["id"];
+
+        $.modal.confirm("确认要删除?", function () {
+            url = prefix + "/remove";
+            var data = {"ids": billId};
+
+            $.ajax({
+                url: url,
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.log("result=" + result + " ,result.msg=" + result.msg);
+                    if (result.msg == "error") {
+                        $.modal.alertWarning(" 请先删除档案子类型！");
+                    } else {
+                        //重新加载档案类型
+                        $("#bootstrap-table").bootstrapTable('refresh');
+                    }
+                }
+            });
+
+        });
+    }
+</script>
+</body>
+</html>

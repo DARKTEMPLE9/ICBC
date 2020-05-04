@@ -3,7 +3,6 @@ package com.example.demo.domain;
 import java.util.HashMap;
 
 /**
- *
  * @author MrBird
  */
 public class Response extends HashMap<String, Object> {

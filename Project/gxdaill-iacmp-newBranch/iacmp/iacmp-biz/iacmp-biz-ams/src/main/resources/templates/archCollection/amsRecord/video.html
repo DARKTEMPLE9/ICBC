@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('在线预览')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <video controls id="media" autoplay>
+        <source id="v1" src="">
+    </video>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" th:inline="javascript">
+
+    var m3u8Path = [[${videoUrl}]];
+    // mp4通过
+    // m3u8Path ="http://10.4.92.38:8080/httpfiletrans/HttpFileTrans?method=download&BufferSize=65536&FlushSize=65536&IsCreateDir=TRUE&FilePath=/user/testCUT/image_dir/opt/cms/software/alidata/data/dest/4a735e44bb8a4d5c989ec50d7659866f.mp4"
+    // mp3通过
+    // m3u8Path ="http://10.4.92.38:8080/httpfiletrans/HttpFileTrans?method=download&BufferSize=65536&FlushSize=65536&IsCreateDir=TRUE&FilePath=/user/testCUT/image_dir/opt/cms/software/alidata/data/dest/6818e5eec5194438944be3a6d344d1bf.mp3"
+
+    function play() {
+        document.getElementById("v1").src = m3u8Path;
+        document.getElementById("media").load();
+    }
+
+    setTimeout("play()", 1000);
+
+</script>
+</body>
+</html>

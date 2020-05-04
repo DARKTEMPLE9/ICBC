@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsDepotMapper">
+
+    <resultMap type="AmsDepot" id="AmsDepotResult">
+        <result property="depotId" column="DEPOT_ID"/>
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="code" column="CODE"/>
+        <result property="orgNo" column="ORG_NO"/>
+        <result property="allNum" column="ALL_NUM"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="admin" column="ADMIN"/>
+        <result property="remark" column="REMARK"/>
+        <result property="depotType" column="DEPOT_TYPE"/>
+    </resultMap>
+
+    <sql id="selectAmsDepotVo">
+        select DEPOT_ID, ID, NAME, CODE, ORG_NO, ALL_NUM, ORG_NAME, STATUS, admin, remark, DEPOT_TYPE from ams_depot
+    </sql>
+
+    <select id="selectAmsDepotList" parameterType="AmsDepot" resultMap="AmsDepotResult">
+        <include refid="selectAmsDepotVo"/>
+        <where>
+            <if test="depotId != null  and depotId != '' ">and DEPOT_ID = #{depotId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME like CONCAT(CONCAT('%',#{name}),'%')</if>
+            <if test="code != null  and code != '' ">and CODE like CONCAT(CONCAT('%',#{code}),'%')</if>
+            <if test="orgNo != null  and orgNo != '' ">and ORG_NO = #{orgNo}</if>
+            <if test="allNum != null ">and ALL_NUM = #{allNum}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME like CONCAT(CONCAT('%',#{orgName}),'%')</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="admin != null  and admin != '' ">and ADMIN like CONCAT(CONCAT('%',#{admin}),'%')</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="depotType != null  and depotType != '' ">and DEPOT_TYPE = #{depotType}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsDepotListByAuxDep" resultMap="AmsDepotResult">
+        <include refid="selectAmsDepotVo"/>
+        <where>
+            <if test="amsDepot.depotId != null  and amsDepot.depotId != '' ">and DEPOT_ID = #{amsDepot.depotId}</if>
+            <if test="amsDepot.id != null  and amsDepot.id != '' ">and ID = #{amsDepot.id}</if>
+            <if test="amsDepot.name != null  and amsDepot.name != '' ">and NAME like
+                CONCAT(CONCAT('%',#{amsDepot.name}),'%')
+            </if>
+            <if test="amsDepot.code != null  and amsDepot.code != '' ">and CODE like
+                CONCAT(CONCAT('%',#{amsDepot.code}),'%')
+            </if>
+            <if test="deptList.size()>0">
+                and ORG_NO in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsDepot.allNum != null ">and ALL_NUM = #{amsDepot.allNum}</if>
+            <if test="amsDepot.orgName != null  and amsDepot.orgName != '' ">and ORG_NAME like
+                CONCAT(CONCAT('%',#{amsDepot.orgName}),'%')
+            </if>
+            <if test="amsDepot.status != null  and amsDepot.status != '' ">and STATUS = #{amsDepot.status}</if>
+            <if test="amsDepot.admin != null  and amsDepot.admin != '' ">and ADMIN like
+                CONCAT(CONCAT('%',#{amsDepot.admin}),'%')
+            </if>
+            <if test="amsDepot.remark != null  and amsDepot.remark != '' ">and REMARK = #{amsDepot.remark}</if>
+            <if test="amsDepot.depotType != null  and amsDepot.depotType != '' ">and DEPOT_TYPE =
+                #{amsDepot.depotType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAmsDepotById" parameterType="String" resultMap="AmsDepotResult">
+        <include refid="selectAmsDepotVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsDepot" parameterType="AmsDepot">
+        insert into ams_depot
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="orgNo != null  and orgNo != ''  ">ORG_NO,</if>
+            <if test="allNum != null  ">ALL_NUM,</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="admin != null  and admin != ''  ">ADMIN,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="depotType != null  and depotType != ''  ">DEPOT_TYPE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="orgNo != null  and orgNo != ''  ">#{orgNo},</if>
+            <if test="allNum != null  ">#{allNum},</if>
+            <if test="orgName != null  and orgName != ''  ">#{orgName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="admin != null  and admin != ''  ">#{admin},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="depotType != null  and depotType != ''  ">#{depotType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsDepot" parameterType="AmsDepot">
+        update ams_depot
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="orgNo != null  and orgNo != ''  ">ORG_NO = #{orgNo},</if>
+            <if test="allNum != null  ">ALL_NUM = #{allNum},</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME = #{orgName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="admin != null  and admin != ''  ">ADMIN = #{admin},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="depotType != null  and depotType != ''  ">DEPOT_TYPE = #{depotType},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsDepotById" parameterType="String">
+        delete from ams_depot where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsDepotByIds" parameterType="String">
+
+        delete from ams_depot where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

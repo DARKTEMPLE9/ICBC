@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImBatchImBillMapper">
+
+    <resultMap type="ImBatchImBill" id="ImBatchImBillResult">
+        <result property="id" column="ID"/>
+        <result property="imBillId" column="IM_BILL_ID"/>
+        <result property="imBatchId" column="IM_BATCH_ID"/>
+        <result property="billBatchId" column="bill_batch_id"/>
+    </resultMap>
+
+    <sql id="selectImBatchImBillVo">
+        select ID, IM_BILL_ID, IM_BATCH_ID, bill_batch_id from im_batch_im_bill
+    </sql>
+
+    <select id="selectImBatchImBillList" parameterType="ImBatchImBill" resultMap="ImBatchImBillResult">
+        <include refid="selectImBatchImBillVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="imBillId != null  and imBillId != '' ">and IM_BILL_ID = #{imBillId}</if>
+            <if test="imBatchId != null  and imBatchId != '' ">and IM_BATCH_ID = #{imBatchId}</if>
+            <if test="billBatchId != null ">and bill_batch_id = #{billBatchId}</if>
+        </where>
+    </select>
+
+    <select id="selectImBatchImBillById" parameterType="String" resultMap="ImBatchImBillResult">
+        <include refid="selectImBatchImBillVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImBatchImBill" parameterType="ImBatchImBill">
+        insert into im_batch_im_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="imBillId != null  and imBillId != ''  ">IM_BILL_ID,</if>
+            <if test="imBatchId != null  and imBatchId != ''  ">IM_BATCH_ID,</if>
+            <if test="billBatchId != null  ">bill_batch_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="imBillId != null  and imBillId != ''  ">#{imBillId},</if>
+            <if test="imBatchId != null  and imBatchId != ''  ">#{imBatchId},</if>
+            <if test="billBatchId != null  ">#{billBatchId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImBatchImBill" parameterType="ImBatchImBill">
+        update im_batch_im_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imBillId != null  and imBillId != ''  ">IM_BILL_ID = #{imBillId},</if>
+            <if test="imBatchId != null  and imBatchId != ''  ">IM_BATCH_ID = #{imBatchId},</if>
+            <if test="billBatchId != null  ">bill_batch_id = #{billBatchId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBatchImBillById" parameterType="String">
+        delete from im_batch_im_bill where ID = #{id}
+    </delete>
+
+    <delete id="deleteImBatchImBillByIds" parameterType="String">
+        delete from im_batch_im_bill where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

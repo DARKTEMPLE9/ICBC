@@ -39,7 +39,7 @@ public class BrowserSecurityController {
 
     @GetMapping("/session/invalid")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String sessionInvalid(){
+    public String sessionInvalid() {
         return "session已失效，请重新认证";
     }
 }

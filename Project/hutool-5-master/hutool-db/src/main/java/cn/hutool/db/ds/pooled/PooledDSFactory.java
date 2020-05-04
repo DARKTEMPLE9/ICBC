@@ -7,37 +7,36 @@ import cn.hutool.setting.Setting;
 
 /**
  * Hutool自身实现的池化数据源工厂类
- * 
- * @author Looly
  *
+ * @author Looly
  */
 public class PooledDSFactory extends AbstractDSFactory {
-	private static final long serialVersionUID = 8093886210895248277L;
-	
-	public static final String DS_NAME = "Hutool-Pooled-DataSource";
+    private static final long serialVersionUID = 8093886210895248277L;
 
-	public PooledDSFactory() {
-		this(null);
-	}
+    public static final String DS_NAME = "Hutool-Pooled-DataSource";
 
-	public PooledDSFactory(Setting setting) {
-		super(DS_NAME, PooledDataSource.class, setting);
-	}
+    public PooledDSFactory() {
+        this(null);
+    }
 
-	@Override
-	protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
-		final DbConfig dbConfig = new DbConfig();
-		dbConfig.setUrl(jdbcUrl);
-		dbConfig.setDriver(driver);
-		dbConfig.setUser(user);
-		dbConfig.setPass(pass);
+    public PooledDSFactory(Setting setting) {
+        super(DS_NAME, PooledDataSource.class, setting);
+    }
 
-		// 连接池相关信息
-		dbConfig.setInitialSize(poolSetting.getInt("initialSize", 0));
-		dbConfig.setMinIdle(poolSetting.getInt("minIdle", 0));
-		dbConfig.setMaxActive(poolSetting.getInt("maxActive", 8));
-		dbConfig.setMaxWait(poolSetting.getLong("maxWait", 6000L));
+    @Override
+    protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
+        final DbConfig dbConfig = new DbConfig();
+        dbConfig.setUrl(jdbcUrl);
+        dbConfig.setDriver(driver);
+        dbConfig.setUser(user);
+        dbConfig.setPass(pass);
 
-		return new PooledDataSource(dbConfig);
-	}
+        // 连接池相关信息
+        dbConfig.setInitialSize(poolSetting.getInt("initialSize", 0));
+        dbConfig.setMinIdle(poolSetting.getInt("minIdle", 0));
+        dbConfig.setMaxActive(poolSetting.getInt("maxActive", 8));
+        dbConfig.setMaxWait(poolSetting.getLong("maxWait", 6000L));
+
+        return new PooledDataSource(dbConfig);
+    }
 }

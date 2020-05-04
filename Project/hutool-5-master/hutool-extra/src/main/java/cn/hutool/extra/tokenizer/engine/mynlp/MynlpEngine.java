@@ -11,34 +11,33 @@ import cn.hutool.extra.tokenizer.TokenizerEngine;
 /**
  * MYNLP 中文NLP工具包分词实现<br>
  * 项目地址：https://github.com/mayabot/mynlp/
- * 
- * @author looly
  *
+ * @author looly
  */
 public class MynlpEngine implements TokenizerEngine {
 
-	private Lexer lexer;
-	
-	/**
-	 * 构造
-	 */
-	public MynlpEngine() {
-		this.lexer = Lexers.core();
-	}
-	
-	/**
-	 * 构造
-	 * 
-	 * @param lexer 分词器接口{@link Lexer}
-	 */
-	public MynlpEngine(Lexer lexer) {
-		this.lexer = lexer;
-	}
+    private Lexer lexer;
 
-	@Override
-	public Result parse(CharSequence text) {
-		final Sentence sentence = this.lexer.scan(StrUtil.str(text));
-		return new MynlpResult(sentence);
-	}
+    /**
+     * 构造
+     */
+    public MynlpEngine() {
+        this.lexer = Lexers.core();
+    }
+
+    /**
+     * 构造
+     *
+     * @param lexer 分词器接口{@link Lexer}
+     */
+    public MynlpEngine(Lexer lexer) {
+        this.lexer = lexer;
+    }
+
+    @Override
+    public Result parse(CharSequence text) {
+        final Sentence sentence = this.lexer.scan(StrUtil.str(text));
+        return new MynlpResult(sentence);
+    }
 
 }

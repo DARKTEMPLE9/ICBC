@@ -12,14 +12,13 @@ public class SyncDataController {
     private SyncDateService syncDateService;*/
 
     /*
-    *   1.  远程同步接口，此处使用
-    *
-    *
-    *
-    *
-    *
-    * */
-
+     *   1.  远程同步接口，此处使用
+     *
+     *
+     *
+     *
+     *
+     * */
 
 
 }

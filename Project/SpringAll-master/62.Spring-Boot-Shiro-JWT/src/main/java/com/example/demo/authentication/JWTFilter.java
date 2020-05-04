@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
  * @author MrBird
  */
 public class JWTFilter extends BasicHttpAuthenticationFilter {

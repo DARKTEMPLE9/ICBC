@@ -11,39 +11,38 @@ import cn.hutool.setting.dialect.Props;
 
 /**
  * HikariCP数据源工厂类
- * 
- * @author Looly
  *
+ * @author Looly
  */
 public class HikariDSFactory extends AbstractDSFactory {
-	private static final long serialVersionUID = -8834744983614749401L;
-	
-	public static final String DS_NAME = "HikariCP";
+    private static final long serialVersionUID = -8834744983614749401L;
 
-	public HikariDSFactory() {
-		this(null);
-	}
+    public static final String DS_NAME = "HikariCP";
 
-	public HikariDSFactory(Setting setting) {
-		super(DS_NAME, HikariDataSource.class, setting);
-	}
+    public HikariDSFactory() {
+        this(null);
+    }
 
-	@Override
-	protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
-		final Props config = new Props();
-		config.putAll(poolSetting);
+    public HikariDSFactory(Setting setting) {
+        super(DS_NAME, HikariDataSource.class, setting);
+    }
 
-		config.put("jdbcUrl", jdbcUrl);
-		if (null != driver) {
-			config.put("driverClassName", driver);
-		}
-		if (null != user) {
-			config.put("username", user);
-		}
-		if (null != pass) {
-			config.put("password", pass);
-		}
+    @Override
+    protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
+        final Props config = new Props();
+        config.putAll(poolSetting);
 
-		return new HikariDataSource(new HikariConfig(config));
-	}
+        config.put("jdbcUrl", jdbcUrl);
+        if (null != driver) {
+            config.put("driverClassName", driver);
+        }
+        if (null != user) {
+            config.put("username", user);
+        }
+        if (null != pass) {
+            config.put("password", pass);
+        }
+
+        return new HikariDataSource(new HikariConfig(config));
+    }
 }

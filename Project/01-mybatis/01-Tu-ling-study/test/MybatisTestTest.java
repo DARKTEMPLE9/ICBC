@@ -39,7 +39,7 @@ public class MybatisTestTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserBean userBean = sqlSession.selectOne("com.mybatis.UserMapper.selectUser", 1);
         List<UserBean> list = sqlSession.selectList("com.mybatis.UserMapper.selectUserAll");
-        System.out.println("根据sqlSessionFactory查询"+userBean);
+        System.out.println("根据sqlSessionFactory查询" + userBean);
     }
 
     @Test
@@ -56,10 +56,9 @@ public class MybatisTestTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         UserBean userBean = mapper.selectUser(1);
-        System.out.println("使用annotation方式（mapper）查询 user:{}"+userBean);
+        System.out.println("使用annotation方式（mapper）查询 user:{}" + userBean);
 
     }
-
 
 
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <title>在线预览txt文档</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <th:block th:include="include :: footer"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "pdf/pms/fileView";
+    </script>
+
+
+    <script th:inline="javascript">
+        var fileImageId = getQueryString("id");
+        $.post(prefix + "/txtView/" + fileImageId, fileImageId, function (result) {
+            var txt = result.data;
+            $('#text').val(txt);
+        });
+
+        //获取URL参数
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return unescape(r[2]);
+            return null;
+        }
+    </script>
+</head>
+
+<body style="width: 100%;height: 100%">
+<textarea id="text" style="width: 100%;" readonly="readonly" rows="50"></textarea>
+</body>
+</html>

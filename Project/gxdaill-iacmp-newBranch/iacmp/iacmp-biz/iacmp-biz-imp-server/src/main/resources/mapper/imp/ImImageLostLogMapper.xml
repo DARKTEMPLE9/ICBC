@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImImageLostLogMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImImageLostLog" id="ImImageLostLogResult">
+        <result property="id" column="ID"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="operNo" column="OPER_NO"/>
+        <result property="operTime" column="OPER_TIME"/>
+        <result property="lostBillType" column="LOST_BILLTYPE"/>
+        <result property="lostId" column="LOST_ID"/>
+    </resultMap>
+
+    <sql id="selectImImageLostLogVo">
+        select ID, BATCH_ID, OPER_NO, OPER_TIME, LOST_BILLTYPE, LOST_ID from im_image_lost_log
+    </sql>
+
+    <select id="selectImImageLostLogList" parameterType="net.northking.iacmp.imp.domain.ImImageLostLog"
+            resultMap="ImImageLostLogResult">
+        <include refid="selectImImageLostLogVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="operNo != null  and operNo != '' ">and OPER_NO = #{operNo}</if>
+            <if test="operTime != null ">and OPER_TIME = #{operTime}</if>
+            <if test="lostBillType != null  and lostBillType != '' ">and LOST_BILLTYPE = #{lostBillType}</if>
+            <if test="lostId != null ">and LOST_ID = #{lostId}</if>
+        </where>
+    </select>
+
+    <select id="selectImImageLostLogById" parameterType="String" resultMap="ImImageLostLogResult">
+        <include refid="selectImImageLostLogVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImImageLostLog" parameterType="net.northking.iacmp.imp.domain.ImImageLostLog">
+        insert into im_image_lost_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="operNo != null  and operNo != ''  ">OPER_NO,</if>
+            <if test="operTime != null  ">OPER_TIME,</if>
+            <if test="lostBillType != null  and lostBillType != ''  ">LOST_BILLTYPE,</if>
+            <if test="lostId != null  ">LOST_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="operNo != null  and operNo != ''  ">#{operNo},</if>
+            <if test="operTime != null  ">#{operTime},</if>
+            <if test="lostBillType != null  and lostBillType != ''  ">#{lostBillType},</if>
+            <if test="lostId != null  ">#{lostId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImImageLostLog" parameterType="net.northking.iacmp.imp.domain.ImImageLostLog">
+        update im_image_lost_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="operNo != null  and operNo != ''  ">OPER_NO = #{operNo},</if>
+            <if test="operTime != null  ">OPER_TIME = #{operTime},</if>
+            <if test="lostBillType != null  and lostBillType != ''  ">LOST_BILLTYPE = #{lostBillType},</if>
+            <if test="lostId != null  ">LOST_ID = #{lostId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImImageLostLogById" parameterType="String">
+        delete from im_image_lost_log where ID = #{id}
+    </delete>
+
+    <delete id="deleteImImageLostLogByIds" parameterType="String">
+        delete from im_image_lost_log where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

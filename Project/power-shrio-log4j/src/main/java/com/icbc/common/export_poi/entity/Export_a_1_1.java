@@ -13,5 +13,5 @@ public class Export_a_1_1 {
 
     private String remark;
 
-    private  Integer number;
+    private Integer number;
 }

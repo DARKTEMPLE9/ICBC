@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.SmRoleMenuMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.SmRoleMenu" id="SmRoleMenuResult">
+        <result property="menuId" column="MENU_ID"/>
+        <result property="id" column="ID"/>
+        <result property="roleId" column="ROLE_ID"/>
+        <result property="roleMenuId" column="ROLE_MENU_ID"/>
+    </resultMap>
+
+    <sql id="selectSmRoleMenuVo">
+        select MENU_ID, ID, ROLE_ID, ROLE_MENU_ID from sm_role_menu
+    </sql>
+
+    <select id="selectSmRoleMenuList" parameterType="net.northking.iacmp.imp.domain.SmRoleMenu"
+            resultMap="SmRoleMenuResult">
+        <include refid="selectSmRoleMenuVo"/>
+        <where>
+            <if test="menuId != null  and menuId != '' ">and MENU_ID = #{menuId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="roleId != null  and roleId != '' ">and ROLE_ID = #{roleId}</if>
+            <if test="roleMenuId != null ">and ROLE_MENU_ID = #{roleMenuId}</if>
+        </where>
+    </select>
+
+    <select id="selectSmRoleMenuById" parameterType="String" resultMap="SmRoleMenuResult">
+        <include refid="selectSmRoleMenuVo"/>
+        where MENU_ID = #{menuId}
+    </select>
+
+    <insert id="insertSmRoleMenu">
+        insert into sm_role_menu(menu_id,id,role_id) values (#{menuId},#{id},#{roleId})
+    </insert>
+
+    <update id="updateSmRoleMenu" parameterType="net.northking.iacmp.imp.domain.SmRoleMenu">
+        update sm_role_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID = #{id},</if>
+            <if test="roleId != null  and roleId != ''  ">ROLE_ID = #{roleId},</if>
+            <if test="roleMenuId != null  ">ROLE_MENU_ID = #{roleMenuId},</if>
+        </trim>
+        where MENU_ID = #{menuId}
+    </update>
+
+    <delete id="deleteSmRoleMenuById" parameterType="String">
+        delete from sm_role_menu where MENU_ID = #{menuId}
+    </delete>
+
+    <delete id="deleteSmRoleMenuByIds" parameterType="String">
+        delete from sm_role_menu where MENU_ID in
+        <foreach item="menuId" collection="array" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteMenuByRole" parameterType="String">
+        delete from sm_role_menu where role_id = #{roleId}
+    </delete>
+</mapper>

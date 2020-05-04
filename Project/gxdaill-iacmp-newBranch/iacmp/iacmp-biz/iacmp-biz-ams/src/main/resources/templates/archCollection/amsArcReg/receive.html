@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('档案接收')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsArcReg-edit" th:object="${amsArcReg}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <h4 class="form-header h4">基本信息</h4>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">登记人名称：</label>
+            <div class="col-sm-8">
+                <input type="text" id="regOpName" th:field="*{regOpName}" name="regOpName" class="form-control"
+                       readonly>
+                <input id="respOpName" name="respOpName" th:field="*{respOpName}" type="text" hidden>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">登记份数：</label>
+            <div class="col-sm-8">
+                <input id="regArcNum" name="regArcNum" th:field="*{regArcNum}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">登记页数：</label>
+            <div class="col-sm-8">
+                <input id="recPageNum" name="recPageNum" th:field="*{recPageNum}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">登记时间：</label>
+            <div class="col-sm-8">
+                <input id="regTime" name="regTime" th:value="${#dates.format(amsArcReg.regTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">登记备注：</label>
+            <div class="col-sm-8">
+                <input id="regRemark" name="regRemark" th:field="*{regRemark}" class="form-control" type="text"
+                       readonly>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">接收意见：</label>
+            <div class="col-sm-8">
+                <input id="recRemark" name="recRemark" th:field="*{recRemark}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input id="modTime" name="modTime" th:value="${#dates.format(amsArcReg.modTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="row">
+    <div class="col-sm-offset-5 col-sm-10" style="margin-top: 30px">
+        <button type="button" class="btn btn-sm btn-primary" onclick="submitReceive()"><i class="fa fa-check"></i>确 定
+        </button>&nbsp;
+        <button type="button" class="btn btn-sm btn-danger" onclick="returnThis()"><i class="fa fa-reply-all"></i>退 回
+        </button>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "archCollection/amsArcReg";
+    $("#form-amsArcReg-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    // 确定按钮
+    function submitReceive() {
+        var status = [[${amsArcReg.status}]];
+        if (status == '40') {
+            $.modal.alertError("该档案已退回，无法接收，请刷新列表重试");
+            return;
+        }
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/receive", $('#form-amsArcReg-edit').serialize());
+            $.modal.closeTab();
+        }
+    }
+
+    // 退回按钮
+    function returnThis() {
+        //var thisStatus = ${amsArcReg.recRemark};
+        var status = [[${amsArcReg.recRemark}]];
+        var id = [[${amsArcReg.id}]]
+        if (status == '30') {
+            alert("已接收，请勿重复操作！");
+            return;
+        } else if (status == '40') {
+            alert("已退回，无法进行接收！");
+            return;
+        }
+
+        if ($.validate.form()) {
+            $.operate.get(prefix + "/returnArch/" + id);
+        }
+        // var index = parent.layer.getFrameIndex(window.name);
+        // parent.layer.close(index);
+
+        $.modal.close();
+        $.modal.reload();
+        // $.modal.closeTab();
+    }
+</script>
+</body>
+</html>

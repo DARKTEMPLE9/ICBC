@@ -11,11 +11,11 @@
     </insert>
     <select id="getPermissionList" resultMap="com.macro.mall.mapper.UmsPermissionMapper.BaseResultMap">
         SELECT
-            p.*
+        p.*
         FROM
-            ums_role_permission_relation r
-            LEFT JOIN ums_permission p ON r.permission_id = p.id
+        ums_role_permission_relation r
+        LEFT JOIN ums_permission p ON r.permission_id = p.id
         WHERE
-            r.role_id = #{roleId};
+        r.role_id = #{roleId};
     </select>
 </mapper>

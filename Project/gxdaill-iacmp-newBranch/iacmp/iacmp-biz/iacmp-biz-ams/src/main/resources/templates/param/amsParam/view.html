@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('查看档案参数')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsParam-edit" th:object="${amsParam}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数种类代码：</label>
+            <div class="col-sm-8">
+                <input id="paramSpeciesCode" name="paramSpeciesCode" th:field="*{paramSpeciesCode}"
+                       class="form-control" type="text" readonly="readonly">
+                <!--<span th:text="*{paramSpeciesCode}"></span>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数种类名称：</label>
+            <div class="col-sm-8">
+                <input id="paramSpeciesName" name="paramSpeciesName" th:field="*{paramSpeciesName}"
+                       class="form-control" type="text" readonly="readonly">
+                <!--<span th:text="*{paramSpeciesName}"></span>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数代码：</label>
+            <div class="col-sm-8">
+                <input id="paramCode" name="paramCode" th:field="*{paramCode}"
+                       class="form-control" type="text" readonly="readonly">
+                <!--<span th:text="*{paramCode}"></span>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数名称：</label>
+            <div class="col-sm-8">
+                <input id="paramName" name="paramName" th:field="*{paramName}"
+                       class="form-control" type="text" readonly="readonly">
+                <!--<span th:text="*{paramName}"></span>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" th:field="*{remark}"
+                       class="form-control" type="text" readonly="readonly">
+                <!--<span th:text="*{remark}"></span>-->
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "param/amsParam";
+    $("#form-amsParam-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsParam-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

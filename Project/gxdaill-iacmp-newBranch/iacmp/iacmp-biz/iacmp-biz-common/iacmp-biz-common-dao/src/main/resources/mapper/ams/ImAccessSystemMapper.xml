@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImAccessSystemMapper">
+
+    <resultMap type="ImAccessSystem" id="ImAccessSystemResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="authentInfo" column="AUTHENT_INFO"/>
+        <result property="remark" column="REMARK"/>
+        <result property="iP" column="IP"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="accId" column="acc_id"/>
+    </resultMap>
+
+    <sql id="selectImAccessSystemVo">
+        select ID, CODE, NAME, AUTHENT_INFO, REMARK, IP, SYS_FLAG_INT, acc_id from im_access_system
+    </sql>
+
+    <select id="selectImAccessSystemList" parameterType="ImAccessSystem" resultMap="ImAccessSystemResult">
+        <include refid="selectImAccessSystemVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="authentInfo != null  and authentInfo != '' ">and AUTHENT_INFO = #{authentInfo}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="iP != null  and iP != '' ">and IP = #{iP}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="accId != null ">and acc_id = #{accId}</if>
+        </where>
+    </select>
+
+    <select id="selectImAccessSystemById" parameterType="String" resultMap="ImAccessSystemResult">
+        <include refid="selectImAccessSystemVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImAccessSystem" parameterType="ImAccessSystem">
+        insert into im_access_system
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">AUTHENT_INFO,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="iP != null  and iP != ''  ">IP,</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT,</if>
+            <if test="accId != null  ">acc_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">#{authentInfo},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="iP != null  and iP != ''  ">#{iP},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="accId != null  ">#{accId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImAccessSystem" parameterType="ImAccessSystem">
+        update im_access_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">AUTHENT_INFO = #{authentInfo},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="iP != null  and iP != ''  ">IP = #{iP},</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT = #{sysFlagInt},</if>
+            <if test="accId != null  ">acc_id = #{accId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImAccessSystemById" parameterType="String">
+        delete from im_access_system where ID = #{id}
+    </delete>
+
+    <delete id="deleteImAccessSystemByIds" parameterType="String">
+        delete from im_access_system where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

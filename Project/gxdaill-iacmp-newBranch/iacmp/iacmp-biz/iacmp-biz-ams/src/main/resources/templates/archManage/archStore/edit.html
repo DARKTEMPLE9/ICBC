@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('盒内档案')"/>
+    <style>
+        .no-padding-top {
+            padding-top: 0;
+        }
+
+        .fixed-table-toolbar .pull-right {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label for="">文件编号：</label>
+                            <input type="text" name="fileNo"/>
+                        </li>
+
+                        <li>
+                            <label for="">档案名称：</label>
+                            <input type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            <label for="">档号：</label>
+                            <input type="text" name="arcNo"/>
+                        </li>
+
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <form id="formId2">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            盒号：<input type="text" id="code" th:value="${amsBox.code}" name="code" value="code"
+                                      required/>
+                            <span class="codeValidate" style="color: red;"></span>
+                        </li>
+
+                        <!--<li>-->
+                        <!--状态: <input type="radio" id="status1" name="status1" value="">未满-->
+                        <!--<input type="radio" id="status2" name="status2" value="">已满-->
+                        <!--</li>-->
+                        <li>
+                            <div class="radio-list">
+                                <label class="control-label">状态: </label>
+                                <!--<label class="radio-box no-padding-top" ><input type="radio" id="status1" name="status" value="10" style="width: 20px;"-->
+                                <!--checked>未满</label>-->
+                                <!--<label class="radio-box no-padding-top"><input type="radio" id="status2" name="status"-->
+                                <!--value="20" style="width: 20px;">已满</label>-->
+
+                                <label class="radio-box" style="padding-top:0px;"><input type="radio" id="status1"
+                                                                                         name="status" value="10"
+                                                                                         th:attr="checked=${amsBox.status == '10'? true : false}"
+                                                                                         style="width: 20px;">未满</label>
+                                <label class="radio-box" style="padding-top:0px;"><input type="radio" id="status2"
+                                                                                         name="status" value="20"
+                                                                                         th:attr="checked=${amsBox.status == '20'? true : false}"
+                                                                                         style="width: 20px;">已满</label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-sm" onclick="saveSubmit()"
+                               shiro:hasPermission="archManage:archBox:updateCBS">
+                                <i class="fa fa-check"></i> 保存提交
+                            </a>
+                            <a class="btn btn-danger btn-sm" onclick="moveOut()"
+                               shiro:hasPermission="archManage:archBox:moveOut">
+                                <i class="fa fa-remove"></i> 移出档案
+                            </a>
+                            <a class="btn btn-warning btn-sm" onclick="jumpBackLabel()">
+                                <i class="fa fa-download"></i> 脊背签
+                            </a>
+                            <a class="btn btn-warning btn-sm" th:href="@{/file/beikaobiao.doc}">
+                                <i class="fa fa-download"></i> 备考表
+                            </a>
+                            <a class="btn btn-info btn-sm" onclick="printLook()">
+                                <i class="glyphicon glyphicon-print"></i> 打印
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('archManage:myTransApply:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:myTransApply:remove')}]];
+    var prefix = ctx + "archManage/archStore";
+    var boxId = [[${boxId}]];
+    $(function () {
+        var options = {
+            url: prefix + "/editBoxArch?boxId=" + boxId,
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "盒内档案",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                }, {
+                    field: 'filingTime',
+                    title: '入盒时间',
+                    sortable: true
+                }, {
+                    field: 'arcNo',
+                    title: '档号',
+                    sortable: true
+                }, {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                }, {
+                    field: 'arcPageNum',
+                    title: '页数',
+                    sortable: true
+                }, {
+                    field: 'arcNum',
+                    title: '份数',
+                    sortable: true
+                },
+                {
+                    title: '档案件号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var archList = [[${list}]];
+                        var actions = [];
+                        if (archList != undefined && archList.length > 0) {
+                            actions.push('<input type="text" class="form-control"  id="boxNum" name="boxNum" value="' + archList[index].boxNum + '" oninput = "value=value.replace(/[^\\d]/g,&apos;&apos;)" required maxlength="9" readonly="readonly" placeholder="请输入非0开头的9位数字"/> ');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function saveSubmit() {
+        var boxStatus = $('input:radio:checked').val();
+        var boxCode = $("#code").val();
+        if (boxCode == '') {
+            $.modal.alertWarning("请输入盒号");
+            return;
+        }
+        var boxNum = new Array();
+        $("input[name='boxNum']").each(function () {
+            boxNum.push($(this).val());//添加至数组
+        });
+
+        //console.log(boxNum)
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        // $.operate.saveModal(ctx + "archManage/archBox/updateCBS?boxId=" + boxId + "&boxStatus=" + boxStatus + "&boxCode=" + boxCode + "&archIds=" + rows.join() + "&boxNum=" + boxNum);
+        if (rows == "") {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        var url = ctx + "archManage/archBox/updateCBS?boxId=" + boxId + "&boxStatus=" + boxStatus + "&boxCode=" + boxCode + "&archIds=" + rows.join() + "&boxNum=" + boxNum;
+        $.ajax({
+            type: "post",
+            async: false,
+            url: url,
+            error: function (data) {
+                console.log("data=" + data);
+            },
+            success: function (data) {
+                console.log("data=" + data);
+                if (data.code == 500) {
+                    $.modal.alertWarning("编辑失败，请稍后重试");
+                    return;
+                } else if (data.code == 0) {
+                    $.modal.msgSuccess("编辑成功！");
+
+                }
+            }
+        });
+    }
+
+    function moveOut() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows == "") {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        $.operate.save(ctx + "archManage/archBox/moveOut?archIds=" + rows.join());
+    }
+
+    //打印预览
+    function printLook() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        createMenuItem(prefix + "/printLook?ids=" + rows.join(), '打印预览');
+    }
+
+    //跳转脊背签
+    function jumpBackLabel(height, width, callback) {
+        //如果是移动端，就使用自适应大小弹窗
+        if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+            width = 'auto';
+            height = 'auto';
+        }
+        if ($.common.isEmpty(width)) {
+            width = 800;
+        }
+        if ($.common.isEmpty(height)) {
+            height = ($(window).height() - 50);
+        }
+        if ($.common.isEmpty(callback)) {
+            callback = function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler(index, layero);
+            }
+        }
+        layer.open({
+            type: 2,
+            area: [width + 'px', height + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "脊背签",
+            content: prefix + "/jumpToBackLabel/" + boxId,
+            // 弹层外区域关闭
+            shadeClose: true,
+            yes: callback,
+            cancel: function (index) {
+                return true;
+            }
+        });
+    }
+
+    // 盒号只能输入以0开头的数字
+    $("input[name='code']").blur(function () {
+        var val = $(this).val();
+        if (val != "" && val != null) {
+            var re = /^[0-9]\d{0,9}$/;
+            if (!re.test(val)) {
+                $(this).val("");
+                $(this).siblings(".codeValidate").html("盒号只能输入10位数字")
+            } else {
+                $(this).siblings(".codeValidate").html('');
+            }
+        } else {
+            $(this).siblings(".codeValidate").html('');
+        }
+    });
+</script>
+</body>
+</html>

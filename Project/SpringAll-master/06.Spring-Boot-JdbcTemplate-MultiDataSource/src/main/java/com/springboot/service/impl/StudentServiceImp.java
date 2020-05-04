@@ -11,20 +11,20 @@ import com.springboot.dao.OracleStudentDao;
 import com.springboot.service.StudentService;
 
 @Service("studentService")
-public class StudentServiceImp implements StudentService{
-	@Autowired
-	private OracleStudentDao oracleStudentDao;
-	@Autowired
-	private MysqlStudentDao mysqlStudentDao;
-	
-	@Override
-	public List<Map<String, Object>> getAllStudentsFromOralce() {
-		return this.oracleStudentDao.getAllStudents();
-	}
+public class StudentServiceImp implements StudentService {
+    @Autowired
+    private OracleStudentDao oracleStudentDao;
+    @Autowired
+    private MysqlStudentDao mysqlStudentDao;
 
-	@Override
-	public List<Map<String, Object>> getAllStudentsFromMysql() {
-		return this.mysqlStudentDao.getAllStudents();
-	}
+    @Override
+    public List<Map<String, Object>> getAllStudentsFromOralce() {
+        return this.oracleStudentDao.getAllStudents();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllStudentsFromMysql() {
+        return this.mysqlStudentDao.getAllStudents();
+    }
 
 }

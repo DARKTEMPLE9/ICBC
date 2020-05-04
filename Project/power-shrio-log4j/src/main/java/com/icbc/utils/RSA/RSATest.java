@@ -25,7 +25,7 @@ public class RSATest {
             PublicKey pubKey = keyf.generatePublic(pubX509);
             PrivateKey privKey = keyf.generatePrivate(priPKCS8);
 
-            RsaUtil rsaUtil =  new RsaUtil();
+            RsaUtil rsaUtil = new RsaUtil();
             String data = "！@#￥%……&*（）";
             System.out.println("加密前字符串：data=" + data);
             String encryptData = null;
@@ -38,10 +38,11 @@ public class RSATest {
                 descryptData = rsaUtil.decryptData(encryptData, privKey);
                 System.out.println("解密后字符串：descryptData=" + descryptData);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static void main(String args[]) {
         testRsa();
     }

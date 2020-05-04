@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改审批')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsProcessInfo-edit" th:object="${amsProcessInfo}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批编号：</label>
+            <div class="col-sm-8">
+                <input id="exaAppId" name="exaAppId" th:field="*{exaAppId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">著录编号：</label>
+            <div class="col-sm-8">
+                <input id="brachId" name="brachId" th:field="*{brachId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案编号：</label>
+            <div class="col-sm-8">
+                <input id="arcNo" name="arcNo" th:field="*{arcNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="arcName" name="arcName" th:field="*{arcName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批类型：</label>
+            <div class="col-sm-8">
+                <input id="exaAppType" name="exaAppType" th:field="*{exaAppType}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人号：</label>
+            <div class="col-sm-8">
+                <input id="appOpNo" name="appOpNo" th:field="*{appOpNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人名：</label>
+            <div class="col-sm-8">
+                <input id="appOpName" name="appOpName" th:field="*{appOpName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人部门号：</label>
+            <div class="col-sm-8">
+                <input id="appOrgNo" name="appOrgNo" th:field="*{appOrgNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="appOrgName" name="appOrgName" th:field="*{appOrgName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请时间：</label>
+            <div class="col-sm-8">
+                <input id="appTime" name="appTime" th:field="*{appTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请备注：</label>
+            <div class="col-sm-8">
+                <input id="appRemark" name="appRemark" th:field="*{appRemark}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前处理人号：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOpNo" name="nowDispOpNo" th:field="*{nowDispOpNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前处理人名称：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOpName" name="nowDispOpName" th:field="*{nowDispOpName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前处理人部门号：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOrgNo" name="nowDispOrgNo" th:field="*{nowDispOrgNo}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前处理人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOrgName" name="nowDispOrgName" th:field="*{nowDispOrgName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前审批意见：</label>
+            <div class="col-sm-8">
+                <input id="nowDispOpnion" name="nowDispOpnion" th:field="*{nowDispOpnion}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前审批时间：</label>
+            <div class="col-sm-8">
+                <input id="nowDispTime" name="nowDispTime" th:field="*{nowDispTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次处理人号：</label>
+            <div class="col-sm-8">
+                <input id="preDispOpNo" name="preDispOpNo" th:field="*{preDispOpNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次处理人名称：</label>
+            <div class="col-sm-8">
+                <input id="preDispOpName" name="preDispOpName" th:field="*{preDispOpName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次处理人部门号：</label>
+            <div class="col-sm-8">
+                <input id="preDispOrgNo" name="preDispOrgNo" th:field="*{preDispOrgNo}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次处理人部门名称：</label>
+            <div class="col-sm-8">
+                <input id="preDispOrgName" name="preDispOrgName" th:field="*{preDispOrgName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次审批意见：</label>
+            <div class="col-sm-8">
+                <input id="preDispOpnion" name="preDispOpnion" th:field="*{preDispOpnion}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上次处理时间：</label>
+            <div class="col-sm-8">
+                <input id="preDispTime" name="preDispTime" th:field="*{preDispTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批结束时间：</label>
+            <div class="col-sm-8">
+                <input id="exaAppEndTime" name="exaAppEndTime" th:field="*{exaAppEndTime}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批状态(10-未提交;20-审判中;30-已审批;)：</label>
+            <div class="col-sm-8">
+                <input id="exaAppStatus" name="exaAppStatus" th:field="*{exaAppStatus}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批结果(10-同意;20-不同意;)：</label>
+            <div class="col-sm-8">
+                <input id="exaAppResult" name="exaAppResult" th:field="*{exaAppResult}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否退回（10-无;20-已退回;）：</label>
+            <div class="col-sm-8">
+                <input id="exaBack" name="exaBack" th:field="*{exaBack}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">流程ID：</label>
+            <div class="col-sm-8">
+                <input id="processId" name="processId" th:field="*{processId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前流程节点ID：</label>
+            <div class="col-sm-8">
+                <input id="nowProcessId" name="nowProcessId" th:field="*{nowProcessId}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">汇总审批状态(1-不为空;0-为空;)：</label>
+            <div class="col-sm-8">
+                <input id="foSearch" name="foSearch" th:field="*{foSearch}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案形态（10-电子形态;20-实物形态）：</label>
+            <div class="col-sm-8">
+                <input id="arcFormat" name="arcFormat" th:field="*{arcFormat}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人名：</label>
+            <div class="col-sm-8">
+                <input id="agentName" name="agentName" th:field="*{agentName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅ID：</label>
+            <div class="col-sm-8">
+                <input id="borrowId" name="borrowId" th:field="*{borrowId}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "myTask/alreadyProcessInfo";
+    $("#form-amsProcessInfo-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsProcessInfo-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

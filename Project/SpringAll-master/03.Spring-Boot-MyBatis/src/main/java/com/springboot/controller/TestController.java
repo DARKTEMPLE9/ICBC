@@ -11,11 +11,11 @@ import com.springboot.service.StudentService;
 @RestController
 public class TestController {
 
-	@Autowired
-	private StudentService studentService;
-	
-	@RequestMapping( value = "/querystudent", method = RequestMethod.GET)
-	public Student queryStudentBySno(String sno) {
-		return this.studentService.queryStudentBySno(sno);
-	}
+    @Autowired
+    private StudentService studentService;
+
+    @RequestMapping(value = "/querystudent", method = RequestMethod.GET)
+    public Student queryStudentBySno(String sno) {
+        return this.studentService.queryStudentBySno(sno);
+    }
 }

@@ -7,6 +7,6 @@ import com.springboot.pojo.Role;
 
 @Mapper
 public interface UserRoleMapper {
-	
-	List<Role> findByUserName(String userName);
+
+    List<Role> findByUserName(String userName);
 }

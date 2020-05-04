@@ -21,277 +21,277 @@ import java.util.concurrent.Executor;
 
 /**
  * 连接包装，用于丰富功能
- * @author Looly
  *
+ * @author Looly
  */
-public abstract class ConnectionWraper implements Connection{
-	
-	protected Connection raw;//真正的连接
+public abstract class ConnectionWraper implements Connection {
 
-	@Override
-	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return raw.unwrap(iface);
-	}
+    protected Connection raw;//真正的连接
 
-	@Override
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return raw.isWrapperFor(iface);
-	}
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        return raw.unwrap(iface);
+    }
 
-	@Override
-	public Statement createStatement() throws SQLException {
-		return raw.createStatement();
-	}
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return raw.isWrapperFor(iface);
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		return raw.prepareStatement(sql);
-	}
+    @Override
+    public Statement createStatement() throws SQLException {
+        return raw.createStatement();
+    }
 
-	@Override
-	public CallableStatement prepareCall(String sql) throws SQLException {
-		return raw.prepareCall(sql);
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return raw.prepareStatement(sql);
+    }
 
-	@Override
-	public String nativeSQL(String sql) throws SQLException {
-		return raw.nativeSQL(sql);
-	}
+    @Override
+    public CallableStatement prepareCall(String sql) throws SQLException {
+        return raw.prepareCall(sql);
+    }
 
-	@Override
-	public void setAutoCommit(boolean autoCommit) throws SQLException {
-		raw.setAutoCommit(autoCommit);
-	}
+    @Override
+    public String nativeSQL(String sql) throws SQLException {
+        return raw.nativeSQL(sql);
+    }
 
-	@Override
-	public boolean getAutoCommit() throws SQLException {
-		return raw.getAutoCommit();
-	}
+    @Override
+    public void setAutoCommit(boolean autoCommit) throws SQLException {
+        raw.setAutoCommit(autoCommit);
+    }
 
-	@Override
-	public void commit() throws SQLException {
-		raw.commit();
-	}
+    @Override
+    public boolean getAutoCommit() throws SQLException {
+        return raw.getAutoCommit();
+    }
 
-	@Override
-	public void rollback() throws SQLException {
-		raw.rollback();
-	}
+    @Override
+    public void commit() throws SQLException {
+        raw.commit();
+    }
 
-	@Override
-	public DatabaseMetaData getMetaData() throws SQLException {
-		return raw.getMetaData();
-	}
+    @Override
+    public void rollback() throws SQLException {
+        raw.rollback();
+    }
 
-	@Override
-	public void setReadOnly(boolean readOnly) throws SQLException {
-		raw.setReadOnly(readOnly);
-	}
+    @Override
+    public DatabaseMetaData getMetaData() throws SQLException {
+        return raw.getMetaData();
+    }
 
-	@Override
-	public boolean isReadOnly() throws SQLException {
-		return raw.isReadOnly();
-	}
+    @Override
+    public void setReadOnly(boolean readOnly) throws SQLException {
+        raw.setReadOnly(readOnly);
+    }
 
-	@Override
-	public void setCatalog(String catalog) throws SQLException {
-		raw.setCatalog(catalog);
-	}
+    @Override
+    public boolean isReadOnly() throws SQLException {
+        return raw.isReadOnly();
+    }
 
-	@Override
-	public String getCatalog() throws SQLException {
-		return raw.getCatalog();
-	}
+    @Override
+    public void setCatalog(String catalog) throws SQLException {
+        raw.setCatalog(catalog);
+    }
 
-	@Override
-	public void setTransactionIsolation(int level) throws SQLException {
-		raw.setTransactionIsolation(level);
-	}
+    @Override
+    public String getCatalog() throws SQLException {
+        return raw.getCatalog();
+    }
 
-	@Override
-	public int getTransactionIsolation() throws SQLException {
-		return raw.getTransactionIsolation();
-	}
+    @Override
+    public void setTransactionIsolation(int level) throws SQLException {
+        raw.setTransactionIsolation(level);
+    }
 
-	@Override
-	public SQLWarning getWarnings() throws SQLException {
-		return raw.getWarnings();
-	}
+    @Override
+    public int getTransactionIsolation() throws SQLException {
+        return raw.getTransactionIsolation();
+    }
 
-	@Override
-	public void clearWarnings() throws SQLException {
-		raw.clearWarnings();
-	}
+    @Override
+    public SQLWarning getWarnings() throws SQLException {
+        return raw.getWarnings();
+    }
 
-	@Override
-	public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-		return raw.createStatement(resultSetType, resultSetConcurrency);
-	}
+    @Override
+    public void clearWarnings() throws SQLException {
+        raw.clearWarnings();
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-		return raw.prepareStatement(sql, resultSetType, resultSetConcurrency);
-	}
+    @Override
+    public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+        return raw.createStatement(resultSetType, resultSetConcurrency);
+    }
 
-	@Override
-	public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-		return raw.prepareCall(sql, resultSetType, resultSetConcurrency);
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        return raw.prepareStatement(sql, resultSetType, resultSetConcurrency);
+    }
 
-	@Override
-	public Map<String, Class<?>> getTypeMap() throws SQLException {
-		return raw.getTypeMap();
-	}
+    @Override
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        return raw.prepareCall(sql, resultSetType, resultSetConcurrency);
+    }
 
-	@Override
-	public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-		raw.setTypeMap(map);
-	}
+    @Override
+    public Map<String, Class<?>> getTypeMap() throws SQLException {
+        return raw.getTypeMap();
+    }
 
-	@Override
-	public void setHoldability(int holdability) throws SQLException {
-		raw.setHoldability(holdability);
-	}
+    @Override
+    public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+        raw.setTypeMap(map);
+    }
 
-	@Override
-	public int getHoldability() throws SQLException {
-		return raw.getHoldability();
-	}
+    @Override
+    public void setHoldability(int holdability) throws SQLException {
+        raw.setHoldability(holdability);
+    }
 
-	@Override
-	public Savepoint setSavepoint() throws SQLException {
-		return raw.setSavepoint();
-	}
+    @Override
+    public int getHoldability() throws SQLException {
+        return raw.getHoldability();
+    }
 
-	@Override
-	public Savepoint setSavepoint(String name) throws SQLException {
-		return raw.setSavepoint(name);
-	}
+    @Override
+    public Savepoint setSavepoint() throws SQLException {
+        return raw.setSavepoint();
+    }
 
-	@Override
-	public void rollback(Savepoint savepoint) throws SQLException {
-		raw.rollback(savepoint);
-	}
+    @Override
+    public Savepoint setSavepoint(String name) throws SQLException {
+        return raw.setSavepoint(name);
+    }
 
-	@Override
-	public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-		raw.releaseSavepoint(savepoint);
-	}
+    @Override
+    public void rollback(Savepoint savepoint) throws SQLException {
+        raw.rollback(savepoint);
+    }
 
-	@Override
-	public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-		return raw.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
-	}
+    @Override
+    public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+        raw.releaseSavepoint(savepoint);
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-		return raw.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
-	}
+    @Override
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        return raw.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+    }
 
-	@Override
-	public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-		return raw.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        return raw.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-		return raw.prepareStatement(sql, autoGeneratedKeys);
-	}
+    @Override
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        return raw.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-		return raw.prepareStatement(sql, columnIndexes);
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
+        return raw.prepareStatement(sql, autoGeneratedKeys);
+    }
 
-	@Override
-	public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-		return raw.prepareStatement(sql, columnNames);
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
+        return raw.prepareStatement(sql, columnIndexes);
+    }
 
-	@Override
-	public Clob createClob() throws SQLException {
-		return raw.createClob();
-	}
+    @Override
+    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+        return raw.prepareStatement(sql, columnNames);
+    }
 
-	@Override
-	public Blob createBlob() throws SQLException {
-		return raw.createBlob();
-	}
+    @Override
+    public Clob createClob() throws SQLException {
+        return raw.createClob();
+    }
 
-	@Override
-	public NClob createNClob() throws SQLException {
-		return raw.createNClob();
-	}
+    @Override
+    public Blob createBlob() throws SQLException {
+        return raw.createBlob();
+    }
 
-	@Override
-	public SQLXML createSQLXML() throws SQLException {
-		return raw.createSQLXML();
-	}
+    @Override
+    public NClob createNClob() throws SQLException {
+        return raw.createNClob();
+    }
 
-	@Override
-	public boolean isValid(int timeout) throws SQLException {
-		return raw.isValid(timeout);
-	}
+    @Override
+    public SQLXML createSQLXML() throws SQLException {
+        return raw.createSQLXML();
+    }
 
-	@Override
-	public void setClientInfo(String name, String value) throws SQLClientInfoException {
-		raw.setClientInfo(name, value);
-	}
+    @Override
+    public boolean isValid(int timeout) throws SQLException {
+        return raw.isValid(timeout);
+    }
 
-	@Override
-	public void setClientInfo(Properties properties) throws SQLClientInfoException {
-		raw.setClientInfo(properties);
-	}
+    @Override
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
+        raw.setClientInfo(name, value);
+    }
 
-	@Override
-	public String getClientInfo(String name) throws SQLException {
-		return raw.getClientInfo(name);
-	}
+    @Override
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+        raw.setClientInfo(properties);
+    }
 
-	@Override
-	public Properties getClientInfo() throws SQLException {
-		return raw.getClientInfo();
-	}
+    @Override
+    public String getClientInfo(String name) throws SQLException {
+        return raw.getClientInfo(name);
+    }
 
-	@Override
-	public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
-		return raw.createArrayOf(typeName, elements);
-	}
+    @Override
+    public Properties getClientInfo() throws SQLException {
+        return raw.getClientInfo();
+    }
 
-	@Override
-	public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-		return raw.createStruct(typeName, attributes);
-	}
+    @Override
+    public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
+        return raw.createArrayOf(typeName, elements);
+    }
 
-	@Override
-	public void setSchema(String schema) throws SQLException {
-		raw.setSchema(schema);
-	}
+    @Override
+    public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
+        return raw.createStruct(typeName, attributes);
+    }
 
-	@Override
-	public String getSchema() throws SQLException {
-		return raw.getSchema();
-	}
+    @Override
+    public void setSchema(String schema) throws SQLException {
+        raw.setSchema(schema);
+    }
 
-	@Override
-	public void abort(Executor executor) throws SQLException {
-		raw.abort(executor);
-	}
+    @Override
+    public String getSchema() throws SQLException {
+        return raw.getSchema();
+    }
 
-	@Override
-	public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-		raw.setNetworkTimeout(executor, milliseconds);
-	}
+    @Override
+    public void abort(Executor executor) throws SQLException {
+        raw.abort(executor);
+    }
 
-	@Override
-	public int getNetworkTimeout() throws SQLException {
-		return raw.getNetworkTimeout();
-	}
+    @Override
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        raw.setNetworkTimeout(executor, milliseconds);
+    }
 
-	/**
-	 * @return 实际的连接对象
-	 */
-	public Connection getRaw(){
-		return this.raw;
-	}
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        return raw.getNetworkTimeout();
+    }
+
+    /**
+     * @return 实际的连接对象
+     */
+    public Connection getRaw() {
+        return this.raw;
+    }
 }

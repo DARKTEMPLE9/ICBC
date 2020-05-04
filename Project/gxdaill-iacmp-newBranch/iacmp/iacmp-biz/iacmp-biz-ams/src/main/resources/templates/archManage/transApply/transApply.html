@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('移交申请')"/>
+    <style>
+        .select-list label {
+            width: 65px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" th:object="${amsBatch}">
+                <input name="deptId" type="hidden" id="treeId"/>
+                <div class="select-list">
+                    <ul class="clearfix  select-list">
+                        <li>
+                            <label for="">档案名称：</label>
+                            <input style="" type="text" name="arcName"/>
+                        </li>
+                        <!--	<li>
+                                所属部门：<input type="text" id="orgName" name="orgName" onclick="selectDeptTree();orgName.blur();return false;" readonly="readonly" placeholder="请选择部门" style="cursor: pointer"/>
+                            </li>-->
+                        <li>
+                            <label for="">档案类型：</label>
+                            <input type="text" id="arcBill" name="arcBill"
+                                   onclick="selectArcBillTree();arcBill.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <label for="">保管期限：</label>
+                            <select id="valPeriod" name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option selected="selected" value="">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+
+                        </li>
+
+                        <li>
+                            <label>密级：</label>
+                            <select id="arcLevel" name="arcLevel" th:with="type=${@dict.getType('arcLevel')}">
+                                <option value="" selected="selected">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <!--  <li>
+                              <div class="select-time">
+                                  <label>创建时间：</label>
+                                  <input type="text" style="width: 200px;" class="input-sm form-control" id="singleTime" placeholder="" name="crtTime"/>
+                              </div>
+                          </li>-->
+
+                    </ul>
+                    <div>
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="queryAdmin()" shiro:hasPermission="archManage:transApply:transToBAR">
+                <i class="fa fa-plus"></i> 移交行档室
+            </a>
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="archManage:transApply:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="archManage:transApply:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>-->
+            <a class="btn btn-warning" onclick="exportExcel()" shiro:hasPermission="archManage:transApply:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('archManage:transApply:detail')}]];
+    var prefix = ctx + "archManage/transApply";
+    var period = [[${@dict.getType('archive_period')}]];
+    var arcLevel = [[${@dict.getType('arcLevel')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            // exportUrl: prefix + "/export",
+            detailUrl: prefix + "/{id}",
+            queryAdminUrl: prefix + "/queryAdmin",
+            modalName: "移交申请",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcBill',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+
+                },
+                {
+                    field: 'arcLevel',
+                    title: '密级',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        console.log(item)
+                        return $.table.selectDictLabel(arcLevel, item.arcLevel);
+                    }
+                },
+                {
+                    field: 'crtName',
+                    title: '登记人',
+                    sortable: true
+                }, {
+                    field: 'receiveTime',
+                    title: '登记时间',
+                    sortable: true
+                }, {
+                    field: 'crtTime',
+                    title: '著录时间',
+                    sortable: true
+                }, {
+                    field: 'crtTime',
+                    title: '所属年份',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return value.substring(0, 4);
+                    }
+                }, {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        //actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/" + id;
+        $.modal.openTab("移交申请详情", url);
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBill").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#orgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function queryAdmin() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        /*var rows =$('#bootstrap-table').bootstrapTable('getSelections')
+        var ids=[]
+        for(var i=0;i<rows.length;i++){
+            ids.push(rows[i].id)
+        }*/
+        console.log(rows)
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        //createMenuItem(prefix+"/queryAdmin?ids="+rows.join(),"移交申请")
+        $.modal.open("移交申请", prefix + "/queryAdmin?ids=" + rows.join(), 500, 350)
+    }
+
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            var startDate = laydate.render({
+                elem: '#crtTime',
+                max: $('#crtTime').val(),
+                theme: 'molv',
+                trigger: 'click'
+            });
+        });
+    });
+
+    function exportExcel() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var data = rows.join();
+        // alert("data = " + data);
+        $.modal.confirm("确定导出" + $.table._option.modalName + "数据吗？", function () {
+            // var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+            var exportUrl = prefix + "/export?batchIds=" + data;
+            $.modal.loading("正在导出数据，请稍后...");
+            $.post(exportUrl, data, function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+                $.modal.closeLoading();
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

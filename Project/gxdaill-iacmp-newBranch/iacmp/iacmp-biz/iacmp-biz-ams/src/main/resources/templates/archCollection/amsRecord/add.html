@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增档案著录')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsBatch-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">注入批次号：</label>
+            <div class="col-sm-8">
+                <input id="batchNo" name="batchNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">部门代码：</label>
+            <div class="col-sm-8">
+                <input id="orgCode" name="orgCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">部门名称：</label>
+            <div class="col-sm-8">
+                <input id="orgName" name="orgName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建时间：</label>
+            <div class="col-sm-8">
+                <input id="crtTime" name="crtTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建人号：</label>
+            <div class="col-sm-8">
+                <input id="crtNo" name="crtNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建人名称：</label>
+            <div class="col-sm-8">
+                <input id="crtName" name="crtName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input id="modTime" name="modTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改人号：</label>
+            <div class="col-sm-8">
+                <input id="modNo" name="modNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改人名称：</label>
+            <div class="col-sm-8">
+                <input id="modName" name="modName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案当前状态（0-已删除;1-已著录;2-申请中;3-待入盒;4-待入库;5-已入库;6-退回）：</label>
+            <div class="col-sm-8">
+                <input id="status" name="status" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案编号：</label>
+            <div class="col-sm-8">
+                <input id="arcNo" name="arcNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input id="arcName" name="arcName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案移交人：</label>
+            <div class="col-sm-8">
+                <input id="arcTransfer" name="arcTransfer" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上交人号：</label>
+            <div class="col-sm-8">
+                <input id="turnInNo" name="turnInNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上交人名称：</label>
+            <div class="col-sm-8">
+                <input id="turnInName" name="turnInName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收人号：</label>
+            <div class="col-sm-8">
+                <input id="receiveNo" name="receiveNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收人名称：</label>
+            <div class="col-sm-8">
+                <input id="receiveName" name="receiveName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">退回原因：</label>
+            <div class="col-sm-8">
+                <input id="returnReason" name="returnReason" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批信息ID：</label>
+            <div class="col-sm-8">
+                <input id="apprInfoId" name="apprInfoId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任部门：</label>
+            <div class="col-sm-8">
+                <input id="respDepaName" name="respDepaName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任人：</label>
+            <div class="col-sm-8">
+                <input id="respOpName" name="respOpName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">文件编号：</label>
+            <div class="col-sm-8">
+                <input id="arcCode" name="arcCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">份数：</label>
+            <div class="col-sm-8">
+                <input id="arcNum" name="arcNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">页数：</label>
+            <div class="col-sm-8">
+                <input id="arcPageNum" name="arcPageNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">密级 01-绝密、02-机密、03-秘密、04-内部：</label>
+            <div class="col-sm-8">
+                <input id="arcLevel" name="arcLevel" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">形成日期：</label>
+            <div class="col-sm-8">
+                <input id="arcCreTime" name="arcCreTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归档部门：</label>
+            <div class="col-sm-8">
+                <input id="filingDepa" name="filingDepa" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">保管期限：</label>
+            <div class="col-sm-8">
+                <input id="valPeriod" name="valPeriod" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">主题词：</label>
+            <div class="col-sm-8">
+                <input id="themeSpeech" name="themeSpeech" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">开本：</label>
+            <div class="col-sm-8">
+                <input id="cutting" name="cutting" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">语种：</label>
+            <div class="col-sm-8">
+                <!--               <input id="language" name="language" class="form-control" type="text">-->
+                <select class="form-control" name="language">
+                    <option value='中文' th:field="*{language}">中文</option>
+                    <option value='英文' th:field="*{language}">英文</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">载体形式：</label>
+            <div class="col-sm-8">
+                <input id="carrier" name="carrier" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">并列题名：</label>
+            <div class="col-sm-8">
+                <input id="otherName" name="otherName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">转发文号：</label>
+            <div class="col-sm-8">
+                <input id="forwardNo" name="forwardNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">转发文件名：</label>
+            <div class="col-sm-8">
+                <input id="forwardName" name="forwardName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收文编号：</label>
+            <div class="col-sm-8">
+                <input id="receiptNo" name="receiptNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附注：</label>
+            <div class="col-sm-8">
+                <input id="eTC" name="eTC" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附件数：</label>
+            <div class="col-sm-8">
+                <input id="etcNum" name="etcNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实物分类：</label>
+            <div class="col-sm-8">
+                <input id="practType" name="practType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实物描述：</label>
+            <div class="col-sm-8">
+                <input id="practDesc" name="practDesc" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">版本：</label>
+            <div class="col-sm-8">
+                <input id="edition" name="edition" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">A4数：</label>
+            <div class="col-sm-8">
+                <input id="afourNum" name="afourNum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">文本：</label>
+            <div class="col-sm-8">
+                <input id="arcText" name="arcText" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">来源单位或个人：</label>
+            <div class="col-sm-8">
+                <input id="originType" name="originType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">存放地点：</label>
+            <div class="col-sm-8">
+                <input id="saveAddress" name="saveAddress" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">媒体类别：</label>
+            <div class="col-sm-8">
+                <input id="medelType" name="medelType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">媒体编号：</label>
+            <div class="col-sm-8">
+                <input id="medelCode" name="medelCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归档日期：</label>
+            <div class="col-sm-8">
+                <input id="filingTime" name="filingTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否涉及费用 0-否 1-是：</label>
+            <div class="col-sm-8">
+                <input id="expenseInvolve" name="expenseInvolve" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案类别：</label>
+            <div class="col-sm-8">
+                <input id="arcBill" name="arcBill" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案形态（10-电子形态;20-实物形态;）：</label>
+            <div class="col-sm-8">
+                <input id="arcFormat" name="arcFormat" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">来源方式：</label>
+            <div class="col-sm-8">
+                <input id="originMode" name="originMode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">摘要：</label>
+            <div class="col-sm-8">
+                <input id="arcAbstract" name="arcAbstract" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任部门编号：</label>
+            <div class="col-sm-8">
+                <input id="respDepaCode" name="respDepaCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任者编号：</label>
+            <div class="col-sm-8">
+                <input id="respOpCode" name="respOpCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案类型编号：</label>
+            <div class="col-sm-8">
+                <input id="arcBillCode" name="arcBillCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归档单位编号：</label>
+            <div class="col-sm-8">
+                <input id="filingDepaCode" name="filingDepaCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">部门档案类型：</label>
+            <div class="col-sm-8">
+                <input id="arcBillDept" name="arcBillDept" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">部门档案类型编号：</label>
+            <div class="col-sm-8">
+                <input id="arcBillDeptCode" name="arcBillDeptCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">授予单位：</label>
+            <div class="col-sm-8">
+                <input id="conferIns" name="conferIns" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收单位：</label>
+            <div class="col-sm-8">
+                <input id="receiveIns" name="receiveIns" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">照片号：</label>
+            <div class="col-sm-8">
+                <input id="photoNo" name="photoNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">底片号：</label>
+            <div class="col-sm-8">
+                <input id="negativesNo" name="negativesNo" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">摄影者：</label>
+            <div class="col-sm-8">
+                <input id="photographer" name="photographer" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参见号：</label>
+            <div class="col-sm-8">
+                <input id="indexMark" name="indexMark" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型：</label>
+            <div class="col-sm-8">
+                <input id="bill" name="bill" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">描述：</label>
+            <div class="col-sm-8">
+                <input id="arcDesc" name="arcDesc" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">版权：</label>
+            <div class="col-sm-8">
+                <input id="arcCopyright" name="arcCopyright" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">格式：</label>
+            <div class="col-sm-8">
+                <input id="arcLayout" name="arcLayout" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">业务类型：</label>
+            <div class="col-sm-8">
+                <input id="serviceType" name="serviceType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">关键字：</label>
+            <div class="col-sm-8">
+                <input id="keyWord" name="keyWord" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收意见：</label>
+            <div class="col-sm-8">
+                <input id="receivingOpinion" name="receivingOpinion" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">入盒执行人Code：</label>
+            <div class="col-sm-8">
+                <input id="boxOpCode" name="boxOpCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">入盒执行人Name：</label>
+            <div class="col-sm-8">
+                <input id="boxOpName" name="boxOpName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">入盒执行部门Code：</label>
+            <div class="col-sm-8">
+                <input id="boxOrgCode" name="boxOrgCode" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">入盒执行部门Name：</label>
+            <div class="col-sm-8">
+                <input id="boxOrgName" name="boxOrgName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所在盒ID：</label>
+            <div class="col-sm-8">
+                <input id="boxId" name="boxId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">著录修改页面：</label>
+            <div class="col-sm-8">
+                <input id="updatePath" name="updatePath" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">著录查看页面：</label>
+            <div class="col-sm-8">
+                <input id="viewPath" name="viewPath" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">费用金额：</label>
+            <div class="col-sm-8">
+                <input id="expense" name="expense" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">不电子化的原因：</label>
+            <div class="col-sm-8">
+                <input id="reason" name="reason" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">有无介质 1-有，0-无：</label>
+            <div class="col-sm-8">
+                <input id="isNoMedium" name="isNoMedium" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">文字说明：</label>
+            <div class="col-sm-8">
+                <input id="caption" name="caption" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">时长：</label>
+            <div class="col-sm-8">
+                <input id="duration" name="duration" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">业务起始日：</label>
+            <div class="col-sm-8">
+                <input id="businessStartTime" name="businessStartTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">业务到期日：</label>
+            <div class="col-sm-8">
+                <input id="businessEndTime" name="businessEndTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收时间：</label>
+            <div class="col-sm-8">
+                <input id="receivingTime" name="receivingTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案存放地址：</label>
+            <div class="col-sm-8">
+                <input id="storageLocation" name="storageLocation" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">移交时间：</label>
+            <div class="col-sm-8">
+                <input id="turnInTime" name="turnInTime" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接收时间：</label>
+            <div class="col-sm-8">
+                <input id="receiveTime" name="receiveTime" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "archCollection/amsBatch"
+    $("#form-amsBatch-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-amsBatch-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

@@ -10,24 +10,23 @@ import cn.hutool.script.ScriptUtil;
 
 /**
  * 脚本单元测试类
- * 
- * @author looly
  *
+ * @author looly
  */
 public class ScriptUtilTest {
 
-	@Test
-	public void compileTest() {
-		CompiledScript script = ScriptUtil.compile("print('Script test!');");
-		try {
-			script.eval();
-		} catch (ScriptException e) {
-			throw new ScriptRuntimeException(e);
-		}
-	}
+    @Test
+    public void compileTest() {
+        CompiledScript script = ScriptUtil.compile("print('Script test!');");
+        try {
+            script.eval();
+        } catch (ScriptException e) {
+            throw new ScriptRuntimeException(e);
+        }
+    }
 
-	@Test
-	public void evalTest() {
-		ScriptUtil.eval("print('Script test!');");
-	}
+    @Test
+    public void evalTest() {
+        ScriptUtil.eval("print('Script test!');");
+    }
 }

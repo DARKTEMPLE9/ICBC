@@ -404,7 +404,7 @@
 
                         if (
                             // To avoid processing, only check intersection if the X
-                        // values are close to the box.
+                            // values are close to the box.
                             points[j].chartX >= x - leastDistance &&
                             points[j - 1].chartX <= x + bBox.width + leastDistance
                         ) {

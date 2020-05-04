@@ -20,10 +20,10 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         MapperMethod mapperMethod = defaultSqlSession.getConfiguration().getMapperRegistry().getKnownMappers().get(method.
-                getDeclaringClass().getName()+"."+method.getName());
+                getDeclaringClass().getName() + "." + method.getName());
         if (mapperMethod != null) {
-            return defaultSqlSession.selectOne(mapperMethod,String.valueOf(args[0]));
+            return defaultSqlSession.selectOne(mapperMethod, String.valueOf(args[0]));
         }
-        return method.invoke(proxy,args);
+        return method.invoke(proxy, args);
     }
 }

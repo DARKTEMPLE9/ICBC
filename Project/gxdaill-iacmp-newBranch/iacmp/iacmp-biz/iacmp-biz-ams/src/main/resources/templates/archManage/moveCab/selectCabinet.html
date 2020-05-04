@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('选择库柜')"/>
+</head>
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form">
+                <input type="hidden" id="depId" name="depId" th:value="${depId}">
+                <input id="thisRowName" name="thisRowName" type="hidden"/>
+                <input id="thisRowId" name="thisRowId" type="hidden"/>
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            库柜编码：<input type="text" name="code"/>
+                        </li>
+                        <li>
+                            库柜名称：<input type="text" name="name"/>
+                        </li>
+                        <li>
+                            所属库房：<input type="text" name="depName"/>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    // var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "param/amsCabinet";
+    // var depId = $("#depId").val();
+    $(function () {
+        var options = {
+            url: prefix + '/getCabList',
+            queryParams: queryParams,
+            modalName: "选择库柜",
+            onClickRow: onClickRow,
+            columns: [
+                {
+                    // checkbox: true
+                    radio: true
+                },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '库柜编码',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '库柜名称',
+                    sortable: true
+                },
+                {
+                    field: 'depName',
+                    title: '所属库房',
+                    sortable: true
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        search.depId = $("#depId").val();
+        return search;
+    }
+
+    function onClickRow(row, $element) {
+        var id = window.location.href.split('=')[1];
+        var thisRowName = row.name;
+        var thisRowId = row.id;
+        $("#thisRowName").val(thisRowName);
+        $("#thisRowId").val(thisRowId);
+        $element.siblings().css('background', 'transparent')
+        $element.css('background', '#e5e5e5');
+    }
+</script>
+</body>
+</html>

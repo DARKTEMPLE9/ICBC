@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImAnnotationMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImAnnotation" id="ImAnnotationResult">
+        <result property="id" column="ID"/>
+        <result property="content" column="CONTENT"/>
+        <result property="creatUserName" column="CREAT_USER_NAME"/>
+        <result property="creatUserId" column="CREAT_USER_ID"/>
+        <result property="creatDate" column="CREAT_DATE"/>
+        <result property="x1" column="X1"/>
+        <result property="x2" column="X2"/>
+        <result property="y1" column="Y1"/>
+        <result property="y2" column="Y2"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imgW" column="IMG_W"/>
+        <result property="imgH" column="IMG_H"/>
+        <result property="annId" column="ANN_ID"/>
+    </resultMap>
+
+    <sql id="selectImAnnotationVo">
+        select ID, CONTENT, CREAT_USER_NAME, CREAT_USER_ID, CREAT_DATE, X1, X2, Y1, Y2, IMAGE_ID, IMG_W, IMG_H, ANN_ID
+        from im_annotation
+    </sql>
+
+    <select id="selectImAnnotationByIds" parameterType="String" resultMap="ImAnnotationResult">
+        <include refid="selectImAnnotationVo"/>
+        where image_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+    </select>
+
+    <select id="selectImAnnotationList" parameterType="net.northking.iacmp.imp.domain.ImAnnotation"
+            resultMap="ImAnnotationResult">
+        <include refid="selectImAnnotationVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="content != null  and content != '' ">and CONTENT = #{content}</if>
+            <if test="creatUserName != null  and creatUserName != '' ">and CREAT_USER_NAME = #{creatUserName}</if>
+            <if test="creatUserId != null  and creatUserId != '' ">and CREAT_USER_ID = #{creatUserId}</if>
+            <if test="creatDate != null ">and CREAT_DATE = #{creatDate}</if>
+            <if test="x1 != null  and x1 != '' ">and X1 = #{x1}</if>
+            <if test="x2 != null  and x2 != '' ">and X2 = #{x2}</if>
+            <if test="y1 != null  and y1 != '' ">and Y1 = #{y1}</if>
+            <if test="y2 != null  and y2 != '' ">and Y2 = #{y2}</if>
+            <if test="imageId != null  and imageId != '' ">and IMAGE_ID = #{imageId}</if>
+            <if test="imgW != null  and imgW != '' ">and IMG_W = #{imgW}</if>
+            <if test="imgH != null  and imgH != '' ">and IMG_H = #{imgH}</if>
+            <if test="annId != null ">and ANN_ID = #{annId}</if>
+        </where>
+    </select>
+
+    <select id="selectImAnnotationById" parameterType="String" resultMap="ImAnnotationResult">
+        <include refid="selectImAnnotationVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImAnnotation" parameterType="net.northking.iacmp.imp.domain.ImAnnotation">
+        insert into im_annotation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="content != null  and content != ''  ">CONTENT,</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">CREAT_USER_NAME,</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">CREAT_USER_ID,</if>
+            <if test="creatDate != null  ">CREAT_DATE,</if>
+            <if test="x1 != null  and x1 != ''  ">X1,</if>
+            <if test="x2 != null  and x2 != ''  ">X2,</if>
+            <if test="y1 != null  and y1 != ''  ">Y1,</if>
+            <if test="y2 != null  and y2 != ''  ">Y2,</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID,</if>
+            <if test="imgW != null  and imgW != ''  ">IMG_W,</if>
+            <if test="imgH != null  and imgH != ''  ">IMG_H,</if>
+            <if test="annId != null  ">ANN_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="content != null  and content != ''  ">#{content},</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">#{creatUserName},</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">#{creatUserId},</if>
+            <if test="creatDate != null  ">#{creatDate},</if>
+            <if test="x1 != null  and x1 != ''  ">#{x1},</if>
+            <if test="x2 != null  and x2 != ''  ">#{x2},</if>
+            <if test="y1 != null  and y1 != ''  ">#{y1},</if>
+            <if test="y2 != null  and y2 != ''  ">#{y2},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="imgW != null  and imgW != ''  ">#{imgW},</if>
+            <if test="imgH != null  and imgH != ''  ">#{imgH},</if>
+            <if test="annId != null  ">#{annId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImAnnotation" parameterType="net.northking.iacmp.imp.domain.ImAnnotation">
+        update im_annotation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null  and content != ''  ">CONTENT = #{content},</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">CREAT_USER_NAME = #{creatUserName},</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">CREAT_USER_ID = #{creatUserId},</if>
+            <if test="creatDate != null  ">CREAT_DATE = #{creatDate},</if>
+            <if test="x1 != null  and x1 != ''  ">X1 = #{x1},</if>
+            <if test="x2 != null  and x2 != ''  ">X2 = #{x2},</if>
+            <if test="y1 != null  and y1 != ''  ">Y1 = #{y1},</if>
+            <if test="y2 != null  and y2 != ''  ">Y2 = #{y2},</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID = #{imageId},</if>
+            <if test="imgW != null  and imgW != ''  ">IMG_W = #{imgW},</if>
+            <if test="imgH != null  and imgH != ''  ">IMG_H = #{imgH},</if>
+            <if test="annId != null  ">ANN_ID = #{annId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImAnnotationById" parameterType="String">
+        delete from im_annotation where ID = #{id}
+    </delete>
+
+    <delete id="deleteImAnnotationByIds" parameterType="String">
+        delete from im_annotation where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

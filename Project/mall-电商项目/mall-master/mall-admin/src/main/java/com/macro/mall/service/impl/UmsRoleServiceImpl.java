@@ -24,6 +24,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsRolePermissionRelationMapper rolePermissionRelationMapper;
     @Autowired
     private UmsRolePermissionRelationDao rolePermissionRelationDao;
+
     @Override
     public int create(UmsRole role) {
         role.setCreateTime(new Date());
@@ -54,7 +55,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     @Override
     public int updatePermission(Long roleId, List<Long> permissionIds) {
         //先删除原有关系
-        UmsRolePermissionRelationExample example=new UmsRolePermissionRelationExample();
+        UmsRolePermissionRelationExample example = new UmsRolePermissionRelationExample();
         example.createCriteria().andRoleIdEqualTo(roleId);
         rolePermissionRelationMapper.deleteByExample(example);
         //批量插入新关系

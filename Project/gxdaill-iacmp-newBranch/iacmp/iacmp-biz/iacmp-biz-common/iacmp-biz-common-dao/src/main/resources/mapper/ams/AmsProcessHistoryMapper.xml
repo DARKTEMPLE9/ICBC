@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsProcessHistoryMapper">
+
+    <resultMap type="AmsProcessHistory" id="AmsProcessHistoryResult">
+        <result property="historyId" column="HISTORY_ID"/>
+        <result property="id" column="ID"/>
+        <result property="exaAppId" column="EXA_APP_ID"/>
+        <result property="brachId" column="BRACH_ID"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="arcName" column="ARC_NAME"/>
+        <result property="exaAppType" column="EXA_APP_TYPE"/>
+        <result property="appOpNo" column="APP_OP_NO"/>
+        <result property="appOpName" column="APP_OP_NAME"/>
+        <result property="appOrgNo" column="APP_ORG_NO"/>
+        <result property="appOrgName" column="APP_ORG_NAME"/>
+        <result property="appTime" column="APP_TIME"/>
+        <result property="appRemark" column="APP_REMARK"/>
+        <result property="nowDispOpNo" column="NOW_DISP_OP_NO"/>
+        <result property="nowDispOpName" column="NOW_DISP_OP_NAME"/>
+        <result property="nowDispOrgNo" column="NOW_DISP_ORG_NO"/>
+        <result property="nowDispOrgName" column="NOW_DISP_ORG_NAME"/>
+        <result property="nowDispOpnion" column="NOW_DISP_OPNION"/>
+        <result property="nowDispTime" column="NOW_DISP_TIME"/>
+        <result property="preDispOpNo" column="PRE_DISP_OP_NO"/>
+        <result property="preDispOpName" column="PRE_DISP_OP_NAME"/>
+        <result property="preDispOrgNo" column="PRE_DISP_ORG_NO"/>
+        <result property="preDispOrgName" column="PRE_DISP_ORG_NAME"/>
+        <result property="preDispOpnion" column="PRE_DISP_OPNION"/>
+        <result property="preDispTime" column="PRE_DISP_TIME"/>
+        <result property="exaAppEndTime" column="EXA_APP_END_TIME"/>
+        <result property="exaAppStatus" column="EXA_APP_STATUS"/>
+        <result property="exaAppResult" column="EXA_APP_RESULT"/>
+        <result property="exaBack" column="EXA_BACK"/>
+        <result property="processId" column="PROCESS_ID"/>
+        <result property="nowProcessId" column="NOW_PROCESS_ID"/>
+        <result property="foSearch" column="FO_SEARCH"/>
+        <result property="arcFormat" column="ARC_FORMAT"/>
+    </resultMap>
+
+    <sql id="selectAmsProcessHistoryVo">
+        select HISTORY_ID, ID, EXA_APP_ID, BRACH_ID, ARC_NO, ARC_NAME, EXA_APP_TYPE, APP_OP_NO, APP_OP_NAME, APP_ORG_NO,
+        APP_ORG_NAME, APP_TIME, APP_REMARK, NOW_DISP_OP_NO, NOW_DISP_OP_NAME, NOW_DISP_ORG_NO, NOW_DISP_ORG_NAME,
+        NOW_DISP_OPNION, NOW_DISP_TIME, PRE_DISP_OP_NO, PRE_DISP_OP_NAME, PRE_DISP_ORG_NO, PRE_DISP_ORG_NAME,
+        PRE_DISP_OPNION, PRE_DISP_TIME, EXA_APP_END_TIME, EXA_APP_STATUS, EXA_APP_RESULT, EXA_BACK, PROCESS_ID,
+        NOW_PROCESS_ID, FO_SEARCH, ARC_FORMAT from ams_process_history
+    </sql>
+
+    <select id="selectAmsProcessHistoryList" parameterType="AmsProcessHistory" resultMap="AmsProcessHistoryResult">
+        <include refid="selectAmsProcessHistoryVo"/>
+        <where>
+            <if test="historyId != null  and historyId != '' ">and HISTORY_ID = #{historyId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="exaAppId != null  and exaAppId != '' ">and EXA_APP_ID = #{exaAppId}</if>
+            <if test="brachId != null  and brachId != '' ">and BRACH_ID = #{brachId}</if>
+            <if test="arcNo != null  and arcNo != '' ">and ARC_NO = #{arcNo}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME = #{arcName}</if>
+            <if test="exaAppType != null  and exaAppType != '' ">and EXA_APP_TYPE = #{exaAppType}</if>
+            <if test="appOpNo != null  and appOpNo != '' ">and APP_OP_NO = #{appOpNo}</if>
+            <if test="appOpName != null  and appOpName != '' ">and APP_OP_NAME = #{appOpName}</if>
+            <if test="appOrgNo != null  and appOrgNo != '' ">and APP_ORG_NO = #{appOrgNo}</if>
+            <if test="appOrgName != null  and appOrgName != '' ">and APP_ORG_NAME = #{appOrgName}</if>
+            <if test="appTime != null ">and APP_TIME = #{appTime}</if>
+            <if test="appRemark != null  and appRemark != '' ">and APP_REMARK = #{appRemark}</if>
+            <if test="nowDispOpNo != null  and nowDispOpNo != '' ">and NOW_DISP_OP_NO = #{nowDispOpNo}</if>
+            <if test="nowDispOpName != null  and nowDispOpName != '' ">and NOW_DISP_OP_NAME = #{nowDispOpName}</if>
+            <if test="nowDispOrgNo != null  and nowDispOrgNo != '' ">and NOW_DISP_ORG_NO = #{nowDispOrgNo}</if>
+            <if test="nowDispOrgName != null  and nowDispOrgName != '' ">and NOW_DISP_ORG_NAME = #{nowDispOrgName}</if>
+            <if test="nowDispOpnion != null  and nowDispOpnion != '' ">and NOW_DISP_OPNION = #{nowDispOpnion}</if>
+            <if test="nowDispTime != null ">and NOW_DISP_TIME = #{nowDispTime}</if>
+            <if test="preDispOpNo != null  and preDispOpNo != '' ">and PRE_DISP_OP_NO = #{preDispOpNo}</if>
+            <if test="preDispOpName != null  and preDispOpName != '' ">and PRE_DISP_OP_NAME = #{preDispOpName}</if>
+            <if test="preDispOrgNo != null  and preDispOrgNo != '' ">and PRE_DISP_ORG_NO = #{preDispOrgNo}</if>
+            <if test="preDispOrgName != null  and preDispOrgName != '' ">and PRE_DISP_ORG_NAME = #{preDispOrgName}</if>
+            <if test="preDispOpnion != null  and preDispOpnion != '' ">and PRE_DISP_OPNION = #{preDispOpnion}</if>
+            <if test="preDispTime != null ">and PRE_DISP_TIME = #{preDispTime}</if>
+            <if test="exaAppEndTime != null ">and EXA_APP_END_TIME = #{exaAppEndTime}</if>
+            <if test="exaAppStatus != null  and exaAppStatus != '' ">and EXA_APP_STATUS = #{exaAppStatus}</if>
+            <if test="exaAppResult != null  and exaAppResult != '' ">and EXA_APP_RESULT = #{exaAppResult}</if>
+            <if test="exaBack != null  and exaBack != '' ">and EXA_BACK = #{exaBack}</if>
+            <if test="processId != null  and processId != '' ">and PROCESS_ID = #{processId}</if>
+            <if test="nowProcessId != null  and nowProcessId != '' ">and NOW_PROCESS_ID = #{nowProcessId}</if>
+            <if test="foSearch != null  and foSearch != '' ">and FO_SEARCH = #{foSearch}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsProcessHistoryById" parameterType="String" resultMap="AmsProcessHistoryResult">
+        <include refid="selectAmsProcessHistoryVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsProcessHistory" parameterType="AmsProcessHistory">
+        insert into ams_process_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID,</if>
+            <if test="brachId != null  and brachId != ''  ">BRACH_ID,</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO,</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME,</if>
+            <if test="exaAppType != null  and exaAppType != ''  ">EXA_APP_TYPE,</if>
+            <if test="appOpNo != null  and appOpNo != ''  ">APP_OP_NO,</if>
+            <if test="appOpName != null  and appOpName != ''  ">APP_OP_NAME,</if>
+            <if test="appOrgNo != null  and appOrgNo != ''  ">APP_ORG_NO,</if>
+            <if test="appOrgName != null  and appOrgName != ''  ">APP_ORG_NAME,</if>
+            <if test="appTime != null  ">APP_TIME,</if>
+            <if test="appRemark != null  and appRemark != ''  ">APP_REMARK,</if>
+            <if test="nowDispOpNo != null  and nowDispOpNo != ''  ">NOW_DISP_OP_NO,</if>
+            <if test="nowDispOpName != null  and nowDispOpName != ''  ">NOW_DISP_OP_NAME,</if>
+            <if test="nowDispOrgNo != null  and nowDispOrgNo != ''  ">NOW_DISP_ORG_NO,</if>
+            <if test="nowDispOrgName != null  and nowDispOrgName != ''  ">NOW_DISP_ORG_NAME,</if>
+            <if test="nowDispOpnion != null  and nowDispOpnion != ''  ">NOW_DISP_OPNION,</if>
+            <if test="nowDispTime != null  ">NOW_DISP_TIME,</if>
+            <if test="preDispOpNo != null  and preDispOpNo != ''  ">PRE_DISP_OP_NO,</if>
+            <if test="preDispOpName != null  and preDispOpName != ''  ">PRE_DISP_OP_NAME,</if>
+            <if test="preDispOrgNo != null  and preDispOrgNo != ''  ">PRE_DISP_ORG_NO,</if>
+            <if test="preDispOrgName != null  and preDispOrgName != ''  ">PRE_DISP_ORG_NAME,</if>
+            <if test="preDispOpnion != null  and preDispOpnion != ''  ">PRE_DISP_OPNION,</if>
+            <if test="preDispTime != null  ">PRE_DISP_TIME,</if>
+            <if test="exaAppEndTime != null  ">EXA_APP_END_TIME,</if>
+            <if test="exaAppStatus != null  and exaAppStatus != ''  ">EXA_APP_STATUS,</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">EXA_APP_RESULT,</if>
+            <if test="exaBack != null  and exaBack != ''  ">EXA_BACK,</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID,</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">NOW_PROCESS_ID,</if>
+            <if test="foSearch != null  and foSearch != ''  ">FO_SEARCH,</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">ARC_FORMAT,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">#{exaAppId},</if>
+            <if test="brachId != null  and brachId != ''  ">#{brachId},</if>
+            <if test="arcNo != null  and arcNo != ''  ">#{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">#{arcName},</if>
+            <if test="exaAppType != null  and exaAppType != ''  ">#{exaAppType},</if>
+            <if test="appOpNo != null  and appOpNo != ''  ">#{appOpNo},</if>
+            <if test="appOpName != null  and appOpName != ''  ">#{appOpName},</if>
+            <if test="appOrgNo != null  and appOrgNo != ''  ">#{appOrgNo},</if>
+            <if test="appOrgName != null  and appOrgName != ''  ">#{appOrgName},</if>
+            <if test="appTime != null  ">#{appTime},</if>
+            <if test="appRemark != null  and appRemark != ''  ">#{appRemark},</if>
+            <if test="nowDispOpNo != null  and nowDispOpNo != ''  ">#{nowDispOpNo},</if>
+            <if test="nowDispOpName != null  and nowDispOpName != ''  ">#{nowDispOpName},</if>
+            <if test="nowDispOrgNo != null  and nowDispOrgNo != ''  ">#{nowDispOrgNo},</if>
+            <if test="nowDispOrgName != null  and nowDispOrgName != ''  ">#{nowDispOrgName},</if>
+            <if test="nowDispOpnion != null  and nowDispOpnion != ''  ">#{nowDispOpnion},</if>
+            <if test="nowDispTime != null  ">#{nowDispTime},</if>
+            <if test="preDispOpNo != null  and preDispOpNo != ''  ">#{preDispOpNo},</if>
+            <if test="preDispOpName != null  and preDispOpName != ''  ">#{preDispOpName},</if>
+            <if test="preDispOrgNo != null  and preDispOrgNo != ''  ">#{preDispOrgNo},</if>
+            <if test="preDispOrgName != null  and preDispOrgName != ''  ">#{preDispOrgName},</if>
+            <if test="preDispOpnion != null  and preDispOpnion != ''  ">#{preDispOpnion},</if>
+            <if test="preDispTime != null  ">#{preDispTime},</if>
+            <if test="exaAppEndTime != null  ">#{exaAppEndTime},</if>
+            <if test="exaAppStatus != null  and exaAppStatus != ''  ">#{exaAppStatus},</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">#{exaAppResult},</if>
+            <if test="exaBack != null  and exaBack != ''  ">#{exaBack},</if>
+            <if test="processId != null  and processId != ''  ">#{processId},</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">#{nowProcessId},</if>
+            <if test="foSearch != null  and foSearch != ''  ">#{foSearch},</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">#{arcFormat},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsProcessHistory" parameterType="AmsProcessHistory">
+        update ams_process_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID = #{exaAppId},</if>
+            <if test="brachId != null  and brachId != ''  ">BRACH_ID = #{brachId},</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO = #{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME = #{arcName},</if>
+            <if test="exaAppType != null  and exaAppType != ''  ">EXA_APP_TYPE = #{exaAppType},</if>
+            <if test="appOpNo != null  and appOpNo != ''  ">APP_OP_NO = #{appOpNo},</if>
+            <if test="appOpName != null  and appOpName != ''  ">APP_OP_NAME = #{appOpName},</if>
+            <if test="appOrgNo != null  and appOrgNo != ''  ">APP_ORG_NO = #{appOrgNo},</if>
+            <if test="appOrgName != null  and appOrgName != ''  ">APP_ORG_NAME = #{appOrgName},</if>
+            <if test="appTime != null  ">APP_TIME = #{appTime},</if>
+            <if test="appRemark != null  and appRemark != ''  ">APP_REMARK = #{appRemark},</if>
+            <if test="nowDispOpNo != null  and nowDispOpNo != ''  ">NOW_DISP_OP_NO = #{nowDispOpNo},</if>
+            <if test="nowDispOpName != null  and nowDispOpName != ''  ">NOW_DISP_OP_NAME = #{nowDispOpName},</if>
+            <if test="nowDispOrgNo != null  and nowDispOrgNo != ''  ">NOW_DISP_ORG_NO = #{nowDispOrgNo},</if>
+            <if test="nowDispOrgName != null  and nowDispOrgName != ''  ">NOW_DISP_ORG_NAME = #{nowDispOrgName},</if>
+            <if test="nowDispOpnion != null  and nowDispOpnion != ''  ">NOW_DISP_OPNION = #{nowDispOpnion},</if>
+            <if test="nowDispTime != null  ">NOW_DISP_TIME = #{nowDispTime},</if>
+            <if test="preDispOpNo != null  and preDispOpNo != ''  ">PRE_DISP_OP_NO = #{preDispOpNo},</if>
+            <if test="preDispOpName != null  and preDispOpName != ''  ">PRE_DISP_OP_NAME = #{preDispOpName},</if>
+            <if test="preDispOrgNo != null  and preDispOrgNo != ''  ">PRE_DISP_ORG_NO = #{preDispOrgNo},</if>
+            <if test="preDispOrgName != null  and preDispOrgName != ''  ">PRE_DISP_ORG_NAME = #{preDispOrgName},</if>
+            <if test="preDispOpnion != null  and preDispOpnion != ''  ">PRE_DISP_OPNION = #{preDispOpnion},</if>
+            <if test="preDispTime != null  ">PRE_DISP_TIME = #{preDispTime},</if>
+            <if test="exaAppEndTime != null  ">EXA_APP_END_TIME = #{exaAppEndTime},</if>
+            <if test="exaAppStatus != null  and exaAppStatus != ''  ">EXA_APP_STATUS = #{exaAppStatus},</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">EXA_APP_RESULT = #{exaAppResult},</if>
+            <if test="exaBack != null  and exaBack != ''  ">EXA_BACK = #{exaBack},</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID = #{processId},</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">NOW_PROCESS_ID = #{nowProcessId},</if>
+            <if test="foSearch != null  and foSearch != ''  ">FO_SEARCH = #{foSearch},</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">ARC_FORMAT = #{arcFormat},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsProcessHistoryById" parameterType="String">
+        delete from ams_process_history where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsProcessHistoryByIds" parameterType="String">
+        delete from ams_process_history where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FindBugsConfigurable">
+    <option name="make" value="true" />
+    <option name="effort" value="default" />
+    <option name="priority" value="Medium" />
+    <option name="excludeFilter" value="" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../../Tu-ling-study/pom.xml" />
+        <option value="$USER_HOME$/Desktop/Project/图灵/tuling-mybatis-source-master/tuling-mybatis-source/pom.xml" />
+        <option value="$PROJECT_DIR$/../../01-mybatis/01-Tu-ling-study/pom.xml" />
+        <option value="$PROJECT_DIR$/../../01-mybatis/02-tuling-mybatis-source/pom.xml" />
+        <option value="$PROJECT_DIR$/../../power-shrio-log4j/pom.xml" />
+        <option value="$PROJECT_DIR$/../../memeory-shiro-jwt-master/shiro-jwt/pom.xml" />
+        <option value="$PROJECT_DIR$/../../hutool-5-master/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SuppressionsComponent">
+    <option name="suppComments" value="[]" />
+  </component>
+</project>

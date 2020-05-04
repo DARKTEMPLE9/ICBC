@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfProcessInstMapper">
+
+    <resultMap type="WfProcessInst" id="WfProcessInstResult">
+        <result property="id" column="ID"/>
+        <result property="procDefId" column="PROC_DEF_ID"/>
+        <result property="procCode" column="PROC_CODE"/>
+        <result property="procName" column="PROC_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="busiType" column="BUSI_TYPE"/>
+        <result property="creatorCode" column="CREATOR_CODE"/>
+        <result property="creatorName" column="CREATOR_NAME"/>
+        <result property="finishedTime" column="FINISHED_TIME"/>
+    </resultMap>
+
+    <sql id="selectWfProcessInstVo">
+        select ID, PROC_DEF_ID, PROC_CODE, PROC_NAME, STATUS, CREATE_TIME, BUSI_TYPE, CREATOR_CODE, CREATOR_NAME,
+        FINISHED_TIME from wf_process_inst
+    </sql>
+
+    <select id="selectWfProcessInstList" parameterType="WfProcessInst" resultMap="WfProcessInstResult">
+        <include refid="selectWfProcessInstVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="procDefId != null  and procDefId != '' ">and PROC_DEF_ID = #{procDefId}</if>
+            <if test="procCode != null  and procCode != '' ">and PROC_CODE = #{procCode}</if>
+            <if test="procName != null  and procName != '' ">and PROC_NAME = #{procName}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="busiType != null  and busiType != '' ">and BUSI_TYPE = #{busiType}</if>
+            <if test="creatorCode != null  and creatorCode != '' ">and CREATOR_CODE = #{creatorCode}</if>
+            <if test="creatorName != null  and creatorName != '' ">and CREATOR_NAME = #{creatorName}</if>
+            <if test="finishedTime != null ">and FINISHED_TIME = #{finishedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectWfProcessInstById" parameterType="String" resultMap="WfProcessInstResult">
+        <include refid="selectWfProcessInstVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfProcessInst" parameterType="WfProcessInst">
+        insert into wf_process_inst
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="procDefId != null  and procDefId != ''  ">PROC_DEF_ID,</if>
+            <if test="procCode != null  and procCode != ''  ">PROC_CODE,</if>
+            <if test="procName != null  and procName != ''  ">PROC_NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="busiType != null  and busiType != ''  ">BUSI_TYPE,</if>
+            <if test="creatorCode != null  and creatorCode != ''  ">CREATOR_CODE,</if>
+            <if test="creatorName != null  and creatorName != ''  ">CREATOR_NAME,</if>
+            <if test="finishedTime != null  ">FINISHED_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="procDefId != null  and procDefId != ''  ">#{procDefId},</if>
+            <if test="procCode != null  and procCode != ''  ">#{procCode},</if>
+            <if test="procName != null  and procName != ''  ">#{procName},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="busiType != null  and busiType != ''  ">#{busiType},</if>
+            <if test="creatorCode != null  and creatorCode != ''  ">#{creatorCode},</if>
+            <if test="creatorName != null  and creatorName != ''  ">#{creatorName},</if>
+            <if test="finishedTime != null  ">#{finishedTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfProcessInst" parameterType="WfProcessInst">
+        update wf_process_inst
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="procDefId != null  and procDefId != ''  ">PROC_DEF_ID = #{procDefId},</if>
+            <if test="procCode != null  and procCode != ''  ">PROC_CODE = #{procCode},</if>
+            <if test="procName != null  and procName != ''  ">PROC_NAME = #{procName},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="busiType != null  and busiType != ''  ">BUSI_TYPE = #{busiType},</if>
+            <if test="creatorCode != null  and creatorCode != ''  ">CREATOR_CODE = #{creatorCode},</if>
+            <if test="creatorName != null  and creatorName != ''  ">CREATOR_NAME = #{creatorName},</if>
+            <if test="finishedTime != null  ">FINISHED_TIME = #{finishedTime},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfProcessInstById" parameterType="String">
+        delete from wf_process_inst where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfProcessInstByIds" parameterType="String">
+        delete from wf_process_inst where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

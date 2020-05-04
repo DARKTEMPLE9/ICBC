@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImRemarkMapper">
+
+    <resultMap type="ImRemark" id="ImRemarkResult">
+        <result property="id" column="ID"/>
+        <result property="content" column="CONTENT"/>
+        <result property="creatUserId" column="CREAT_USER_ID"/>
+        <result property="creatDate" column="CREAT_DATE"/>
+        <result property="creatUserName" column="CREAT_USER_NAME"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="remarkId" column="remark_id"/>
+    </resultMap>
+
+    <sql id="selectImRemarkVo">
+        select ID, CONTENT, CREAT_USER_ID, CREAT_DATE, CREAT_USER_NAME, BATCH_ID, remark_id from im_remark
+    </sql>
+
+    <select id="selectImRemarkList" parameterType="ImRemark" resultMap="ImRemarkResult">
+        <include refid="selectImRemarkVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="content != null  and content != '' ">and CONTENT = #{content}</if>
+            <if test="creatUserId != null  and creatUserId != '' ">and CREAT_USER_ID = #{creatUserId}</if>
+            <if test="creatDate != null ">and CREAT_DATE = #{creatDate}</if>
+            <if test="creatUserName != null  and creatUserName != '' ">and CREAT_USER_NAME = #{creatUserName}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="remarkId != null ">and remark_id = #{remarkId}</if>
+        </where>
+    </select>
+
+    <select id="selectImRemarkById" parameterType="String" resultMap="ImRemarkResult">
+        <include refid="selectImRemarkVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImRemark" parameterType="ImRemark">
+        insert into im_remark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="content != null  and content != ''  ">CONTENT,</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">CREAT_USER_ID,</if>
+            <if test="creatDate != null  ">CREAT_DATE,</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">CREAT_USER_NAME,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="remarkId != null  ">remark_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="content != null  and content != ''  ">#{content},</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">#{creatUserId},</if>
+            <if test="creatDate != null  ">#{creatDate},</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">#{creatUserName},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="remarkId != null  ">#{remarkId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImRemark" parameterType="ImRemark">
+        update im_remark
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null  and content != ''  ">CONTENT = #{content},</if>
+            <if test="creatUserId != null  and creatUserId != ''  ">CREAT_USER_ID = #{creatUserId},</if>
+            <if test="creatDate != null  ">CREAT_DATE = #{creatDate},</if>
+            <if test="creatUserName != null  and creatUserName != ''  ">CREAT_USER_NAME = #{creatUserName},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="remarkId != null  ">remark_id = #{remarkId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImRemarkById" parameterType="String">
+        delete from im_remark where ID = #{id}
+    </delete>
+
+    <delete id="deleteImRemarkByIds" parameterType="String">
+        delete from im_remark where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

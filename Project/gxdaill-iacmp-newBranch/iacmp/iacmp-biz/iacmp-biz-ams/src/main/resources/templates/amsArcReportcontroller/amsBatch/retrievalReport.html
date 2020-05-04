@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案类型列表')"/>
+</head>
+<body class="gray-bg">
+<hr/>
+<div class="btn-group-sm" id="toolbar" role="group">
+    <div>
+        <div style="text-align:center;font-size:24px; margin-bottom:10px"><u>档案总量统计表</u></div>
+        <div style="width:90%;margin:auto;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div style="float:left"><u>统计单位：件/卷</u></div>
+        </div>
+    </div>
+</div>
+<table id="showTable" class='table table-striped table-hover table-condensed table-bordered'
+       style="width:90%;margin:auto;text-align:center;">
+    <thead style="background-color:#efefef;">
+    <tr>
+        <td id="lineTd" class="firstCell" style="width:14%"></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=wenshu" onclick="return false;">文书档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=shengXiang" onclick="return false;">声像档案</a>
+        </td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=shiWu" onclick="return false;">实物档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=jiJian" onclick="return false;">基建档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=kuaiJi" onclick="return false;">会计档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=xinDai" onclick="return false;">信贷档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=xinXiJiShu"
+               onclick="return false;">信息技术档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=renLi" onclick="return false;">人力资源档案</a>
+        </td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=chouBei" onclick="return false;">筹备期档案</a>
+        </td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=sheMi" onclick="return false;">涉密档案</a></td>
+        <td><a href="./pages/imAcsLog/subCatalog/wenShuShow.html?firstLuMu=qiTa" onclick="return false;">其他类档案</a></td>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div th:include="include :: footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "amsArcReportcontroller/amsBatch";
+
+    window.onload = function () {
+
+
+        //显示表单的数据
+        myQuery();
+
+
+    }
+
+
+    function exportExcel() {
+        var url = "";
+
+        url = prefix + "/exportExcel";
+        NorthkingCRUD.ajax({
+            type: "POST",
+            url: url,
+            beforeSend: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                NorthkingCRUD
+                    .commonErrorHandler(jqXHR, textStatus, errorThrown);
+            },
+            success: function (data) {
+                window.open("excelExportAction!exportExcel.do");
+            }
+        });
+    };
+
+    function myQuery() {
+        var url = "";
+
+        url = prefix + "/queryArcBillByDept";
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {},
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                var html = "";
+                var typeWenShuValue;
+                var typeShengXiangValue;
+                var typeShiWuValue;
+                var typeJiJianValue;
+                var typeKuaiJiValue;
+                var typeXinDaiValue;
+                var typeXinXiValue;
+                var typeRenLiValue;
+                var typeChouBeiValue;
+                var typeSheMiValue;
+                var typeQiTaValue;
+                var typeZhaoBiaoValue;
+
+
+                $("#showTable").find("tbody").empty();
+
+                html += "<tr>"
+
+
+                var allDeptValue = new Array(json.allDept.length);
+                for (var a = 0; a < allDeptValue.length; a++) {
+                    allDeptValue[a] = "0";
+                }
+
+                for (var b = 0; b < json.deptShowList.length; b++) {
+                    for (c = 0; c < json.allDept.length; c++) {
+                        if (json.deptShowList[b] == json.allDept[c]) {
+                            allDeptValue[c] = "1";
+                        }
+                    }
+                }
+
+
+                for (var i = 0; i < json.deptShowList.length; i++) {
+
+                    typeWenShuValue = "0";
+                    typeShengXiangValue = "0";
+                    typeShiWuValue = "0";
+                    typeJiJianValue = "0";
+                    typeKuaiJiValue = "0";
+                    typeXinDaiValue = "0";
+                    typeXinXiValue = "0";
+                    typeRenLiValue = "0";
+                    typeChouBeiValue = "0";
+                    typeSheMiValue = "0";
+                    typeQiTaValue = "0";
+                    typeZhaoBiaoValue = "0";
+
+
+                    html += "<td>";
+                    html += json.deptShowList[i];
+                    html += "</td>";
+
+
+                    for (var j = 0; j < json.recordList[i].length; j++) {
+
+                        var type = json.recordList[i][j];
+
+                        type = type.replace(/^\s*|\s*$/g, "");
+
+                        //类型判断
+                        if (type == "文书档案") {
+                            typeWenShuValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "声像档案") {
+
+                            typeShengXiangValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "实物档案") {
+                            typeShiWuValue = json.recordValueList[i][j];
+                        }
+
+
+                        if (type == "基建档案") {
+                            typeJiJianValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "会计档案") {
+                            typeKuaiJiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "信贷档案") {
+                            typeXinDaiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "信息技术档案") {
+                            typeXinXiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "人力资源档案") {
+                            typeRenLiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "筹备期档案") {
+                            typeChouBeiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "涉密档案") {
+                            typeSheMiValue = json.recordValueList[i][j];
+                        }
+
+                        if (type == "其他类档案") {
+                            typeQiTaValue = json.recordValueList[i][j];
+                        }
+
+
+                    }
+
+
+                    html += "<td style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeWenShuValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeShengXiangValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeShiWuValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeJiJianValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeKuaiJiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeXinDaiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeXinXiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeRenLiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeChouBeiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeSheMiValue + "</td>";
+                    html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + typeQiTaValue + "</td>";
+
+
+                    html += "</tr>";
+                }
+
+                for (var d = 0; d < json.allDept.length; d++) {
+                    if (allDeptValue[d] == "0") {
+                        html += "<tr>";
+                        html += "<td>";
+                        html += json.allDept[d];
+                        html += "</td>";
+                        html += "<td style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "<td  style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>0</td>";
+                        html += "</tr>";
+
+                    }
+                }
+
+
+                $("#showTable").find("tbody").append(html);
+            }
+
+        });
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfProcessDefMapper">
+
+    <resultMap type="WfProcessDef" id="WfProcessDefResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+    <sql id="selectWfProcessDefVo">
+        select ID, CODE, NAME, DESCRIPTION, STATUS from wf_process_def
+    </sql>
+
+    <select id="selectWfProcessDefList" parameterType="WfProcessDef" resultMap="WfProcessDefResult">
+        <include refid="selectWfProcessDefVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="description != null  and description != '' ">and DESCRIPTION = #{description}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectWfProcessDefById" parameterType="String" resultMap="WfProcessDefResult">
+        <include refid="selectWfProcessDefVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfProcessDef" parameterType="WfProcessDef">
+        insert into wf_process_def
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION,</if>
+            <if test="status != null  ">STATUS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="description != null  and description != ''  ">#{description},</if>
+            <if test="status != null  ">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfProcessDef" parameterType="WfProcessDef">
+        update wf_process_def
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION = #{description},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfProcessDefById" parameterType="String">
+        delete from wf_process_def where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfProcessDefByIds" parameterType="String">
+        delete from wf_process_def where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

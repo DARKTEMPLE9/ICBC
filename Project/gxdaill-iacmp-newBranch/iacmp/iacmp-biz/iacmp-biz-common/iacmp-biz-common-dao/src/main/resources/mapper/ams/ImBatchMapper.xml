@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImBatchMapper">
+
+    <resultMap type="ImBatch" id="ImBatchResult">
+        <result property="id" column="ID"/>
+        <result property="regbillglideno" column="REGBILLGLIDENO"/>
+        <result property="operationcode" column="OPERATIONCODE"/>
+        <result property="tellerNo" column="TELLERNO"/>
+        <result property="tellerName" column="TELLERNAME"/>
+        <result property="branchNo" column="BRANCHNO"/>
+        <result property="branchName" column="BRANCHNAME"/>
+        <result property="serialNo" column="SERIALNO"/>
+        <result property="revNum" column="RCVNUM"/>
+        <result property="totalNum" column="TOTALNUM"/>
+        <result property="billPackages" column="BILLPACKAGES"/>
+        <result property="systemFlag" column="SYSTEMFLAG"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="ocrFlag" column="OCR_FLAG"/>
+        <result property="defectType" column="DEFECT_TYPE"/>
+        <result property="orderNo" column="ORDER_NO"/>
+        <result property="bHour" column="b_hour"/>
+        <result property="bYear" column="b_year"/>
+        <result property="bMonth" column="b_month"/>
+        <result property="bDay" column="b_day"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="userAssciationFlag" column="USER_ASSCIATION_FLAG"/>
+        <result property="batchPk" column="batch_pk"/>
+    </resultMap>
+
+    <sql id="selectImBatchVo">
+        select ID, REGBILLGLIDENO, OPERATIONCODE, TELLERNO, TELLERNAME, BRANCHNO, BRANCHNAME, SERIALNO, RCVNUM,
+        TOTALNUM, BILLPACKAGES, SYSTEMFLAG, CREATE_TIME, OCR_FLAG, DEFECT_TYPE, ORDER_NUM, b_hour, b_year, b_month,
+        b_day, SYS_FLAG_INT, USER_ASSCIATION_FLAG, batch_pk from im_batch
+    </sql>
+
+    <select id="selectImBatchList" parameterType="ImBatch" resultMap="ImBatchResult">
+        <include refid="selectImBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="operationcode != null  and operationcode != '' ">and OPERATIONCODE = #{operationcode}</if>
+            <if test="tellerNo != null  and tellerNo != '' ">and TELLERNO = #{tellerNo}</if>
+            <if test="tellerName != null  and tellerName != '' ">and TELLERNAME = #{tellerName}</if>
+            <if test="branchNo != null  and branchNo != '' ">and BRANCHNO = #{branchNo}</if>
+            <if test="branchName != null  and branchName != '' ">and BRANCHNAME = #{branchName}</if>
+            <if test="serialNo != null  and serialNo != '' ">and SERIALNO = #{serialNo}</if>
+            <if test="revNum != null  and revNum != '' ">and RCVNUM = #{revNum}</if>
+            <if test="totalNum != null  and totalNum != '' ">and TOTALNUM = #{totalNum}</if>
+            <if test="billPackages != null  and billPackages != '' ">and BILLPACKAGES = #{billPackages}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEMFLAG = #{systemFlag}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="ocrFlag != null  and ocrFlag != '' ">and OCR_FLAG = #{ocrFlag}</if>
+            <if test="defectType != null  and defectType != '' ">and DEFECT_TYPE = #{defectType}</if>
+            <if test="orderNo != null  and orderNo != '' ">and ORDER_NO = #{orderNo}</if>
+            <if test="bHour != null ">and b_hour = #{bHour}</if>
+            <if test="bYear != null ">and b_year = #{bYear}</if>
+            <if test="bMonth != null ">and b_month = #{bMonth}</if>
+            <if test="bDay != null ">and b_day = #{bDay}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="userAssciationFlag != null ">and USER_ASSCIATION_FLAG = #{userAssciationFlag}</if>
+            <if test="batchPk != null ">and batch_pk = #{batchPk}</if>
+        </where>
+    </select>
+
+    <select id="selectImBatchById" parameterType="String" resultMap="ImBatchResult">
+        <include refid="selectImBatchVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImBatch" parameterType="ImBatch">
+        insert into im_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO,</if>
+            <if test="operationcode != null  and operationcode != ''  ">OPERATIONCODE,</if>
+            <if test="tellerNo != null  and tellerNo != ''  ">TELLERNO,</if>
+            <if test="tellerName != null  and tellerName != ''  ">TELLERNAME,</if>
+            <if test="branchNo != null  and branchNo != ''  ">BRANCHNO,</if>
+            <if test="branchName != null  and branchName != ''  ">BRANCHNAME,</if>
+            <if test="serialNo != null  and serialNo != ''  ">SERIALNO,</if>
+            <if test="revNum != null  and revNum != ''  ">RCVNUM,</if>
+            <if test="totalNum != null  and totalNum != ''  ">TOTALNUM,</if>
+            <if test="billPackages != null  and billPackages != ''  ">BILLPACKAGES,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEMFLAG,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="ocrFlag != null  and ocrFlag != ''  ">OCR_FLAG,</if>
+            <if test="defectType != null  and defectType != ''  ">DEFECT_TYPE,</if>
+            <if test="orderNo != null  and orderNo != ''  ">ORDER_NO,</if>
+            <if test="bHour != null  ">b_hour,</if>
+            <if test="bYear != null  ">b_year,</if>
+            <if test="bMonth != null  ">b_month,</if>
+            <if test="bDay != null  ">b_day,</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT,</if>
+            <if test="userAssciationFlag != null  ">USER_ASSCIATION_FLAG,</if>
+            <if test="batchPk != null  ">batch_pk,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">#{regbillglideno},</if>
+            <if test="operationcode != null  and operationcode != ''  ">#{operationcode},</if>
+            <if test="tellerNo != null  and tellerNo != ''  ">#{tellerNo},</if>
+            <if test="tellerName != null  and tellerName != ''  ">#{tellerName},</if>
+            <if test="branchNo != null  and branchNo != ''  ">#{branchNo},</if>
+            <if test="branchName != null  and branchName != ''  ">#{branchName},</if>
+            <if test="serialNo != null  and serialNo != ''  ">#{serialNo},</if>
+            <if test="revNum != null  and revNum != ''  ">#{revNum},</if>
+            <if test="totalNum != null  and totalNum != ''  ">#{totalNum},</if>
+            <if test="billPackages != null  and billPackages != ''  ">#{billPackages},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="ocrFlag != null  and ocrFlag != ''  ">#{ocrFlag},</if>
+            <if test="defectType != null  and defectType != ''  ">#{defectType},</if>
+            <if test="orderNo != null  and orderNo != ''  ">#{orderNo},</if>
+            <if test="bHour != null  ">#{bHour},</if>
+            <if test="bYear != null  ">#{bYear},</if>
+            <if test="bMonth != null  ">#{bMonth},</if>
+            <if test="bDay != null  ">#{bDay},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="userAssciationFlag != null  ">#{userAssciationFlag},</if>
+            <if test="batchPk != null  ">#{batchPk},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImBatch" parameterType="ImBatch">
+        update im_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO = #{regbillglideno},</if>
+            <if test="operationcode != null  and operationcode != ''  ">OPERATIONCODE = #{operationcode},</if>
+            <if test="tellerNo != null  and tellerNo != ''  ">TELLERNO = #{tellerNo},</if>
+            <if test="tellerName != null  and tellerName != ''  ">TELLERNAME = #{tellerName},</if>
+            <if test="branchNo != null  and branchNo != ''  ">BRANCHNO = #{branchNo},</if>
+            <if test="branchName != null  and branchName != ''  ">BRANCHNAME = #{branchName},</if>
+            <if test="serialNo != null  and serialNo != ''  ">SERIALNO = #{serialNo},</if>
+            <if test="revNum != null  and revNum != ''  ">RCVNUM = #{revNum},</if>
+            <if test="totalNum != null  and totalNum != ''  ">TOTALNUM = #{totalNum},</if>
+            <if test="billPackages != null  and billPackages != ''  ">BILLPACKAGES = #{billPackages},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEMFLAG = #{systemFlag},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="ocrFlag != null  and ocrFlag != ''  ">OCR_FLAG = #{ocrFlag},</if>
+            <if test="defectType != null  and defectType != ''  ">DEFECT_TYPE = #{defectType},</if>
+            <if test="orderNo != null  and orderNo != ''  ">ORDER_NO = #{orderNo},</if>
+            <if test="bHour != null  ">b_hour = #{bHour},</if>
+            <if test="bYear != null  ">b_year = #{bYear},</if>
+            <if test="bMonth != null  ">b_month = #{bMonth},</if>
+            <if test="bDay != null  ">b_day = #{bDay},</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT = #{sysFlagInt},</if>
+            <if test="userAssciationFlag != null  ">USER_ASSCIATION_FLAG = #{userAssciationFlag},</if>
+            <if test="batchPk != null  ">batch_pk = #{batchPk},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBatchById" parameterType="String">
+        delete from im_batch where ID = #{id}
+    </delete>
+
+    <delete id="deleteImBatchByIds" parameterType="String">
+        delete from im_batch where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

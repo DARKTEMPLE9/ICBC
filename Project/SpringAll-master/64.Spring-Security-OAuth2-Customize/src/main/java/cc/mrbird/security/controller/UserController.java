@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping("index")
-    public Object index(@AuthenticationPrincipal Authentication authentication){
+    public Object index(@AuthenticationPrincipal Authentication authentication) {
         return authentication;
     }
 }

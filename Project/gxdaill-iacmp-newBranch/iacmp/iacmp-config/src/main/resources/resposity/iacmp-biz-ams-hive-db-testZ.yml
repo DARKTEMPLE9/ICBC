@@ -1,0 +1,30 @@
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #driverClassName: com.mysql.jdbc.Driver
+    druid:
+      # hive数据源 localhost:3306/ams?
+      hive:
+        # 第二数据源开关/默认关闭
+        enabled: true
+        #driverClassName: com.mysql.jdbc.Driver
+        #url: jdbc:mysql://localhost:3306/ams??useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        #username: root
+        #password: 123456
+        driverClassName: org.apache.hive.jdbc.HiveDriver
+        url: jdbc:hive2://bxzj-test-swift0.bxzj.baixinlocal.com:2181,bxzj-test-swift1.bxzj.baixinlocal.com:2181,bxzj-test-swift2.bxzj.baixinlocal.com:2181/uatd_odb;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+        #username: gas_c
+        #password: gas_c@baixin
+        username: ams
+        password: ams
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: false
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WebServiceMapper">
+
+    <resultMap type="WebService" id="WebServiceResult">
+        <result property="id" column="ID"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="operationcode" column="OPERATIONCODE"/>
+        <result property="regbillglideno" column="REGBILLGLIDENO"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="operaTime" column="OPERA_TIME"/>
+        <result property="sysKey" column="SYS_KEY"/>
+        <result property="methodType" column="METHOD_TYPE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="webId" column="web_id"/>
+    </resultMap>
+
+    <sql id="selectWebServiceVo">
+        select ID, SYS_ID, OPERATIONCODE, REGBILLGLIDENO, ORDER_NUM, OPERA_TIME, SYS_KEY, METHOD_TYPE, CONTENT, web_id
+        from web_service
+    </sql>
+
+    <select id="selectWebServiceList" parameterType="WebService" resultMap="WebServiceResult">
+        <include refid="selectWebServiceVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="operationcode != null  and operationcode != '' ">and OPERATIONCODE = #{operationcode}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="orderNum != null  and orderNum != '' ">and ORDER_NUM = #{orderNum}</if>
+            <if test="operaTime != null ">and OPERA_TIME = #{operaTime}</if>
+            <if test="sysKey != null  and sysKey != '' ">and SYS_KEY = #{sysKey}</if>
+            <if test="methodType != null  and methodType != '' ">and METHOD_TYPE = #{methodType}</if>
+            <if test="content != null  and content != '' ">and CONTENT = #{content}</if>
+            <if test="webId != null ">and web_id = #{webId}</if>
+        </where>
+    </select>
+
+    <select id="selectWebServiceById" parameterType="String" resultMap="WebServiceResult">
+        <include refid="selectWebServiceVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWebService" parameterType="WebService">
+        insert into web_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID,</if>
+            <if test="operationcode != null  and operationcode != ''  ">OPERATIONCODE,</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO,</if>
+            <if test="orderNum != null  and orderNum != ''  ">ORDER_NUM,</if>
+            <if test="operaTime != null  ">OPERA_TIME,</if>
+            <if test="sysKey != null  and sysKey != ''  ">SYS_KEY,</if>
+            <if test="methodType != null  and methodType != ''  ">METHOD_TYPE,</if>
+            <if test="content != null  and content != ''  ">CONTENT,</if>
+            <if test="webId != null  ">web_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="sysId != null  and sysId != ''  ">#{sysId},</if>
+            <if test="operationcode != null  and operationcode != ''  ">#{operationcode},</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">#{regbillglideno},</if>
+            <if test="orderNum != null  and orderNum != ''  ">#{orderNum},</if>
+            <if test="operaTime != null  ">#{operaTime},</if>
+            <if test="sysKey != null  and sysKey != ''  ">#{sysKey},</if>
+            <if test="methodType != null  and methodType != ''  ">#{methodType},</if>
+            <if test="content != null  and content != ''  ">#{content},</if>
+            <if test="webId != null  ">#{webId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWebService" parameterType="WebService">
+        update web_service
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sysId != null  and sysId != ''  ">SYS_ID = #{sysId},</if>
+            <if test="operationcode != null  and operationcode != ''  ">OPERATIONCODE = #{operationcode},</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO = #{regbillglideno},</if>
+            <if test="orderNum != null  and orderNum != ''  ">ORDER_NUM = #{orderNum},</if>
+            <if test="operaTime != null  ">OPERA_TIME = #{operaTime},</if>
+            <if test="sysKey != null  and sysKey != ''  ">SYS_KEY = #{sysKey},</if>
+            <if test="methodType != null  and methodType != ''  ">METHOD_TYPE = #{methodType},</if>
+            <if test="content != null  and content != ''  ">CONTENT = #{content},</if>
+            <if test="webId != null  ">web_id = #{webId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWebServiceById" parameterType="String">
+        delete from web_service where ID = #{id}
+    </delete>
+
+    <delete id="deleteWebServiceByIds" parameterType="String">
+        delete from web_service where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

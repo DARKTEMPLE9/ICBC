@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('分配角色选择用户')"/>
+    <th:block th:include="include :: ztree-css"/>
+    <style>
+        .bootstrap-table .table tr {
+            cursor: pointer;
+        }
+
+        .table-hover > tbody > tr:hover,
+        .bootstrap-table .table tr:hover {
+            background-color: #e5e5e5 !important;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<input id="selectedName" name="selectedName" type="hidden"/>
+<input id="selectedDispname" name="selectedDispname" type="hidden"/>
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form">
+                <div class="select-list">
+                    <!--<input type="hidden" id="userId" name="userId" th:value="${userId}">-->
+                    <ul class="clearfix">
+                        <!--<li>-->
+                        <!--登录名称：<input type="text" name="loginName"/>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--手机号码：<input type="text" name="phonenumber"/>-->
+                        <!--</li>-->
+                        <li>
+                            会计科目编码：<input type="text" name="dispname"/>
+                        </li>
+                        <li>
+                            会计科目名称：<input type="text" name="name"/>
+                        </li>
+
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: ztree-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "/accounting/ledger/gasBdAccasoa";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            queryParams: queryParams,
+            sortName: "name",
+            sortOrder: "desc",
+            modalName: "会计科目",
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            clickToSelect: true,
+            rememberSelected: true,
+            onClickRow: onClickRow,
+            onDblClickRow: onDblClickRow,
+            firstLoad: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '会计科目名称'
+                },
+                {
+                    field: 'dispname',
+                    title: '会计科目编码'
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        /*search.roleId = $("#roleId").val();*/
+        return search;
+    }
+
+    /* 添加用户-选择用户-提交 */
+    function submitHandler() {
+    }
+
+    function onClickRow(row, $element) {
+        //var id= window.location.href.split('=')[1];
+        var selectedName = row.name;
+        var selectedDispname = row.dispname;
+        $("#selectedName").val(selectedName);
+        $("#selectedDispname").val(selectedDispname);
+        $element.siblings().css('background', 'transparent')
+        $element.css('background', '#e5e5e5');
+
+    }
+
+    function onDblClickRow(row, $element) {
+        var id = window.location.href.split('=')[1];
+        // alert(id)
+        var selectedName = row.name;
+        $("#selectedName").val(selectedName);
+        var selectedDispname = row.dispname;
+        $("#selectedDispname").val(selectedDispname);
+        //$('#' + id).val($("#selectedName").val());
+        //$('#' + id + 'login').val($("#selectedDispname").val());
+        parent.$('#' + id).val($("#selectedDispname").val());
+        //parent.$('#' + id + 'login').val($("#thisLoginName").val());
+        var index = parent.layer.index; //获取当前弹层的索引号
+        parent.layer.close(index); //关闭当前弹层
+    }
+</script>
+</body>
+</html>

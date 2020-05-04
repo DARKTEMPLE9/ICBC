@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsDestroyMapper">
+
+    <resultMap type="AmsDestroy" id="AmsDestroyResult">
+        <result property="desId" column="DES_ID"/>
+        <result property="id" column="ID"/>
+        <result property="opUserCode" column="OP_USER_CODE"/>
+        <result property="opUserName" column="OP_USER_NAME"/>
+        <result property="opOrgCode" column="OP_ORG_CODE"/>
+        <result property="opOrgName" column="OP_ORG_NAME"/>
+        <result property="opDate" column="OP_DATE"/>
+        <result property="destroyReason" column="DESTROY_REASON"/>
+        <result property="archivesNum" column="ARCHIVES_NUM"/>
+        <result property="destroyAttachment" column="DESTROY_ATTACHMENT"/>
+        <result property="amsArcId" column="AMS_ARC_ID"/>
+        <result property="amsArcName" column="AMS_ARC_NAME"/>
+    </resultMap>
+
+    <sql id="selectAmsDestroyVo">
+        select DES_ID, ID, OP_USER_CODE, OP_USER_NAME, OP_ORG_CODE, OP_ORG_NAME, OP_DATE, DESTROY_REASON, ARCHIVES_NUM,
+        DESTROY_ATTACHMENT, AMS_ARC_ID,AMS_ARC_NAME from ams_destroy
+    </sql>
+
+    <select id="selectAmsDestroyList" parameterType="AmsDestroy" resultMap="AmsDestroyResult">
+        <include refid="selectAmsDestroyVo"/>
+        <where>
+            <if test="desId != null  and desId != '' ">and DES_ID = #{desId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="opUserCode != null  and opUserCode != '' ">and OP_USER_CODE LIKE
+                CONCAT('%',CONCAT(#{opUserCode},'%'))
+            </if>
+            <if test="opUserName != null  and opUserName != '' ">and OP_USER_NAME = #{opUserName}</if>
+            <if test="opOrgCode != null  and opOrgCode != '' ">and OP_ORG_CODE LIKE
+                CONCAT('%',CONCAT(#{opOrgCode},'%'))
+            </if>
+            <if test="opOrgName != null  and opOrgName != '' ">and OP_ORG_NAME LIKE
+                CONCAT('%',CONCAT(#{opOrgName},'%'))
+            </if>
+            <if test="opDateStart != null and opDateStart != ''">and OP_DATE >= #{opDateStart}</if>
+            <if test="opDateEnd != null and opDateEnd != ''">and OP_DATE &lt;= #{opDateEnd}</if>
+            <if test="destroyReason != null  and destroyReason != '' ">and DESTROY_REASON LIKE
+                CONCAT('%',CONCAT(#{destroyReason},'%'))
+            </if>
+            <if test="archivesNum != null ">and ARCHIVES_NUM = #{archivesNum}</if>
+            <if test="destroyAttachment != null  and destroyAttachment != '' ">and DESTROY_ATTACHMENT LIKE
+                CONCAT('%',CONCAT(#{destroyAttachment},'%'))
+
+            </if>
+            <if test="amsArcId != null  and amsArcId != '' ">and AMS_ARC_ID LIKE CONCAT('%',CONCAT(#{amsArcId},'%'))
+            </if>
+            <if test="amsArcName != null  and amsArcName != '' ">and AMS_ARC_NAME LIKE
+                CONCAT('%',CONCAT(#{amsArcName},'%'))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAmsDestroyById" parameterType="String" resultMap="AmsDestroyResult">
+        <include refid="selectAmsDestroyVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsDestroy" parameterType="AmsDestroy">
+        insert into ams_destroy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="opUserCode != null  and opUserCode != ''  ">OP_USER_CODE,</if>
+            <if test="opUserName != null  and opUserName != ''  ">OP_USER_NAME,</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE,</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">OP_ORG_NAME,</if>
+            <if test="opDate != null  ">OP_DATE,</if>
+            <if test="destroyReason != null  and destroyReason != ''  ">DESTROY_REASON,</if>
+            <if test="archivesNum != null  ">ARCHIVES_NUM,</if>
+            <if test="destroyAttachment != null  and destroyAttachment != ''  ">DESTROY_ATTACHMENT,</if>
+            <if test="amsArcId != null  and amsArcId != ''  ">AMS_ARC_ID,</if>
+            <if test="amsArcName != null  and amsArcName != ''  ">AMS_ARC_NAME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="opUserCode != null  and opUserCode != ''  ">#{opUserCode},</if>
+            <if test="opUserName != null  and opUserName != ''  ">#{opUserName},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">#{opOrgCode},</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">#{opOrgName},</if>
+            <if test="opDate != null  ">#{opDate},</if>
+            <if test="destroyReason != null  and destroyReason != ''  ">#{destroyReason},</if>
+            <if test="archivesNum != null  ">#{archivesNum},</if>
+            <if test="destroyAttachment != null  and destroyAttachment != ''  ">#{destroyAttachment},</if>
+            <if test="amsArcId != null  and amsArcId != ''  ">#{amsArcId},</if>
+            <if test="amsArcName != null  and amsArcName != ''  ">#{amsArcName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsDestroy" parameterType="AmsDestroy">
+        update ams_destroy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opUserCode != null  and opUserCode != ''  ">OP_USER_CODE = #{opUserCode},</if>
+            <if test="opUserName != null  and opUserName != ''  ">OP_USER_NAME = #{opUserName},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE = #{opOrgCode},</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">OP_ORG_NAME = #{opOrgName},</if>
+            <if test="opDate != null  ">OP_DATE = #{opDate},</if>
+            <if test="destroyReason != null  and destroyReason != ''  ">DESTROY_REASON = #{destroyReason},</if>
+            <if test="archivesNum != null  ">ARCHIVES_NUM = #{archivesNum},</if>
+            <if test="destroyAttachment != null  and destroyAttachment != ''  ">DESTROY_ATTACHMENT =
+                #{destroyAttachment},
+            </if>
+            <if test="amsArcId != null  and amsArcId != ''  ">AMS_ARC_ID = #{amsArcId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsDestroyById" parameterType="String">
+        delete from ams_destroy where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsDestroyByIds" parameterType="String">
+        delete from ams_destroy where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

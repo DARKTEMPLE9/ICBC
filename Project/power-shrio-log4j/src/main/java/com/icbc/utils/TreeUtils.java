@@ -37,24 +37,24 @@ public class TreeUtils<T> {
     private T data;
 
 
-    public static List<TreeUtils> getTreeList(List<?> listData ,String id,String parentId,String name) throws Exception{
+    public static List<TreeUtils> getTreeList(List<?> listData, String id, String parentId, String name) throws Exception {
 
         List<TreeUtils> resultList = new ArrayList<TreeUtils>();  // 最终返回的结果
-        Map<Integer ,Object> map = new HashMap<Integer,Object>();
+        Map<Integer, Object> map = new HashMap<Integer, Object>();
 
-        for(int i =0;i<listData.size() && !listData.isEmpty();i++){
+        for (int i = 0; i < listData.size() && !listData.isEmpty(); i++) {
 
             // 写一个与该方法差不多的方法，将得到TreeUtils的代码抽取出来
             // 也可以将listData集合整个转换成装有TreeUtils的集合x，然后再循环x
             TreeUtils treeUtils = new TreeUtils();
-            treeUtils.setId(Integer.parseInt(TreeUtils.getFileValue(listData.get(i),id).toString())); // id              // 返回值为Object无法直接转换成Integer,先toString，再转换成Integer。这里的返回值写成Object是因为多种类型字段的值都可以用该方法
-            treeUtils.setPid(Integer.parseInt(TreeUtils.getFileValue(listData.get(i),parentId).toString()));// 父id
-            treeUtils.setName(TreeUtils.getFileValue(listData.get(i),name).toString());  // 节点名
+            treeUtils.setId(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), id).toString())); // id              // 返回值为Object无法直接转换成Integer,先toString，再转换成Integer。这里的返回值写成Object是因为多种类型字段的值都可以用该方法
+            treeUtils.setPid(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), parentId).toString()));// 父id
+            treeUtils.setName(TreeUtils.getFileValue(listData.get(i), name).toString());  // 节点名
             //System.out.println("节点名为+"+TreeUtils.getFileValue(listData.get(i),categoryName).toString());
             treeUtils.setData(listData.get(i));   // data:原对象中的所有属性，无children
 
             // 通过反射得到每条数据的id将数据封装的map集合中，id为键，元素本身为值
-            map.put(treeUtils.getId(),treeUtils);
+            map.put(treeUtils.getId(), treeUtils);
 
 
             // 将所有顶层元素添加到resultList集合中
@@ -65,19 +65,19 @@ public class TreeUtils<T> {
         // 得到所有的顶层节点，游离节点也算作顶层节点
         // 优点一，不用知道等级节点的id
         // 优点而，只查询了一次数据库
-        for(int i =0;i<listData.size();i++){
-            if(!map.containsKey(Integer.parseInt(TreeUtils.getFileValue(listData.get(i),parentId).toString()))){
-                resultList.add((TreeUtils) map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i),id).toString())));
+        for (int i = 0; i < listData.size(); i++) {
+            if (!map.containsKey(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), parentId).toString()))) {
+                resultList.add((TreeUtils) map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), id).toString())));
             }
         }
 
-        for(int i =0;i<listData.size() && !listData.isEmpty();i++){
-            TreeUtils obj = (TreeUtils)map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), parentId).toString()));
-            if(obj != null){
-                if(obj.getChildList() == null){
+        for (int i = 0; i < listData.size() && !listData.isEmpty(); i++) {
+            TreeUtils obj = (TreeUtils) map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), parentId).toString()));
+            if (obj != null) {
+                if (obj.getChildList() == null) {
                     obj.setChildList(new ArrayList());
                 }
-                obj.getChildList().add(map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i),id).toString())));
+                obj.getChildList().add(map.get(Integer.parseInt(TreeUtils.getFileValue(listData.get(i), id).toString())));
             }
         }
         return resultList;
@@ -86,11 +86,12 @@ public class TreeUtils<T> {
     /**
      * 通过反射得到的数据类型的也是不一定的，所以这里我们返回值为Object
      * Object是无法直接转为Integer,现将Object转为String，然后再将String转为Integer
+     *
      * @param item
      * @param fileName
      * @return
      */
-    public static Object  getFileValue(Object item,String fileName) throws Exception {
+    public static Object getFileValue(Object item, String fileName) throws Exception {
         Class<?> aClass = item.getClass();
         Field file = aClass.getDeclaredField(fileName); // 得到所有字段包括私有字段
         file.setAccessible(true); // 取消访问限制

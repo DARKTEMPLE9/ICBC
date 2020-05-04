@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案列表')"/>
+    <style>
+        .select-list label {
+            width: 80px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label for="">档案名称：</label>
+                            <input type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            <label for="">登记人名称：</label>
+                            <input type="text" id="regOpName" name="regOpName"
+                                   onclick="selectUser('regOpName');regOpName.blur();return false;" placeholder="请选择登记人"
+                                   readonly/>
+                        </li>
+
+                        <li>
+                            <label for="">状态：</label>
+                            <!--<select id=""  name="status" th:with="type=${@dict.getType('archive_amsArcReg_status')}">-->
+                            <!--<option selected="selected" value="" style="display:none;"></option>-->
+                            <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                            <!--</select>-->
+                            <select id="status" name="status">
+                                <option value="" selected style="">全部</option>
+                                <option value="10">已保存</option>
+                                <option value="20">已提交</option>
+                                <option value="30">已接收</option>
+                                <option value="40">已退回</option>
+                                <option value="50">已著录</option>
+                                <option value="4">已入盒</option>
+                                <option value="5">已入库</option>
+                            </select>
+
+                        </li>
+
+                        <!--<li>-->
+                        <!--登记时间：<input type="text" name="regTime"/>-->
+                        <!--&lt;!&ndash;登记时间：<input type="text" name="regTime"/>&ndash;&gt;-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="select-time">
+                                <label>登记时间： </label>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="startTime" placeholder="" name="regTimeGte"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="endTime" placeholder="" name="regTimeLte"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>接收时间： </label>
+                                <input type="text" style="margin-left: 3px;width: 93px;" class="input-sm form-control"
+                                       id="recTimeStart" placeholder="" name="recTimeGte"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="recTimeEnd" placeholder="" name="recTimeLte"/>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-info" onclick="printLook()">
+                <i class="fa fa-search"></i>&nbsp;打印预览
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+
+    var receiveFlag = [[${@permission.hasPermi('archCollection:archReceive:view')}]];
+    var detailFlag = [[${@permission.hasPermi('archCollection:amsArcRegDetail:view')}]];
+    var amsArcRegtStatus = [[${@dict.getType('archive_amsArcReg_status')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+    var prefix = ctx + "archCollection/amsArcReg";
+
+    <!--选择用户-->
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 日期框js，此页面有两个时间框，一个调用系统id，第二个在此处自定义
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var startDate1 = laydate.render({
+                elem: '#recTimeStart',
+                max: 0,
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    $('#recTimeEnd').val("")
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate1.config.min.year = date.year;
+                        endDate1.config.min.month = date.month - 1;
+                        endDate1.config.min.date = date.date;
+                    } else {
+                        endDate1.config.min.year = '';
+                        endDate1.config.min.month = '';
+                        endDate1.config.min.date = '';
+                    }
+                }
+            });
+            var endDate1 = laydate.render({
+                elem: '#recTimeEnd',
+                theme: 'molv',
+                max: 0,
+                trigger: 'click'
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + "/myArchReceiveList",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/receive/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+
+            modalName: "档案",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'regArcNum',
+                    title: '登记份数',
+                    sortable: true
+                },
+                {
+                    field: 'recPageNum',
+                    title: '登记页数',
+                    sortable: true
+                },
+                // {
+                // 	field : 'regPageNum',
+                // 	title : '档案数量',
+                // 	sortable: true
+                // },
+                {
+                    field: 'regOpName',
+                    title: '登记人名称',
+                    sortable: true
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    field: 'regTime',
+                    title: '登记时间',
+                    sortable: true
+                },
+                {
+                    field: 'recTime',
+                    title: '接收时间',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(amsArcRegtStatus, item.status);
+                    }
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        if (row.status == "20") {
+                            actions.push('<a class="btn btn-success btn-xs ' + receiveFlag + '" href="javascript:void(0)" onclick="receiveArch(\'' + row.id + '\')"><i class="fa fa-edit"></i>接收</a>');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    /*打印预览*/
+    function printLook() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        createMenuItem(prefix + "/printLook?ids=" + rows.join(), '打印预览');
+    }
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案详情", url);
+    }
+
+    // 接收按钮
+    function receiveArch(id, width, height) {
+        // var url = prefix+"/receive/"+id;
+        // $.modal.openTab("接收档案", url);
+        var options = {
+            title: "接收档案",
+            width: width,
+            height: height,
+            url: prefix + "/receive/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+        // $.modal.open("接收档案",prefix+"/receive/"+id);
+    }
+</script>
+</body>
+</html>

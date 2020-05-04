@@ -15,9 +15,9 @@ import java.text.DateFormat;
 import java.util.*;
 
 @Intercepts({
-        @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }),
-        @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
-                RowBounds.class, ResultHandler.class }) })
+        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class})})
 public class SqlPrintIntercetor implements Interceptor {
 
     private Properties properties;
@@ -93,8 +93,8 @@ public class SqlPrintIntercetor implements Interceptor {
                     } else if (boundSql.hasAdditionalParameter(propertyName)) {
                         Object obj = boundSql.getAdditionalParameter(propertyName);
                         sql = sql.replaceFirst("\\?", getParameterValue(obj));
-                    }  else{
-                        Map map = (Map)metaObject ;
+                    } else {
+                        Map map = (Map) metaObject;
                         sql = sql.replaceFirst("\\?", getParameterValue(map.get(propertyName)));
                     }
                 }

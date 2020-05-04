@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案借阅列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            档案编号：<input type="text" name="arcNo"/>
+                        </li>
+
+                        <li>
+                            档案题名：<input type="text" name="arcName"/>
+                        </li>
+
+                        <li>
+                            所属部门：<input type="text" name="opDepName"/>
+                        </li>
+
+                        <li>
+                            申请人：<input type="text" name="appOpName"/>
+                        </li>
+
+                        <li>
+                            借阅事由：<input type="text" name="appReason"/>
+                        </li>
+
+                        <li>
+                            申请时间：<input type="text" name="appTime"/>
+                        </li>
+
+                        <li>
+                            借阅开始时间：<input type="text" name="borStaTime"/>
+                        </li>
+
+                        <li>
+                            借阅结束日期：<input type="text" name="borEndTime"/>
+                        </li>
+
+                        <li>
+                            实际归还日期：<input type="text" name="actReturnTime"/>
+                        </li>
+
+                        <li>
+                            审批信息ID：<input type="text" name="exaAppInfoId"/>
+                        </li>
+
+                        <li>
+                            状态：<input type="text" name="status"/>
+                        </li>
+
+                        <li>
+                            所属部门编号：<input type="text" name="opDepNo"/>
+                        </li>
+
+                        <li>
+                            档案类型：<input type="text" name="arcType"/>
+                        </li>
+
+                        <li>
+                            利用效果：<input type="text" name="useEffect"/>
+                        </li>
+
+                        <li>
+                            实际归还说明：<input type="text" name="actReturnExp"/>
+                        </li>
+
+                        <li>
+                            利用目的：<input type="text" name="usePurpose"/>
+                        </li>
+
+                        <li>
+                            档案类型姓名：<input type="text" name="arcBillName"/>
+                        </li>
+
+                        <li>
+                            档案类型编码：<input type="text" name="arcBillCode"/>
+                        </li>
+
+                        <li>
+                            申请人编码：<input type="text" name="appOpCode"/>
+                        </li>
+
+                        <li>
+                            借阅类型：<input type="text" name="borType"/>
+                        </li>
+
+                        <li>
+                            著入Id：<input type="text" name="batchId"/>
+                        </li>
+
+                        <li>
+                            著入编号：<input type="text" name="batchNo"/>
+                        </li>
+
+                        <li>
+                            申请部门名称：<input type="text" name="appDepName"/>
+                        </li>
+
+                        <li>
+                            申请部门编码：<input type="text" name="appDepCode"/>
+                        </li>
+
+                        <li>
+                            借阅形式：<input type="text" name="borForm"/>
+                        </li>
+
+                        <li>
+                            复印份数：<input type="text" name="copyNum"/>
+                        </li>
+
+                        <li>
+                            借出份数：<input type="text" name="loanNum"/>
+                        </li>
+
+                        <li>
+                            对应档案信息表主键：<input type="text" name="archiveId"/>
+                        </li>
+
+                        <li>
+                            档案管理部门号：<input type="text" name="manaDepNo"/>
+                        </li>
+
+                        <li>
+                            档案管理部门名：<input type="text" name="manaDepName"/>
+                        </li>
+
+                        <li>
+                            是否逾期（1：是；0：否；）：<input type="text" name="overdue"/>
+                        </li>
+
+                        <li>
+                            归还操作时间：<input type="text" name="returnOpTime"/>
+                        </li>
+
+                        <li>
+                            归还操作类型：<input type="text" name="returnOpType"/>
+                        </li>
+
+                        <li>
+                            原审批信息ID：<input type="text" name="oldExaAppInfoId"/>
+                        </li>
+
+                        <li>
+                            代理人号：<input type="text" name="agentCode"/>
+                        </li>
+
+                        <li>
+                            代理人名：<input type="text" name="agentName"/>
+                        </li>
+
+                        <li>
+                            借阅天数：<input type="text" name="borDays"/>
+                        </li>
+
+                        <li>
+                            借阅附件：<input type="text" name="borAttachment"/>
+                        </li>
+
+                        <li>
+                            归还附件：<input type="text" name="returnAttachment"/>
+                        </li>
+
+                        <li>
+                            代理人部门代码：<input type="text" name="agentOrgCode"/>
+                        </li>
+
+                        <li>
+                            代理人机构名称：<input type="text" name="agentOrgName"/>
+                        </li>
+
+                        <li>
+                            备注信息：<input type="text" name="remark"/>
+                        </li>
+
+                        <li>
+                            档案状态：<input type="text" name="arcStatus"/>
+                        </li>
+
+                        <li>
+                            归还档案路径：<input type="text" name="returnPath"/>
+                        </li>
+
+                        <li>
+                            二级类目code：<input type="text" name="arcBillDeptCode"/>
+                        </li>
+
+                        <li>
+                            档案二级类目name：<input type="text" name="arcBillDeptName"/>
+                        </li>
+
+                        <li>
+                            责任者：<input type="text" name="respOpName"/>
+                        </li>
+
+                        <li>
+                            文件编号：<input type="text" name="fileNo"/>
+                        </li>
+
+                        <li>
+                            档案密级：<input type="text" name="arcLevel"/>
+                        </li>
+
+                        <li>
+                            档案形成时间：<input type="text" name="arcCreTime"/>
+                        </li>
+
+                        <li>
+                            二级类目：<input type="text" name="childArcType"/>
+                        </li>
+
+                        <li>
+                            出库备注：<input type="text" name="outRemark"/>
+                        </li>
+
+                        <li>
+                            借阅档案形态名称：<input type="text" name="borTypel"/>
+                        </li>
+
+                        <li>
+                            上传附件路径：<input type="text" name="path"/>
+                        </li>
+
+                        <li>
+                            上传文件名：<input type="text" name="fileName"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()"
+               shiro:hasPermission="amsArcReportcontroller:amsBorrowInfo:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="amsArcReportcontroller:amsBorrowInfo:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="amsArcReportcontroller:amsBorrowInfo:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()"
+               shiro:hasPermission="amsArcReportcontroller:amsBorrowInfo:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('amsArcReportcontroller:amsBorrowInfo:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('amsArcReportcontroller:amsBorrowInfo:remove')}]];
+    var prefix = ctx + "amsArcReportcontroller/amsBorrowInfo";
+
+    $(function () {
+        var options = {
+            url: prefix + "/queryArcBillResult",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "档案借阅",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcName',
+                    title: '档案题名',
+                    sortable: true
+                },
+                {
+                    field: 'opDepName',
+                    title: '所属部门',
+                    sortable: true
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人',
+                    sortable: true
+                },
+                {
+                    field: 'appReason',
+                    title: '借阅事由',
+                    sortable: true
+                },
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true
+                },
+                {
+                    field: 'borStaTime',
+                    title: '借阅开始时间',
+                    sortable: true
+                },
+                {
+                    field: 'borEndTime',
+                    title: '借阅结束日期',
+                    sortable: true
+                },
+                {
+                    field: 'actReturnTime',
+                    title: '实际归还日期',
+                    sortable: true
+                },
+                {
+                    field: 'exaAppInfoId',
+                    title: '审批信息ID',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true
+                },
+                {
+                    field: 'opDepNo',
+                    title: '所属部门编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'useEffect',
+                    title: '利用效果',
+                    sortable: true
+                },
+                {
+                    field: 'actReturnExp',
+                    title: '实际归还说明',
+                    sortable: true
+                },
+                {
+                    field: 'usePurpose',
+                    title: '利用目的',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillName',
+                    title: '档案类型姓名',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillCode',
+                    title: '档案类型编码',
+                    sortable: true
+                },
+                {
+                    field: 'appOpCode',
+                    title: '申请人编码',
+                    sortable: true
+                },
+                {
+                    field: 'borType',
+                    title: '借阅类型',
+                    sortable: true
+                },
+                {
+                    field: 'batchId',
+                    title: '著入Id',
+                    sortable: true
+                },
+                {
+                    field: 'batchNo',
+                    title: '著入编号',
+                    sortable: true
+                },
+                {
+                    field: 'appDepName',
+                    title: '申请部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'appDepCode',
+                    title: '申请部门编码',
+                    sortable: true
+                },
+                {
+                    field: 'borForm',
+                    title: '借阅形式',
+                    sortable: true
+                },
+                {
+                    field: 'copyNum',
+                    title: '复印份数',
+                    sortable: true
+                },
+                {
+                    field: 'loanNum',
+                    title: '借出份数',
+                    sortable: true
+                },
+                {
+                    field: 'archiveId',
+                    title: '对应档案信息表主键',
+                    sortable: true
+                },
+                {
+                    field: 'manaDepNo',
+                    title: '档案管理部门号',
+                    sortable: true
+                },
+                {
+                    field: 'manaDepName',
+                    title: '档案管理部门名',
+                    sortable: true
+                },
+                {
+                    field: 'overdue',
+                    title: '是否逾期（1：是；0：否；）',
+                    sortable: true
+                },
+                {
+                    field: 'returnOpTime',
+                    title: '归还操作时间',
+                    sortable: true
+                },
+                {
+                    field: 'returnOpType',
+                    title: '归还操作类型',
+                    sortable: true
+                },
+                {
+                    field: 'oldExaAppInfoId',
+                    title: '原审批信息ID',
+                    sortable: true
+                },
+                {
+                    field: 'agentCode',
+                    title: '代理人号',
+                    sortable: true
+                },
+                {
+                    field: 'agentName',
+                    title: '代理人名',
+                    sortable: true
+                },
+                {
+                    field: 'borDays',
+                    title: '借阅天数',
+                    sortable: true
+                },
+                {
+                    field: 'borAttachment',
+                    title: '借阅附件',
+                    sortable: true
+                },
+                {
+                    field: 'returnAttachment',
+                    title: '归还附件',
+                    sortable: true
+                },
+                {
+                    field: 'agentOrgCode',
+                    title: '代理人部门代码',
+                    sortable: true
+                },
+                {
+                    field: 'agentOrgName',
+                    title: '代理人机构名称',
+                    sortable: true
+                },
+                {
+                    field: 'remark',
+                    title: '备注信息',
+                    sortable: true
+                },
+                {
+                    field: 'arcStatus',
+                    title: '档案状态',
+                    sortable: true
+                },
+                {
+                    field: 'returnPath',
+                    title: '归还档案路径',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillDeptCode',
+                    title: '二级类目code',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillDeptName',
+                    title: '档案二级类目name',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcLevel',
+                    title: '档案密级',
+                    sortable: true
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '档案形成时间',
+                    sortable: true
+                },
+                {
+                    field: 'childArcType',
+                    title: '二级类目',
+                    sortable: true
+                },
+                {
+                    field: 'outRemark',
+                    title: '出库备注',
+                    sortable: true
+                },
+                {
+                    field: 'borTypel',
+                    title: '借阅档案形态名称',
+                    sortable: true
+                },
+                {
+                    field: 'path',
+                    title: '上传附件路径',
+                    sortable: true
+                },
+                {
+                    field: 'fileName',
+                    title: '上传文件名',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

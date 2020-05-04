@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImBusinoMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImBusino" id="ImBusinoResult">
+        <result property="id" column="ID"/>
+        <result property="busino" column="BUSINO"/>
+    </resultMap>
+
+    <sql id="selectImBusinoVo">
+        select ID, BUSINO from im_busino
+    </sql>
+
+    <select id="selectImBusinoList" parameterType="net.northking.iacmp.imp.domain.ImBusino"
+            resultMap="ImBusinoResult">
+        <include refid="selectImBusinoVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="busino != null  and busino != '' ">and BUSINO = #{busino}</if>
+        </where>
+    </select>
+
+    <select id="selectImBusinoById" parameterType="Long" resultMap="ImBusinoResult">
+        <include refid="selectImBusinoVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImBusino" parameterType="net.northking.iacmp.imp.domain.ImBusino" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into im_busino
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="busino != null  and busino != ''  ">BUSINO,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="busino != null  and busino != ''  ">#{busino},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImBusino" parameterType="net.northking.iacmp.imp.domain.ImBusino">
+        update im_busino
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="busino != null  and busino != ''  ">BUSINO = #{busino},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBusinoById" parameterType="Long">
+        delete from im_busino where ID = #{id}
+    </delete>
+
+    <delete id="deleteImBusinoByIds" parameterType="String">
+        delete from im_busino where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

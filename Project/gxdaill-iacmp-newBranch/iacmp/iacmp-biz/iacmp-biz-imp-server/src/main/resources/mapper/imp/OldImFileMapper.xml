@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.OldImFileMapper">
+
+    <resultMap type="OldImFile" id="OldImFileResult">
+        <result property="id" column="ID"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="serialno" column="SERIALNO"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createUserName" column="CREATE_USER_NAME"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="fileSource" column="FILE_SOURCE"/>
+        <result property="sysFlagInt" column="sys_flag_int"/>
+        <result property="fileId" column="FILE_ID"/>
+        <result property="userCodeId" column="USER_CODE_ID"/>
+    </resultMap>
+
+    <sql id="selectImFileVo">
+        select ID, FILE_NAME, STATUS, BATCH_ID, CREATE_TIME, SERIALNO, FILE_PATH, FILE_SIZE, FILE_TYPE, BILL_ID,
+        BILL_NAME, REMARK, CREATE_USER, CREATE_USER_NAME, SYSTEM_FLAG, FILE_SOURCE, sys_flag_int, FILE_ID, USER_CODE_ID
+        from im_file
+    </sql>
+
+    <select id="selectImFileList" parameterType="OldImFile" resultMap="OldImFileResult">
+        <include refid="selectImFileVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="fileName != null  and fileName != '' ">and FILE_NAME = #{fileName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="serialno != null ">and SERIALNO = #{serialno}</if>
+            <if test="filePath != null  and filePath != '' ">and FILE_PATH = #{filePath}</if>
+            <if test="fileSize != null ">and FILE_SIZE = #{fileSize}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="billId != null  and billId != '' ">and BILL_ID = #{billId}</if>
+            <if test="billName != null  and billName != '' ">and BILL_NAME = #{billName}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null  and createUser != '' ">and CREATE_USER = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != '' ">and CREATE_USER_NAME = #{createUserName}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="fileSource != null  and fileSource != '' ">and FILE_SOURCE = #{fileSource}</if>
+            <if test="sysFlagInt != null ">and sys_flag_int = #{sysFlagInt}</if>
+            <if test="fileId != null ">and FILE_ID = #{fileId}</if>
+            <if test="userCodeId != null  and userCodeId != '' ">and USER_CODE_ID = #{userCodeId}</if>
+        </where>
+    </select>
+
+    <select id="selectImFileById" parameterType="String" resultMap="OldImFileResult">
+        <include refid="selectImFileVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImFile" parameterType="OldImFile" useGeneratedKeys="true"
+            keyProperty="fileId">
+        insert into im_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="serialno != null  ">SERIALNO,</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH,</if>
+            <if test="fileSize != null  ">FILE_SIZE,</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE,</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID,</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER,</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE,</if>
+            <if test="sysFlagInt != null  ">sys_flag_int,</if>
+            <if test="fileId != null  ">FILE_ID,</if>
+            <if test="userCodeId != null  and userCodeId != ''  ">USER_CODE_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="serialno != null  ">#{serialno},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="fileSize != null  ">#{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">#{fileType},</if>
+            <if test="billId != null  and billId != ''  ">#{billId},</if>
+            <if test="billName != null  and billName != ''  ">#{billName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">#{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">#{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="fileSource != null  and fileSource != ''  ">#{fileSource},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="fileId != null  ">#{fileId},</if>
+            <if test="userCodeId != null  and userCodeId != ''  ">#{userCodeId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImFile" parameterType="OldImFile">
+        update im_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME = #{fileName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="serialno != null  ">SERIALNO = #{serialno},</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH = #{filePath},</if>
+            <if test="fileSize != null  ">FILE_SIZE = #{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE = #{fileType},</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID = #{billId},</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME = #{billName},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER = #{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME = #{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE = #{fileSource},</if>
+            <if test="sysFlagInt != null  ">sys_flag_int = #{sysFlagInt},</if>
+            <if test="userCodeId != null  and userCodeId != ''  ">USER_CODE_ID = #{userCodeId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImFileById" parameterType="String">
+        delete from im_file where ID = #{id}
+    </delete>
+
+    <delete id="deleteImFileByIds" parameterType="String">
+        delete from im_file where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectImFileByMap" parameterType="Map" resultMap="OldImFileResult">
+        select f.ID, f.FILE_NAME, f.STATUS, f.BATCH_ID, f.CREATE_TIME, f.SERIALNO,
+        f.FILE_PATH, f.FILE_SIZE, f.FILE_TYPE, f.BILL_ID, f.BILL_NAME, f.REMARK,
+        f.CREATE_USER, f.CREATE_USER_NAME, f.SYSTEM_FLAG, f.FILE_SOURCE, f.sys_flag_int,
+        f.FILE_ID, f.USER_CODE_ID
+        from im_file f
+        left join im_batch b on f.BATCH_ID = b.ID
+        <where>
+            <if test="id != null  and id != '' ">and f.id = #{id}</if>
+            <if test="status != null  and status != '' ">and f.STATUS = #{status}</if>
+            <if test="busiNo != null  and busiNo != '' ">and b.regbillglideno = #{busiNo}</if>
+            <if test="transactionNo != null ">and b.TRANSACTION_NO = #{transactionNo}</if>
+            <if test="billIds != null ">
+                and f.bill_id in
+                <foreach item="billId" collection="billIds" open="(" separator="," close=")">
+                    #{billId}
+                </foreach>
+            </if>
+            <if test="userIds != null ">
+                and f.USER_CODE_ID in
+                <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

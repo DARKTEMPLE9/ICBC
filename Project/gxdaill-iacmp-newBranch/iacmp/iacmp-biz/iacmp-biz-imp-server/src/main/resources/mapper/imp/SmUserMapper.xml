@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.SmUserMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.SmUser" id="SmUserResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="orgId" column="ORG_ID"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="type" column="TYPE"/>
+        <result property="status" column="STATUS"/>
+        <!--<result property="createTime" column="CREATE_TIME"/>-->
+        <result property="lastPassChgDate" column="LAST_PASS_CHG_DATE"/>
+        <result property="loginIp" column="LOGIN_IP"/>
+        <result property="projectId" column="PROJECT_ID"/>
+        <result property="proEmployeeId" column="PRO_EMPLOYEE_ID"/>
+        <result property="lastLogin" column="LAST_LOGIN"/>
+        <result property="userId" column="USER_ID"/>
+    </resultMap>
+
+    <sql id="selectSmUserVo">
+        select ID, CODE, NAME, ORG_ID, PASSWORD, TYPE, STATUS, CREATE_TIME, LAST_PASS_CHG_DATE, LOGIN_IP, PROJECT_ID,
+        PRO_EMPLOYEE_ID, LAST_LOGIN, USER_ID from sm_user
+    </sql>
+
+    <select id="selectSmUserList" resultMap="SmUserResult">
+        select ID, CODE, NAME, ORG_ID, PASSWORD, TYPE, STATUS, CREATE_TIME, LAST_PASS_CHG_DATE, LOGIN_IP,
+        PRO_EMPLOYEE_ID, LAST_LOGIN,USER_ID,
+        (select name from sm_organ where id = a.org_id) as PROJECT_ID from sm_user a
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="orgId != null  and orgId != '' ">and ORG_ID = #{orgId}</if>
+            <if test="password != null  and password != '' ">and PASSWORD = #{password}</if>
+            <if test="type != null  and type != '' ">and TYPE = #{type}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="lastPassChgDate != null ">and LAST_PASS_CHG_DATE = #{lastPassChgDate}</if>
+            <if test="loginIp != null  and loginIp != '' ">and LOGIN_IP = #{loginIp}</if>
+            <if test="projectId != null  and projectId != '' ">and PROJECT_ID = #{projectId}</if>
+            <if test="proEmployeeId != null  and proEmployeeId != '' ">and PRO_EMPLOYEE_ID = #{proEmployeeId}</if>
+            <if test="lastLogin != null ">and LAST_LOGIN = #{lastLogin}</if>
+            <if test="userId != null ">and USER_ID = #{userId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="selectSmUserCount" resultType="Integer">
+        select count(1) from sm_user
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="orgId != null  and orgId != '' ">and ORG_ID = #{orgId}</if>
+            <if test="password != null  and password != '' ">and PASSWORD = #{password}</if>
+            <if test="type != null  and type != '' ">and TYPE = #{type}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="lastPassChgDate != null ">and LAST_PASS_CHG_DATE = #{lastPassChgDate}</if>
+            <if test="loginIp != null  and loginIp != '' ">and LOGIN_IP = #{loginIp}</if>
+            <if test="projectId != null  and projectId != '' ">and PROJECT_ID = #{projectId}</if>
+            <if test="proEmployeeId != null  and proEmployeeId != '' ">and PRO_EMPLOYEE_ID = #{proEmployeeId}</if>
+            <if test="lastLogin != null ">and LAST_LOGIN = #{lastLogin}</if>
+            <if test="userId != null ">and USER_ID = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectUserAndOrgNameByUserId" resultType="Map">
+        SELECT b.code,b.name,b.status,(select name from sm_organ where id = b.ORG_ID) as org_name from
+        (select code,name,ORG_ID,status from sm_user where id=#{userId}) b
+    </select>
+
+    <select id="selectSmUserById" parameterType="String" resultMap="SmUserResult">
+        <include refid="selectSmUserVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="findByUserCode" parameterType="String" resultMap="SmUserResult">
+        <include refid="selectSmUserVo"/>
+        where code = #{userCode}
+    </select>
+
+    <insert id="insertSmUser" parameterType="net.northking.iacmp.imp.domain.SmUser">
+        insert into sm_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="orgId != null  and orgId != ''  ">ORG_ID,</if>
+            <if test="password != null  and password != ''  ">PASSWORD,</if>
+            <if test="type != null  and type != ''  ">TYPE,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="lastPassChgDate != null  ">LAST_PASS_CHG_DATE,</if>
+            <if test="loginIp != null  and loginIp != ''  ">LOGIN_IP,</if>
+            <if test="projectId != null  and projectId != ''  ">PROJECT_ID,</if>
+            <if test="proEmployeeId != null  and proEmployeeId != ''  ">PRO_EMPLOYEE_ID,</if>
+            <if test="lastLogin != null  ">LAST_LOGIN,</if>
+            <if test="userId != null  ">USER_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="orgId != null  and orgId != ''  ">#{orgId},</if>
+            <if test="password != null  and password != ''  ">#{password},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="lastPassChgDate != null  ">#{lastPassChgDate},</if>
+            <if test="loginIp != null  and loginIp != ''  ">#{loginIp},</if>
+            <if test="projectId != null  and projectId != ''  ">#{projectId},</if>
+            <if test="proEmployeeId != null  and proEmployeeId != ''  ">#{proEmployeeId},</if>
+            <if test="lastLogin != null  ">#{lastLogin},</if>
+            <if test="userId != null  ">#{userId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmUser" parameterType="net.northking.iacmp.imp.domain.SmUser">
+        update sm_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="orgId != null  and orgId != ''  ">ORG_ID = #{orgId},</if>
+            <if test="password != null  and password != ''  ">PASSWORD = #{password},</if>
+            <if test="type != null  and type != ''  ">TYPE = #{type},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="lastPassChgDate != null  ">LAST_PASS_CHG_DATE = #{lastPassChgDate},</if>
+            <if test="loginIp != null  and loginIp != ''  ">LOGIN_IP = #{loginIp},</if>
+            <if test="projectId != null  and projectId != ''  ">PROJECT_ID = #{projectId},</if>
+            <if test="proEmployeeId != null  and proEmployeeId != ''  ">PRO_EMPLOYEE_ID = #{proEmployeeId},</if>
+            <if test="lastLogin != null  ">LAST_LOGIN = #{lastLogin},</if>
+            <if test="userId != null  ">USER_ID = #{userId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteSmUserById" parameterType="String">
+        delete from sm_user where ID = #{id}
+    </delete>
+
+    <delete id="deleteSmUserByIds" parameterType="String">
+        delete from sm_user where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

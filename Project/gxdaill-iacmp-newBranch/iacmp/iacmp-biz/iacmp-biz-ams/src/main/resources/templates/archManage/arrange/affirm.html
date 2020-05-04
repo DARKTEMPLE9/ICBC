@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('确认')"/>
+</head>
+<body class="gray-bg">
+<!--<div class="form-group">
+    <label class="col-sm-3 control-label">是否已满：</label>
+    <div class="col-sm-8">
+        <select id="boxStatus" name="boxStatus" class="form-control">
+            <option selected="selected" value="10">未满</option>
+            <option  value="20">已满</option>
+        </select>
+    </div>
+</div>-->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "archManage/arrange";
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var ids = [[${ids}]]
+    //档案件号
+    var num = [[${boxNum}]];
+    $(function () {
+        var options = {
+            url: prefix + "/affirmPage?ids=" + ids,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                // {
+                //     field : 'arcCode',
+                //     title : '文件编号'
+                // },
+                {
+                    field: 'arcName',
+                    title: '档案名称'
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者'
+                },
+                {
+                    field: 'arcPageNum',
+                    title: '页数'
+                },
+                {
+                    field: 'arcNum',
+                    title: '份数'
+                },
+                {
+                    title: '档案件号',
+                    align: 'center',
+                    // field : 'boxNum'
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // 只能输入非0开头的9位数字
+                        actions.push('<input type="text" id="boxNum" name="boxNum" '
+                            + 'value="' + num + '"'
+                            + ' oninput="value=value.replace(/[^\\d]/g,\'\')" placeholder="非0开头数字，最多9位" class="input-sm form-control"'
+                            + ' onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\');if(this.value.substring(0,1)==\'0\'){this.value=this.value.replace(this.value,\'\')}}"'
+                            + ' onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\\D/g,\'\')}"'
+                            + 'required maxlength="9" readonly="readonly"/> ');
+                        num++;
+                        return actions.join('');//解决输入框问题
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        // $("#boxNum").val(num);
+    });
+
+    function submitHandler() {
+        var boxNum = $("#boxNum").val()
+        console.log(boxNum)
+        var boxId = [[${boxId}]]
+        var batchId = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (batchId.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        if (boxNum == "") {
+            $.modal.alertWarning("请输入档案件号");
+            return;
+        }
+
+        var boxStatus = $("#boxStatus").val();
+        // $.operate.save(prefix + "/intoBox?batchIds="+batchId+"&boxId="+boxId+"&boxNum="+boxNum);
+        // layer.close();
+        var url = "/intoBox?batchIds=" + batchId + "&boxId=" + boxId + "&boxNum=" + boxNum;
+        $.ajax({
+            type: "post",
+            async: false,
+            url: prefix + url,
+            error: function (data) {
+                console.log("data=" + data);
+            },
+            success: function (data) {
+                console.log("data=" + data);
+                if (data.code == 500) {
+                    if (data.msg != null) {
+                        $.modal.alertWarning(data.msg);
+                    } else {
+                        $.modal.alertWarning("档案入盒失败！");
+                    }
+                    return;
+                } else if (data.code == 0) {
+                    $.modal.msgSuccess("档案入盒成功！");
+
+                    parent.location.href = ctx + "archManage/arrange";
+                    window.location.reload()
+                }
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

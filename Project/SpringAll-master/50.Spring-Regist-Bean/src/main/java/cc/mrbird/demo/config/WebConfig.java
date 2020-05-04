@@ -19,15 +19,15 @@ import org.springframework.stereotype.Service;
  */
 @Configuration
 // @ComponentScan(value = "cc.mrbird.demo"
-        // , excludeFilters = {
-        //         @Filter(type = FilterType.ANNOTATION,
-        //                 classes = {Controller.class, Repository.class}),
-        //         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = User.class)
-        //         @Filter(type = FilterType.CUSTOM, classes = MyTypeFilter.class)
-        // }
-        // includeFilters = {
-        //         @Filter(type = FilterType.ANNOTATION, classes = Service.class)
-        // }, useDefaultFilters = false
+// , excludeFilters = {
+//         @Filter(type = FilterType.ANNOTATION,
+//                 classes = {Controller.class, Repository.class}),
+//         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = User.class)
+//         @Filter(type = FilterType.CUSTOM, classes = MyTypeFilter.class)
+// }
+// includeFilters = {
+//         @Filter(type = FilterType.ANNOTATION, classes = Service.class)
+// }, useDefaultFilters = false
 // )
 @Import({Hello.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class})
 public class WebConfig {

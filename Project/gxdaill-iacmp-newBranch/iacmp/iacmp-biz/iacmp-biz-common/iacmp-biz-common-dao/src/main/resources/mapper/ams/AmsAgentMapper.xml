@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsAgentMapper">
+
+    <resultMap type="AmsAgent" id="AmsAgentResult">
+        <result property="id" column="ID"/>
+        <result property="trustorCode" column="TRUSTOR_CODE"/>
+        <result property="trustorName" column="TRUSTOR_NAME"/>
+        <result property="agentCode" column="AGENT_CODE"/>
+        <result property="agentName" column="AGENT_NAME"/>
+        <result property="agentOrgCode" column="AGENT_ORG_CODE"/>
+        <result property="agentOrgName" column="AGENT_ORG_NAME"/>
+        <result property="agentStartDate" column="AGENT_START_DATE"/>
+        <result property="agentEndDate" column="AGENT_END_DATE"/>
+        <result property="agentStatus" column="AGENT_STATUS"/>
+        <result property="agentId" column="AGENT_ID"/>
+    </resultMap>
+
+    <sql id="selectAmsAgentVo">
+        select ID, TRUSTOR_CODE, TRUSTOR_NAME, AGENT_CODE, AGENT_NAME, AGENT_ORG_CODE, AGENT_ORG_NAME, AGENT_START_DATE,
+        AGENT_END_DATE, AGENT_STATUS from ams_agent
+    </sql>
+
+    <select id="selectAmsAgentList" parameterType="AmsAgent" resultMap="AmsAgentResult">
+        <include refid="selectAmsAgentVo"/>
+        <where>
+            <if test="id != null and id != '' ">and ID = #{id}</if>
+            <if test="trustorCode != null  and trustorCode != '' ">and TRUSTOR_CODE = #{trustorCode}</if>
+            <if test="trustorName != null  and trustorName != '' ">and TRUSTOR_NAME = #{trustorName}</if>
+            <if test="agentCode != null  and agentCode != '' ">and AGENT_CODE = #{agentCode}</if>
+            <if test="agentName != null  and agentName != '' ">and AGENT_NAME = #{agentName}</if>
+            <if test="agentOrgCode != null  and agentOrgCode != '' ">and AGENT_ORG_CODE = #{agentOrgCode}</if>
+            <if test="agentOrgName != null  and agentOrgName != '' ">and AGENT_ORG_NAME = #{agentOrgName}</if>
+            <if test="agentStartDate != null ">and AGENT_START_DATE = #{agentStartDate}</if>
+            <if test="agentEndDate != null ">and AGENT_END_DATE = #{agentEndDate}</if>
+            <if test="agentStatus != null  and agentStatus != '' ">and AGENT_STATUS = #{agentStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsAgentById" parameterType="String" resultMap="AmsAgentResult">
+        <include refid="selectAmsAgentVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsAgent" parameterType="AmsAgent">
+        insert into ams_agent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="trustorCode != null  and trustorCode != ''  ">TRUSTOR_CODE,</if>
+            <if test="trustorName != null  and trustorName != ''  ">TRUSTOR_NAME,</if>
+            <if test="agentCode != null  and agentCode != ''  ">AGENT_CODE,</if>
+            <if test="agentName != null  and agentName != ''  ">AGENT_NAME,</if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">AGENT_ORG_CODE,</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">AGENT_ORG_NAME,</if>
+            <if test="agentStartDate != null  ">AGENT_START_DATE,</if>
+            <if test="agentEndDate != null  ">AGENT_END_DATE,</if>
+            <if test="agentStatus != null  and agentStatus != ''  ">AGENT_STATUS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="trustorCode != null  and trustorCode != ''  ">#{trustorCode},</if>
+            <if test="trustorName != null  and trustorName != ''  ">#{trustorName},</if>
+            <if test="agentCode != null  and agentCode != ''  ">#{agentCode},</if>
+            <if test="agentName != null  and agentName != ''  ">#{agentName},</if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">#{agentOrgCode},</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">#{agentOrgName},</if>
+            <if test="agentStartDate != null  ">#{agentStartDate},</if>
+            <if test="agentEndDate != null  ">#{agentEndDate},</if>
+            <if test="agentStatus != null  and agentStatus != ''  ">#{agentStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsAgent" parameterType="AmsAgent">
+        update ams_agent
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trustorCode != null  and trustorCode != ''  ">TRUSTOR_CODE = #{trustorCode},</if>
+            <if test="trustorName != null  and trustorName != ''  ">TRUSTOR_NAME = #{trustorName},</if>
+            <if test="agentCode != null  and agentCode != ''  ">AGENT_CODE = #{agentCode},</if>
+            <if test="agentName != null  and agentName != ''  ">AGENT_NAME = #{agentName},</if>
+            <if test="agentOrgCode != null  and agentOrgCode != ''  ">AGENT_ORG_CODE = #{agentOrgCode},</if>
+            <if test="agentOrgName != null  and agentOrgName != ''  ">AGENT_ORG_NAME = #{agentOrgName},</if>
+            <if test="agentStartDate != null  ">AGENT_START_DATE = #{agentStartDate},</if>
+            <if test="agentEndDate != null  ">AGENT_END_DATE = #{agentEndDate},</if>
+            <if test="agentStatus != null  and agentStatus != ''  ">AGENT_STATUS = #{agentStatus},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsAgentById" parameterType="String">
+        delete from ams_agent where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsAgentByIds" parameterType="String">
+        delete from ams_agent where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

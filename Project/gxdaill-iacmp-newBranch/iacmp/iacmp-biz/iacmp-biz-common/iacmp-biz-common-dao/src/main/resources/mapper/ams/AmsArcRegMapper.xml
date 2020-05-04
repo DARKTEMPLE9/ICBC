@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsArcRegMapper">
+
+    <resultMap type="AmsArcReg" id="AmsArcRegResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="regPageNum" column="REG_PAGE_NUM"/>
+        <result property="regOpId" column="REG_OP_ID"/>
+        <result property="regOpName" column="REG_OP_NAME"/>
+        <result property="regOrgCode" column="REG_ORG_CODE"/>
+        <result property="regOrgName" column="REG_ORG_NAME"/>
+        <result property="regTime" column="REG_TIME"/>
+        <result property="regRemark" column="REG_REMARK"/>
+        <result property="recNum" column="REC_NUM"/>
+        <result property="recOpId" column="REC_OP_ID"/>
+        <result property="recOpName" column="REC_OP_NAME"/>
+        <result property="recOrgCode" column="REC_ORG_CODE"/>
+        <result property="recOrgName" column="REC_ORG_NAME"/>
+        <result property="recTime" column="REC_TIME"/>
+        <result property="recRemark" column="REC_REMARK"/>
+        <result property="status" column="STATUS"/>
+        <result property="modifier" column="MODIFIER"/>
+        <result property="modTime" column="MOD_TIME"/>
+        <result property="regArcNum" column="REG_ARC_NUM"/>
+        <result property="recPageNum" column="REC_PAGE_NUM"/>
+        <result property="repeatMark" column="REPEAT_MARK"/>
+        <result property="respOpName" column="resp_op_name"/>
+        <result property="arcCode" column="arc_code"/>
+        <result property="arcCreTime" column="arc_cre_time"/>
+        <result property="hasMoveBank" column="has_move_bank"/>
+        <result property="regId" column="reg_id"/>
+        <result property="arcFormat" column="ARC_FORMAT"/>
+    </resultMap>
+
+    <sql id="selectAmsArcRegVo">
+        select ID, NAME, REG_PAGE_NUM, REG_OP_ID, REG_OP_NAME, REG_ORG_CODE, REG_ORG_NAME, REG_TIME, REG_REMARK,
+        REC_NUM, REC_OP_ID, REC_OP_NAME, REC_ORG_CODE, REC_ORG_NAME, REC_TIME, REC_REMARK, STATUS, MODIFIER, MOD_TIME,
+        REG_ARC_NUM, REC_PAGE_NUM, REPEAT_MARK,resp_op_name ,arc_code,arc_cre_time,has_move_bank,ARC_FORMAT from
+        ams_arc_reg
+    </sql>
+
+    <select id="selectAmsArcRegList" parameterType="AmsArcRegVO" resultMap="AmsArcRegResult">
+        <include refid="selectAmsArcRegVo"/>
+        where status not in(60)
+        <if test="id != null  and id != '' ">and ID = #{id}</if>
+        <if test="name != null  and name != '' ">and NAME like CONCAT('%',#{name},'%')</if>
+        <if test="regTimeGte != null ">and
+            <![CDATA[ DATE_FORMAT(REG_TIME,'%Y-%m-%d') >= DATE_FORMAT(#{regTimeGte},'%Y-%m-%d') ]]></if>
+        <if test="regTimeLte != null ">and
+            <![CDATA[ DATE_FORMAT(REG_TIME,'%Y-%m-%d') <= DATE_FORMAT(#{regTimeLte},'%Y-%m-%d') ]]></if>
+        <if test="regPageNum != null ">and REG_PAGE_NUM = #{regPageNum}</if>
+        <if test="regOpId != null  and regOpId != '' ">and REG_OP_ID = #{regOpId}</if>
+        <if test="regOpName != null  and regOpName != '' ">and REG_OP_NAME like CONCAT('%',#{regOpName},'%')</if>
+        <if test="regOrgCode != null  and regOrgCode != '' ">and REG_ORG_CODE = #{regOrgCode}</if>
+        <if test="regOrgName != null  and regOrgName != '' ">and REG_ORG_NAME = #{regOrgName}</if>
+        <if test="regRemark != null  and regRemark != '' ">and REG_REMARK = #{regRemark}</if>
+        <if test="recNum != null ">and REC_NUM = #{recNum}</if>
+        <if test="recOpId != null  and recOpId != '' ">and REC_OP_ID = #{recOpId}</if>
+        <if test="recOpName != null  and recOpName != '' ">and REC_OP_NAME like CONCAT('%',#{recOpName},'%')</if>
+        <if test="recOrgCode != null  and recOrgCode != '' ">and REC_ORG_CODE = #{recOrgCode}</if>
+        <if test="recOrgName != null  and recOrgName != '' ">and REC_ORG_NAME = #{recOrgName}</if>
+        <if test="recTimeGte != null ">and
+            <![CDATA[ DATE_FORMAT(REC_TIME,'%Y-%m-%d') >= DATE_FORMAT(#{recTimeGte},'%Y-%m-%d') ]]></if>
+        <if test="recTimeLte != null ">and
+            <![CDATA[ DATE_FORMAT(REC_TIME,'%Y-%m-%d') <= DATE_FORMAT(#{recTimeLte},'%Y-%m-%d') ]]></if>
+        <if test="recRemark != null  and recRemark != '' ">and REC_REMARK = #{recRemark}</if>
+        <if test="status != null ">and STATUS = #{status}</if>
+        <if test="params.condition == 'myArcReceive' ">and STATUS not in (20)</if>
+        <if test="modifier != null  and modifier != '' ">and MODIFIER = #{modifier}</if>
+        <if test="modTime != null ">and MOD_TIME = #{modTime}</if>
+        <if test="regArcNum != null ">and REG_ARC_NUM = #{regArcNum}</if>
+        <if test="recPageNum != null ">and REC_PAGE_NUM = #{recPageNum}</if>
+        <if test="arcCode != null ">and arc_code = #{arcCode}</if>
+        <if test="respOpName != null ">and resp_op_name = #{respOpName}</if>
+        <if test="arcCreTime != null ">and arc_cre_time = #{arcCreTime}</if>
+        <if test="repeatMark != null  and repeatMark != '' ">and REPEAT_MARK = #{repeatMark}</if>
+        <if test="hasMoveBank != null and hasMoveBank != '' ">and has_move_bank = #{hasMoveBank}</if>
+        <if test="userId != null and userId != '' ">
+            reg_op_id = #{userId}
+        </if>
+        order by REG_TIME desc
+    </select>
+
+    <select id="selectAmsArcRegById" parameterType="String" resultMap="AmsArcRegResult">
+        <include refid="selectAmsArcRegVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectAmsArcRegByIds" parameterType="String" resultMap="AmsArcRegResult">
+        <include refid="selectAmsArcRegVo"/>
+        where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertAmsArcReg" parameterType="AmsArcReg" useGeneratedKeys="false" keyProperty="regId">
+        insert into ams_arc_reg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="regPageNum != null  ">REG_PAGE_NUM,</if>
+            <if test="regOpId != null  and regOpId != ''  ">REG_OP_ID,</if>
+            <if test="regOpName != null  and regOpName != ''  ">REG_OP_NAME,</if>
+            <if test="regOrgCode != null  and regOrgCode != ''  ">REG_ORG_CODE,</if>
+            <if test="regOrgName != null  and regOrgName != ''  ">REG_ORG_NAME,</if>
+            <if test="regTime != null  ">REG_TIME,</if>
+            <if test="regRemark != null  and regRemark != ''  ">REG_REMARK,</if>
+            <if test="recNum != null  ">REC_NUM,</if>
+            <if test="recOpId != null  and recOpId != ''  ">REC_OP_ID,</if>
+            <if test="recOpName != null  and recOpName != ''  ">REC_OP_NAME,</if>
+            <if test="recOrgCode != null  and recOrgCode != ''  ">REC_ORG_CODE,</if>
+            <if test="recOrgName != null  and recOrgName != ''  ">REC_ORG_NAME,</if>
+            <if test="recTime != null  ">REC_TIME,</if>
+            <if test="recRemark != null  and recRemark != ''  ">REC_REMARK,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="modifier != null  and modifier != ''  ">MODIFIER,</if>
+            <if test="modTime != null  ">MOD_TIME,</if>
+            <if test="regArcNum != null  ">REG_ARC_NUM,</if>
+            <if test="recPageNum != null  ">REC_PAGE_NUM,</if>
+            <if test="repeatMark != null  and repeatMark != ''  ">REPEAT_MARK,</if>
+            <if test="respOpName != null  and respOpName != ''  ">resp_op_name,</if>
+            <if test="arcCode != null  and arcCode != ''  ">arc_code,</if>
+            <if test="arcCreTime != null  ">arc_cre_time,</if>
+            <if test="hasMoveBank != null  ">has_move_bank,</if>
+            <if test="arcFormat != null  ">ARC_FORMAT,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="regPageNum != null  ">#{regPageNum},</if>
+            <if test="regOpId != null  and regOpId != ''  ">#{regOpId},</if>
+            <if test="regOpName != null  and regOpName != ''  ">#{regOpName},</if>
+            <if test="regOrgCode != null  and regOrgCode != ''  ">#{regOrgCode},</if>
+            <if test="regOrgName != null  and regOrgName != ''  ">#{regOrgName},</if>
+            <if test="regTime != null  ">#{regTime},</if>
+            <if test="regRemark != null  and regRemark != ''  ">#{regRemark},</if>
+            <if test="recNum != null  ">#{recNum},</if>
+            <if test="recOpId != null  and recOpId != ''  ">#{recOpId},</if>
+            <if test="recOpName != null  and recOpName != ''  ">#{recOpName},</if>
+            <if test="recOrgCode != null  and recOrgCode != ''  ">#{recOrgCode},</if>
+            <if test="recOrgName != null  and recOrgName != ''  ">#{recOrgName},</if>
+            <if test="recTime != null  ">#{recTime},</if>
+            <if test="recRemark != null  and recRemark != ''  ">#{recRemark},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="modifier != null  and modifier != ''  ">#{modifier},</if>
+            <if test="modTime != null  ">#{modTime},</if>
+            <if test="regArcNum != null  ">#{regArcNum},</if>
+            <if test="recPageNum != null  ">#{recPageNum},</if>
+            <if test="repeatMark != null  and repeatMark != ''  ">#{repeatMark},</if>
+            <if test="respOpName != null  and respOpName != ''  ">#{respOpName},</if>
+            <if test="arcCode != null  and arcCode != ''  ">#{arcCode},</if>
+            <if test="arcCreTime != null  ">
+                #{arcCreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hasMoveBank != null  and hasMoveBank != ''  ">#{hasMoveBank},</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">#{arcFormat},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsArcReg" parameterType="AmsArcReg">
+        update ams_arc_reg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="regPageNum != null  ">REG_PAGE_NUM = #{regPageNum},</if>
+            <if test="regOpId != null  and regOpId != ''  ">REG_OP_ID = #{regOpId},</if>
+            <if test="regOpName != null  and regOpName != ''  ">REG_OP_NAME = #{regOpName},</if>
+            <if test="regOrgCode != null  and regOrgCode != ''  ">REG_ORG_CODE = #{regOrgCode},</if>
+            <if test="regOrgName != null  and regOrgName != ''  ">REG_ORG_NAME = #{regOrgName},</if>
+            <if test="regTime != null  ">REG_TIME = #{regTime},</if>
+            <if test="regRemark != null  and regRemark != ''  ">REG_REMARK = #{regRemark},</if>
+            <if test="recNum != null  ">REC_NUM = #{recNum},</if>
+            <if test="recOpId != null  and recOpId != ''  ">REC_OP_ID = #{recOpId},</if>
+            <if test="recOpName != null  and recOpName != ''  ">REC_OP_NAME = #{recOpName},</if>
+            <if test="recOrgCode != null  and recOrgCode != ''  ">REC_ORG_CODE = #{recOrgCode},</if>
+            <if test="recOrgName != null  and recOrgName != ''  ">REC_ORG_NAME = #{recOrgName},</if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME = #{respOpName},</if>
+            <if test="recTime != null  ">REC_TIME = #{recTime},</if>
+            <if test="recRemark != null  and recRemark != ''  ">REC_REMARK = #{recRemark},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="modifier != null  and modifier != ''  ">MODIFIER = #{modifier},</if>
+            <if test="modTime != null  ">MOD_TIME = #{modTime},</if>
+            <if test="regArcNum != null  ">REG_ARC_NUM = #{regArcNum},</if>
+            <if test="recPageNum != null  ">REC_PAGE_NUM = #{recPageNum},</if>
+            <if test="repeatMark != null  and repeatMark != ''  ">REPEAT_MARK = #{repeatMark},</if>
+            <if test="hasMoveBank != null  and hasMoveBank != ''  ">has_move_bank = #{hasMoveBank},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsArcRegById" parameterType="String">
+        delete from ams_arc_reg where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsArcRegByIds" parameterType="String">
+        delete from ams_arc_reg where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAmsArcRegListByDeptId" parameterType="AmsArcRegVO" resultMap="AmsArcRegResult">
+        select g.ID, g.NAME, g.REG_PAGE_NUM, g.REG_OP_ID, g.REG_OP_NAME, g.REG_ORG_CODE, g.REG_ORG_NAME,g.REG_TIME,
+        g.REG_REMARK, g.REC_NUM, g.REC_OP_ID, g.REC_OP_NAME, g.REC_ORG_CODE, g.REC_ORG_NAME, g.REC_TIME, g.REC_REMARK,
+        g.STATUS, g.MODIFIER, g.MOD_TIME, g.REG_ARC_NUM, g.REC_PAGE_NUM, g.REPEAT_MARK,g.arc_code,g.resp_op_name,
+        g.arc_cre_time,g.has_move_bank,g.ARC_FORMAT
+        from ams_arc_reg g
+        left join ams_batch ab on g.id = ab.arc_no
+        left join sys_user u on u.user_id = g.reg_op_id
+        left join sys_dept d on u.dept_id = d.dept_id
+        <where>
+            <!--            <if test="deptId != null and deptId != '' ">and-->
+            <!--                d.dept_id IN-->
+            <!--                (-->
+            <!--                (SELECT DEPT_ID FROM SYS_DEPT WHERE DEPT_ID = #{deptId})-->
+            <!--                UNION-->
+            <!--                (SELECT DEPT_ID FROM SYS_DEPT WHERE ANCESTORS = #{deptId})-->
+            <!--                )-->
+            <!--            </if>-->
+            <if test="deptId != null and deptId != '' ">and
+                d.dept_id = #{deptId}
+            </if>
+            <!--            <if test="deptId != null and deptId != '' ">and-->
+            <!--                (d.dept_id = #{deptId} or d.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET-->
+            <!--                (#{deptId},ancestors) ))-->
+            <!--            </if>-->
+            <if test="userId != null and userId != '' ">and g.reg_op_id = #{userId}</if>
+            <if test="name != null  and name != '' ">and g.NAME like concat(concat('%',#{name}),'%')</if>
+            <if test="regTimeGte != null ">and
+                <![CDATA[ to_char( g.REG_TIME,'yyyy-mm-dd') >= to_char( #{regTimeGte},'yyyy-mm-dd') ]]></if>
+            <if test="regTimeLte != null ">and
+                <![CDATA[ to_char( g.REG_TIME,'yyyy-mm-dd') <= to_char( #{regTimeLte},'yyyy-mm-dd') ]]></if>
+            <if test="regPageNum != null ">and g.REG_PAGE_NUM = #{regPageNum}</if>
+            <if test="regOpId != null  and regOpId != '' ">and g.REG_OP_ID = #{regOpId}</if>
+            <if test="regOpName != null  and regOpName != '' ">and g.REG_OP_NAME like
+                concat(concat('%',#{regOpName}),'%')
+            </if>
+            <if test="regOrgCode != null  and regOrgCode != '' ">and g.REG_ORG_CODE = #{regOrgCode}</if>
+            <if test="regOrgName != null  and regOrgName != '' ">and g.REG_ORG_NAME = #{regOrgName}</if>
+            <if test="regRemark != null  and regRemark != '' ">and g.REG_REMARK = #{regRemark}</if>
+            <if test="recNum != null ">and g.REC_NUM = #{recNum}</if>
+            <if test="recOpId != null  and recOpId != '' ">and g.REC_OP_ID = #{recOpId}</if>
+            <if test="recOpName != null  and recOpName != '' ">and g.REC_OP_NAME like
+                concat(concat('%',#{recOpName}),'%')
+            </if>
+            <if test="recOrgCode != null  and recOrgCode != '' ">and g.REC_ORG_CODE = #{recOrgCode}</if>
+            <if test="recOrgName != null  and recOrgName != '' ">and g.REC_ORG_NAME = #{recOrgName}</if>
+            <if test="recTimeGte != null ">and
+                <![CDATA[ to_char( g.REC_TIME,'yyyy-mm-dd') >= to_char( #{recTimeGte},'yyyy-mm-dd') ]]></if>
+            <if test="recTimeLte != null ">and
+                <![CDATA[ to_char( g.REC_TIME,'yyyy-mm-dd') <= to_char( #{recTimeGte},'yyyy-mm-dd') ]]></if>
+            <if test="recRemark != null  and recRemark != '' ">and g.REC_REMARK = #{recRemark}</if>
+            <choose>
+                <when test="status == '4' || status == '5' ">
+                    and ab.STATUS = #{status}
+                </when>
+                <otherwise>
+                    <if test="status != null ">and g.STATUS = #{status}</if>
+                </otherwise>
+            </choose>
+            <if test="status == null || status == '' ">and g.STATUS not in (60)</if>
+            <if test="params.condition == 'myArcReceive' ">and g.STATUS not in (10,20)</if>
+            <if test="modifier != null  and modifier != '' ">and g.MODIFIER = #{modifier}</if>
+            <if test="modTime != null ">and g.MOD_TIME = #{modTime}</if>
+            <if test="regArcNum != null ">and g.REG_ARC_NUM = #{regArcNum}</if>
+            <if test="recPageNum != null ">and g.REC_PAGE_NUM = #{recPageNum}</if>
+            <if test="arcCode != null ">and g.arc_code = #{arcCode}</if>
+            <if test="respOpName != null ">and g.resp_op_name = #{respOpName}</if>
+            <if test="arcCreTime != null ">and g.arc_cre_time = #{arcCreTime}</if>
+            <if test="repeatMark != null  and repeatMark != '' ">and g.REPEAT_MARK = #{repeatMark}</if>
+            <if test="hasMoveBank != null  and hasMoveBank != '' ">and g.has_move_bank = #{hasMoveBank}</if>
+            -- and g.STATUS = '20'
+        </where>
+        order by g.REC_TIME desc
+    </select>
+
+
+    <select id="selectAmsArcRegListByDeptIds" resultMap="AmsArcRegResult">
+        select g.ID, g.NAME, g.REG_PAGE_NUM, g.REG_OP_ID, g.REG_OP_NAME, g.REG_ORG_CODE, g.REG_ORG_NAME,g.REG_TIME,
+        g.REG_REMARK, g.REC_NUM, g.REC_OP_ID, g.REC_OP_NAME, g.REC_ORG_CODE, g.REC_ORG_NAME, g.REC_TIME, g.REC_REMARK,
+        g.STATUS, g.MODIFIER, g.MOD_TIME, g.REG_ARC_NUM, g.REC_PAGE_NUM, g.REPEAT_MARK,g.arc_code,g.resp_op_name,
+        g.arc_cre_time,g.has_move_bank,g.ARC_FORMAT
+        from ams_arc_reg g
+        left join ams_batch ab on g.id = ab.arc_no
+        left join sys_user u on u.user_id = g.reg_op_id
+        left join sys_dept d on u.dept_id = d.dept_id
+        <where>
+            <if test="deptList.size()>0">
+                d.dept_id in
+                <foreach item="deptid" collection="deptList" open="(" separator="," close=")">
+                    #{deptid}
+                </foreach>
+            </if>
+
+            <if test="amsArcReg.userId != null and amsArcReg.userId != '' ">
+                g.reg_op_id = #{amsArcReg.userId}
+            </if>
+            <if test="amsArcReg.name != null  and amsArcReg.name != '' ">and g.NAME like
+                concat(concat('%',#{amsArcReg.name}),'%')
+            </if>
+            <if test="amsArcReg.regTimeGte != null ">and
+                <![CDATA[ to_char(g.REG_TIME, 'yyyy-mm-dd') >= to_char(#{amsArcReg.regTimeGte}, 'yyyy-mm-dd') ]]></if>
+            <if test="amsArcReg.regTimeLte != null ">and
+                <![CDATA[ to_char(g.REG_TIME, 'yyyy-mm-dd') <= to_char(#{amsArcReg.regTimeLte}, 'yyyy-mm-dd') ]]></if>
+            <if test="amsArcReg.regPageNum != null ">and g.REG_PAGE_NUM = #{amsArcReg.regPageNum}</if>
+            <if test="amsArcReg.regOpId != null  and amsArcReg.regOpId != '' ">and g.REG_OP_ID = #{amsArcReg.regOpId}
+            </if>
+            <if test="amsArcReg.regOpName != null  and amsArcReg.regOpName != '' ">and g.REG_OP_NAME like
+                concat(concat('%',#{amsArcReg.regOpName}),'%')
+            </if>
+            <if test="amsArcReg.regOrgCode != null  and amsArcReg.regOrgCode != '' ">and g.REG_ORG_CODE =
+                #{amsArcReg.regOrgCode}
+            </if>
+            <if test="amsArcReg.regOrgName != null  and amsArcReg.regOrgName != '' ">and g.REG_ORG_NAME =
+                #{amsArcReg.regOrgName}
+            </if>
+            <if test="amsArcReg.regRemark != null  and amsArcReg.regRemark != '' ">and g.REG_REMARK =
+                #{amsArcReg.regRemark}
+            </if>
+            <if test="amsArcReg.recNum != null ">and g.REC_NUM = #{amsArcReg.recNum}</if>
+            <if test="amsArcReg.recOpId != null  and amsArcReg.recOpId != '' ">and g.REC_OP_ID = #{amsArcReg.recOpId}
+            </if>
+            <if test="amsArcReg.recOpName != null  and amsArcReg.recOpName != '' ">and g.REC_OP_NAME like
+                concat(concat('%',#{amsArcReg.recOpName}),'%')
+            </if>
+            <if test="amsArcReg.recOrgCode != null  and amsArcReg.recOrgCode != '' ">and g.REC_ORG_CODE =
+                #{amsArcReg.recOrgCode}
+            </if>
+            <if test="amsArcReg.recOrgName != null  and amsArcReg.recOrgName != '' ">and g.REC_ORG_NAME =
+                #{amsArcReg.recOrgName}
+            </if>
+            <if test="amsArcReg.recTimeGte != null ">and
+                <![CDATA[ to_char(g.REC_TIME, 'yyyy-mm-dd') >= to_char(#{amsArcReg.recTimeGte}, 'yyyy-mm-dd') ]]></if>
+            <if test="amsArcReg.recTimeLte != null ">and
+                <![CDATA[ to_char(g.REC_TIME, 'yyyy-mm-dd') <= to_char(#{amsArcReg.recTimeLte}, 'yyyy-mm-dd') ]]></if>
+            <if test="amsArcReg.recRemark != null  and amsArcReg.recRemark != '' ">and g.REC_REMARK =
+                #{amsArcReg.recRemark}
+            </if>
+            <choose>
+                <when test="amsArcReg.status == '4' || amsArcReg.status == '5' ">
+                    and ab.STATUS = #{amsArcReg.status}
+                </when>
+                <otherwise>
+                    <if test="amsArcReg.status != null ">and g.STATUS = #{amsArcReg.status}</if>
+                </otherwise>
+            </choose>
+            <if test="amsArcReg.status == null || amsArcReg.status == '' ">and g.STATUS not in (60)</if>
+            <if test="amsArcReg.params.condition == 'myArcReceive' ">and g.STATUS not in (10,20)</if>
+            <if test="amsArcReg.modifier != null  and amsArcReg.modifier != '' ">and g.MODIFIER =
+                #{amsArcReg.modifier}
+            </if>
+            <if test="amsArcReg.modTime != null ">and g.MOD_TIME = #{amsArcReg.modTime}</if>
+            <if test="amsArcReg.regArcNum != null ">and g.REG_ARC_NUM = #{amsArcReg.regArcNum}</if>
+            <if test="amsArcReg.recPageNum != null ">and g.REC_PAGE_NUM = #{amsArcReg.recPageNum}</if>
+            <if test="amsArcReg.arcCode != null ">and g.arc_code = #{amsArcReg.arcCode}</if>
+            <if test="amsArcReg.respOpName != null ">and g.resp_op_name = #{amsArcReg.respOpName}</if>
+            <if test="amsArcReg.arcCreTime != null ">and g.arc_cre_time = #{amsArcReg.arcCreTime}</if>
+            <if test="amsArcReg.repeatMark != null  and amsArcReg.repeatMark != '' ">and g.REPEAT_MARK =
+                #{amsArcReg.repeatMark}
+            </if>
+            <if test="amsArcReg.hasMoveBank != null  and amsArcReg.hasMoveBank != '' ">and g.has_move_bank =
+                #{amsArcReg.hasMoveBank}
+            </if>
+        </where>
+        order by g.REC_TIME desc
+    </select>
+
+</mapper>

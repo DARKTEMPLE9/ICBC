@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../../01-mybatis/01-Tu-ling-study" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../01-mybatis/02-tuling-mybatis-source" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-all" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-aop" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-bloomFilter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-bom" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-cache" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-captcha" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-cron" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-crypto" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-dfa" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-extra" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-http" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-log" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-poi" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-script" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-setting" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-socket" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../hutool-5-master/hutool-system" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../memeory-shiro-jwt-master/shiro-jwt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../power-shrio-log4j" charset="UTF-8" />
+  </component>
+</project>

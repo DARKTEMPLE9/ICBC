@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImFileMapper">
+
+    <resultMap type="ImFile" id="ImFileResult">
+        <result property="id" column="ID"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="serialNo" column="SERIALNO"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileServerUrl" column="FILE_SERVER_URL"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="fileBillId" column="FILE_BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createUserName" column="CREATE_USER_NAME"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="fileSource" column="FILE_SOURCE"/>
+        <result property="sysFlagInt" column="sys_flag_int"/>
+        <result property="fileId" column="FILE_ID"/>
+        <result property="fileRealId" column="file_real_id"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+    </resultMap>
+
+    <sql id="selectImFileVo">
+        select ID, FILE_NAME, STATUS, BATCH_ID, CREATE_TIME, SERIALNO, FILE_PATH, FILE_SERVER_URL, FILE_SIZE,
+        FILE_TYPE, FILE_BILL_ID, BILL_NAME, REMARK, CREATE_USER, CREATE_USER_NAME, SYSTEM_FLAG, FILE_SOURCE,
+        sys_flag_int, FILE_ID,file_real_id, MD5,HADOOP_TYPE,SYS_ZONE from im_file
+    </sql>
+
+    <select id="selectImFileList" parameterType="ImFile" resultMap="ImFileResult">
+        <include refid="selectImFileVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="fileName != null  and fileName != '' ">and FILE_NAME = #{fileName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="serialNo != null ">and SERIALNO = #{serialNo}</if>
+            <if test="filePath != null  and filePath != '' ">and FILE_PATH = #{filePath}</if>
+            <if test="fileServerUrl != null  and fileServerUrl != '' ">and FILE_SERVER_URL = #{fileServerUrl}</if>
+            <if test="fileSize != null ">and FILE_SIZE = #{fileSize}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="fileBillId != null  and fileBillId != '' ">and FILE_BILL_ID = #{fileBillId}</if>
+            <if test="billName != null  and billName != '' ">and BILL_NAME = #{billName}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null  and createUser != '' ">and CREATE_USER = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != '' ">and CREATE_USER_NAME = #{createUserName}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="fileSource != null  and fileSource != '' ">and FILE_SOURCE = #{fileSource}</if>
+            <if test="sysFlagInt != null ">and sys_flag_int = #{sysFlagInt}</if>
+            <if test="fileId != null ">and FILE_ID = #{fileId}</if>
+            <if test="fileRealId != null ">and file_real_id = #{fileRealId}</if>
+            <if test="md5 != null and md5 != '' ">and MD5 = #{md5}</if>
+        </where>
+    </select>
+
+    <select id="selectImFileById" parameterType="String" resultMap="ImFileResult">
+        <include refid="selectImFileVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImFile" parameterType="ImFile">
+        insert into im_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="serialNo != null  ">SERIALNO,</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH,</if>
+            <if test="fileServerUrl != null  and fileServerUrl != ''  ">FILE_SERVER_URL,</if>
+            <if test="fileSize != null  ">FILE_SIZE,</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE,</if>
+            <if test="fileBillId != null  and fileBillId != ''  ">FILE_BILL_ID,</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER,</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE,</if>
+            <if test="sysFlagInt != null  ">sys_flag_int,</if>
+            <if test="fileId != null  ">FILE_ID,</if>
+            <if test="fileRealId != null  ">file_real_id,</if>
+            <if test="md5 != null and md5 != '' ">MD5,</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE,</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="serialNo != null  ">#{serialNo},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="fileServerUrl != null  and fileServerUrl != ''  ">#{fileServerUrl},</if>
+            <if test="fileSize != null  ">#{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">#{fileType},</if>
+            <if test="fileBillId != null  and fileBillId != ''  ">FILE_BILL_ID,</if>
+            <if test="billName != null  and billName != ''  ">#{billName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">#{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">#{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="fileSource != null  and fileSource != ''  ">#{fileSource},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="fileId != null  ">#{fileId},</if>
+            <if test="fileRealId != null  ">#{fileRealId},</if>
+            <if test="md5 != null and md5 != '' ">#{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">#{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">#{sysZone},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImFile" parameterType="ImFile">
+        update im_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME = #{fileName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="serialNo != null  ">SERIALNO = #{serialNo},</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH = #{filePath},</if>
+            <if test="fileServerUrl != null  and fileServerUrl != ''  ">FILE_SERVER_URL = #{fileServerUrl},</if>
+            <if test="fileSize != null  ">FILE_SIZE = #{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE = #{fileType},</if>
+            <if test="fileBillId != null  and fileBillId != ''  ">FILE_BILL_ID = #{fileBillId},</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME = #{billName},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER = #{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME = #{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE = #{fileSource},</if>
+            <if test="sysFlagInt != null  ">sys_flag_int = #{sysFlagInt},</if>
+            <if test="fileId != null  ">FILE_ID = #{fileId},</if>
+            <if test="fileRealId != null  ">file_real_id = #{fileRealId},</if>
+            <if test="md5 != null and md5 != '' ">MD5 = #{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE = #{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE = #{sysZone},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImFileById" parameterType="String">
+        delete from im_file where ID = #{id}
+    </delete>
+
+    <delete id="deleteImFileByIds" parameterType="String">
+        delete from im_file where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCmsFileByIds" parameterType="String" resultMap="ImFileResult">
+        <include refid="selectImFileVo"/>
+        where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectImFilesByBatchId" parameterType="String" resultMap="ImFileResult">
+        <include refid="selectImFileVo"/>
+        where batch_id = #{batchId}
+    </select>
+
+    <select id="selectImFilesByBatchIdList" parameterType="String" resultMap="ImFileResult">
+        <include refid="selectImFileVo"/>
+        where batch_id in
+        <foreach item="batchId" collection="batchIds" open="(" separator="," close=")">
+            #{batchId}
+        </foreach>
+    </select>
+
+    <select id="selectImFilesByBusiNo" parameterType="String" resultMap="ImFileResult">
+        <!--<include refid="selectImFileVo"/>-->
+        select file.ID, file.FILE_NAME, file.STATUS, file.BATCH_ID,
+        file.CREATE_TIME, file.SERIALNO, file.FILE_PATH, file.FILE_SERVER_URL,file.FILE_SIZE,
+        file.FILE_TYPE, file.FILE_BILL_ID, file.BILL_NAME, file.REMARK,
+        file.CREATE_USER, file.CREATE_USER_NAME, file.SYSTEM_FLAG,
+        file.FILE_SOURCE, file.sys_flag_int, file.FILE_ID, file.MD5
+        from im_file file LEFT JOIN ams_batch ab on ab.BATCH_NO = file.BATCH_ID
+        where ab.busi_no = #{busiNo}
+    </select>
+
+    <!--通过MD5值查文件数量-->
+    <select id="selectImFileByMd5" parameterType="String" resultType="java.lang.Integer">
+        select count(1) from im_file where MD5 = #{md5}
+    </select>
+
+    <update id="updateBatchId" parameterType="String">
+        update im_file
+        <trim prefix="SET" suffixOverrides=",">
+            BATCH_ID = #{batchId},
+        </trim>
+        where BATCH_ID = #{regId}
+    </update>
+</mapper>

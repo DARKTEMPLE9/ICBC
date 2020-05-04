@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('删除')"/>
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div style="position: relative;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div style="border-bottom: 1px solid gray;">
+                        <h3 id="thisTitle" style="margin-left: 40px;margin-top: 5px">销毁原因：</h3>
+                        <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                            <div class="col-sm-12 col-sm-offset-3">
+                                <button id="i_select_files0" onclick="upload()" class="btn btn-success"
+                                        type="button">上传文件
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="submitHandler()">提交
+                                </button>
+                                <button class="btn btn-danger" style="margin-right: 30px" type="button"
+                                        onclick="backLast()">返回
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="" class="form-group" style="margin-top: 30px">
+                        <div class="col-sm-9">
+                            <div class="form-group" style="margin-bottom: 20px">
+                                <input type="hidden" id="borId">
+                                <textarea id="outRemark" class="form-control returnReason"
+                                          rows="6" cols="70" placeholder="请输入销毁原因（限制100字以内）" required
+                                          th:maxlength="100"></textarea>
+                                <div class="form-group" id="tapDiv"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "archManage/archDestroy";
+    $(function () {
+        var isUpload = [[${isUpload}]];
+        if (isUpload == "0") {
+            $("#i_select_files0").hide();
+        }
+    })
+
+    // 退回上一个页面
+    function backLast() {
+        // 前页面跳转刷新
+        // $('#form-amsRecord-amsRecord')[0].reset();
+        var url = prefix;
+        $.modal.parentTab("档案销毁", url);
+    }
+
+    function upload() {
+        var arcId = [[${id}]];
+        var url = ctx + "archCollection/amsRecord/toUpload/" + arcId + "/111";
+        $.modal.openTab("上传文件", url)
+    }
+
+    function submitHandler() {
+        if ($("#outRemark").val() == "" || $("#outRemark").val() == null) {
+            var tapHtml = '<font face="微软雅黑" size="2" color="red" >请输入信息!</font>';
+            $("#tapDiv").html(tapHtml);
+            return
+        }
+
+        if (confirm("确认要销毁该文件吗？")) {
+            var id = [[${id}]];
+            var url = prefix + "/destroy";
+            var data = {"ids": id, "destroyReason": $("#outRemark").val()};
+            $.operate.submit(url, "post", "json", data);
+            backLast();
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

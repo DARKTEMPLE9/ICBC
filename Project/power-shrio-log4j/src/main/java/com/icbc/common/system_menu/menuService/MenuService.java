@@ -8,7 +8,7 @@ public interface MenuService {
 
     List<TreeNode> getTree();
 
-     /*
+    /*
      * 获取全部父节点
      * */
     List<TreeNode> getTreeParent();

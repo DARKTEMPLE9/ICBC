@@ -1,10 +1,10 @@
 server:
   port: 9000
-  
+
 spring:
   application:
     name: Server-Consumer
-    
+
 eureka:
   client:
     serviceUrl:

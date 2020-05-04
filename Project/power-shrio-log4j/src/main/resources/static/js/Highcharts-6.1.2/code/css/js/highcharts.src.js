@@ -4540,9 +4540,9 @@
                         if (otherElement !== element) {
                             if (
                                 // Negative zIndex versus no zIndex:
-                            // On all levels except the highest. If the parent is
-                            // <svg>, then we don't want to put items before <desc>
-                            // or <defs>
+                                // On all levels except the highest. If the parent is
+                                // <svg>, then we don't want to put items before <desc>
+                                // or <defs>
                                 (value < 0 && undefinedOtherZIndex && !svgParent && !i)
                             ) {
                                 parentNode.insertBefore(element, childNodes[i]);
@@ -5110,8 +5110,8 @@
                         var spans,
                             spanNo = 0;
                         line = line
-                        // Trim to prevent useless/costly process on the spaces
-                        // (#5258)
+                            // Trim to prevent useless/costly process on the spaces
+                            // (#5258)
                             .replace(/^\s+|\s+$/g, '')
                             .replace(/<span/g, '|||<span')
                             .replace(/<\/span>/g, '</span>|||');
@@ -8036,7 +8036,7 @@
                         each(tickPositions, function (t) {
                             if (
                                 // Speed optimization, no need to run dateFormat unless
-                            // we're on a full or half hour
+                                // we're on a full or half hour
                                 t % 1800000 === 0 &&
                                 // Check for local or global midnight
                                 time.dateFormat('%H%M%S%L', t) === '000000000'
@@ -15416,8 +15416,8 @@
                         multi = Math.pow(numSymMagnitude, i + 1);
                         if (
                             // Only accept a numeric symbol when the distance is more
-                        // than a full unit. So for example if the symbol is k, we
-                        // don't accept numbers like 0.5k.
+                            // than a full unit. So for example if the symbol is k, we
+                            // don't accept numbers like 0.5k.
                             numericSymbolDetector >= multi &&
                             // Accept one decimal before the symbol. Accepts 0.5k but
                             // not 0.25k. How does this work with the previous?
@@ -37741,7 +37741,7 @@
                 if (haloOptions && haloOptions.size) {
                     if (!halo) {
                         series.halo = halo = chart.renderer.path()
-                        // #5818, #5903, #6705
+                            // #5818, #5903, #6705
                             .add((point.graphic || stateMarkerGraphic).parentGroup);
                     }
                     halo.show()[move ? 'animate' : 'attr']({

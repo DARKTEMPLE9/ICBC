@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImTemplateDefMapper">
+
+    <resultMap type="ImTemplateDef" id="ImTemplateDefResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="pYSZM" column="PYSZM"/>
+        <result property="tdefId" column="tdef_id"/>
+    </resultMap>
+
+    <sql id="selectImTemplateDefVo">
+        select ID, CODE, NAME, PYSZM, tdef_id from im_template_def
+    </sql>
+
+    <select id="selectImTemplateDefList" parameterType="ImTemplateDef" resultMap="ImTemplateDefResult">
+        <include refid="selectImTemplateDefVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="pYSZM != null  and pYSZM != '' ">and PYSZM = #{pYSZM}</if>
+            <if test="tdefId != null ">and tdef_id = #{tdefId}</if>
+        </where>
+    </select>
+
+    <select id="selectImTemplateDefById" parameterType="String" resultMap="ImTemplateDefResult">
+        <include refid="selectImTemplateDefVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImTemplateDef" parameterType="ImTemplateDef">
+        insert into im_template_def
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="pYSZM != null  and pYSZM != ''  ">PYSZM,</if>
+            <if test="tdefId != null  ">tdef_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="pYSZM != null  and pYSZM != ''  ">#{pYSZM},</if>
+            <if test="tdefId != null  ">#{tdefId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImTemplateDef" parameterType="ImTemplateDef">
+        update im_template_def
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="pYSZM != null  and pYSZM != ''  ">PYSZM = #{pYSZM},</if>
+            <if test="tdefId != null  ">tdef_id = #{tdefId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImTemplateDefById" parameterType="String">
+        delete from im_template_def where ID = #{id}
+    </delete>
+
+    <delete id="deleteImTemplateDefByIds" parameterType="String">
+        delete from im_template_def where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

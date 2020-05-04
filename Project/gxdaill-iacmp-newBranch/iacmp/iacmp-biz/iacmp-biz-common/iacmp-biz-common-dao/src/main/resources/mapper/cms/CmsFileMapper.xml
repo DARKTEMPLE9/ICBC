@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsFileMapper">
+
+    <resultMap type="CmsFile" id="CmsFileResult">
+        <result property="id" column="ID"/>
+        <result property="fileId" column="FILE_ID"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="randomName" column="RANDOM_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="fileSource" column="FILE_SOURCE"/>
+        <result property="version" column="VERSION"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="fileSysCode" column="FILE_SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="modelId" column="MODEL_ID"/>
+        <result property="trg" column="TRG"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+    </resultMap>
+
+    <resultMap type="net.northking.iacmp.common.bean.dto.cms.CmsFileDTO" id="CmsFileDTOResult">
+        <result property="id" column="ID"/>
+        <result property="fileId" column="FILE_ID"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="randomName" column="RANDOM_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="fileSource" column="FILE_SOURCE"/>
+        <result property="version" column="VERSION"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="fileSysCode" column="FILE_SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="modelId" column="MODEL_ID"/>
+        <result property="trg" column="TRG"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+        <result property="pid" column="ID1"/>
+        <result property="regbillglideNo" column="REGBILLGLIDENO"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="pOrderNum" column="ORDER_NUM1"/>
+        <result property="pBatchId" column="BATCH_ID1"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="pModelId" column="MODEL_ID1"/>
+        <result property="pMetadata" column="METADATA1"/>
+        <result property="pDeptName" column="DEPT_NAME1"/>
+        <result property="buildDept" column="BUILD_DEPT"/>
+        <result property="budgetId" column="BUDGET_ID"/>
+        <result property="projectManager" column="PROJECT_MANAGER"/>
+        <result property="billCode" column="BILL_CODE"/>
+        <result property="unionId" column="ID"/>
+        <result property="fId" column="FID"/>
+        <result property="fType" column="FTYPE"/>
+        <result property="fName" column="FNAME"/>
+        <result property="fTrg" column="FTRG"/>
+        <result property="fPath" column="FPATH"/>
+        <result property="fSysCode" column="FSYSCODE"/>
+        <result property="fBillCode" column="FBILLCODE"/>
+        <result property="fSource" column="FSOURCE"/>
+        <result property="fBatchId" column="FBATCHID"/>
+        <result property="fBudgetId" column="FBUDGETID"/>
+        <result property="fCreateTime" column="FCREATETIME"/>
+        <result property="fUpdateTime" column="FUPDATETIME"/>
+        <result property="fProjectBatch" column="FPROJECTBATCH"/>
+    </resultMap>
+
+    <sql id="selectCmsFileVo">
+        select ID, FILE_ID, FILE_NO, FILE_NAME, RANDOM_NAME , STATUS, BATCH_ID, CREATE_TIME, UPDATE_TIME,ORDER_NUM,
+        FILE_PATH, FILE_SIZE, FILE_TYPE, BILL_ID, REMARK, CREATE_USER, FILE_SOURCE, VERSION, METADATA, FILE_SYS_CODE,
+        DEPT_NAME ,MD5,MODEL_ID,TRG ,HADOOP_TYPE,SYS_ZONE from cms_file
+    </sql>
+
+    <sql id="selectCmsFileVo2">
+        select cf.ID, cf.FILE_ID, cf.FILE_NO, cf.FILE_NAME, cf.RANDOM_NAME , cf.STATUS, cf.BATCH_ID, cf.CREATE_TIME,
+        cf.UPDATE_TIME,cf.ORDER_NUM, cf.FILE_PATH, cf.FILE_SIZE, cf.FILE_TYPE, cf.BILL_ID, cf.REMARK, cf.CREATE_USER,
+        cf.FILE_SOURCE, cf.VERSION, cf.METADATA, cf.FILE_SYS_CODE, cf.DEPT_NAME ,cf.MD5,MODEL_ID,cf.TRG, cb.BILL_NAME
+        from cms_file cf left join cms_bill cb on cf.BILL_ID = cb.ID
+    </sql>
+
+    <!--根据billCode查询文件与影像-->
+    <select id="selectCmsFileListByBillCode" parameterType="java.lang.String" resultMap="CmsFileDTOResult">
+        select f.ID as ID,f.FILE_ID as FID,f.FILE_TYPE as FTYPE,f.FILE_NAME as FNAME,f.TRG as FTRG,f.FILE_PATH as FPATH
+        from cms_file f LEFT JOIN cms_bill b on b.id = f.BILL_ID where b.BILL_CODE = #{billCode} and f.`STATUS` = '1'
+        union all
+        select f.ID as ID,f.IMAGE_ID as FID,f.OCR_TYPE as FTYPE,f.IMAGE_NAME as FNAME,f.TRG as FTRG,f.IMAGE_PATH as
+        FPATH from cms_image f LEFT JOIN cms_bill b on b.id = f.BILL_ID where b.BILL_CODE = #{billCode} and f.`STATUS` =
+        '1'
+    </select>
+    <!--根据MD5查询文件-->
+    <select id="selectCmsFileByMd5" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        WHERE MD5 = #{md5} and status = #{status} ORDER BY ID desc
+    </select>
+
+    <select id="selectOneFileByMd5" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        WHERE MD5 = #{md5} group by MD5
+    </select>
+
+    <select id="selectCountCmsFileByMd5" parameterType="String" resultType="java.lang.Integer">
+        select count(1) from cms_file
+        WHERE MD5 = #{md5}
+    </select>
+
+    <select id="selectCmsFileList" parameterType="CmsFile" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        <where>
+            STATUS = 0
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="fileId != null ">and FILE_ID = #{fileId}</if>
+            <if test="fileName != null  and fileName != '' ">and FILE_NAME = #{fileName}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="orderNum != null ">and ORDER_NUM = #{orderNum}</if>
+            <if test="filePath != null  and filePath != '' ">and FILE_PATH = #{filePath}</if>
+            <if test="fileSize != null ">and FILE_SIZE = #{fileSize}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null ">and CREATE_USER = #{createUser}</if>
+            <if test="fileSource != null  and fileSource != '' ">and FILE_SOURCE = #{fileSource}</if>
+            <if test="version != null  and version != '' ">and VERSION = #{version}</if>
+            <if test="metadata != null  and metadata != '' ">and METADATA = #{metadata}</if>
+            <if test="fileSysCode != null and fileSysCode != '' ">and FILE_SYS_CODE = #{fileSysCode}</if>
+            <if test="deptName != null and deptName != '' ">and DEPT_NAME = #{deptName}</if>
+            <if test="modelId != null ">and MODEL_ID = #{modelId}</if>
+        </where>
+        group by FILE_NO order by CREATE_TIME
+    </select>
+    <!--根据条件查询文件与影像列表,返回特定字段-->
+    <select id="selectCmsFileListByOpts" resultMap="CmsFileDTOResult">
+        select f.HADOOP_TYPE,f.ID as ID,f.FILE_ID as FID,f.FILE_TYPE as FTYPE,f.FILE_NAME as FNAME,f.TRG as
+        FTRG,f.FILE_PATH as
+        FPATH,f.FILE_SYS_CODE as FSYSCODE,b.BILL_CODE as FBILLCODE,f.FILE_SOURCE as FSOURCE,f.BATCH_ID as
+        FBATCHID,p.BUDGET_ID as FBUDGETID,p.PROJECT_BATCH as FPROJECTBATCH,f.CREATE_TIME as FCREATETIME,f.UPDATE_TIME as
+        FUPDATETIME from cms_file f LEFT
+        JOIN cms_bill b on b.id = f.BILL_ID INNER JOIN pms_batch p on f.BATCH_ID = p.BATCH_ID
+        <where>
+            <if test="updateTimeStart != null ">and DATE_FORMAT(f.CREATE_TIME,'%Y-%m-%d') >=
+                DATE_FORMAT(#{updateTimeStart},'%Y-%m-%d')
+            </if>
+            <if test="updateTimeEnd != null ">and DATE_FORMAT(f.CREATE_TIME,'%Y-%m-%d') &lt;=
+                DATE_FORMAT(#{updateTimeEnd},'%Y-%m-%d')
+            </if>
+            <if test="billId != null ">and f.BILL_ID = #{billId}</if>
+            <if test="pDeptName != null and pDeptName != ''">and p.DEPT_NAME = #{pDeptName}</if>
+            <if test="operationCode != null and operationCode != ''">and p.OPERATIONCODE = #{operationCode}</if>
+            <if test="buildDept != null and buildDept != ''">and p.BUILD_DEPT = #{buildDept}</if>
+            <if test="pModelId != null ">and p.MODEL_ID = #{pModelId}</if>
+            <if test="budgetId != null ">and p.BUDGET_ID = #{budgetId}</if>
+            <if test="projectManager != null ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            <if test="trg != null ">and f.TRG = #{trg}</if>
+            and f.`STATUS` =1
+        </where>
+        UNION ALL
+        select f.HADOOP_TYPE,f.ID as ID,f.IMAGE_ID as FID,f.OCR_TYPE as FTYPE,f.IMAGE_NAME as FNAME,f.TRG as
+        FTRG,f.IMAGE_PATH as
+        FPATH, f.IMAGE_SYS_CODE as FSYSCODE,b.BILL_CODE as FBILLCODE,f.IMAGE_SOURCE as FSOURCE,f.BATCH_ID as
+        FBATCHID,p.BUDGET_ID as FBUDGETID,p.PROJECT_BATCH as FPROJECTBATCH,f.CREATE_TIME as FCREATETIME,f.UPDATE_TIME as
+        FUPDATETIME from cms_image f
+        LEFT JOIN cms_bill b on b.id = f.BILL_ID INNER JOIN pms_batch p on f.BATCH_ID = p.BATCH_ID
+        <where>
+            <if test="updateTimeStart != null ">and DATE_FORMAT(f.CREATE_TIME,'%Y-%m-%d') >=
+                DATE_FORMAT(#{updateTimeStart},'%Y-%m-%d')
+            </if>
+            <if test="updateTimeEnd != null ">and DATE_FORMAT(f.CREATE_TIME,'%Y-%m-%d') &lt;=
+                DATE_FORMAT(#{updateTimeEnd},'%Y-%m-%d')
+            </if>
+            <if test="billId != null ">and f.BILL_ID = #{billId}</if>
+            <if test="pDeptName != null and pDeptName != ''">and p.DEPT_NAME = #{pDeptName}</if>
+            <if test="operationCode != null and operationCode != ''">and p.OPERATIONCODE = #{operationCode}</if>
+            <if test="buildDept != null and buildDept != ''">and p.BUILD_DEPT = #{buildDept}</if>
+            <if test="pModelId != null ">and p.MODEL_ID = #{pModelId}</if>
+            <if test="budgetId != null ">and p.BUDGET_ID = #{budgetId}</if>
+            <if test="projectManager != null ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            <if test="trg != null ">and f.TRG = #{trg}</if>
+            and f.`STATUS` =1
+        </where>
+    </select>
+
+    <select id="selectCmsFileById" parameterType="Long" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectCmsFileByFileId" parameterType="Long" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        where FILE_ID = #{id} and STATUS = '1'
+    </select>
+
+    <insert id="insertCmsFile" parameterType="CmsFile" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fileId != null  ">FILE_ID,</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME,</if>
+            <if test="randomName != null  and randomName != ''  ">RANDOM_NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="batchId != null  ">BATCH_ID,</if>
+            <if test="modelId != null  ">MODEL_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="orderNum != null  ">ORDER_NUM,</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH,</if>
+            <if test="fileSize != null  ">FILE_SIZE,</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE,</if>
+            <if test="billId != null  ">BILL_ID,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  ">CREATE_USER,</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE,</if>
+            <if test="version != null  and version != ''  ">VERSION,</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA,</if>
+            <if test="fileSysCode != null and fileSysCode != '' ">FILE_SYS_CODE,</if>
+            <if test="deptName != null and deptName != '' ">DEPT_NAME,</if>
+            <if test="md5 != null  ">MD5,</if>
+            <if test="hadoopType != null  ">HADOOP_TYPE,</if>
+            <if test="sysZone != null  ">SYS_ZONE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fileId != null  ">#{fileId},</if>
+            <if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+            <if test="randomName != null  and randomName != ''  ">#{randomName},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="batchId != null  ">#{batchId},</if>
+            <if test="modelId != null  ">#{modelId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="orderNum != null  ">#{orderNum},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="fileSize != null  ">#{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">#{fileType},</if>
+            <if test="billId != null  ">#{billId},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  ">#{createUser},</if>
+            <if test="fileSource != null  and fileSource != ''  ">#{fileSource},</if>
+            <if test="version != null  and version != ''  ">#{version},</if>
+            <if test="metadata != null  and metadata != ''  ">#{metadata},</if>
+            <if test="fileSysCode != null and fileSysCode != '' ">#{fileSysCode},</if>
+            <if test="deptName != null and deptName != '' ">#{deptName},</if>
+            <if test="md5 != null  ">#{md5},</if>
+            <if test="hadoopType != null  ">#{hadoopType},</if>
+            <if test="sysZone != null  ">#{sysZone},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsFile" parameterType="CmsFile">
+        update cms_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileId != null  ">FILE_ID = #{fileId},</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME = #{fileName},</if>
+            <if test="randomName != null  and randomName != ''  ">RANDOM_NAME = #{randomName},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="batchId != null  ">BATCH_ID = #{batchId},</if>
+            <if test="modelId != null  ">MODEL_ID = #{modelId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="orderNum != null  ">ORDER_NUM = #{orderNum},</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH = #{filePath},</if>
+            <if test="fileSize != null  ">FILE_SIZE = #{fileSize},</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE = #{fileType},</if>
+            <if test="billId != null  ">BILL_ID = #{billId},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  ">CREATE_USER = #{createUser},</if>
+            <if test="fileSource != null  and fileSource != ''  ">FILE_SOURCE = #{fileSource},</if>
+            <if test="version != null  and version != ''  ">VERSION = #{version},</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA = #{metadata},</if>
+            <if test="fileSysCode != null and fileSysCode != '' ">FILE_SYS_CODE = #{fileSysCode},</if>
+            <if test="deptName != null and deptName != '' ">DEPT_NAME = #{deptName},</if>
+            <if test="md5 != null and md5 != '' ">MD5 = #{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE = #{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE = #{sysZone},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--批量新增-->
+    <insert id="insertCmsFiles" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_file
+        (FILE_ID,FILE_NAME,RANDOM_NAME,STATUS,BATCH_ID,MODEL_ID,CREATE_TIME,UPDATE_TIME,ORDER_NUM,
+        FILE_PATH,FILE_SIZE,FILE_TYPE,BILL_ID,REMARK,CREATE_USER,FILE_SOURCE,VERSION,METADATA,
+        FILE_SYS_CODE,DEPT_NAME,MD5,HADOOP_TYPE,SYS_ZONE)
+        <trim prefix="values " suffix=";" suffixOverrides=",">
+            <foreach item="item" collection="originCmsFiles" separator=",">
+                (#{item.fileId},#{item.fileName},#{item.randomName},#{item.status},#{item.batchId},#{item.modelId},
+                #{item.createTime},#{item.updateTime},#{item.orderNum},#{item.filePath},#{item.fileSize},#{item.fileType},
+                #{item.billId},#{item.remark},#{item.createUser},#{item.fileSource},#{item.version},#{item.metadata},#{item.fileSysCode},#{item.deptName},#{item.md5},
+                #{item.hadoopType},#{item.sysZone})
+            </foreach>
+        </trim>
+    </insert>
+
+    <!--批量更新-->
+    <update id="updateCmsFiles" parameterType="java.util.List">
+        update cms_file SET
+        <foreach item="item" collection="originCmsFiles" index="index">
+            FILE_ID = case id when #{item.id} then #{item.fileId} end,
+            FILE_NAME = case id when #{item.id} then #{item.fileName} end,
+            RANDOM_NAME = case id when #{item.id} then #{item.randomName} end,
+            STATUS = case id when #{item.id} then #{item.status} end,
+            BATCH_ID = case id when #{item.id} then #{item.batchId} end,
+            MODEL_ID = case id when #{item.id} then #{item.modelId} end,
+            CREATE_TIME = case id when #{item.id} then #{item.createTime} end,
+            UPDATE_TIME = case id when #{item.id} then #{item.updateTime} end,
+            ORDER_NUM = case id when #{item.id} then #{item.orderNum} end,
+            FILE_PATH = case id when #{item.id} then #{item.filePath} end,
+            FILE_SIZE = case id when #{item.id} then #{item.fileSize} end,
+            FILE_TYPE = case id when #{item.id} then #{item.fileType} end,
+            BILL_ID = case id when #{item.id} then #{item.billId} end,
+            REMARK = case id when #{item.id} then #{item.remark} end,
+            CREATE_USER = case id when #{item.id} then #{item.createUser} end,
+            FILE_SOURCE = case id when #{item.id} then #{item.fileSource} end,
+            VERSION = case id when #{item.id} then #{item.version} end,
+            METADATA = case id when #{item.id} then #{item.metadata} end,
+            FILE_SYS_CODE = case id when #{item.id} then #{item.fileSysCode} end,
+            DEPT_NAME = case id when #{item.id} then #{item.deptName} end,
+            MD5 = case id when #{item.id} then #{item.md5} end,
+            HADOOP_TYPE = case id when #{item.id} then #{item.hadoopType} end,
+            SYS_ZONE = case id when #{item.id} then #{item.sysZone} end
+        </foreach>
+        <where>
+            ID IN
+            <foreach item="item" collection="originCmsFiles" index="index" open="(" separator="," close=")">
+                #{item.id}
+            </foreach>
+        </where>
+    </update>
+
+    <!--逻辑单删除-->
+    <delete id="deleteCmsFileById" parameterType="Long">
+        update cms_file set STATUS = '3' where ID = #{id}
+    </delete>
+
+    <!--逻辑多删除-->
+    <delete id="deleteCmsFileByIds" parameterType="String">
+        update cms_file set where STATUS = '3' ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectFileByBatchId" parameterType="java.util.Map" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        <where>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+        </where>
+    </select>
+
+    <!--通过文件名称查询同一文件的不同版本-->
+    <select id="selectCmsFileHistory" parameterType="java.util.Map" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo2"/>
+        <where>
+            cf.STATUS = '1'
+            <if test="batchId != null ">and cf.BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and (cf.BILL_ID in (select ID from cms_bill where PARENT_ID = #{billId})
+                or cf.BILL_ID = #{billId})
+            </if>
+            <if test="names != null ">and cf.FILE_NAME in
+                <foreach item="name" collection="names" open="(" separator="," close=")">
+                    #{name}
+                </foreach>
+            </if>
+        </where>
+        order by FILE_NAME,CREATE_TIME
+    </select>
+
+    <!--批量查询cmsfile-->
+    <select id="selectCmsFileByIds" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        <where>
+            ID IN
+            <foreach item="item" collection="fileIds" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <!--条件查询cmsfile-->
+    <select id="selectFilesByCondition" parameterType="java.util.HashMap" resultMap="CmsFileResult">
+        select cf.ID, cf.FILE_ID, cf.FILE_NO, cf.FILE_NAME, cf.RANDOM_NAME , cf.STATUS, cf.BATCH_ID, cf.CREATE_TIME,
+        cf.UPDATE_TIME,cf.ORDER_NUM, cf.FILE_PATH, cf.FILE_SIZE, cf.FILE_TYPE, cf.BILL_ID, cf.REMARK, cf.CREATE_USER,
+        cf.FILE_SOURCE, cf.VERSION, cf.METADATA, cf.FILE_SYS_CODE, cf.DEPT_NAME ,cf.MD5,MODEL_ID,cf.TRG, cb.BILL_NAME,
+        cf.HADOOP_TYPE
+        from (select * from cms_file order by CREATE_TIME desc) cf left join cms_bill cb on cf.BILL_ID = cb.ID
+        <where>
+            cf.STATUS = '1'
+            <if test="batchId != null ">and cf.BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and (cf.BILL_ID in (select ID from cms_bill where PARENT_ID = #{billId})
+                or cf.BILL_ID = #{billId})
+            </if>
+        </where>
+        group by FILE_NAME order by CREATE_TIME,FILE_NAME
+    </select>
+
+
+    <select id="selectFileListByCondition" parameterType="java.util.HashMap" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        <where>
+            STATUS = '1'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+        </where>
+        group by FILE_NAME order by FILE_NAME,CREATE_TIME
+    </select>
+
+    <!--条件查询单条cmsfile-->
+    <select id="selectFileByCondition" parameterType="java.util.HashMap" resultMap="CmsFileResult">
+        <include refid="selectCmsFileVo"/>
+        <where>
+            STATUS = '1'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+        </where>
+        order by CREATE_TIME desc
+    </select>
+
+    <!--条件查询单条文件数量-->
+    <select id="selectFileNumByCondition" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(distinct FILE_NAME) from cms_file
+        <where>
+            STATUS = '1'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+        </where>
+    </select>
+
+    <select id="selectFileImageNumByCondition" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        SELECT SUM(num) FROM (
+        SELECT COUNT(DISTINCT(file_name)) AS num FROM cms_file
+        <where>
+            STATUS = '1'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+        </where>
+        UNION ALL
+        SELECT COUNT(DISTINCT(image_name)) AS num FROM cms_image
+        <where>
+            STATUS = '0'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+        </where>
+        ) fileImage;
+    </select>
+
+    <!--通过文件编号逻辑删除-->
+    <delete id="deleteCmsFileByMD5s" parameterType="String">
+        update cms_file set STATUS = '3' where MD5 in
+        <foreach item="MD5" collection="array" open="(" separator="," close=")">
+            #{md5}
+        </foreach>
+    </delete>
+
+    <!--条件逻辑删除-->
+    <delete id="deleteCmsFileByCondition" parameterType="java.util.HashMap">
+        update cms_file set STATUS = '3' where
+        BATCH_ID = #{batchId} and (BILL_ID = #{billId} or BILL_ID in (select ID from cms_bill where PARENT_ID =
+        #{billId}))
+        and FILE_NAME in
+        <foreach item="fileName" collection="fileNames" open="(" separator="," close=")">
+            #{fileName}
+        </foreach>
+    </delete>
+
+    <!--更新目标文件的分类id-->
+    <update id="updateCmsFileBill" parameterType="java.util.HashMap">
+        update cms_file set
+        <if test="trg != null and trg != '' ">TRG = #{trg},</if>
+        BILL_ID = #{targetBillId} where
+        BATCH_ID = #{batchId}
+        and BILL_ID in
+        <foreach item="billId" collection="billIds" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+        and FILE_NAME in
+        <foreach item="fileName" collection="fileNames" open="(" separator="," close=")">
+            #{fileName}
+        </foreach>
+    </update>
+
+    <!--根据逻辑主键查询文件影像-->
+    <select id="selectFileImageByIds" resultMap="CmsFileDTOResult">
+        select HADOOP_TYPE,RANDOM_NAME,FILE_NAME as FNAME,FILE_PATH as FPATH from cms_file
+        <where>
+            FILE_ID IN
+            <foreach item="item" collection="fileIds" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        union ALL
+        select HADOOP_TYPE,RANDOM_NAME,IMAGE_NAME as FNAME,IMAGE_PATH as FPATH from cms_image
+        <where>
+            IMAGE_ID IN
+            <foreach item="item" collection="fileIds" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+</mapper>

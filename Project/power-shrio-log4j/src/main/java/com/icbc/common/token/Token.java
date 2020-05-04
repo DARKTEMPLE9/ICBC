@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Token {
     /*
-    * 新增token
-    * */
+     * 新增token
+     * */
     boolean save() default false;
 
     /*
-    * 移出token
-    * */
+     * 移出token
+     * */
     boolean remove() default false;
 }

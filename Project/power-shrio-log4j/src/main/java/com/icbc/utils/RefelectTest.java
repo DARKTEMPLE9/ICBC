@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
  * 反射操作类,通过bean工具类更简单的操作get、set方法
  *
  * @author chinoukin
- *
  */
 public class RefelectTest {
 
@@ -50,7 +49,6 @@ public class RefelectTest {
  * javabean
  *
  * @author chinoukin
- *
  */
 class Student {
     private String name;

@@ -9,11 +9,11 @@ public interface UserMapper {
 
 
     /*
-    * mybatis 使用annotation方式
-    * @Results 进行关系映射
-    * */
+     * mybatis 使用annotation方式
+     * @Results 进行关系映射
+     * */
     @Results({
-            @Result(property = "mengbb",column = "desc")
+            @Result(property = "mengbb", column = "desc")
     })
     @Select(" select id,username,age,phone,`desc` from user where id = #{id}")
     public UserBean selectUser(Integer id);

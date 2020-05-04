@@ -15,22 +15,22 @@ import java.util.List;
 import java.util.Map;
 
 /*
-* 读取xml文件 加载到内存中  mybatis/mybatis-config.xml
-* */
+ * 读取xml文件 加载到内存中  mybatis/mybatis-config.xml
+ * */
 /*
-* 解析xml文件  常见技术
-* 1. DOM4J(Document Object Model for Java)
-* 2. StAX(Streaming API for XML)  等等
-* */
-public class Configuration  {
+ * 解析xml文件  常见技术
+ * 1. DOM4J(Document Object Model for Java)
+ * 2. StAX(Streaming API for XML)  等等
+ * */
+public class Configuration {
 
     private InputStream inputStream;
 
     MapperRegistry mapperRegistry = new MapperRegistry();
 
     /*
-    * 通过dom4j读取配置文件中的信息
-    * */
+     * 通过dom4j读取配置文件中的信息
+     * */
     public void loadConfigurations() throws IOException {
         try {
             Document document = new SAXReader().read(inputStream);
@@ -66,7 +66,7 @@ public class Configuration  {
             Element root = document.getRootElement();
             if (root.getName().equalsIgnoreCase("mapper")) {
                 String namespace = root.attribute("namespace").getText();
-                for (Element select :(List<Element>) root.elements("select")) {
+                for (Element select : (List<Element>) root.elements("select")) {
                     MapperMethod mapperModel = new MapperMethod();
                     mapperModel.setSql(select.getText().trim());
                     mapperModel.setType(Class.forName(select.attribute("resultType").getText()));

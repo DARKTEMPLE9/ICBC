@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案类型列表')"/>
+</head>
+<style>
+    label {
+        width: 73px;
+    }
+
+    .select-list li {
+        box-sizing: border-box;
+        height: 30px;
+        overflow: hidden;
+    }
+
+    #resultTable thead > tr > th:first-child,
+    #resultTable tbody > tr > td:first-child {
+        max-width: 120px;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form class="form-horizontal" id='myForm' role='form'>
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <!--						<li>-->
+                        <!--							<label style="width: 80px;">注入批次号：</label>-->
+                        <!--							<input type="text" id="batchNo" name="batchNo"/>-->
+                        <!--						</li>-->
+                        <input type="hidden" id="selectArcCode" name="selectArcCode" value=""/>
+
+                        <li hidden>
+                            <label>部门代码：</label>
+                            <input type="text" id="orgCode" name="orgCode"/>
+                        </li>
+
+                        <li>
+                            <label>部门名称：</label>
+                            <input type="text" id="orgName" name="orgName" onclick="selectDeptTree();orgName.blur();"
+                                   readonly="readonly" placeholder="请选择部门" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <label style="width: 80px;">档案类型：</label>
+                            <input type="text" id="arcBill" name="arcBill" value="" readonly
+                                   onclick="selectArcBillTree();arcBill.blur();return false;" placeholder="请选择档案类型"/>
+                        </li>
+                        <li hidden>
+                            <label>档案类型编号：</label>
+                            <input type="text" id="arcBillCode" name="arcBillCode" value=""/>
+                        </li>
+                        <!--						<li>-->
+                        <!--							<label>部门档案类型：</label>-->
+                        <!--							<input type="text" id="arcBillDeptCode" name="arcBillDeptCode" value="" />-->
+                        <!--						</li>-->
+
+                        <li class="select-time">
+                            <label style="margin-right: 5px;width: 80px;">归档时间： </label>
+                            <input type="text" style="width: 93px;" class="input-sm form-control" id="startTime"
+                                   placeholder="" value="" name="fillingTimeGt"/>
+                            <span>-</span>
+                            <input type="text" style="width: 93px;" class="input-sm form-control" id="endTime"
+                                   placeholder="" value="" name="fillingTimeLt"/>
+                        </li>
+                        <li>
+
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" id='mySubmit'><i class="fa fa-search"></i>&nbsp;查询</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" id='myReSet'><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        <!--<a class="btn btn-warning btn-rounded btn-sm" download="档案总量统计表.xls" href="#" onclick="return ExcellentExport.excel(this, 'resultTable', '');"><i class="glyphicon glyphicon-export"></i>&nbsp;导出</a>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <!--导出 START-->
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <div class="mt20">
+                    <div class="btn-group pull-left">
+                        <a class="btn btn-warning btn-sm" onclick="exportExc()"><i
+                                class="glyphicon glyphicon-export"></i>&nbsp;导出</a>
+                        <!--						<a class="btn btn-warning btn-sm" download="档案总量统计表.xls" href="#" onclick="return ExcellentExport.excel(this, 'resultTable', '');"><i class="glyphicon glyphicon-export"></i>&nbsp;导出</a>-->
+                    </div>
+                    <div class="mt10" style="text-align:center;font-size:24px; margin-bottom:10px"><u>档案总量统计表</u></div>
+                    <div style="width:90%;margin:auto;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div style="float:right">
+                            <u>统计单位：件/卷</u>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table
+                        class='table table-striped table-hover table-condensed table-bordered'
+                        id='resultTable'>
+                    <caption class='JBFTableCaption'></caption>
+                    <thead style="background-color: #efefef;">
+                    <tr style="table-layout:fixed">
+                        <!--  <th style="width: 4%;"><input id="qperson"
+                            onclick="qcheckbox('qperson','selectedName')" type="checkbox"
+                            name="qperson" /></th>-->
+
+                        <th style="background: #efefef url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;"></th>
+                        <!-- <th style='text-align: center;font-weight:normal;font-family:Microsoft YaHei;font-size:12px;width:18%;' datatype='text' id='batchNo'>著录编号</th> -->
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=A100"
+                            onclick="return false;">文书档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=B100"
+                            onclick="return false;">声像档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=C100"
+                            onclick="return false;">实物档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=D100"
+                            onclick="return false;">基建档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=E100"
+                            onclick="return false;">会计档案</a></th>
+                        <th style='text-align: center; font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=F100"
+                            onclick="return false;">信贷档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px; '
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=G100"
+                            onclick="return false;">信息技术档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=H100"
+                            onclick="return false;">人力资源档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=M100"
+                            onclick="return false;">筹备期档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=N100"
+                            onclick="return false;">涉密档案</a></th>
+                        <th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'
+                        ><a href="./pages/amsReport/amsReportArcBillDept.html?arcBillDeptCode=Z100"
+                            onclick="return false;">其他类档案</a></th>
+                    </tr>
+                    </thead>
+                    <tbody style="overflow-y:scroll;"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script src="js/excellentexport.js" type="text/javascript" th:src="@{/js/excellentexport.js}" ></script>-->
+<th:block th:include="include :: excellentexport-js"/>
+<div th:include="include :: footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "amsArcReportcontroller/amsBill";
+    window.onload = function () {
+        //显示表单的数据
+        showAllOrgan();
+    }
+
+    function showAllOrgan() {
+
+        // var fillingTime_gt = $(" input[ id='startTime' ] ").val();
+        // var fillingTime_lt = $(" input[ id='endTime' ] ").val();
+        // fillingTime_gt   =   fillingTime_gt.replace(/\s+/g,"");
+        // fillingTime_lt   =   fillingTime_lt.replace(/\s+/g,"");
+        //
+        // var orgName = $("#orgName").val();
+        // var orgCode = $("#orgCode").val();
+        //
+        // var arcBillName = $("#arcBill").val();
+        // var arcBillCode = $("#arcBillCode").val();
+
+
+        $.ajax({
+            url: prefix + "/queryResultFormTable",
+            type: "post",
+            // data : {"reportObject":reportObject
+            //     // "searchYear" : "2019",
+            //     // "fillingTime_gt" : fillingTime_gt,
+            //     // "fillingTime_lt" : fillingTime_lt,
+            //     // "orgNameSearch"  : orgName,
+            //     // "orgCodeSearch"  : orgCode,
+            //     // "arcBillNameSearch" : arcBillName,
+            //     // "arcBillCodeSearch" : arcBillCode,
+            //     // "arcBillDeptCodeSearch" : arcBillDeptCode
+            // },
+            data: $("#myForm").serialize(),
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                initTheadForSearch(json);
+                initTableShow(json);
+            }
+        });
+
+
+    }
+
+    function initTableShow(json) {
+
+        $("#resultTable").find("tbody").empty();
+        var html1 = "";
+        for (var k = 0; k < json.orgNameList.length; k++) {
+            var organName = json.orgNameList[k];
+            // console.log(organName);
+            html1 += "<tr style=\"table-layout:fixed;\"><td>" + organName + "</td>"
+            for (var i = 0; i < json.resultList.length; i++) {
+                //正确顺序的arcBillCode
+                var arcBillValueSort = json.arcBillCodeSortList[k];
+
+                var arcBillValue = json.resultList[i][2][arcBillValueSort];
+                html1 += "<td style='text-align:center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-moz-text-overflow: ellipsis;'>" + arcBillValue + "</td>";
+                html1 += "</td>";
+            }
+        }
+
+
+        $("#resultTable").find("tbody").append(html1);
+    }
+
+    function selectArcBillTree() {
+        var prefix = ctx + "amsArcReportcontroller/amsBill";
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#arcBillCode").val(body.find('#treeId').val());
+        $("#arcBill").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectDeptTree() {
+        var prefix = ctx + "amsArcReportcontroller/amsBill";
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#orgCode").val(body.find('#treeId').val());
+        $("#orgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function exportExcel() {
+
+        var fillingTime_gt = $(" input[ id='startTime' ] ").val();
+        var fillingTime_lt = $(" input[ id='endTime' ] ").val();
+        fillingTime_gt = fillingTime_gt.replace(/\s+/g, "");
+        fillingTime_lt = fillingTime_lt.replace(/\s+/g, "");
+
+
+        var orgName = $(" input[ id='opDepName' ] ").val();
+        var orgCode = $(" input[ id='opDepNo' ] ").val();
+
+        var arcBillName = $(" input[ id='arcBillName' ] ").val();
+        var arcBillCode = $(" input[ id='arcBillCode' ] ").val();
+        // var arcBillDeptCode = $(" input[ id='arcBillDeptCode' ] ").val();
+
+
+        if (fillingTime_gt == "") {
+            fillingTime_gt = "null";
+        }
+        if (fillingTime_lt == "") {
+            fillingTime_lt = "null";
+        }
+        if (orgName == "") {
+            orgName = "null";
+        }
+        if (orgCode == "") {
+            orgCode = "null";
+        }
+        if (arcBillName == "") {
+            arcBillName = "null";
+        }
+        if (arcBillCode == "") {
+            arcBillCode = "null";
+        }
+        // if(arcBillDeptCode == ""){
+        //     arcBillDeptCode = "null";
+        // }
+
+
+        var str = "2017-" + fillingTime_gt + "-" + fillingTime_lt + "-" + orgCode + "-" + arcBillCode + "-" + arcBillDeptCode;
+        NorthkingCRUD.ajax({
+            type: "POST",
+            url: "amsArcReportExportExcelAction!exportExcel.do?searchYearExcel=" + str,
+
+            beforeSend: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                NorthkingCRUD
+                    .commonErrorHandler(jqXHR, textStatus, errorThrown);
+            },
+            success: function (success) {
+
+                window.open("amsArcReportExportExcelAction!exportExcel.do?searchYearExcel=" + str);
+
+            }
+        });
+
+    }
+
+
+    jQuery("#mySubmit").click(function () {
+
+        showAllOrgan();
+
+        //alert("查询成功");
+    });
+
+    jQuery("#myReSet").click(function () {
+
+
+        $(" input[ id='startTime' ] ").val("");
+        $(" input[ id='endTime' ]").val("");
+        $(" input[ id='orgName' ] ").val("");
+        $(" input[ id='orgCode' ]").val("");
+
+        $(" input[ id='arcBill' ]").val("");
+        $(" input[ id='arcBillCode' ]").val("");
+        $(" input[ id='selectArcCode' ]").val("");
+
+        showAllOrgan();
+    });
+
+
+    function initTheadForSearch(json) {
+        if (json.arcBillCodeSearch != "" && json.arcBillCodeSearch != null) {
+            arcBillCodeSearch = json.arcBillCodeSearch;
+            arcBillNameSearch = json.arcBillNameSearch;
+            $("#resultTable").find("thead").empty();
+            var html = "<tr style=\"table-layout:fixed;\">";
+            html = "<th style=\"background: #efefef url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;\"></th>";
+
+            html += "<th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'><a onclick='queryArcBillDept(" + arcBillCodeSearch + ")'>" + arcBillNameSearch + "</a></th>";
+            html += "</tr>";
+            $("#resultTable").find("thead").append(html);
+            $("#showTableDiv").css("width", "30%");
+
+        } else {
+            resumeThead(json);
+        }
+    }
+
+    function resumeThead(json) {
+        $("#resultTable").find("thead").empty();
+        var html = "<tr style=\"table-layout:fixed;\">";
+        html += "<th style=\"background: #efefef url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;\"></th>";
+        var listArcBillandCode = json.listArcBillandCode;
+        for (var i = 0; i < listArcBillandCode.length; i++) {
+            var arcBillCodeArr = listArcBillandCode[i].substring(1, listArcBillandCode[i].length - 1).split(",");
+            console.log(arcBillCodeArr[1]);
+            html += "<th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'><a onclick='queryArcBillDept(" + arcBillCodeArr[0] + ")' >" + arcBillCodeArr[1] + "</a></th>";
+        }
+        html += "</tr>";
+        $("#resultTable").find("thead").append(html);
+        $("#showTableDiv").css("width", "100%");
+
+        html += "</tr>";
+    }
+
+    //二级档案类型
+    function resumeTheadDept(json) {
+        $("#resultTable").find("thead").empty();
+        var html = "<tr style=\"table-layout:fixed;\">";
+        html += "<th style=\"background: #efefef url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;\"></th>";
+        var listArcBillandCode = json.listArcBillandCode;
+        for (var i = 0; i < listArcBillandCode.length; i++) {
+            var arcBillCodeArr = listArcBillandCode[i].substring(1, listArcBillandCode[i].length - 1).split(",");
+            if (arcBillCodeArr.length > 2) {//该档案类型是父节点，有子目录
+                html += "<th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'><a onclick='queryArcBillDept(" + arcBillCodeArr[1] + ")' >" + arcBillCodeArr[2] + "</a></th>";
+
+            } else {//该档案类型是叶子节点
+                html += "<th style='text-align: center;  font-weight:normal;font-family:Microsoft YaHei;font-size:12px;'>" + arcBillCodeArr[1] + "</th>";
+            }
+        }
+        html += "</tr>";
+        $("#resultTable").find("thead").append(html);
+        $("#showTableDiv").css("width", "100%");
+
+        html += "</tr>";
+    }
+
+    function queryArcBillDept(arcBillCode) {
+        $("#selectArcCode").val(arcBillCode);
+        $.ajax({
+            url: prefix + "/queryArcBillDept",
+            type: "post",
+            data: $("#myForm").serialize(),
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                // initTheadForSearch(json);
+                resumeTheadDept(json)
+                initTableShow(json);
+            }
+        });
+
+    }
+
+    //导出Excel
+    function exportExc() {
+
+        $.modal.confirm("确定要导出吗?", function () {
+            var table = document.getElementById("resultTable");
+            // var table=$("#resultTable");
+            var tableRows = table.rows.length;
+            var rowsList = [];
+            for (var i = 0; i < tableRows; i++) {
+                var rowCells = table.rows[i].cells.length;
+                var cellsList = [];
+                for (var j = 0; j < rowCells; j++) {
+                    var a = table.rows[i].cells[j].getElementsByTagName("a");
+                    var tit = table.rows[i].cells[j].innerHTML;
+                    if (a.length > 0) {
+                        tit = a[0].innerHTML;
+                    }
+                    // console.log(a);
+                    // var tit=table.rows[i].cells[j].innerHTML;
+                    cellsList.push(tit);
+                }
+                rowsList.push(cellsList);
+            }
+            var params = {
+                rowsList: rowsList
+            };
+            $.ajax({
+                url: prefix + "/exportExcel",
+                contentType: "application/json",
+                type: "post",
+                dataType: "json",
+                data: JSON.stringify(params),
+                success: function (result) {
+                    window.location.href = prefix + "/startExport";
+                }
+            });
+        })
+
+    }
+</script>
+</body>
+</html>

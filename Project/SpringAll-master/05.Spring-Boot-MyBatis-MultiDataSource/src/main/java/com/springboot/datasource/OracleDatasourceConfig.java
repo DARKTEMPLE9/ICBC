@@ -15,26 +15,26 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 
 @Configuration
-@MapperScan(basePackages = OracleDatasourceConfig.PACKAGE, 
-	sqlSessionFactoryRef = "oracleSqlSessionFactory")
+@MapperScan(basePackages = OracleDatasourceConfig.PACKAGE,
+        sqlSessionFactoryRef = "oracleSqlSessionFactory")
 public class OracleDatasourceConfig {
-	
-	// oracledao扫描路径
-	static final String PACKAGE = "com.springboot.oracledao"; 
-	// mybatis mapper扫描路径
-	static final String MAPPER_LOCATION = "classpath:mapper/oracle/*.xml";
-	
-	@Bean(name = "oracledatasource")
-	@ConfigurationProperties("spring.datasource.druid.oracle")
-	public DataSource oracleDataSource() {
-		return DruidDataSourceBuilder.create().build();
-	}
-	
-	@Bean(name = "oracleTransactionManager")
+
+    // oracledao扫描路径
+    static final String PACKAGE = "com.springboot.oracledao";
+    // mybatis mapper扫描路径
+    static final String MAPPER_LOCATION = "classpath:mapper/oracle/*.xml";
+
+    @Bean(name = "oracledatasource")
+    @ConfigurationProperties("spring.datasource.druid.oracle")
+    public DataSource oracleDataSource() {
+        return DruidDataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "oracleTransactionManager")
     public DataSourceTransactionManager oracleTransactionManager() {
         return new DataSourceTransactionManager(oracleDataSource());
     }
- 
+
     @Bean(name = "oracleSqlSessionFactory")
     public SqlSessionFactory oracleSqlSessionFactory(@Qualifier("oracledatasource") DataSource dataSource) throws Exception {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();

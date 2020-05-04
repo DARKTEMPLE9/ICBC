@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+    <th:block th:include="include :: ace-css"/>
+    <th:block th:include="include :: header('模态窗口')"/>
+    <th:block th:include="include :: header('弹层组件')"/>
+    <th:block th:include="include :: header('扫描')"/>
+    <th:block th:include="include :: header('文件上传')"/>
+    <th:block th:include="include :: bootstrap-select-css"/>
+    <!-- 文件上传 -->
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+
+</head>
+<style>
+    .btn-file, .file-caption {
+        display: none;
+    }
+
+    .file-download-indicator {
+        float: left;
+        width: 16px;
+        height: 16px;
+    }
+
+    .krajee-default .file-caption-info, .krajee-default .file-size-info {
+        width: 100%;
+    }
+
+    .krajee-default.file-preview-frame .kv-file-content {
+        width: auto;
+        min-height: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+
+    .col-9.file-preview .file-preview-thumbnails .file-preview-frame {
+        width: 9.6%;
+        max-height: 230px;
+    }
+
+    .col-9.file-preview .file-footer-buttons .btn {
+        padding: 0 5px;
+    }
+
+    .col-5.file-preview .file-preview-thumbnails .file-preview-frame {
+        width: 18%;
+        max-height: 230px;
+    }
+
+    .col-3.file-preview .file-preview-thumbnails .file-preview-frame {
+        width: 30%;
+        max-height: 230px;
+    }
+
+    .file-preview-image {
+        font-size: 16px;
+        color: #3c8dbc;
+    }
+
+    .kv-file-content > img {
+        margin-top: 25%;
+    }
+
+    .col-9.file-preview .file-preview-image {
+        font-size: 12px;
+    }
+
+    .checkbox {
+        position: absolute;
+        bottom: -4px;
+        left: 24px;
+    }
+</style>
+<body style="overflow: scroll; overflow-x: hidden">
+<div style="width:100%">
+    <!-- container -->
+    <div class="container-div">
+        <!-- 导航条 单据类型 -->
+        <nav class=" navbar navbar-inverse" style="background-color:#fff;">
+            <div class="btn-group" style="margin-top:10px;float: right;">
+                <button type="button" style="background-color: #fff; border: 1px solid #ccc;color:#333;"
+                        class="btn btn-primary btn-sm">每行显示 <span class="col-num">5</span> 个
+                </button>
+                <button type="button" style="background-color: #fff; border: 1px solid #ccc;color:#333;"
+                        class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                    <span class="caret" style="margin-top:-2px;"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#" value="3">3</a></li>
+                    <li><a href="#" value="5">5</a></li>
+                    <li><a href="#" value="9">9</a></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </nav>
+        <!-- 内容 -->
+        <!--面板start-->
+        <div id='sss' style="margin-top:20px;">
+            <div class="form-group">
+                <div class="file-loading">
+                    <input id="fileInput" type="file" multiple>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--跳转-->
+<th:block th:include="include :: footer"/>
+<!-- 文件上传 -->
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<th:block th:include="include :: bootstrap-select-js"/>
+<script type="text/javascript" th:inline="javascript">
+    // 获取数据，列表拼接
+    var fileLists = [[${fileList}]];
+    var imageLists = [[${imageList}]];
+    //  console.log(imageLists)
+    console.log(fileLists)
+    var urlLists = []; // 文件地址集合
+    var initialPreviewConfig = [];
+    for (var i = 0; i < imageLists.length; i++) {
+        language: 'zh',
+            urlLists.push(imageLists[i].imagePath);
+        var imgObj = {};
+        imgObj.type = 'image';
+        imgObj.caption = imageLists[i].imageName;
+        imgObj.key = imageLists[i].id;
+        imgObj.size = imageLists[i].imageSize;
+        imgObj.url = imageLists[i].imagePath;
+        imgObj.downloadUrl = imageLists[i].imagePath;
+        initialPreviewConfig.push(imgObj);
+    }
+    for (var j = 0; j < fileLists.length; j++) {
+        urlLists.push(fileLists[j].filePath);
+        var fileObj = {};
+        switch (fileLists[j].fileName.split('.')[1]) {
+            case "pdf":
+                fileObj.type = "pdf";
+                fileObj.filetype = "application/pdf ";
+                break;
+            case "doc":
+            case "docx":
+                fileObj.type = "office";
+                fileObj.filetype = "application/msword"
+                break;
+            case "xls" :
+            case "xlsx":
+                fileObj.type = "office";
+                fileObj.filetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                break;
+            case "txt":
+                fileObj.type = "text";
+                break;
+            default:
+                fileObj.type = "other";
+        }
+        // fileObj.type = fileLists[j].fileName.split('.')[1];
+        fileObj.caption = fileLists[j].fileName;
+        fileObj.key = fileLists[j].id;
+        fileObj.size = fileLists[j].fileSize;
+        fileObj.url = fileLists[j].filePath;
+        fileObj.downloadUrl = fileLists[j].filePath;
+        initialPreviewConfig.push(fileObj);
+    }
+    console.log(initialPreviewConfig)
+    setTimeout(function () {
+        $('.file-preview').addClass('col-5');
+    }, 20)
+    // 展示
+    $('.dropdown-menu>li>a').on('click', function () {
+        var boxWidth = $('#sss').width();
+        var num = $(this).text();
+        /*    var divWidth = boxWidth/num;
+            $('.file-preview-frame').width(divWidth);*/
+        $('.col-num').text($(this).text());
+        if (num == 3) {
+            $('.file-preview').removeClass().addClass('col-3 file-preview')
+        } else if (num == 5) {
+            $('.file-preview').removeClass().addClass('col-5 file-preview')
+        } else if (num == 9) {
+            $('.file-preview').removeClass().addClass('col-9 file-preview')
+        }
+    })
+    // 文件上传
+    $(document).ready(function () {
+        var code = {aaa: "111"}.aaa.split('');
+        var showupload = code[0] - 0;
+        var showdownload = code[1] - 0;
+        var showdele = code[2] - 0;
+
+        var prefix = ctx + "archCollection/amsRecord";
+        var checkBtn = '<div class="checkbox left"><input type="checkbox" name="checked"></div><div class="clearfix"></div>'
+        // step1 上传部分
+
+        $("#fileInput").fileinput('destroy');  // 直接销毁
+        $("#fileInput").fileinput({ //  控件回显重新初始化
+            showCaption: true,
+            preferIconicPreview: false, // 开启用图标替换预览效果
+            initialPreview: urlLists, // 初始化回显
+            initialPreviewConfig: initialPreviewConfig, //回显类型配值
+            // 整体上传和移除
+            showUpload: false, //是否上传文件
+            showRemove: false, //是否显示移除
+            //设置单个文件的显示样式
+            fileActionSettings: {
+                showUpload: false,
+                showRemove: false,
+                showDrag: false,
+                showDownload: true,
+                removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+            },
+// 预览按钮
+            previewZoomButtonIcons: {
+                prev: '',
+                next: '',
+                toggleheader: '<i class="glyphicon glyphicon-resize-vertical"></i>',
+                fullscreen: '<i class="glyphicon glyphicon-fullscreen"></i>',
+                borderless: '<i class="glyphicon glyphicon-resize-full"></i>',
+                close: '<i class="glyphicon glyphicon-remove"></i>'
+            },
+            //下载按钮
+            otherActionButtons: checkBtn,
+            showAjaxErrorDetails: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            previewFileIconSettings: { // configure your icon file extensions
+                'doc': '<i class="fa fa-file-word-o text-primary"></i>',
+                'docx': '<i class="fa fa-file-word-o text-primary"></i>',
+                'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+                'ppt': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                'txt': '<i class="fa fa-file-text-o text-info"></i>',
+                'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                'htm': '<i class="fa fa-file-code-o text-info"></i>',
+                'mov': '<i class="fa fa-file-movie-o text-warning"></i>',
+                'mp3': '<i class="fa fa-file-audio-o text-warning"></i>'
+            },
+            previewFileExtSettings: { // configure the logic for determining icon file extensions
+                'doc': function (ext) {
+                    return ext.match(/(doc|docx)$/i);
+                },
+                'xls': function (ext) {
+                    return ext.match(/(xls|xlsx)$/i);
+                },
+                'ppt': function (ext) {
+                    return ext.match(/(ppt|pptx)$/i);
+                },
+                'zip': function (ext) {
+                    return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+                },
+                'htm': function (ext) {
+                    return ext.match(/(htm|html)$/i);
+                },
+                'mov': function (ext) {
+                    return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
+                },
+                'mp3': function (ext) {
+                    return ext.match(/(mp3|wav)$/i);
+                },
+                'txt': function (ext) {
+                    return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
+                }
+            },
+            previewSettings: {
+                image: {width: 'auto', height: 'auto', 'max-width': '100%', 'max-height': '100%'},
+                html: {width: '100%', height: 'auto'},
+                text: {width: '100%', height: 'auto'},
+                office: {width: '100%', height: 'auto'},
+                gdocs: {width: '100%', height: 'auto'},
+                video: {width: '100%', height: 'auto'},
+                audio: {width: '100%', height: 'auto'},
+                flash: {width: '100%', height: 'auto'},
+                object: {width: '100%', height: 'auto'},
+                pdf: {width: '100%', height: 'auto'},
+                other: {width: '100%', height: 'auto'}
+            },
+            previewSettingsSmall: {
+                image: {width: 'auto', height: 'auto', 'max-width': '100%', 'max-height': '100%'},
+                html: {width: '100%', height: 'auto'},
+                text: {width: '100%', height: 'auto'},
+                office: {width: '100%', height: 'auto'},
+                gdocs: {width: '100%', height: 'auto'},
+                video: {width: '100%', height: 'auto'},
+                audio: {width: '100%', height: 'auto'},
+                flash: {width: '100%', height: 'auto'},
+                object: {width: '100%', height: 'auto'},
+                pdf: {width: '100%', height: 'auto'},
+                other: {width: '100%', height: 'auto'}
+            },
+            //是否显示拖拽区域
+            dropZoneEnabled: false,
+            'theme': 'explorer-fas',
+            overwriteInitial: false,
+            initialPreviewFileType: ['image', 'text', 'object', 'other', 'pdf', 'office'],
+            previewFileType: ['image', 'html', 'text', 'video', 'audio', 'flash', 'object', 'other', 'pdf'],
+            initialPreviewAsData: true,
+            enctype: 'multipart/form-data'
+        });
+    });
+    $('.kv-cust-btn').on('click', function () {
+        alert("删除")
+        var $btn = $(this), key = $btn.data('key');
+        console.log(key); //之后做Get或者Post请求返回下载的文件数据
+    })
+</script>
+</body>
+</html>

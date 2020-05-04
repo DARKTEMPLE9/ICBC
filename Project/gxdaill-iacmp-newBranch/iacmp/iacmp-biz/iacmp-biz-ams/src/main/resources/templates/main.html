@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('百度ECharts')"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>中关村介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+    <style>
+        #borrowTable tbody th td {
+            text-align: center;
+            font-weight: normal
+        }
+
+        .fixed-table-pagination .pagination-info {
+            display: none;
+        }
+
+        .box-body {
+            padding: 10px;
+            height: 270px;
+        }
+
+        .ibox-content {
+            padding: 0 !important;
+        }
+
+        #jybody {
+            overflow: hidden;
+        }
+
+        table td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .tdHover {
+            padding: 10px;
+            background-color: white;
+            z-index: 666;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper-content">
+    <div class="col-sm-7">
+        <!-- MAP & BOX PANE -->
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="box box-info">
+            <div id="jyhead" class="box-header with-border" style="height: 45px;padding: 10px;">
+                <font size="3"><i class="glyphicon glyphicon-list"></i>&nbsp;共享文档</font>
+                <a onclick="$.modal.openTab('共享文档',ctx + '/amsArcReportcontroller/amsArchives')"
+                   class="menuItem btn btn-sm btn-default btn-flat pull-right">更多</a>
+            </div>
+            <div id="jybody" class="box-body" style="">
+                <div class="table-responsive">
+                    <table class='table table-striped table-hover table-condensed table-bordered'
+                           style="table-layout: fixed;width: 100%;"
+                           id="borrowTable">
+                        <thead>
+                        <tr style="background-color: #efefef;">
+                            <!--<th style='text-align: center;width:8%;'>序号</th>-->
+                            <th style='text-align: center;'>档案名称</th>
+                            <th style='text-align: center;'>档案分类</th>
+                            <th style='text-align: center;'>档案归属部门</th>
+                            <th style='text-align: center;'>责任者</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody1">
+                        <!--							<tr>-->
+                        <!--								<th style="text-align: center;font-weight: normal">1</th>-->
+                        <!--								<th style="text-align: center;font-weight: normal">4.0</th>-->
+                        <!--								<th style="text-align: center;font-weight: normal">消费金融事业部</th>-->
+                        <!--								<th style="text-align: center;font-weight: normal">2019-08-04 11:25:15</th>-->
+                        <!--								<th style="text-align: center;font-weight: normal">审阅中</th>-->
+                        <!--							</tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-sm-5">
+        <div class="box box-info">
+            <div id="bzhead" class="box-header with-border" style="height: 45px;padding: 10px">
+                <font size="3"><i class="glyphicon glyphicon-list"></i>&nbsp;部门档案统计<span id="yearbm"></span><span
+                        id="tjFont"></span></font>
+            </div>
+            <div id="arcCount" class="box-body" style="">
+                <!-- <div id="arcCount" style="height: 260px;margin-top: -40px"></div> -->
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="echarts" id="countByDept"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row  wrapper-content " style="padding-top:0px!important;">
+    <div class="col-sm-7">
+        <div class="box box-info">
+            <div id="rwHead" class="box-header with-border" style="height: 45px;padding: 10px">
+                <font size="3"><i class="glyphicon glyphicon-list"></i>&nbsp;我的待办</font>
+                <a onclick="$.modal.openTab('我的待办', ctx + '/myTask/waitProcessInfo')"
+                   class="menuItem btn btn-sm btn-default btn-flat pull-right">更多</a>
+            </div>
+            <!-- /.box-header -->
+            <div id="jybody1" class="box-body" style="">
+                <div class="table-responsive">
+                    <table class='table table-striped table-hover table-condensed table-bordered'
+                           style="table-layout: fixed;width: 100%;"
+                           id="borrowTable1">
+                        <thead>
+                        <tr style="background-color: #efefef;">
+                            <!--<th style='text-align: center;width:8%;'>序号</th>-->
+                            <th style='text-align: center;'>档案名称</th>
+                            <th style='text-align: center;'>申请人</th>
+                            <th style='text-align: center;'>申请时间</th>
+                            <th style='text-align: center;'>上个节点审批人</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div class="box box-info">
+            <div id="bzhead1" class="box-header with-border" style="height: 45px;padding: 10px">
+                <font size="3"><i class="glyphicon glyphicon-list"></i>&nbsp;分类档案统计<span id="yearfl"></span><span
+                        id="tjFont1"></span></font>
+            </div>
+            <div id="arcCount1" class="box-body" style="">
+                <!-- <div id="arcCount" style="height: 260px;margin-top: -40px"></div> -->
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="echarts" id="countByArcType"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    $('#pay-qrcode').click(function () {
+        var html = $(this).html();
+        parent.layer.open({
+            title: false,
+            type: 1,
+            closeBtn: false,
+            shadeClose: true,
+            area: ['600px', 'auto'],
+            content: html
+        });
+    });
+
+</script>
+<th:block th:include="include :: footer"/>
+
+<th:block th:include="include :: echarts-js"/>
+<script th:src="@{/js/echarts_2.js}"></script>
+<!--	<script type="text/javascript">-->
+<script th:inline="javascript">
+
+    var myDate = new Date();
+    var thisyear = myDate.getFullYear();
+    ;
+    window.onload = function () {
+        $("#yearbm").text("(" + thisyear + ")")
+        $("#yearfl").text("(" + thisyear + ")")
+        //查询共享文档
+        selectShareAms();
+        //部门档案统计
+        countByDept();
+        //各类型档案统计
+        countByArcType();
+        //我的待办
+        loadMyTask();
+    }
+
+    //查询共享文档
+    function selectShareAms() {
+        var prefix = ctx + "amsArcReportcontroller/amsArchives";
+        $.ajax({
+            url: prefix + "/mainList",
+            type: "post",
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                /* 请求成功 */
+                if (json.code === 0) {
+                    var data = json.rows;
+                    if (data.length) {
+                        var num = data.length > 6 ? 6 : data.length;
+                        // 没有数据
+                        if (num === 0) {
+                            var _tr = document.getElementById('tbody1').insertRow(-1);
+                            var _td2 = _tr.insertCell(0);
+                            _td2.colSpan = 4;
+                            _td2.align = 'center';
+                            _td2.innerHTML = '暂无数据'
+                        } else {
+                            // 数据展示
+                            for (var i = 0; i < num; i++) {
+                                var _tr = document.getElementById('tbody1').insertRow(-1);
+                                // var _td1 = _tr.insertCell(0);
+                                var _td2 = _tr.insertCell(0);
+                                var _td3 = _tr.insertCell(1);
+                                var _td4 = _tr.insertCell(2);
+                                var _td5 = _tr.insertCell(3);
+                                // _td1.innerHTML=i+1;
+                                _td2.innerHTML = data[i].name;
+                                _td3.innerHTML = data[i].arcBillName;
+                                _td4.innerHTML = data[i].opDepName;
+                                _td5.innerHTML = data[i].respOpName;
+                            }
+
+                            // 鼠标悬停td展示数据
+                            $(function () {
+                                $("#tbody1 td:first-child").mouseover(function (e) {
+                                    this.Mytitle = $(this).text();
+                                    if (this.Mytitle.length > 10) {
+                                        $("body").append("<div id='div_toop' class='tdHover'>" + this.Mytitle + "</div>");//将要显示的内容添加到 新建 div标签中 并追加到 body 中
+                                        $("#div_toop")
+                                            .css({
+                                                //设置 div 内容位置
+                                                "top": (e.pageY - 25) + "px",
+                                                "position": "absolute",//添加绝对位置
+                                                "left": (e.pageX + 15) + "px"
+                                            }).show("fast");// show(spe.ed,callback) speed: xian'shi'su'du
+                                    }
+                                })
+                                $("#tbody1 td:first-child").mouseout(function () { //鼠标指针从 a标签 上离开时 发生mouseout 事件
+                                    $("#div_toop").remove();//移除对象
+                                })
+                                $("#tbody1 td:first-child").mousemove(function (e) { //鼠标指针在 a标签 中移动时 发生mouseout 事件
+                                    this.Mytitle = $(this).text();
+                                    if (this.Mytitle.length > 10) {
+                                        $("#div_toop")
+                                            .css({
+                                                //设置 div 内容位置
+                                                "top": (e.pageY - 25) + "px",
+                                                "position": "absolute",//添加绝对位置
+                                                "left": (e.pageX + 15) + "px"
+                                            });
+                                    }
+                                });
+                            });
+
+                        }
+                    }
+                }
+                /* 请求失败 */
+                if (json.code === 500) {
+                    var _tr = document.getElementById('tbody1').insertRow(-1);
+                    var _td2 = _tr.insertCell(0);
+                    _td2.colSpan = 4;
+                    _td2.align = 'center';
+                    _td2.innerHTML = json.msg;
+                }
+            }
+        });
+    }
+
+    //部门档案统计
+    function countByDept() {
+        var prefix = ctx + "amsArcReportcontroller/amsBill";
+        $.ajax({
+            url: prefix + "/countByDept",
+            type: "post",
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                var data = JSON.parse(JSON.stringify(json));
+                var mdata = [];
+                for (var key in data) {
+                    var obj = {};
+                    obj.value = key;
+                    obj.name = data[key];
+                    mdata.push(obj)
+                }
+                var pieChart = echarts.init(document.getElementById("countByDept"));
+                var pieoption = {
+                    title: {
+                        text: '',
+                        subtext: '',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: ['', '', '', '', '']
+                    },
+                    calculable: true,
+                    color: ['#9BCA63', '#FAD860', '#F3A43B', '#E87C25', '#27727B', '#C1232B', '#B5C334', '#FCCE10', '#F4E001', '#D7504B', '#C6E579', '#F0805A', '#26C0C0',
+                        '#FE8463', '#60C0DD'],
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '50%'],
+                            data: mdata
+                        }
+                    ]
+                };
+                pieChart.setOption(pieoption);
+                $(window).resize(pieChart.resize);
+
+            }
+        })
+    }
+
+    //各类型档案统计
+    function countByArcType() {
+        var prefix = ctx + "amsArcReportcontroller/amsBill";
+        $.ajax({
+            url: prefix + "/countByArcType",
+            type: "post",
+            dataType: "json",
+            traditional: true,
+            success: function (json) {
+                var data = JSON.parse(JSON.stringify(json));
+                var xArr = [];
+                var yArr = [];
+                var legendData = [];
+                var sum = 0;
+                for (key in data) {
+                    sum += data[key];
+                }
+                for (key in data) {
+                    xArr.push(key);
+                    yArr.push(Math.round(data[key] / sum * 100));
+                    var obj = {};
+                    obj['name'] = key;
+                    legendData.push(obj);
+                }
+                <!--类型档案统计-->
+                var bar_data = yArr; //模拟数据  [0, 0, 0, 0, 0, 0, 11, 0, 32]
+                var barChart = echarts.init(document.getElementById("countByArcType"));
+                var baroption = {
+                    title: {
+                        text: '分类档案占比（份数/总数）',
+                        textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+                            fontFamily: 'Arial, Verdana, sans...',
+                            fontSize: 14,
+                            fontStyle: 'normal',
+                            fontWeight: 'normal',
+                        },
+                        x: 10,
+                        y: 20,
+                    },
+                    tooltip: {
+                        //  formatter:  "{a} : {c}%"
+                        formatter: function (params, ticket, callback) {
+                            //图表title名称
+                            var seriesName = params.seriesName
+                            //值
+                            var value = Math.round(params.value / 100 * sum);
+                            // return seriesName + ' : '  + value + '/'+sum
+                            var Percentage = Math.round(value / sum * 100) + '%';
+                            return seriesName + ' : ' + value + '&nbsp;' + '(' + Percentage + ')'
+                        }
+                    },
+                    legend: {
+                        type: 'scroll',
+                        orient: 'horizontal', // 'horizontal'
+                        data: xArr,
+                        textStyle: {  // 图列内容样式
+                            color: '#333',  // 字体颜色
+                        },
+                        x: '0%',//图例位置
+                        y: '90%'//延Y轴居中
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '13%',
+                        containLabel: true
+                    },
+                    xAxis: [ //横坐标
+                        {
+                            type: 'category',
+                            data: [''],
+                            axisLine: {
+                                lineStyle: {
+                                    color: "#333",//横坐标线条颜色
+                                }
+                            }
+                        }
+                    ],
+                    yAxis: [ //纵坐标
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                show: true,
+                                formatter: '{value}%',//给Y轴数值添加百分号
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: "#333",//纵坐标线条颜色
+                                }
+                            }
+                        }
+                    ],
+                    color: ['#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B', '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0',
+                        '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD'],
+                    /*color:['#0287f8','#269cff','#58b1fc','#2fb6f6','#03cdfa','#3ed9fc','#05f6f6','#47fefe','#7dfcfc','#a9ffff'],*/ //柱状图的颜色,蓝色系
+                    series: legendData,
+                };
+                for (var i = 0; i < baroption.series.length; i++) {
+                    var style = { //定义柱状图的样式
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top', //柱子上方显示 数值
+                                formatter: '{c}%' //数值加上'%'
+                            }
+                        }
+                    };
+                    baroption.series[i].type = 'bar'; //每条数据指定类型为'bar'
+                    baroption.series[i].itemStyle = style; // series中每条数据都加的样式
+                    baroption.series[i].data = [bar_data[i]]; //series 中 data赋值
+                }
+                ;
+                barChart.setOption(baroption);
+                window.onresize = barChart.resize;
+
+            }
+        })
+    }
+
+    //我的待办
+    function loadMyTask() {
+        var prefix = ctx + "myTask/waitProcessInfo";
+        $.ajax({
+            url: prefix + "/list",
+            type: "post",
+            dataType: "json",
+            success: function (json) {
+                // 请求失败
+                if (json.code === 500) {
+                    var _tr = document.getElementById('borrowTable1').insertRow(-1);
+                    var _td2 = _tr.insertCell(0);
+                    _td2.colSpan = 4;
+                    _td2.align = 'center';
+                    _td2.innerHTML = json.msg
+                }
+                // 请求成功
+                if (json.code === 0) {
+                    var data = json.rows;
+                    var num = data.length > 6 ? 6 : data.length;
+                    // 没有数据
+                    if (num === 0) {
+                        var _tr = document.getElementById('borrowTable1').insertRow(-1);
+                        var _td2 = _tr.insertCell(0);
+                        _td2.colSpan = 4;
+                        _td2.align = 'center';
+                        _td2.innerHTML = '暂无代办'
+                    } else {
+                        // 数据展示
+                        for (var i = 0; i < num; i++) {
+                            var _tr = document.getElementById('borrowTable1').insertRow(-1);
+                            // var _td1 = _tr.insertCell(0);
+                            var _td2 = _tr.insertCell(0);
+                            var _td3 = _tr.insertCell(1);
+                            var _td4 = _tr.insertCell(2);
+                            var _td5 = _tr.insertCell(3);
+                            // _td1.innerHTML=i+1;
+                            _td2.innerHTML = data[i].arcName;
+                            _td3.innerHTML = data[i].appOpName;
+                            _td4.innerHTML = data[i].appTime;
+                            _td5.innerHTML = data[i].nowDispOpName;
+                        }
+                        // 鼠标悬停td展示数据
+                        $(function () {
+                            $("#borrowTable1 td:first-child").mouseover(function (e) {
+                                this.Mytitle = $(this).text();
+                                if (this.Mytitle.length > 10) {
+                                    $("body").append("<div id='div_toop1' class='tdHover'>" + this.Mytitle + "</div>");//将要显示的内容添加到 新建 div标签中 并追加到 body 中
+                                    $("#div_toop1")
+                                        .css({
+                                            //设置 div 内容位置
+                                            "top": (e.pageY - 25) + "px",
+                                            "position": "absolute",//添加绝对位置
+                                            "left": (e.pageX + 15) + "px"
+                                        }).show("fast");// show(spe.ed,callback) speed: xian'shi'su'du
+                                }
+                            })
+                            $("#borrowTable1 td:first-child").mouseout(function () { //鼠标指针从 a标签 上离开时 发生mouseout 事件
+                                $("#div_toop1").remove();//移除对象
+                            })
+                            $("#borrowTable1 td:first-child").mousemove(function (e) { //鼠标指针在 a标签 中移动时 发生mouseout 事件
+                                this.Mytitle = $(this).text();
+                                if (this.Mytitle.length > 10) {
+                                    $("#div_toop1")
+                                        .css({
+                                            //设置 div 内容位置
+                                            "top": (e.pageY - 25) + "px",
+                                            "position": "absolute",//添加绝对位置
+                                            "left": (e.pageX + 15) + "px"
+                                        });
+                                }
+                            });
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

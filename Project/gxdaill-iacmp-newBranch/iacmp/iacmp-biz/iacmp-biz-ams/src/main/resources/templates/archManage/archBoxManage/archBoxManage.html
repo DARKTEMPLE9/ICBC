@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .select-list label {
+        width: 65px;
+    }
+
+    .select-list li {
+        box-sizing: border-box;
+        height: 30px;
+        overflow: hidden;
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('档案盒管理')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label>盒号：</label>
+                            <input type="text" name="code"/>
+                        </li>
+
+                        <li>
+                            <label>档案类型：</label>
+                            <input type="text" id="arcType" name="arcType"
+                                   onclick="selectArcBillTree();arcType.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>创建时间：</label>
+                                <input type="text" style="width: 200px;" class="input-sm form-control" id="singleTime"
+                                       placeholder="" name="crtTime"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <label>保管期限：</label>
+                            <select id="valPeriod" name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option selected="selected" value="">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label>状态：</label>
+                            <select id="status" name="status">
+                                <option selected="selected" value="">全部</option>
+                                <option value="00">未使用</option>
+                                <option value="10">未满</option>
+                                <option value="20">已满</option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>入库时间：</label>
+                                <input type="text" class="input-sm form-control" id="startTime" placeholder=""
+                                       name="incabTimeStart"/>
+                                <span>-</span>
+                                <input type="text" class="input-sm form-control" id="endTime" placeholder=""
+                                       name="incabTimeEnd"/>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('archManage:archBox:detail')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:archBox:remove')}]];
+    var prefix = ctx + "archManage/archBox";
+    var period = [[${@dict.getType('archive_period')}]];
+    var archstoreStatus = [[${@dict.getType('archstore_status')}]];
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/{id}",
+            modalName: "档案盒管理",
+            showExport: true,
+            columns: [{
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '盒号',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'orgName',
+                    title: '所属部门',
+                    visible: false
+                },
+                {
+                    field: 'childType',
+                    title: '二级类目',
+                    sortable: true
+                }, {
+                    field: 'boxYear',
+                    title: '所属年份',
+                    sortable: true
+                }, {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+                }, {
+                    field: 'crtTime',
+                    title: '创建时间',
+                    sortable: true
+                }, {
+                    field: 'incabTime',
+                    title: '入库时间',
+                    sortable: true
+                }, {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        console.log(item.status)// undefined/00/5
+                        return $.table.selectDictLabel(archstoreStatus, item.status);
+                    }
+                    /*formatter: function(value, item, index) {
+                        console.log(item.status)
+                      /!*  if (item.status == '00') {
+                            return '<span class="label label-danger">未使用</span>';
+                        }
+                        else if (item.status == '10' || item.status == '5') {
+                            return '<span class="label label-primary">未满</span>';
+                        }
+                        else if (item.status == '20' || item.status == '6') {
+                            return '<span class="label label-success">已满</span>';
+                        }*!/
+                    }*/
+
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        actions.push('<a class="btn btn-success btn-xs " href="javascript:void(0)" onclick="jumpToBoxArchList(\'' + row.id + '\')" shiro:hasPermission="archManage:archBox:archList"><i class="fa fa-address-card"></i>查看盒内信息</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="remove(\'' + row.id + '\')" ><i class="fa fa-remove"></i>删除</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/" + id;
+        $.modal.openTab("档案盒管理详情", url);
+    }
+
+    function jumpToBoxArchList(id) {
+        // createMenuItem(prefix+"/jumpToArchList?boxId="+id,"盒内档案")
+        // 换了种打开方式，在本页签直接跳转
+        var url = prefix + "/jumpToArchList?boxId=" + id;
+        $.modal.parentTab("盒内档案", url);
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcType").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    //删除档案盒
+    function remove(id) {
+        $.ajax({
+            url: prefix + '/queryArchiveByBoxId?id=' + id,
+            type: 'post',
+            dataType: "json",
+            success: function (result) {
+                if (result.data == 0) {
+                    $.modal.confirm("确认要删除此档案盒吗?", function () {
+                        var url = prefix + "/remove";
+                        var data = {"ids": id};
+                        $.operate.submit(url, "post", "json", data);
+                    });
+                } else {
+                    $.modal.alertWarning("档案盒内有档案,不能执行删除操作");
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

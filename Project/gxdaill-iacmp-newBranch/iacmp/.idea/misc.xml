@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams-server/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms-server/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-bean/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-core/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-dao/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-elasticsearch/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-framework/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-generator/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp-server/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-pms/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-quartz/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-biz/iacmp-biz-system/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-config/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-eureka/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-http-chunk/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-monitor/pom.xml" />
+        <option value="$PROJECT_DIR$/iacmp-turbine/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

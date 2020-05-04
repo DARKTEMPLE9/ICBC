@@ -29,154 +29,154 @@ import cn.hutool.crypto.SecureUtil;
  * @since 3.0.8
  */
 public class AES extends SymmetricCrypto {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	//------------------------------------------------------------------------- Constrctor start
+    //------------------------------------------------------------------------- Constrctor start
 
-	/**
-	 * 构造，默认AES/ECB/PKCS5Padding，使用随机密钥
-	 */
-	public AES() {
-		super(SymmetricAlgorithm.AES);
-	}
+    /**
+     * 构造，默认AES/ECB/PKCS5Padding，使用随机密钥
+     */
+    public AES() {
+        super(SymmetricAlgorithm.AES);
+    }
 
-	/**
-	 * 构造，使用默认的AES/ECB/PKCS5Padding
-	 *
-	 * @param key 密钥
-	 */
-	public AES(byte[] key) {
-		super(SymmetricAlgorithm.AES, key);
-	}
+    /**
+     * 构造，使用默认的AES/ECB/PKCS5Padding
+     *
+     * @param key 密钥
+     */
+    public AES(byte[] key) {
+        super(SymmetricAlgorithm.AES, key);
+    }
 
-	/**
-	 * 构造，使用随机密钥
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 */
-	public AES(Mode mode, Padding padding) {
-		this(mode.name(), padding.name());
-	}
+    /**
+     * 构造，使用随机密钥
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     */
+    public AES(Mode mode, Padding padding) {
+        this(mode.name(), padding.name());
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 */
-	public AES(Mode mode, Padding padding, byte[] key) {
-		this(mode, padding, key, null);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     */
+    public AES(Mode mode, Padding padding, byte[] key) {
+        this(mode, padding, key, null);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @param iv      偏移向量，加盐
-	 * @since 3.3.0
-	 */
-	public AES(Mode mode, Padding padding, byte[] key, byte[] iv) {
-		this(mode.name(), padding.name(), key, iv);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @param iv      偏移向量，加盐
+     * @since 3.3.0
+     */
+    public AES(Mode mode, Padding padding, byte[] key, byte[] iv) {
+        this(mode.name(), padding.name(), key, iv);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @since 3.3.0
-	 */
-	public AES(Mode mode, Padding padding, SecretKey key) {
-		this(mode, padding, key, (IvParameterSpec) null);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @since 3.3.0
+     */
+    public AES(Mode mode, Padding padding, SecretKey key) {
+        this(mode, padding, key, (IvParameterSpec) null);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @param iv      偏移向量，加盐
-	 * @since 4.6.7
-	 */
-	public AES(Mode mode, Padding padding, SecretKey key, byte[] iv) {
-		this(mode, padding, key, ArrayUtil.isEmpty(iv) ? ((IvParameterSpec) null) : new IvParameterSpec(iv));
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @param iv      偏移向量，加盐
+     * @since 4.6.7
+     */
+    public AES(Mode mode, Padding padding, SecretKey key, byte[] iv) {
+        this(mode, padding, key, ArrayUtil.isEmpty(iv) ? ((IvParameterSpec) null) : new IvParameterSpec(iv));
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式{@link Mode}
-	 * @param padding {@link Padding}补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @param iv      偏移向量，加盐
-	 * @since 3.3.0
-	 */
-	public AES(Mode mode, Padding padding, SecretKey key, IvParameterSpec iv) {
-		this(mode.name(), padding.name(), key, iv);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式{@link Mode}
+     * @param padding {@link Padding}补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @param iv      偏移向量，加盐
+     * @since 3.3.0
+     */
+    public AES(Mode mode, Padding padding, SecretKey key, IvParameterSpec iv) {
+        this(mode.name(), padding.name(), key, iv);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式
-	 * @param padding 补码方式
-	 */
-	public AES(String mode, String padding) {
-		this(mode, padding, (byte[]) null);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式
+     * @param padding 补码方式
+     */
+    public AES(String mode, String padding) {
+        this(mode, padding, (byte[]) null);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式
-	 * @param padding 补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 */
-	public AES(String mode, String padding, byte[] key) {
-		this(mode, padding, key, null);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式
+     * @param padding 补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     */
+    public AES(String mode, String padding, byte[] key) {
+        this(mode, padding, key, null);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式
-	 * @param padding 补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @param iv      加盐
-	 */
-	public AES(String mode, String padding, byte[] key, byte[] iv) {
-		this(mode, padding,//
-				SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), key),//
-				ArrayUtil.isEmpty(iv) ? ((IvParameterSpec) null) : new IvParameterSpec(iv));
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式
+     * @param padding 补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @param iv      加盐
+     */
+    public AES(String mode, String padding, byte[] key, byte[] iv) {
+        this(mode, padding,//
+                SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), key),//
+                ArrayUtil.isEmpty(iv) ? ((IvParameterSpec) null) : new IvParameterSpec(iv));
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式
-	 * @param padding 补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 */
-	public AES(String mode, String padding, SecretKey key) {
-		this(mode, padding, key, null);
-	}
+    /**
+     * 构造
+     *
+     * @param mode    模式
+     * @param padding 补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     */
+    public AES(String mode, String padding, SecretKey key) {
+        this(mode, padding, key, null);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param mode    模式
-	 * @param padding 补码方式
-	 * @param key     密钥，支持三种密钥长度：128、192、256位
-	 * @param iv      加盐
-	 */
-	public AES(String mode, String padding, SecretKey key, IvParameterSpec iv) {
-		super(StrUtil.format("AES/{}/{}", mode, padding), key, iv);
-	}
-	//------------------------------------------------------------------------- Constrctor end
+    /**
+     * 构造
+     *
+     * @param mode    模式
+     * @param padding 补码方式
+     * @param key     密钥，支持三种密钥长度：128、192、256位
+     * @param iv      加盐
+     */
+    public AES(String mode, String padding, SecretKey key, IvParameterSpec iv) {
+        super(StrUtil.format("AES/{}/{}", mode, padding), key, iv);
+    }
+    //------------------------------------------------------------------------- Constrctor end
 }

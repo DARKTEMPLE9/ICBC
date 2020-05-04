@@ -16,6 +16,7 @@ public class DemoApplication {
     public String hello() {
         return "hello zuul";
     }
+
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }

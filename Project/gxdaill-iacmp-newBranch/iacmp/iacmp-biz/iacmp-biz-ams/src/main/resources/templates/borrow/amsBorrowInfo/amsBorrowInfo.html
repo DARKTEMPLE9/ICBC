@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案借阅历史列表')"/>
+    <style>
+        /*.fileNo_comm{
+             margin-left: 25px;
+         }
+        .fileNo_rtn{
+            margin-left: 6px;
+        }
+        .time_comm{
+            margin-left: 3px;
+        }
+        .time_rtn{
+            margin-left: 26px;
+        }*/
+        .select-list .ulLists li {
+            height: 30px !important;
+            overflow: hidden;
+            display: block;
+
+        }
+
+        .select-list li label {
+            width: 89px;
+        }
+
+        .ulLists {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            align-content: space-between;
+        }
+
+        .ulLists li {
+            margin-bottom: 10px !important;
+            width: max-content;
+            flex-grow: 0;
+        }
+
+        .list-item > div {
+            width: 320px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list clearfix">
+                    <a id="downloadA" th:href="@{/js/File.docx}" hidden="true">&nbsp;&nbsp;模板下载</a>
+                    <ul class="ulLists">
+                        <li>
+                            <label>档案名称：</label>
+                            <input type="text" name="arcName"/>
+                        </li>
+                        <li>
+                            <div class="rtnDiv">
+                                <label>申请人：</label>
+                                <input type="text" style="" id="appOpName" class="appOpName" name="appOpName"
+                                       onclick="selectAppUser('appOpName')" placeholder="请选择申请人" readonly/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hiddenDiv">
+                                <label>责任者：</label>
+                                <input type="text" style="" id="respOpName" name="respOpName"
+                                       onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                       placeholder="请选择责任者" readonly/>
+                            </div>
+                        </li>
+
+                        <!--<li>-->
+                        <!--所属部门：<input type="text" name="opDepName"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--申请人：<input type="text" name="appOpName"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--借阅事由：<input type="text" name="appReason"/>-->
+                        <!--</li>-->
+                        <li>
+                            <div>
+                                <label>档案类型：</label>
+                                <select name="arcType" th:with="type=${@dict.getType('archive_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="commDiv">
+                                <label>状态：</label>
+                                <select name="status" th:with="type=${@dict.getType('borrow_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="usrDiv">
+                                <label>档案密级：</label>
+                                <select name="arcLevel" th:with="type=${@dict.getType('arcLevel')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </div>
+
+                        </li>
+
+                        <!--<li>-->
+                        <!--档案状态：<input type="text" name="arcStatus"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="commDiv">
+                                <!--档案编号：<input style="margin-left: 25px" type="text" name="arcNo"/>-->
+                                <label>借阅类型：</label>
+                                <select name="borType" th:with="type=${@dict.getType('borrow_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="usrDiv">
+                                <label>保管期限：</label>
+                                <select name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>文件编号：</label>
+                            <input class="fileNo_comm" type="text" name="fileNo" id="fileNo"/>
+                        </li>
+                        <li>
+                            <div class="select-time">
+                                <label>申请时间：</label>
+                                <input type="text" class="input-sm form-control time_comm" id="startTime" placeholder=""
+                                       name="appTimeStart" style="margin-left: 3px"/>
+                                <span>-</span>
+                                <input type="text" class="input-sm form-control" id="endTime" placeholder=""
+                                       name="appTimeEnd"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label>借阅时间：</label>
+                                <input type="text" id="borStaTimeStr" placeholder="" name="borStaTimeStr"
+                                       style="margin-left: 3px"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control" id="borEndTimeStr"
+                                       placeholder="" name="borEndTimeStr"/>
+                            </div>
+                        </li>
+                        <!--<li>-->
+                        <!--<div class="usrDiv">-->
+                        <!--<label>申请人：</label>-->
+                        <!--<input type="text" style="" id="appOpName" class="appOpName" name="appOpName" onclick="selectAppUser('appOpName')" placeholder="请选择申请人" readonly/>-->
+                        <!--&lt;!&ndash;<input th:if="${opSgl} == user" type="text" style="margin-left: 34px" id="appOpName" name="appOpName" onclick="selectAppUser('" + ${userId} + "')" placeholder="请选择申请人" readonly/>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<div>-->
+                        <!--<label>借阅结束日期： </label>-->
+                        <!--&lt;!&ndash;id="laydate-startTime2"&ndash;&gt;-->
+                        <!--<input type="text" class="time-input" placeholder="" name="borEndTime" style="margin-left: -5px;"/>-->
+                        <!--&lt;!&ndash;<span>-</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="text" style="width: 93px;" class="input-sm form-control" id="laydate-endTime2" placeholder="" name="borEndTimeEnd"/>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                    </ul>
+
+                </div>
+                <div style="margin-top:10px;">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="borrow:amsBorrowInfo:add">-->
+            <!--<i class="fa fa-plus"></i> 添加-->
+            <!--</a>-->
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="borrow:amsBorrowInfo:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="borrow:amsBorrowInfo:remove">-->
+            <!--<i class="fa fa-remove"></i> 删除-->
+            <!--</a>-->
+            <a class="btn btn-warning" onclick="downLoadFile()">
+                <i class="fa fa-download"></i> 档案利用须知
+            </a>
+
+            <span th:if="${path} == rtn">
+					<input type="hidden" id="borId"/>
+					<a class="btn btn-success single disabled btn-sm" onclick="borrw()">
+						<i class="fa fa-edit"></i> 出库
+					</a>
+					<a class="btn btn-success single disabled btn-sm" onclick="revert()">
+						<i class="fa fa-edit"></i> 档案归还
+					</a>
+				</span>
+
+            <span th:if="${path} == user">
+					<input type="hidden" id="borId2"/>
+					<a class="btn btn-success single disabled btn-sm" onclick="myRenew()">
+						<i class="fa fa-edit"></i>延续借阅
+					</a>
+					<a class="btn btn-success single disabled btn-sm" onclick="myPhysical()">
+						<i class="fa fa-edit"></i> 实体档案借阅
+					</a>
+				</span>
+
+        </div>
+        <input type="hidden" th:value="${path}" id="path"/>
+        <input type="hidden" th:value="${deptId}" id="deptId"/>
+        <input type="hidden" th:value="${userId}" id="userId"/>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('borrow:amsBorrowInfo:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('borrow:amsBorrowInfo:remove')}]];
+    var imageFlag = [[${@permission.hasPermi('borrow:amsBorrowInfo:view')}]];
+    var carrier = [[${@dict.getType('carrier')}]];
+    var prefix = ctx + "borrow/amsBorrowInfo";
+
+    var borrowStatus = [[${@dict.getType('borrow_status')}]];
+    var archiveStatus = [[${@dict.getType('archive_status')}]];
+    var archiveType = [[${@dict.getType('archive_type')}]];
+
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+
+    /* 选择责任者 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /* 选择申请人 */
+    function selectAppUser(id) {
+        var deptId = $("#deptId").val();
+        var userId = $("#userId").val();
+        var options = {
+            title: '选择申请人',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: prefix + "/selectAppUser/" + deptId + "/" + userId,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('.' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    var archiveType = [[${@dict.getType('archive_type')}]];
+    var archiveLevel = [[${@dict.getType('arcLevel')}]];
+    var archivePeriod = [[${@dict.getType('archive_period')}]];
+    var borrowType = [[${@dict.getType('borrow_type')}]];
+
+    //请求路径参数
+    var path = $("#path").val();
+    var _url = "/list/hst";
+
+    $(".commDiv").parent().show();
+    $(".hiddenDiv").parent().show();
+    $(".usrDiv").parent().hide();
+    $(".rtnDiv").parent().hide();
+
+    if (path == "hst") {
+        _url = "/list/hst";
+    } else if (path == "rtn") {
+        $(".commDiv").parent().hide();
+        $(".usrDiv").parent().hide();
+        $(".hiddenDiv").parent().hide();
+        $(".rtnDiv").parent().show();
+        //更改样式
+        $("#fileNo").removeClass('fileNo_comm')
+        $("#fileNo").addClass('fileNo_rtn');
+        $("#laydate-startTime").removeClass('time_comm')
+        $("#laydate-startTime").addClass('time_rtn');
+        _url = "/list/rtn";
+    } else if (path == "user") {
+        $(".commDiv").parent().hide();
+        $(".usrDiv").parent().show();
+        $(".hiddenDiv").parent().show();
+        $(".rtnDiv").parent().hide();
+        _url = "/list/user";
+    } else if (path == "matter") {
+        _url = "/list/matter";
+    } else if (path == "elec") {
+        _url = "/list/elec";
+    }
+
+    // 日期框js，此页面有两个日期框，一个调用封装js，另一个在此处定义
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var startDate1 = laydate.render({
+                elem: '#borStaTimeStr',
+                max: 0,
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    $('#borEndTimeStr').val("")
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate1.config.min.year = date.year;
+                        endDate1.config.min.month = date.month - 1;
+                        endDate1.config.min.date = date.date;
+                    } else {
+                        endDate1.config.min.year = '';
+                        endDate1.config.min.month = '';
+                        endDate1.config.min.date = '';
+                    }
+                }
+            });
+            var endDate1 = laydate.render({
+                elem: '#borEndTimeStr',
+                theme: 'molv',
+                max: 0,
+                trigger: 'click'
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + _url,
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            // detailUrl: prefix + "/detail/{id}/{typeId}/{parentId}",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "档案借阅历史",
+            showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveType, item.arcType);
+                    }
+                },
+                {
+                    field: 'borType',
+                    title: '借阅类型',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowType, item.borType);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowStatus, item.status);
+                    }
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人',
+                    sortable: true
+                },
+                {
+                    field: 'appDepName',
+                    title: '申请部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'borStaTime',
+                    title: '借阅开始时间',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'borEndTime',
+                    title: '借阅结束日期',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'actReturnTime',
+                    title: '实际归还日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcStatus',
+                    title: '档案状态',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        var nowDate = new Date();
+                        if (item.status == '2' && item.arcStatus == '2') {
+                            //从借阅开始时间 开始限制
+                            if ((new Date(item.borStaTime.replace(/-/g, "\/"))) <= nowDate) {
+                                //未到借阅结束日期
+                                if (nowDate < (new Date(item.borEndTime.replace(/-/g, "\/")))) {
+                                    //借阅中
+                                    item.arcStatus = '1';
+                                } else {
+                                    //借阅结束
+                                    item.arcStatus = '0';
+                                }
+                            }
+                        }
+                        return $.table.selectDictLabel(archiveStatus, item.arcStatus);
+                    }
+                },
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    sortable: true,
+                    visible: false
+                },
+
+                {
+                    field: 'arcLevel',
+                    title: '档案密级',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveLevel, item.arcLevel);
+                    }
+                },
+                {
+                    field: 'valPeriod',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: false,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>');
+
+                        return actions.join('');
+                    }
+                }]
+        };
+
+        //个人借阅显示列
+        var optionsUser = {
+            url: prefix + _url,
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            // detailUrl: prefix + "/detail/{id}/{typeId}/{parentId}",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "档案借阅历史",
+            showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveType, item.arcType);
+                    }
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人',
+                    sortable: true
+                },
+                {
+                    field: 'appDepName',
+                    title: '申请部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                {
+                    field: 'borStaTime',
+                    title: '借阅开始时间',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowStatus, item.status);
+                    }
+                },
+                {
+                    field: 'arcStatus',
+                    title: '档案状态',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        var nowDate = new Date();
+                        if (item.status == '2' && item.arcStatus == '2') {
+                            //从借阅开始时间 开始限制
+                            if ((new Date(item.borStaTime.replace(/-/g, "\/"))) <= nowDate) {
+                                //未到借阅结束日期
+                                if (nowDate < (new Date(item.borEndTime.replace(/-/g, "\/")))) {
+                                    //借阅中
+                                    item.arcStatus = '1';
+                                } else {
+                                    //借阅结束
+                                    item.arcStatus = '0';
+                                }
+                            }
+                        }
+                        return $.table.selectDictLabel(archiveStatus, item.arcStatus);
+                    }
+                },
+                {
+                    field: 'actReturnTime',
+                    title: '实际归还日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                // {
+                // 	field : 'arcLevel',
+                // 	title : '档案密级',
+                //     sortable: true,
+                //     visible: false,
+                // 	formatter: function(value, item, index) {
+                // 		return $.table.selectDictLabel(archiveLevel, item.arcLevel);
+                // 	}
+                // },
+                {
+                    field: 'borEndTime',
+                    title: '借阅结束日期',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                // {
+                //     field : 'hasMoveBank',
+                //     title : '是否移交行档室',
+                //     sortable: true,
+                //     visible: false,
+                //     formatter: function(value, item, index) {
+                //         return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                //     }
+                // },
+                // {
+                // 	field : 'borType',
+                // 	title : '借阅类型',
+                // 	sortable: true,
+                // 	visible: false,
+                // 	formatter: function(value, item, index) {
+                // 		return $.table.selectDictLabel(borrowType, item.borType);
+                // 	}
+                // },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>');
+                        var nowDate = new Date();
+                        if (row.status == '2' && row.arcType == '10') {
+                            if (row.borType == '10') {
+                                //从借阅开始时间 开始限制
+                                if ((new Date(row.borStaTime.replace(/-/g, "\/"))) <= nowDate) {
+                                    //未到借阅结束日期
+                                    if (nowDate < (new Date(row.borEndTime.replace(/-/g, "\/")))) {
+                                        actions.push('<a class="btn btn-info btn-xs ' + imageFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i>查看影像</a>');
+                                    }
+                                }
+                            }
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+
+        var optionsRtn = {
+            url: prefix + _url,
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            // detailUrl: prefix + "/detail/{id}/{typeId}/{parentId}",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "档案借阅历史",
+            showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveType, item.arcType);
+                    }
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true
+                },
+                // 借阅时间、
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人',
+                    sortable: true
+                },
+                {
+                    field: 'appDepName',
+                    title: '申请部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'borStaTime',
+                    title: '借阅开始时间',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'borEndTime',
+                    title: '借阅结束日期',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10);
+                        }
+                    }
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    visible: false
+                },
+                {
+                    field: 'arcType',
+                    title: '档案类型',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveType, item.arcType);
+                    }
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcLevel',
+                    title: '档案密级',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveLevel, item.arcLevel);
+                    }
+                },
+                {
+                    field: 'carrier',
+                    title: '载体形式',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(carrier, item.carrier);
+                    }
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    field: 'valPeriod',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowStatus, item.status);
+                    }
+                },
+                {
+                    field: 'borType',
+                    title: '借阅类型',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(borrowType, item.borType);
+                    }
+                },
+                {
+                    field: 'arcStatus',
+                    title: '档案状态',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveStatus, item.arcStatus);
+                    }
+                },
+                {
+                    field: 'actReturnTime',
+                    title: '实际归还日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="openDetailBack(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>');
+
+                        return actions.join('');
+                    }
+                }]
+        };
+
+        if (path == "user") {
+            $.table.init(optionsUser);
+        } else if (path == "rtn") {
+            $.table.init(optionsRtn);
+        } else {
+            $.table.init(options);
+        }
+
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案借阅历史详情", url);
+    }
+
+    // 详情页
+    function openDetailBack(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案归还详情", url);
+    }
+
+    function downLoadFile() {
+        document.getElementById("downloadA").click();
+        // window.location.href = prefix + "/downloadOnlineFile";
+    }
+
+    function borrw(width, height) {
+        var roleId = [[${roleId}]];
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        $("#borId").val(row[0].id)
+        var _arcStatus = row[0].arcStatus;
+        //档案类型
+        var _arcType = row[0].arcType;
+        //载体形式
+        var _carrier = row[0].carrier;
+        if (_arcType == '10') {
+            if (_carrier == '03') {//纯电子档案
+                $.modal.alertWarning("档案类型为电子档案，请核实档案类型再次操作！");
+                return;
+            }
+        }
+        if (_arcStatus == '7') {
+            $.modal.alertWarning("档案已出库，请勿重复操作！");
+            return;
+        }
+        //行/部门档案管理员操作判断
+        if (roleId == '4') {
+            if (row[0].hasMoveBank != '1') {
+                $.modal.alertWarning("不能出库部门档案！");
+                return;
+            }
+        } else if (roleId == '3') {
+            if (row[0].hasMoveBank != '0') {
+                $.modal.alertWarning("不能出库行档案！");
+                return;
+            }
+        } else if (roleId == '14') {
+            $.modal.alertWarning("不能操作档案出库！");
+            return;
+        }
+        var options = {
+            title: "出库",
+            width: width,
+            height: height,
+            url: prefix + "/remark",
+            skin: 'layui-layer-gray',
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //alert("OK")
+                getRemark();
+                $('button[name="refresh"]').click();
+                layer.close(index);
+
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function getRemark() {
+        //alert("hhhh");
+        remark = $("iframe[id^='layui-layer-iframe']").contents().find("#outRemark").val();
+        // alert(" remark is " + remark.val());
+        if (remark === "" || remark == null) {
+            $("iframe[id^='layui-layer-iframe']").contents().find("#tapDiv").empty();
+            var tapHtml = '<font face="微软雅黑" size="2" color="red" >请输入信息!</font>';
+            $("iframe[id^='layui-layer-iframe']").contents().find("#tapDiv").html(tapHtml);
+        } else {
+            var borId = $("#borId").val();
+            url = prefix + "/outArc";
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "text",
+                data: {
+                    borId: borId,
+                    arcRemark: remark,
+                },
+                error: function () {
+
+                },
+                success: function (data) {
+                    console.log(" data= " + data);
+                    if (data == "error") {
+                        $.modal.alertWarning("档案已出库，请勿重复操作！");
+                    } else if (data == "success") {
+                        $.modal.msgSuccess("档案出库成功！");
+                    }
+                }
+            });
+        }
+    }
+
+    function revert(width, height) {
+        var roleId = [[${roleId}]];
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        var id = row[0].id;
+        //alert(" row[0] id is " + id)
+        if (roleId == '14') {
+            $.modal.alertWarning("不能操作档案归还！");
+            return;
+        }
+        var options = {
+            title: "档案归还",
+            width: width,
+            height: height,
+            url: prefix + "/revert/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['取消'],
+            yes: function (index, layero) {
+                //alert("OK")
+                //getRemark();
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /**
+     * 跳转到续借页面
+     */
+    function myRenew() {
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        var id = row[0].id;
+        //借阅状态
+        var status = row[0].status;
+        //借阅类型
+        var _borType = row[0].borType;
+        //alert(" row[0] id is " + id)
+
+        if (status != "2") {
+            $.modal.alertWarning("该借阅尚未通过审批，请勿重复操作!");
+            return;
+        } else {
+            if (_borType == "20") {
+                $.modal.alertWarning("已借阅实物档案，请重新发起申请流程!");
+            } else if (_borType == "10") {
+                var url = prefix + "/reApplyBor/" + id;
+                $.modal.openTab("延续借阅", url);
+            }
+        }
+    }
+
+    // function myRenew(width,height) {
+    //
+    // 	var row = $("#bootstrap-table").bootstrapTable('getSelections')
+    // 	var id = row[0].id;
+    // 	var status = row[0].status;
+    // 	//alert(" row[0] id is " + id)
+    //
+    // 	if(status !="2"){
+    // 		$.modal.alertWarning("该借阅尚未通过审批，请勿重复操作!");
+    // 		return ;
+    // 	}
+    //
+    // 	var options = {
+    // 		title: "延续借阅",
+    // 		width: width,
+    // 		height: height,
+    // 		url: prefix + "/reApplyBor/" + id,
+    // 		skin: 'layui-layer-gray',
+    // 		btn: ['取消'],
+    // 		yes: function (index, layero) {
+    // 			//alert("OK")
+    // 			//getRemark();
+    // 			layer.close(index);
+    // 		}
+    // 	};
+    // 	$.modal.openOptions(options);
+    // }
+
+    /**
+     * 跳转到实物借阅页面
+     */
+    function myPhysical(width, height) {
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        var id = row[0].id;
+        //借阅状态
+        var status = row[0].status;
+        //借阅类型
+        var _borType = row[0].borType;
+        if (status != "2") {
+            $.modal.alertWarning("该借阅尚未通过审批，请勿重复操作!");
+            return false;
+        } else {
+            if (_borType == "20") {
+                //查询该实体档案已被延续多少次
+                var arcNo = row[0].arcNo;
+                $.ajax({
+                    url: prefix + "/reBorrowCount",
+                    data: {"arcNo": arcNo},
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result >= 2) {
+                            $.modal.alertWarning("该档案只能延续借阅一次，请归还后再操作！");
+                        } else {
+                            var url = prefix + "/reApplyBor/" + id;
+                            $.modal.openTab("实物借阅", url);
+                        }
+                    }
+                })
+                // var url = prefix + "/reApplyBor/" + id;
+                // $.modal.openTab("实物借阅", url);
+            } else {
+                $.modal.alertWarning('已借阅电子档案，请勿重复操作！');
+                return;
+            }
+        }
+    }
+
+    /**
+     * 查看影像
+     */
+    function showImage(batchNo) {
+        createMenuItem(ctx + "archCollection/amsRecord/showImageAndFile/" + batchNo + "/true", "查看影像");
+    }
+
+</script>
+</body>
+</html>

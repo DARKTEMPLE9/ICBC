@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .select-time {
+        position: relative;
+    }
+
+    label.error[for="tallyDtStart"] {
+        right: auto !important;
+        top: auto;
+        left: 130px;
+    }
+
+    label.error[for="tallyDtEnd"] {
+        right: auto !important;
+        top: auto;
+        left: 460px !important;
+    }
+
+    .select-list label, #openClose label {
+        width: 91px;
+    }
+
+    .select-list li {
+        height: 30px !important;
+        overflow: hidden;
+        display: block;
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="voucherForm">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label>审核人：</label>
+                            <input type="text" name="approver" id="approver"
+                                   onclick="selectUser('approver');approver.blur();return false;" placeholder="请选择审核人"
+                                   autocomplete="off"/>
+                            <!--<select name="approver" class="" id="approver">
+                                <option value="">请选择</option>
+                                <option th:each="user : ${smUserList}" th:text="${user.userName}"
+                                        th:value="${user.cuserid}"></option>
+                            </select>-->
+                        </li>
+                        <li>
+                            <label style="">制单人：</label>
+                            <input type="text" name="billmaker" id="billmaker"
+                                   onclick="selectUser('billmaker');billmaker.blur();return false;" placeholder="请选择制单人"
+                                   autocomplete="off"/>
+                            <!--<select name="billmaker" class="" id="billmaker">
+                                <option value="">请选择</option>
+                                <option th:each="user : ${smUserList}" th:text="${user.userName}"
+                                        th:value="${user.cuserid}"></option>
+                            </select>-->
+                        </li>
+                        <li>
+                            <div class="select-time">
+                                <label style="margin-right: 3px">审核日期： </label>
+                                <input type="text" style="width: 200px" class="input-sm form-control" id="checkeddate"
+                                       placeholder="" name="checkeddate"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <label>凭证编码：</label>
+                            <input type="text" name="num"/>
+                        </li>
+
+                        <li>
+                            <label>冲销凭证：</label>
+                            <input type="text" id="offervoucher" placeholder="" name="offervoucher"/>
+                        </li>
+
+                        <li>
+                            <label>会计期间：</label>
+                            <input type="text" id="period" placeholder="" name="period"/>
+                        </li>
+
+                        <!--<li>
+                            <div class="select-time" >
+                                <label>记账日期(30天)： </label>
+                                <input type="text" style="width: 200px;margin-left: 2px" class="input-sm form-control" id="tallyDtStart" placeholder="" required="required" name="tallyDtStart"/>
+                                <span style="margin-left: 58px;margin-right: 59px">到</span>
+                                <input type="text" style="width: 200px;" class="input-sm form-control" id="tallyDtEnd" placeholder="" required="required" name="tallyDtEnd"/>
+                            </div>
+                        </li>-->
+
+                        <li>
+                            <label>核算账簿：</label>
+                            <!--<input type="text" name="pkAccountingbook"/>-->
+                            <input type="text" name="pkAccountingbook" id="pkAccountingbook"
+                                   onclick="selectBook('pkAccountingbook');pkAccountingbook.blur();return false;"
+                                   placeholder="请选择核算账簿" autocomplete="off"/>
+                            <!--<select name="pkAccountingbook" class="" id="pkAccountingbook">
+                                <option value="">请选择</option>
+                                <option th:each="book : ${bookList}" th:text="${book.name}"
+                                        th:value="${book.pkAccountingbook}"></option>
+                            </select>-->
+                        </li>
+
+                        <li>
+                            <label>出纳：</label>
+                            <input type="text" id="pkCasher" placeholder="" name="pkCasher"/>
+                        </li>
+
+                        <li>
+                            <label>凭证类别：</label>
+                            <input type="text" id="pkVouchertype" placeholder="" name="pkVouchertype"/>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label style="margin-right: 3px">制单日期： </label>
+                                <input type="text" style="width: 200px" class="input-sm form-control" id="prepareddate"
+                                       placeholder="" name="prepareddate"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="select-time">
+                                <label style="margin-right: 3px">签字日期： </label>
+                                <input type="text" style="width: 200px" class="input-sm form-control" id="signdate"
+                                       placeholder="" name="signdate"/>
+                            </div>
+                        </li>
+
+                        <!--<li>
+                            <div class="select-time">
+                                <label>历史数据查询： </label>
+                                <input type="text" style="width: 200px;margin-left: 2px" class="input-sm form-control" id="tallyDtStart1" placeholder="" name="tallyDtStart"/>
+                                <span style="margin-left: 58px;margin-right: 59px">到</span>
+                                <input type="text" style="width: 200px;" class="input-sm form-control" id="tallyDtEnd1" placeholder="" name="tallyDtEnd"/>
+                            </div>
+                        </li>-->
+
+
+                        <!--<li style="">-->
+                        <!--<div class="select-time">-->
+                        <!--<label style="margin-right: 5px;">记账日期开始: </label>-->
+                        <!--<input type="text" class="input-sm form-control" id="tallyDtStart" placeholder="" name="tallyDtStart"/>-->
+                        <!--<span>-</span>-->
+                        <!--<input type="text" style=";width: 151px;" class="input-sm form-control" id="tallyDtEnd" placeholder="" name="tallyDtEnd"/>-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                        <li>
+                            <label>借方合计：</label>
+                            <input type="text" name="totaldebit"/>
+                        </li>
+
+                        <li>
+                            <label>会计年度：</label>
+                            <input type="text" name="year"/>
+                        </li>
+                    </ul>
+                    <div style="padding: 10px 0;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="submitHandler()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                        <!--<a class="btn btn-success btn-rounded btn-sm" onclick="openClose()"><i id="openCloseI" class="fa fa-download"></i>&nbsp;<span id="openCloseSpan">展开</span></a>-->
+                    </div>
+                    <ul id="openClose" style="display: none;">
+                        <!--<li>
+                            <label>辅助核算：</label>
+                            <input type="text" name="assid"/>
+                        </li>
+
+                        <li>
+                            <label>银行账户：</label>
+                            <input type="text" name="bankaccount"/>
+                        </li>
+
+                        <li>
+                            <label>对账标志：</label>
+                            <input type="text" name="contrastflag"/>
+                        </li>
+
+                        <li>
+                            <label>原币贷方金额：</label>
+                            <input type="text" name="creditamount"/>
+                        </li>
+
+                        <li>
+                            <label>贷方数量：</label>
+                            <input type="text" name="creditquantity"/>
+                        </li>
+
+                        <li>
+                            <label>原币借方金额：</label>
+                            <input type="text" name="debitamount"/>
+                        </li>
+
+                        <li>
+                            <label>借方数量：</label>
+                            <input type="text" name="debitquantity"/>
+                        </li>
+
+                        <li>
+                            <label>分录号：</label>
+                            <input type="text" name="detailindex"/>
+                        </li>
+
+                        <li>
+                            <label>发生额方向：</label>
+                            <input type="text" name="direction"/>
+                        </li>
+
+                        <li>
+                            <label>作废标志：</label>
+                            <input  type="text" name="discardflagv"/>
+                        </li>
+
+                        <li>
+                            <label>删除标志：</label>
+                            <input type="text" name="dr"/>
+                        </li>
+
+                        <li>
+                            <label>对方科目：</label>
+                            <input type="text" name="oppositesubj"/>
+                        </li>
+
+                        <li>
+                            <label>币种：</label>
+                            <input type="text" name="pkCurrtype"/>
+                        </li>
+
+                        <li>
+                            <label>记账人：</label>
+                            <input type="text" onclick="selectUser('pkManagerv');pkManagerv.blur();return false;" id="pkManagerv" autocomplete="off" placeholder="请选择记账人" readonly name="pkManagerv"/>
+                        </li>
+
+                        <li>
+                            <label>财务组织：</label>
+                            <input type="text" name="pkOrg"/>
+                        </li>
+
+                        <li>
+                            <label>业务单元：</label>
+                            <input type="text" name="pkUnit"/>
+                        </li>
+
+                        <li>
+                            <label>业务单元：</label>
+                            <input type="text" name="pkUnit_v"/>
+                        </li>
+
+                        <li>
+                            <label>凭证类型：</label>
+                            <input type="text" name="voucherkindv"/>
+                        </li>
+
+                        <li>
+                            <label >年度：</label>
+                            <input type="text" name="yearv"/>
+                        </li>-->
+                    </ul>
+
+
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+
+    var prefix = ctx + "accounting/ledger/glVoucher";
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            //$.table.search();
+            $.modal.loading("正在查询数据，请稍候...");
+
+            $.ajax({
+                type: "post",
+                url: prefix + "/list",
+                data: $('#voucherForm').serialize(),
+                dataType: 'json',
+                cache: false,
+                //contentType: false,
+                //processData: false,
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        //$(obj).summernote('editor.insertImage', result.url, result.fileName);
+                        var key = result.data;
+                        var count = 0;
+                        // 定时获取异步查询的结果
+                        var interval = setInterval(function () {
+                            count++;
+                            if (count > 30) {
+                                clearInterval(interval);
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: prefix + "/queryHive/" + key,
+                                success: function (result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        //$(obj).summernote('editor.insertImage', result.url, result.fileName);
+                                        if (result.data.code == web_status.SUCCESS) {
+                                            var data = result.data;
+                                            $.table.onLoadSuccess(data);
+                                        } else {
+                                            $.modal.alertWarning(result.data.msg);
+                                        }
+                                        //$.modal.closeLoading();
+                                        clearInterval(interval);
+                                    }
+                                },
+                                error: function (error) {
+                                    //alert("queryHIve result " + error.code);
+                                    //$.modal.alertError("查询失败！");
+                                }
+                            });
+                        }, 10000);
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                },
+                error: function (error) {
+                    $.modal.alertError("查询失败！");
+                }
+            });
+        }
+    }
+
+    $.table.onLoadSuccess = function onLoadSuccess(data) {
+        if (typeof $.table._option.onLoadSuccess == "function") {
+            $.table._option.onLoadSuccess(data);
+            $.modal.closeLoading();
+        }
+        if (data != undefined) {
+            $.modal.closeLoading();
+        }
+        // 浮动提示框特效
+        $("[data-toggle='tooltip']").tooltip();
+    }
+
+    //var editFlag = [[${@permission.hasPermi('iacmp:gftEntryDtl:edit')}]];
+
+    //var removeFlag = [[${@permission.hasPermi('iacmp:gftEntryDtl:remove')}]];
+    var detailFlag = [[${@permission.hasPermi('accounting:ledger:glVoucher:detail')}]];
+
+    // 展开隐藏菜单
+    var flag = true;
+
+    function openClose() {
+        if (flag) {
+            $("#openClose").show()
+            $("#openCloseSpan").text("隐藏")
+            $("#openCloseI").prop("class", "fa fa-upload")
+        } else {
+            $("#openClose").hide()
+            $("#openCloseSpan").text("展示")
+            $("#openCloseI").prop("class", "fa fa-download")
+        }
+        flag = !flag
+    }
+
+    // 日期框js
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#checkeddate',
+                type: 'date',
+                trigger: 'click'
+            });
+            laydate.render({
+                elem: '#prepareddate',
+                type: 'date',
+                trigger: 'click'
+            });
+            laydate.render({
+                elem: '#signdate',
+                type: 'date',
+                trigger: 'click'
+            });
+            /*var startDate = laydate.render({
+                elem: '#tallyDtStart',
+                type: 'datetime',
+                max: $('#tallyDtStart').val(),
+                theme: 'molv',
+                min:-30,
+                trigger: 'click',
+                done: function(value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#tallyDtEnd',
+                type: 'datetime',
+                min: $('#tallyDtEnd').val(),
+                theme: 'molv',
+                max:0,
+                trigger: 'click',
+                done: function(value, date) {
+                    // 开始时间小于结束时间
+                    if (value !== '') {
+                        startDate.config.max.year = date.year;
+                        startDate.config.max.month = date.month - 1;
+                        startDate.config.max.date = date.date;
+                    } else {
+                        startDate.config.max.year = '';
+                        startDate.config.max.month = '';
+                        startDate.config.max.date = '';
+                    }
+                }
+            });
+            var startDate = laydate.render({
+                elem: '#tallyDtStart1',
+                type: 'datetime',
+                max: $('#tallyDtStart1').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function(value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#tallyDtEnd1',
+                type: 'datetime',
+                min: $('#tallyDtEnd1').val(),
+                theme: 'molv',
+                max:0,
+                trigger: 'click',
+                done: function(value, date) {
+                    // 开始时间小于结束时间
+                    if (value !== '') {
+                        startDate.config.max.year = date.year;
+                        startDate.config.max.month = date.month - 1;
+                        startDate.config.max.date = date.date;
+                    } else {
+                        startDate.config.max.year = '';
+                        startDate.config.max.month = '';
+                        startDate.config.max.date = '';
+                    }
+                }
+            });*/
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "凭证",
+            showExport: true,
+            firstLoad: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'pkVoucher',
+                    title: '凭证主键',
+                    sortable: true,
+                    visible: true
+                },
+
+                {
+                    field: 'approver',
+                    title: '审核人',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'billmaker',
+                    title: '制单人',
+                    sortable: true,
+                    visible: true,
+                },
+                {
+                    field: 'checkeddate',
+                    title: '审核日期',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'num',
+                    title: '凭证编码',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'offervoucher',
+                    title: '冲销凭证',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'period',
+                    title: '会计期间',
+                    sortable: true,
+                    visible: false,
+                },
+                {
+                    field: 'pkAccountingbook',
+                    title: '核算账簿',
+                    sortable: true,
+                    visible: false,
+
+                },
+                {
+                    field: 'pkCasher',
+                    title: '出纳',
+                    visible: false,
+                    sortable: true
+
+                },
+                {
+                    field: 'pkVouchertype',
+                    title: '凭证类别',
+                    sortable: true,
+                    visible: false,
+
+                },
+
+                {
+                    field: 'prepareddate',
+                    title: '制单日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'signdate',
+                    title: '签字日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'totaldebit',
+                    title: '借方合计',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'year',
+                    title: '会计年度',
+                    sortable: true,
+                    visible: false
+                },
+                /*{
+                    field : 'assid',
+                    title : '辅助核算',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'bankaccount',
+                    title : '银行账户',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'contrastflag',
+                    title : '对账标志',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'creditamount',
+                    title : '原币贷方金额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'creditquantity',
+                    title : '贷方数量',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'debitamount',
+                    title : '原币借方金额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'debitquantity',
+                    title : '借方数量',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'detailindex',
+                    title : '分录号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'direction',
+                    title : '发生额方向',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'discardflagv',
+                    title : '作废标志',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'dr',
+                    title : '删除标志',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field : 'oppositesubj',
+                    title : '对方科目',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'pkCurrtype',
+                    title : '币种',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'pkManagerv',
+                    title : '记账人',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'pkOrg',
+                    title : '财务组织',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'pkUnit',
+                    title : '业务单元',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'pkUnitV',
+                    title : '业务单元',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'voucherkindv',
+                    title : '凭证类型',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field : 'year',
+                    title : '年度',
+                    sortable: true,
+                    visible: false
+                },*/
+                // {
+                // 	field : 'def1',
+                // 	title : '',
+                // 	sortable: false
+                // },
+                // {
+                // 	field : 'def2',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def3',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def4',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def5',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def6',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def7',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def8',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def9',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def10',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'ts',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.pkVoucher + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.pkEntryDtl + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "accounting/ledger/gasSmUser/selectGasSmUser1?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#selectedCuserid').val());
+                layer.close(index);
+            },
+            cancel: function () {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function selectBook(id) {
+        var options = {
+            title: '选择账簿',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "accounting/ledger/gasOrgAccountingbook/selectGasOrgAccountingbook1?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#selectedPk').val());
+                layer.close(index);
+            },
+            cancel: function () {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+</script>
+</body>
+</html>

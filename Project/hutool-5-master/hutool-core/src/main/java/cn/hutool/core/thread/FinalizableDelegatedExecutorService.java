@@ -8,12 +8,12 @@ import java.util.concurrent.ExecutorService;
  * @author loolly
  */
 public class FinalizableDelegatedExecutorService extends DelegatedExecutorService {
-	FinalizableDelegatedExecutorService(ExecutorService executor) {
-		super(executor);
-	}
+    FinalizableDelegatedExecutorService(ExecutorService executor) {
+        super(executor);
+    }
 
-	@Override
-	protected void finalize() {
-		super.shutdown();
-	}
+    @Override
+    protected void finalize() {
+        super.shutdown();
+    }
 }

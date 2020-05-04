@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案著录列表')"/>
+    <style>
+        .select-list li {
+            box-sizing: border-box;
+            height: 30px;
+            overflow: hidden;
+        }
+
+        .select-list li label {
+            width: 80px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <!--<li>-->
+                        <!--<label for="">所属部门：</label>-->
+                        <!--<input type="text" id="orgName" name="orgName" onclick="selectDeptTree()" readonly="readonly" placeholder="请选择部门" style="cursor: pointer"/>-->
+                        <!--</li>-->
+                        <li>
+                            <label for="">档案名称：</label>
+                            <input style="" type="text" name="arcName"/>
+                        </li>
+
+                        <li>
+                            <label for="">档案类型：</label>
+                            <input type="text" id="arcBill" name="arcBill"
+                                   onclick="selectArcBillTree();arcBill.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+
+                        <li>
+                            <label for="">档案移交人：</label>
+                            <input type="text" id="arcTransfer" name="arcTransfer"
+                                   onclick="selectUser('arcTransfer');arcTransfer.blur();return false;"
+                                   placeholder="请选择移交人" readonly/>
+                        </li>
+
+                        <!--<li class="select-time">-->
+                        <!--<label>移交时间： </label>-->
+                        <!--<input style="width: 200px;" type="text" class="time-input" name="turnInTime"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="select-time">
+                                <label>移交时间： </label>
+                                <input type="text" style="width: 93px;margin-left:3px;" class="input-sm form-control"
+                                       id="startTime" placeholder="" name="turnInTimeStart"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control" id="endTime"
+                                       placeholder="" name="turnInTimeEnd"/>
+                            </div>
+                        </li>
+                        <li>
+                            <label for="arcFormat">是否电子化:</label>
+                            <select style="" id="arcFormat" name="arcFormat1"
+                                    th:with="type=${@dict.getType('electronize')}">
+                                <option value="" selected="selected">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="arcFormat">档案形态:</label>
+                            <select style="" id="arcFormat1" name="arcFormat"
+                                    th:with="type=${@dict.getType('archive_format')}">
+                                <option value="" selected="selected">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="bathReceive()" shiro:hasPermission="myTask:archReceive:edit">
+                <i class="fa fa-plus"></i> 批量接收
+            </a>
+            <a class="btn btn-info" onclick="printLook()">
+                <i class="fa fa-search"></i> 打印预览
+            </a>
+            <a class="btn btn-danger single disabled" onclick="backArch()"
+               shiro:hasPermission="myTask:myArchReceive:edit">
+                <i class="fa fa-remove"></i>退回
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('myTask:amsBatch:edit')}]];
+    var detailFlag = [[${@permission.hasPermi('myTask:amsBatch:detail')}]];
+    var batcheditFlag = [[${@permission.hasPermi('myTask:amsBatch:batchedit')}]];
+    var prefix = ctx + "myTask/archReceive";
+    var myAmsBatchStatus = [[${@dict.getType('archive_myAmsBatch_status')}]];
+    var archiveLevel = [[${@dict.getType('arcLevel')}]];
+    var archivePeriod = [[${@dict.getType('archive_period')}]];
+    var carrier = [[${@dict.getType('carrier')}]];
+    var involve = [[${@dict.getType('expense_involve')}]];
+    var electronize = [[${@dict.getType('electronize')}]];
+    var NoMedium = [[${@dict.getType('NoMedium')}]];
+    var archive_format = [[${@dict.getType('archive_format')}]];
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            receiveUrl: prefix + "/editReceive/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            batcheditUrl: prefix + "/batchedit/{id}",
+            modalName: "档案著录",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'orgName',
+                    title: '部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcBill',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillDept',
+                    title: '二级类目',
+                    sortable: true
+                },
+                {
+                    field: 'arcFormat',
+                    // title : '档案形态（10-电子形态;20-实物形态;）',
+                    title: '档案形态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archive_format, item.arcFormat);
+                    }
+                },
+                {
+                    field: 'arcNum',
+                    title: '份数',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcPageNum',
+                    title: '页数',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcLevel',
+                    title: '档案密级',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveLevel, item.arcLevel);
+                    }
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'arcTransfer',
+                    title: '档案移交人',
+                    sortable: true
+                },
+                {
+                    field: 'modTime',
+                    title: '修改时间',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'modName',
+                    title: '修改人名称',
+                    visible: false,
+                    sortable: true
+                },
+                // （0-已删除;1-已著录;2-申请中;3-待入盒;4-待入库;5-已入库;6-退回）
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(myAmsBatchStatus, item.status);
+                    }
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'turnInName',
+                    title: '上交人名称',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'receiveName',
+                    title: '接收人名称',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'returnReason',
+                    title: '退回原因',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'apprInfoId',
+                    title: '审批信息ID',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'respDepaName',
+                    title: '责任部门',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任人',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'arcCode',
+                    title: '文件编号',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '形成日期',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'themeSpeech',
+                    title: '主题词',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'cutting',
+                    title: '开本',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'language',
+                    title: '语种',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'carrier',
+                    title: '载体形式',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(carrier
+                            , item.carrier);
+                    }
+                },
+                {
+                    field: 'otherName',
+                    title: '并列题名',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'etcNum',
+                    title: '附件数',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'practType',
+                    title: '实物分类',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'practDesc',
+                    title: '实物描述',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'edition',
+                    title: '版本',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'expenseInvolve',
+                    title: '是否涉及费用',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(involve, item.expenseInvolve);
+                    }
+                },
+                {
+                    field: 'arcBillDeptCode',
+                    title: '部门档案类型编号',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'receivingOpinion',
+                    title: '接收意见',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'crtTime',
+                    title: '著录时间',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'viewPath',
+                    title: '著录查看页面',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'expense',
+                    title: '费用金额',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcFormat',
+                    title: '是否电子化',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(electronize, item.arcFormat);
+                    }
+                },
+                {
+                    field: 'reason',
+                    title: '不电子化的原因',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'isNoMedium',
+                    title: '有无介质',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(NoMedium, item.isNoMedium);
+                    }
+                },
+                {
+                    field: 'receivingTime',
+                    title: '接收时间',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'storageLocation',
+                    title: '档案存放地址',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'turnInTime',
+                    title: '移交时间',
+                    visible: false,
+                    sortable: true
+                },
+                // {
+                //     field : 'batchNo',
+                //     title : '注入批次号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'orgCode',
+                //     title : '部门代码',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'crtNo',
+                //     title : '创建人号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'crtName',
+                //     title : '创建人员',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'modNo',
+                //     title : '修改人号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcNo',
+                //     title : '档案编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'turnInNo',
+                //     title : '上交人号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'receiveNo',
+                //     title : '接收人号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcCreTime',
+                //     title : '形成日期',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'filingDepa',
+                //     title : '归档部门',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'forwardNo',
+                //     title : '转发文号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'forwardName',
+                //     title : '转发文件名',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'receiptNo',
+                //     title : '收文编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'eTC',
+                //     title : '附注',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'afourNum',
+                //     title : 'A4数',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcText',
+                //     title : '文本',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'originType',
+                //     title : '来源单位或个人',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'saveAddress',
+                //     title : '存放地点',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'medelType',
+                //     title : '媒体类别',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'medelCode',
+                //     title : '媒体编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'filingTime',
+                //     title : '归档日期',
+                //     visible: false,
+                //     sortable: true
+                // },
+                //
+                //
+                //
+                // {
+                //     field : 'originMode',
+                //     title : '来源方式',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcAbstract',
+                //     title : '摘要',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'respDepaCode',
+                //     title : '责任部门编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'respOpCode',
+                //     title : '责任者编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcBillCode',
+                //     title : '档案类型编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'filingDepaCode',
+                //     title : '归档单位编号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'conferIns',
+                //     title : '授予单位',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'receiveIns',
+                //     title : '接收单位',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'photoNo',
+                //     title : '照片号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'negativesNo',
+                //     title : '底片号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field: 'photographer',
+                //     title : '摄影者',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'indexMark',
+                //     title : '参见号',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field: 'bill',
+                //     title : '类型',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcDesc',
+                //     title : '描述',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcCopyright',
+                //     title : '版权',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'arcLayout',
+                //     title : '格式',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'serviceType',
+                //     title : '业务类型',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'keyWord',
+                //     title : '关键字',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'boxOpCode',
+                //     title : '入盒执行人Code',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'boxOpName',
+                //     title : '入盒执行人Name',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'boxOrgCode',
+                //     title : '入盒执行部门Code',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'boxOrgName',
+                //     title : '入盒执行部门Name',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'boxId',
+                //     title : '所在盒ID',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'updatePath',
+                //     title : '著录修改页面',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field: 'caption',
+                //     title : '文字说明',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field: 'duration',
+                //     title : '时长',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'businessStartTime',
+                //     title : '业务起始日',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'businessEndTime',
+                //     title : '业务到期日',
+                //     visible: false,
+                //     sortable: true
+                // },
+                // {
+                //     field : 'receiveTime',
+                //     title : '接收时间',
+                //     visible: false,
+                //     sortable: true
+                // },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>&nbsp;');
+                        actions.push('<a class="btn btn-success btn-xs ' + batcheditFlag + '" href="javascript:void(0)" onclick="batchEdit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案详情", url);
+    }
+
+    //打印预览
+    function printLook() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        createMenuItem(prefix + "/printLook?ids=" + rows.join(), '打印预览');
+    }
+
+    // 著录修改edit
+    function batchEdit(id) {
+        if ($.common.isEmpty(id) && $.table._option.type == table_type.bootstrapTreeTable) {
+            var row = $.bttTable.bootstrapTreeTable('getSelections')[0];
+            if ($.common.isEmpty(row)) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            var url = $.table._option.batcheditUrl.replace("{id}", row[$.table._option.uniqueId]);
+            $.modal.openTab("修改" + $.table._option.modalName, url);
+        } else {
+            // var url = "/404.html";
+            if ($.common.isNotEmpty(id)) {
+                url = $.table._option.batcheditUrl.replace("{id}", id);
+            } else {
+                var id = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+                if (id.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                url = $.table._option.batcheditUrl.replace("{id}", id);
+            }
+            $.modal.openTab("修改" + $.table._option.modalName, url);
+        }
+    }
+
+    // 接收按钮edit
+    function receiveArch(id) {
+        if ($.common.isEmpty(id) && $.table._option.type == table_type.bootstrapTreeTable) {
+            var row = $.bttTable.bootstrapTreeTable('getSelections')[0];
+            if ($.common.isEmpty(row)) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            var url = $.table._option.receiveUrl.replace("{id}", row[$.table._option.uniqueId]);
+            $.modal.open("档案接收", url);
+        } else {
+            var url = "/404.html";
+            if ($.common.isNotEmpty(id)) {
+                url = $.table._option.receiveUrl.replace("{id}", id);
+            } else {
+                var id = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+                if (id.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                url = $.table._option.receiveUrl.replace("{id}", id);
+            }
+            $.modal.open("档案接收", url);
+        }
+    }
+
+    //退回按钮
+    function backArch(id) {
+        // var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        // if (rows.length == 0) {
+        // 	$.modal.alertWarning("请至少选择一条记录");
+        // 	return;
+        // }
+
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        var id = row[0].id;
+        var url = prefix + "/editBack/" + id;
+        $.modal.open("档案退回", url);
+        var options = {
+            title: '档案退回',
+            width: width,
+            height: height,
+            url: url,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                var returnReason = body.find('#returnReason').val();
+                var backUrl = prefix + "/backOp";
+                $.ajax({
+                    type: "POST",
+                    url: backUrl,
+                    data: {
+                        "id": id,
+                        "returnReason": returnReason
+                    },
+                    error: function (data) {
+                        $.modal.alertError('操作失败!');
+                    },
+                    success: function (data) {
+                        $.modal.alertSuccess('操作成功!');
+                        layer.close(index);
+                    }
+                });
+            },
+        };
+        $.modal.openOptions(options);
+
+        //     var url = $.table._option.updateUrl.replace("{id}", row[$.table._option.uniqueId]);
+        //     $.modal.open("档案退回", url);
+        // } else {
+        // 	var url = $.table._option.updateUrl.replace("{id}", row[$.table._option.uniqueId]);
+        //     if ($.common.isNotEmpty(id)) {
+        //         url = $.table._option.updateUrl.replace("{id}", id);
+        //     } else {
+        //         var id = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        //         if (id.length == 0) {
+        //             $.modal.alertWarning("请至少选择一条记录");
+        //             return;
+        //         }
+        //         url = $.table._option.updateUrl.replace("{id}", id);
+        //     }
+        //     $.modal.open("档案退回", url);
+
+    }
+
+    //批量接收
+    function bathReceive() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        }
+        var arr = []
+        for (var i = 0; i < rows.length; i++) {
+            $.ajax({
+                url: prefix + "/getDetail/" + rows[i],
+                dataType: "json",
+                async: false,
+                //请求成功
+                success: function (data) {
+                    arr.push(data.arcBillDept)
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                }
+            });
+        }
+
+        for (var j = 0; j < arr.length; j++) {
+            if (arr[j] !== "用印/证照申请单") {
+                $.modal.alertWarning("只有二级类目是“用印/证照申请单”类型档案可以批量接收");
+                return;
+            }
+        }
+
+        $.modal.confirm("确认要接收选中的" + rows.length + "条数据吗?", function () {
+            var url = prefix + "/bathReceive";
+            var data = {"ids": rows.join()};
+            $.operate.submit(url, "post", "json", data);
+        });
+
+        // createMenuItem(prefix+"/bathReceive?ids="+rows.join(),'打印预览');
+
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBill").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    // function selectDeptTree() {
+    //     var url = prefix + "/deptTree";
+    //     var options = {
+    //         title: '选择部门',
+    //         width: "380",
+    //         url: url,
+    //         callBack: doSubmit
+    //     };
+    //     $.modal.openOptions(options);
+    // }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#orgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    /* 选择档案移交人 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+</script>
+</body>
+</html>

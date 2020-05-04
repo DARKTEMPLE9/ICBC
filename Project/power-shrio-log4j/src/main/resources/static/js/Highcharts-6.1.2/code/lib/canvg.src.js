@@ -68,15 +68,13 @@
         if (!(target.childNodes.length == 1 && target.childNodes[0].nodeName == 'OBJECT')) target.svg = svg;
 
         var ctx = target.getContext('2d');
-        if (typeof(s.documentElement) != 'undefined') {
+        if (typeof (s.documentElement) != 'undefined') {
             // load from xml doc
             svg.loadXmlDoc(ctx, s);
-        }
-        else if (s.substr(0, 1) == '<') {
+        } else if (s.substr(0, 1) == '<') {
             // load from xml string
             svg.loadXml(ctx, s);
-        }
-        else {
+        } else {
             // load from url
             svg.load(ctx, s);
         }
@@ -84,23 +82,23 @@
 
     // see https://developer.mozilla.org/en-US/docs/Web/API/Element.matches
     var matchesSelector;
-    if (typeof(Element.prototype.matches) != 'undefined') {
+    if (typeof (Element.prototype.matches) != 'undefined') {
         matchesSelector = function (node, selector) {
             return node.matches(selector);
         };
-    } else if (typeof(Element.prototype.webkitMatchesSelector) != 'undefined') {
+    } else if (typeof (Element.prototype.webkitMatchesSelector) != 'undefined') {
         matchesSelector = function (node, selector) {
             return node.webkitMatchesSelector(selector);
         };
-    } else if (typeof(Element.prototype.mozMatchesSelector) != 'undefined') {
+    } else if (typeof (Element.prototype.mozMatchesSelector) != 'undefined') {
         matchesSelector = function (node, selector) {
             return node.mozMatchesSelector(selector);
         };
-    } else if (typeof(Element.prototype.msMatchesSelector) != 'undefined') {
+    } else if (typeof (Element.prototype.msMatchesSelector) != 'undefined') {
         matchesSelector = function (node, selector) {
             return node.msMatchesSelector(selector);
         };
-    } else if (typeof(Element.prototype.oMatchesSelector) != 'undefined') {
+    } else if (typeof (Element.prototype.oMatchesSelector) != 'undefined') {
         matchesSelector = function (node, selector) {
             return node.oMatchesSelector(selector);
         };
@@ -163,7 +161,7 @@
 
         svg.log = function (msg) {
         };
-        if (svg.opts['log'] == true && typeof(console) != 'undefined') {
+        if (svg.opts['log'] == true && typeof (console) != 'undefined') {
             svg.log = function (msg) {
                 console.log(msg);
             };
@@ -204,7 +202,7 @@
                     return this.Current().height;
                 }
                 this.ComputeSize = function (d) {
-                    if (d != null && typeof(d) == 'number') return d;
+                    if (d != null && typeof (d) == 'number') return d;
                     if (d == 'x') return this.width();
                     if (d == 'y') return this.height();
                     return Math.sqrt(Math.pow(this.width(), 2) + Math.pow(this.height(), 2)) / Math.sqrt(2);
@@ -236,8 +234,7 @@
             var AJAX;
             if (window.XMLHttpRequest) {
                 AJAX = new XMLHttpRequest();
-            }
-            else {
+            } else {
                 AJAX = new ActiveXObject('Microsoft.XMLHTTP');
             }
             if (AJAX) {
@@ -250,18 +247,16 @@
 
         // parse xml
         svg.parseXml = function (xml) {
-            if (typeof(Windows) != 'undefined' && typeof(Windows.Data) != 'undefined' && typeof(Windows.Data.Xml) != 'undefined') {
+            if (typeof (Windows) != 'undefined' && typeof (Windows.Data) != 'undefined' && typeof (Windows.Data.Xml) != 'undefined') {
                 var xmlDoc = new Windows.Data.Xml.Dom.XmlDocument();
                 var settings = new Windows.Data.Xml.Dom.XmlLoadSettings();
                 settings.prohibitDtd = false;
                 xmlDoc.loadXml(xml, settings);
                 return xmlDoc;
-            }
-            else if (window.DOMParser) {
+            } else if (window.DOMParser) {
                 var parser = new DOMParser();
                 return parser.parseFromString(xml, 'text/xml');
-            }
-            else {
+            } else {
                 xml = xml.replace(/<!DOCTYPE svg[^>]*>/, '');
                 var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
                 xmlDoc.async = 'false';
@@ -307,7 +302,7 @@
         // augment the current color value with the opacity
         svg.Property.prototype.addOpacity = function (opacityProp) {
             var newValue = this.value;
-            if (opacityProp.value != null && opacityProp.value != '' && typeof(this.value) == 'string') { // can only add opacity to colors, not patterns
+            if (opacityProp.value != null && opacityProp.value != '' && typeof (this.value) == 'string') { // can only add opacity to colors, not patterns
                 var color = new RGBColor(this.value);
                 if (color.ok) {
                     newValue = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + opacityProp.numValue() + ')';
@@ -464,20 +459,16 @@
                     if (!set.fontStyle && that.Styles.indexOf(d[i]) != -1) {
                         if (d[i] != 'inherit') f.fontStyle = d[i];
                         set.fontStyle = true;
-                    }
-                    else if (!set.fontVariant && that.Variants.indexOf(d[i]) != -1) {
+                    } else if (!set.fontVariant && that.Variants.indexOf(d[i]) != -1) {
                         if (d[i] != 'inherit') f.fontVariant = d[i];
                         set.fontStyle = set.fontVariant = true;
-                    }
-                    else if (!set.fontWeight && that.Weights.indexOf(d[i]) != -1) {
+                    } else if (!set.fontWeight && that.Weights.indexOf(d[i]) != -1) {
                         if (d[i] != 'inherit') f.fontWeight = d[i];
                         set.fontStyle = set.fontVariant = set.fontWeight = true;
-                    }
-                    else if (!set.fontSize) {
+                    } else if (!set.fontSize) {
                         if (d[i] != 'inherit') f.fontSize = d[i].split('/')[0];
                         set.fontStyle = set.fontVariant = set.fontWeight = set.fontSize = true;
-                    }
-                    else {
+                    } else {
                         if (d[i] != 'inherit') ff += d[i];
                     }
                 }
@@ -795,8 +786,7 @@
             refY = new svg.Property('refY', refY);
             if (refX.hasValue() && refY.hasValue()) {
                 ctx.translate(-scaleMin * refX.toPixels('x'), -scaleMin * refY.toPixels('y'));
-            }
-            else {
+            } else {
                 // align
                 if (align.match(/^xMid/) && ((meetOrSlice == 'meet' && scaleMin == scaleY) || (meetOrSlice == 'slice' && scaleMax == scaleY))) ctx.translate(width / 2.0 - desiredWidth / 2.0, 0);
                 if (align.match(/YMid$/) && ((meetOrSlice == 'meet' && scaleMin == scaleX) || (meetOrSlice == 'slice' && scaleMax == scaleX))) ctx.translate(0, height / 2.0 - desiredHeight / 2.0);
@@ -885,12 +875,10 @@
                 if (this.style('mask').hasValue()) { // mask
                     var mask = this.style('mask').getDefinition();
                     if (mask != null) mask.apply(ctx, this);
-                }
-                else if (this.style('filter').hasValue()) { // filter
+                } else if (this.style('filter').hasValue()) { // filter
                     var filter = this.style('filter').getDefinition();
                     if (filter != null) filter.apply(ctx, this);
-                }
-                else {
+                } else {
                     this.setContext(ctx);
                     this.renderChildren(ctx);
                     this.clearContext(ctx);
@@ -933,7 +921,7 @@
                         if (styles != null) {
                             for (var name in styles) {
                                 var existingSpecificity = this.stylesSpecificity[name];
-                                if (typeof(existingSpecificity) == 'undefined') {
+                                if (typeof (existingSpecificity) == 'undefined') {
                                     existingSpecificity = '000';
                                 }
                                 if (specificity > existingSpecificity) {
@@ -998,8 +986,7 @@
                 if (this.style('fill').isUrlDefinition()) {
                     var fs = this.style('fill').getFillStyleDefinition(this, this.style('fill-opacity'));
                     if (fs != null) ctx.fillStyle = fs;
-                }
-                else if (this.style('fill').hasValue()) {
+                } else if (this.style('fill').hasValue()) {
                     var fillStyle = this.style('fill');
                     if (fillStyle.value == 'currentColor') fillStyle.value = this.style('color').value;
                     if (fillStyle.value != 'inherit') ctx.fillStyle = (fillStyle.value == 'none' ? 'rgba(0,0,0,0)' : fillStyle.value);
@@ -1014,8 +1001,7 @@
                 if (this.style('stroke').isUrlDefinition()) {
                     var fs = this.style('stroke').getFillStyleDefinition(this, this.style('stroke-opacity'));
                     if (fs != null) ctx.strokeStyle = fs;
-                }
-                else if (this.style('stroke').hasValue()) {
+                } else if (this.style('stroke').hasValue()) {
                     var strokeStyle = this.style('stroke');
                     if (strokeStyle.value == 'currentColor') strokeStyle.value = this.style('color').value;
                     if (strokeStyle.value != 'inherit') ctx.strokeStyle = (strokeStyle.value == 'none' ? 'rgba(0,0,0,0)' : strokeStyle.value);
@@ -1034,30 +1020,26 @@
                 if (this.style('stroke-miterlimit').hasValue()) ctx.miterLimit = this.style('stroke-miterlimit').value;
                 if (this.style('stroke-dasharray').hasValue() && this.style('stroke-dasharray').value != 'none') {
                     var gaps = svg.ToNumberArray(this.style('stroke-dasharray').value);
-                    if (typeof(ctx.setLineDash) != 'undefined') {
+                    if (typeof (ctx.setLineDash) != 'undefined') {
                         ctx.setLineDash(gaps);
-                    }
-                    else if (typeof(ctx.webkitLineDash) != 'undefined') {
+                    } else if (typeof (ctx.webkitLineDash) != 'undefined') {
                         ctx.webkitLineDash = gaps;
-                    }
-                    else if (typeof(ctx.mozDash) != 'undefined' && !(gaps.length == 1 && gaps[0] == 0)) {
+                    } else if (typeof (ctx.mozDash) != 'undefined' && !(gaps.length == 1 && gaps[0] == 0)) {
                         ctx.mozDash = gaps;
                     }
 
                     var offset = this.style('stroke-dashoffset').numValueOrDefault(1);
-                    if (typeof(ctx.lineDashOffset) != 'undefined') {
+                    if (typeof (ctx.lineDashOffset) != 'undefined') {
                         ctx.lineDashOffset = offset;
-                    }
-                    else if (typeof(ctx.webkitLineDashOffset) != 'undefined') {
+                    } else if (typeof (ctx.webkitLineDashOffset) != 'undefined') {
                         ctx.webkitLineDashOffset = offset;
-                    }
-                    else if (typeof(ctx.mozDashOffset) != 'undefined') {
+                    } else if (typeof (ctx.mozDashOffset) != 'undefined') {
                         ctx.mozDashOffset = offset;
                     }
                 }
 
                 // font
-                if (typeof(ctx.font) != 'undefined') {
+                if (typeof (ctx.font) != 'undefined') {
                     ctx.font = svg.Font.CreateFont(
                         this.style('font-style').value,
                         this.style('font-variant').value,
@@ -1101,8 +1083,7 @@
                 if (ctx.fillStyle != '') {
                     if (this.style('fill-rule').valueOrDefault('inherit') != 'inherit') {
                         ctx.fill(this.style('fill-rule').value);
-                    }
-                    else {
+                    } else {
                         ctx.fill();
                     }
                 }
@@ -1155,7 +1136,7 @@
                 ctx.lineCap = 'butt';
                 ctx.lineJoin = 'miter';
                 ctx.miterLimit = 4;
-                if (typeof(ctx.font) != 'undefined' && typeof(window.getComputedStyle) != 'undefined') {
+                if (typeof (ctx.font) != 'undefined' && typeof (window.getComputedStyle) != 'undefined') {
                     ctx.font = window.getComputedStyle(ctx.canvas).getPropertyValue('font');
                 }
 
@@ -1171,7 +1152,7 @@
 
                 if (!this.attribute('width').hasValue()) this.attribute('width', true).value = '100%';
                 if (!this.attribute('height').hasValue()) this.attribute('height', true).value = '100%';
-                if (typeof(this.root) == 'undefined') {
+                if (typeof (this.root) == 'undefined') {
                     width = this.attribute('width').toPixels('x');
                     height = this.attribute('height').toPixels('y');
 
@@ -2047,13 +2028,11 @@
                     if (this.attribute('repeatCount').value == 'indefinite'
                         || this.attribute('repeatDur').value == 'indefinite') {
                         this.duration = 0.0
-                    }
-                    else if (this.attribute('fill').valueOrDefault('remove') == 'freeze' && !this.frozen) {
+                    } else if (this.attribute('fill').valueOrDefault('remove') == 'freeze' && !this.frozen) {
                         this.frozen = true;
                         this.parent.animationFrozen = true;
                         this.parent.animationFrozenValue = this.getProperty().value;
-                    }
-                    else if (this.attribute('fill').valueOrDefault('remove') == 'remove' && !this.removed) {
+                    } else if (this.attribute('fill').valueOrDefault('remove') == 'remove' && !this.removed) {
                         this.removed = true;
                         this.getProperty().value = this.parent.animationFrozen ? this.parent.animationFrozenValue : this.initialValue;
                         return true;
@@ -2094,8 +2073,7 @@
                     ret.from = new svg.Property('from', parseFloat(this.values.value[lb]));
                     ret.to = new svg.Property('to', parseFloat(this.values.value[ub]));
                     ret.progress = (p - lb) / (ub - lb);
-                }
-                else {
+                } else {
                     ret.from = this.from;
                     ret.to = this.to;
                 }
@@ -2180,16 +2158,14 @@
                     if (child.style('font-family').hasValue()) {
                         svg.Definitions[child.style('font-family').value] = this;
                     }
-                }
-                else if (child.type == 'missing-glyph') this.missingGlyph = child;
+                } else if (child.type == 'missing-glyph') this.missingGlyph = child;
                 else if (child.type == 'glyph') {
                     if (child.arabicForm != '') {
                         this.isRTL = true;
                         this.isArabic = true;
-                        if (typeof(this.glyphs[child.unicode]) == 'undefined') this.glyphs[child.unicode] = [];
+                        if (typeof (this.glyphs[child.unicode]) == 'undefined') this.glyphs[child.unicode] = [];
                         this.glyphs[child.unicode][child.arabicForm] = child;
-                    }
-                    else {
+                    } else {
                         this.glyphs[child.unicode] = child;
                     }
                 }
@@ -2280,8 +2256,7 @@
                 if (child.attribute('x').hasValue()) {
                     child.x = child.attribute('x').toPixels('x') + parent.getAnchorDelta(ctx, parent, i);
                     if (child.attribute('dx').hasValue()) child.x += child.attribute('dx').toPixels('x');
-                }
-                else {
+                } else {
                     if (child.attribute('dx').hasValue()) parent.x += child.attribute('dx').toPixels('x');
                     child.x = parent.x;
                 }
@@ -2290,8 +2265,7 @@
                 if (child.attribute('y').hasValue()) {
                     child.y = child.attribute('y').toPixels('y');
                     if (child.attribute('dy').hasValue()) child.y += child.attribute('dy').toPixels('y');
-                }
-                else {
+                } else {
                     if (child.attribute('dy').hasValue()) parent.y += child.attribute('dy').toPixels('y');
                     child.y = parent.y;
                 }
@@ -2319,12 +2293,11 @@
                     if ((i == 0 || text[i - 1] == ' ') && i < text.length - 2 && text[i + 1] != ' ') arabicForm = 'terminal';
                     if (i > 0 && text[i - 1] != ' ' && i < text.length - 2 && text[i + 1] != ' ') arabicForm = 'medial';
                     if (i > 0 && text[i - 1] != ' ' && (i == text.length - 1 || text[i + 1] == ' ')) arabicForm = 'initial';
-                    if (typeof(font.glyphs[c]) != 'undefined') {
+                    if (typeof (font.glyphs[c]) != 'undefined') {
                         glyph = font.glyphs[c][arabicForm];
                         if (glyph == null && font.glyphs[c].type == 'glyph') glyph = font.glyphs[c];
                     }
-                }
-                else {
+                } else {
                     glyph = font.glyphs[c];
                 }
                 if (glyph == null) glyph = font.missingGlyph;
@@ -2355,7 +2328,7 @@
                         ctx.translate(-this.x, -this.y);
 
                         this.x += fontSize * (glyph.horizAdvX || customFont.horizAdvX) / customFont.fontFace.unitsPerEm;
-                        if (typeof(dx[i]) != 'undefined' && !isNaN(dx[i])) {
+                        if (typeof (dx[i]) != 'undefined' && !isNaN(dx[i])) {
                             this.x += dx[i];
                         }
                     }
@@ -2389,7 +2362,7 @@
                     for (var i = 0; i < text.length; i++) {
                         var glyph = this.getGlyph(customFont, text, i);
                         measure += (glyph.horizAdvX || customFont.horizAdvX) * fontSize / customFont.fontFace.unitsPerEm;
-                        if (typeof(dx[i]) != 'undefined' && !isNaN(dx[i])) {
+                        if (typeof (dx[i]) != 'undefined' && !isNaN(dx[i])) {
                             measure += dx[i];
                         }
                     }
@@ -2460,8 +2433,7 @@
                     this.baseRenderChildren(ctx);
                     var fontSize = new svg.Property('fontSize', svg.Font.Parse(svg.ctx.font).fontSize);
                     svg.Mouse.checkBoundingBox(this, new svg.BoundingBox(this.x, this.y - fontSize.toPixels('y'), this.x + this.measureText(ctx), this.y));
-                }
-                else if (this.children.length > 0) {
+                } else if (this.children.length > 0) {
                     // render as temporary group
                     var g = new svg.Element.g();
                     g.children = this.children;
@@ -2507,8 +2479,7 @@
                     self.loaded = true;
                 }
                 this.img.src = href;
-            }
-            else {
+            } else {
                 this.img = svg.ajax(href);
                 this.loaded = true;
             }
@@ -2524,8 +2495,7 @@
                 ctx.save();
                 if (isSvg) {
                     ctx.drawSvg(this.img, x, y, width, height);
-                }
-                else {
+                } else {
                     ctx.translate(x, y);
                     svg.AspectRatio(ctx,
                         this.attribute('preserveAspectRatio').value,
@@ -2752,7 +2722,7 @@
                 oldBeginPath.call(ctx);
                 for (var i = 0; i < this.children.length; i++) {
                     var child = this.children[i];
-                    if (typeof(child.path) != 'undefined') {
+                    if (typeof (child.path) != 'undefined') {
                         var transform = null;
                         if (child.style('transform', false, true).hasValue()) {
                             transform = new svg.Transform(child.style('transform', false, true).value);
@@ -2811,7 +2781,7 @@
 
                 // apply filters
                 for (var i = 0; i < this.children.length; i++) {
-                    if (typeof(this.children[i].apply) === 'function') {
+                    if (typeof (this.children[i].apply) === 'function') {
                         this.children[i].apply(tempCtx, 0, 0, width + 2 * px, height + 2 * py);
                     }
                 }
@@ -2925,7 +2895,7 @@
             this.extraFilterDistance = this.blurRadius;
 
             this.apply = function (ctx, x, y, width, height) {
-                if (typeof(stackBlur.canvasRGBA) == 'undefined') {
+                if (typeof (stackBlur.canvasRGBA) == 'undefined') {
                     svg.log('ERROR: StackBlur.js must be included for blur to work');
                     return;
                 }
@@ -2960,10 +2930,9 @@
             var className = node.nodeName.replace(/^[^:]+:/, ''); // remove namespace
             className = className.replace(/\-/g, ''); // remove dashes
             var e = null;
-            if (typeof(svg.Element[className]) != 'undefined') {
+            if (typeof (svg.Element[className]) != 'undefined') {
                 e = new svg.Element[className](node);
-            }
-            else {
+            } else {
                 e = new svg.Element.MISSING(node);
             }
 
@@ -3071,7 +3040,7 @@
                 e.render(ctx);
                 if (isFirstRender) {
                     isFirstRender = false;
-                    if (typeof(svg.opts['renderCallback']) == 'function') svg.opts['renderCallback'](dom);
+                    if (typeof (svg.opts['renderCallback']) == 'function') svg.opts['renderCallback'](dom);
                 }
             }
 
@@ -3101,7 +3070,7 @@
                 }
 
                 // need update from redraw?
-                if (typeof(svg.opts['forceRedraw']) == 'function') {
+                if (typeof (svg.opts['forceRedraw']) == 'function') {
                     if (svg.opts['forceRedraw']() == true) needUpdate = true;
                 }
 
@@ -3180,7 +3149,7 @@
         return svg;
     };
 
-    if (typeof(CanvasRenderingContext2D) != 'undefined') {
+    if (typeof (CanvasRenderingContext2D) != 'undefined') {
         CanvasRenderingContext2D.prototype.drawSvg = function (s, dx, dy, dw, dh) {
             canvg(this.canvas, s, {
                 ignoreMouse: true,

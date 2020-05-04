@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="overflow: hidden">
+<style>
+    li {
+        list-style-type: none;
+    }
+
+    .replace {
+        background-image: url("../../../img/sm_559.gif");
+    }
+
+    /*长排按钮样式*/
+    .sm_bjs {
+        height: 64px;
+        width: 100%;
+        margin-left: 0;
+        margin-top: -9.3px;
+        float: left;
+        font-size: 12px;
+        background-image: url("../../../img/sm_bj2.gif");
+    }
+
+    .sm_bjs ul {
+        width: 100%;
+        padding: 0 0 0 0;
+        margin: 0 0 0 10px;
+    }
+
+    .sm_bjs li {
+        width: 38px;
+        float: left;
+        margin: 0 3px 0 3px;
+        padding: 9px 0 0 0;
+    }
+
+    .sm_bjs a:link {
+        padding: 1px;
+    }
+
+    .sm_bjs a:visited {
+        padding: 1px;
+    }
+
+    .sm_bjs a:hover {
+        BORDER: #5b5b5b 1px solid;
+        padding: 1px;
+    }
+
+    /*短排按钮样式*/
+    .sm_bjsw {
+        width: 100%;
+        float: left;
+        font-size: 12px;
+        background-image: url("../../../img/sm_bj2.gif");
+    }
+
+    .sm_bjsw ul {
+        padding: 0 0 5px 0;
+        margin: 0 0 0 0;
+    }
+
+    .sm_bjsw li {
+        width: 60px;
+        float: left;
+        margin: 0 20px 0 20px;
+    }
+
+    .sm_bjsw li img {
+        width: 45px
+    }
+
+    .sm_bjsw a {
+        display: inline-block;
+        width: 47px;
+        height: 46px;
+        padding: 1px;
+    }
+
+    .sm_bjsw a:link {
+        padding: 1px;
+    }
+
+    .sm_bjsw a:visited {
+        padding: 1px;
+    }
+
+    .sm_bjsw a:hover {
+        BORDER: #5b5b5b 1px solid;
+        padding: 1px;
+    }
+
+    table {
+        width: calc(100% - 160px);
+        margin: 0 auto;
+        position: relative;
+    }
+
+    #fCenter {
+        height: 0px;
+    }
+
+    #JBFImageMng_01 {
+        position: absolute;
+        width: calc(100% - 180px);
+        height: calc(100vh - 148px);
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .clearfix {
+        overflow: auto;
+        zoom: 1;
+    }
+</style>
+
+<input type="hidden" id="barCode" name="scanPage" value=""/>
+<input type="hidden" id="e_ctnNo" name="scanPage" value=""/>
+<input type="hidden" id="fileNames" name="fileNames" value=""/>
+<table id="ocxTable" border="1" width="100%" cellspacing="0" cellpadding="0" class="sm_bjss">
+    <tr>
+        <td>
+            <div class='col-xs-9' style="height: calc(100vh - 168px);">
+                <div id="scanImagesBox" style="display: none"></div>
+                <div id="uploadfilediv" class="row">
+                    <div class="col-xs-12">
+                        <div class="row-fluid">
+                            <ul class="ace-thumbnails" id="imageul">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </td>
+    <tr>
+
+        <td valign="top" align="left" nowrap="nowrap" height="10px">
+            <input class="yincang" type="text" id="statusMsg" style="width:450px;text-overflow:ellipsis;" readonly>
+            <input class="yincang" type="text" id="shortfilepath" style="width:500px;text-overflow:ellipsis;" readonly>
+        </td>
+        <td align="right" nowrap="nowrap" style="position: absolute; right: 5px;">第
+            <input class="yincang" type="text" id="curIndex" style="width:30px" align="center" readonly>页/共
+            <input class="yincang" type="text" id="imgTotal" style="width:30px" readonly>页
+        </td>
+    <tr>
+        <td valign="top" align="center">
+            <div id="divMenu" style="position:absolute;top: calc(100vh - 131px);">
+                <div class="jt">
+                    <ul>
+                        <!--左箭头-->
+                        <li style="position: absolute; width:15px;left: -18px;">
+                            <a href="javascript:void(0);">
+                                <img id="leftArrow" name="leftArrow" src="../../../img/jts1.gif" align="absmiddle"
+                                     style="margin:18px 0px">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sm_bjs" style="display: none">
+                    <!--分界线-->
+                    <li valign="top" align="left" style="width:2px;padding: 8px 0 1px 0">
+                        <!--<#&#45;&#45;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+                        <img src="../../../img/sxs.gif" align="absmiddle">
+                    </li>
+
+                    <!--扫描-->
+                    <li valign="top" align="center" id="scan">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_02.gif" align="absmiddle" title="扫  描">
+                        </a>扫 描
+                    </li>
+
+                    <!--删除-->
+                    <li valign="top" align="center" id="DeleteCurrentFile">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_05.gif" align="absmiddle" title="删  除">
+                        </a>删 除
+                    </li>
+
+                    <!--提交-->
+                    <li valign="top" align="center" onClick="submitBatch()">
+                        <a name="submitBtn" href="javascript:void(0);">
+                            <img src="../../../img/sm_16.gif" align="absmiddle" title="提  交">
+                        </a>提 交
+                    </li>
+
+                    <!--插入-->
+                    <li valign="top" align="center" id="InsertScan">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_04.gif" align="absmiddle" title="插 入">
+                        </a>插 入
+                    </li>
+
+                    <!--替换-->
+                    <li valign="top" align="center" id="Rescan">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_21.gif" align="absmiddle" title="替 换">
+                        </a>替 换
+                    </li>
+
+                    <!--去水印-->
+                    <li valign="top" align="center" id="calVisualWMString">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_04.gif" align="absmiddle" title="去水印">
+                        </a>去水印
+                    </li>
+
+                    <!--水印-->
+                    <li valign="top" align="center" id="setVisualWMString">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_04.gif" align="absmiddle" title="水 印">
+                        </a>水 印
+                    </li>
+
+                    <!--分界线-->
+                    <li valign="top" align="left" style="width:2px;padding: 8px 0 1px 0">
+                        <img src="../../../img/sxs.gif" align="absmiddle">
+                    </li>
+
+                    <!--扫描仪-->
+                    <li valign="top" align="center" id="ChoiceScanner">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_01.gif" align="absmiddle" title="扫描仪">
+                        </a>扫描仪
+                    </li>
+
+                    <!--设置-->
+                    <li valign="top" align="center" id="SetParameters">
+                        <a href="javascript:void(0);">
+                            <img src="../../..../../../img/sm_03.gif" align="absmiddle" title="设 置">
+                        </a>设 置
+                    </li>
+
+                    <!--清空-->
+                    <li valign="top" align="center" id="DeleteAllFiles">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_06.gif" align="absmiddle" title="清 空">
+                        </a>清 空
+                    </li>
+
+                    <!--放大-->
+                    <li valign="top" align="center" id="ZoomOut">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_08.gif" align="absmiddle" title="放 大">
+                        </a>放 大
+                    </li>
+
+                    <!--缩小-->
+                    <li valign="top" align="center" id="ZoomIn">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_07.gif" align="absmiddle" title="缩 小">
+                        </a>缩 小
+                    </li>
+
+                    <!--左转-->
+                    <li valign="top" align="center" id="RotateImageLeft">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_31.gif" align="absmiddle" title="左 转">
+                        </a>左 转
+                    </li>
+
+                    <!--右转-->
+                    <li valign="top" align="center" id="RotateImageRight">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_32.gif" align="absmiddle" title="右 转">
+                        </a>右 转
+                    </li>
+
+                    <!--分界线-->
+                    <li valign="top" align="left" style="width:2px;padding: 8px 0 1px 0">
+                        <img src="../../../img/sxs.gif" align="absmiddle">
+                    </li>
+
+                    <!--首页-->
+                    <li valign="top" align="center" id="ShowFirstPage">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_09.gif" align="absmiddle" title="首 页">
+                        </a>首 页
+                    </li>
+
+                    <!--上一页-->
+                    <li valign="top" align="center" id="ShowPreviousPage">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_10.gif" align="absmiddle" title="上一页">
+                        </a>上一页
+                    </li>
+
+                    <!--下一页-->
+                    <li valign="top" align="center" id="ShowNextPage">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_11.gif" align="absmiddle" title="下一页">
+                        </a>下一页
+                    </li>
+
+                    <!--尾页-->
+                    <li valign="top" align="center" id="ShowLastPage">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_12.gif" align="absmiddle" title="尾 页">
+                        </a>尾 页
+                    </li>
+                    </ul>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+    </tr>
+    <tr>
+        <td valign="top" align="center">
+            <div class="sm_bjsw" style="background-color: silver;height: 63px;">
+                <ul id="nav">
+                    <li valign="top" align="center" style="margin-left: 18px" id="ChoiceScannerShort">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_01.gif" align="absmiddle" title="扫描仪">
+                        </a>扫描仪
+                    </li>
+                    <li valign="top" align="center" id="scanShort">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_02s.gif" align="absmiddle" title="扫 描">
+                        </a>扫 描
+                    </li>
+                    <li valign="top" align="center" id="InsertScanShort">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_784.gif" align="absmiddle" title="插 入">
+                        </a>插 入
+                    </li>
+                    <li valign="top" align="center" id="RescanShort">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_559.gif" align="absmiddle" title="替 换">
+                        </a>替 换
+                    </li>
+                    <li valign="top" align="center" id="DeleteCurrentFileShort">
+                        <a href="javascript:void(0);">
+                            <img src="../../../img/sm_667.gif" align="absmiddle" title="删 除">
+                        </a>删 除
+                    </li>
+                    <li valign="top" align="center" onClick="submitBatch()">
+                        <a href="javascript:void(0);" id="submitBtn" name="submitBtn">
+                            <img src="../../../img/sm_16s.gif" align="absmiddle" title="提 交">
+                        </a>提 交
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+
+</table>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: JbfImageMng-js"/>
+<script th:inline="javascript">
+    // 判断是否是ie浏览器
+    function isIE() { //ie?
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        } else {
+            $.modal.alertWarning("影像扫描仅支持IE浏览器");
+        }
+    }
+
+    $(function () {
+        isIE()
+    })
+
+    // 定位扫描部件
+    // 获取table
+    var tLeft = document.getElementById('ocxTable').offsetLeft;
+    var tTop = document.getElementById('ocxTable').offsetTop;
+    // console.log(tTop,tLeft)
+
+    // var g_oImageMng;
+    // //设置扫描存储路径
+    var scanSavePath = 'c:\\northking\\scanImage\\';
+    var date = new Date();
+    var dateStr = date.getFullYear() + "" + (date.getMonth() + 1) + "" + date.getDate() + "" + date.getHours() + "" + date.getMinutes();
+    // var arcId = "";
+    var g_oImageMng;
+
+    //设置扫描存储路径
+    //  var scanSavePath = 'c:\\northking\\scanImage\\';
+    var date = new Date();
+    //var dateStr = date.getFullYear() + "" + (date.getMonth() + 1) + "" + date.getDate();
+    var arcId = "";
+    var selectTreeId = $("#selectTreeId").val();
+    //modify by zhangran 20190729 begin reason:直接从父页面拿树节点，不是后端查询
+    var pagetreeId = $("#treeDemo").children().attr("id");
+    var znodeArr = new Array();
+
+    /* var rootTreeobj=$.fn.zTree.getZTreeObj(pagetreeId).getNodes();
+     for(var i=0;i<rootTreeobj.length;i++){
+         getChild(znodeArr,rootTreeobj[i]);
+     }*/
+    function getChild(znodeArr, treeNode) {
+        if (treeNode.isParent) {
+            var treeChild = treeNode.children;
+            for (var k = 0; k < treeChild.length; k++) {
+                getChild(znodeArr, treeChild[k]);
+            }
+        }
+        znodeArr.push(treeNode);
+    }
+
+    //modify by zhangran 20190729 end reason:直接从父页面拿树节点，不是后端查询
+    g_oImageMng = new CJbfImageMng;
+    //var url = window.location.href;
+
+    InitLpk();
+    var ImageMngWidth = 1280;
+    var ImageMngHeight = 800;
+    try {
+        ImageMngWidth = window.dialogHeight + 10;
+        ImageMngHeight = window.dialogHeight + 10;
+
+    } catch (e) {
+    }
+
+    ImageMngWidth = ImageMngWidth > 900 ? ImageMngWidth : 900;
+    ImageMngHeight = ImageMngHeight > 900 ? ImageMngHeight : 900;
+    g_oImageMng.SetInitScanPara("1", "200", "2", "200", "0", "8", "-1", "200", "200", "2", "2", "1", "1");
+    g_oImageMng.InitImageMng("JBFImageMng_01", 1024, 610);
+
+    //根据页号显示图像
+    function showIndexPage() {
+        var pageIndex = document.all("pageIndex").value;
+        alert("showIndexPage=" + pageIndex);
+        var fileCount = g_oImageMng.GetImagesCount();
+        if (pageIndex <= 0 || pageIndex > fileCount) {
+            alert("没有您输入的存在页数!");
+            return;
+        }
+        if (pageIndex == fileCount) {
+            g_oImageMng.ShowLastPage();
+        } else {
+            g_oImageMng.ShowPageByIndex(pageIndex - 1);
+        }
+    }
+
+    function show() {
+        //设置缓存张数
+        g_oImageMng.SetMaxCashCount(100);
+        g_oImageMng.SetImageCells(1, 1);
+
+        //调试使用  add by zbd
+        g_oImageMng.SetDemoImgInfo("http://" + window.location.host + "/icc/pages/batchpay/scan/", 3, 1);
+        //调试结束 add end
+
+        g_oImageMng.SetScanPath('C:\\sdi\\scannedfile\\' + arcId);
+        g_oImageMng.SetMaxPages(1000);
+        g_oImageMng.SetEnableDuplex(1);
+        g_oImageMng.SetImgResolution(200, 200);
+        g_oImageMng.SetImgContrast(128);
+        g_oImageMng.SetImgBrightness(128);
+        g_oImageMng.SetShowUI(0);
+        g_oImageMng.SetAutoFeed(1);
+        //colorMode 0:黑白 1:灰度 2:彩色
+        //imageType 0:bmp 1:jpg 2:tif
+        //设置彩色扫描模式 图像格式为jpg
+        g_oImageMng.SetColorMode(2);
+        g_oImageMng.SetImageType(1);
+        //根据需要可以设置为黑白，但是注意黑白图像只能是bmp或tif格式，而tif格式占用空间要小
+        //g_oImageMng.SetColorMode(0);
+        //g_oImageMng.SetImageType(2);
+        g_oImageMng.ShowFirstPage();
+        //setPageIndex();
+    }
+
+    //获取URL参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    }
+
+    // 提交数据至数据库
+    function submitBatch() {
+        var count = g_oImageMng.GetImagesCount();
+        if (count <= 0) {
+            alert("请扫描后再提交");
+            return;
+        }
+
+        //RenameSelectedAllImg(); //报错
+        var fileNames = getFileNames().split(",");
+        $("#fileNames").val(fileNames);
+        g_oImageMng.generateImgSmall();
+        var imagePath = g_oImageMng.GetScanPath();
+        // var httpfiletransIp = getQueryString("httpfiletransIp");
+        var httpfiletransIp = [[${httpfiletransIp}]];
+        // var batchId = getQueryString("batchId");
+        var batchId = [[${batchId}]];
+        // var httpfiletransPort = getQueryString("httpfiletransPort");
+        var httpfiletransPort = [[${httpfiletransPort}]];
+        var operationcode = getQueryString("operationcode");
+        var billId = getQueryString("billId");
+        var createUser = getQueryString("createUser");
+        var system = getQueryString("systemflag");
+        // system = "ams";
+        var regbillglideno = getQueryString("regbillglideno");
+        // var hadPath = getQueryString("hadPath");
+        // var hadPath = [[${hadPath}]]
+        var uuid = [[${uuid}]];
+        var orgCode = getQueryString("orgCode");
+        // var path = "/uip"+"/"+regbillglideno+"/"+billno;
+        //alert("hadPath : "+hadPath);
+        var myDate = new Date();
+        var opcode = operationcode;
+        if (operationcode == null || operationcode == "null" || operationcode == "" || operationcode == "undefined") {
+            opcode = regbillglideno;
+        }
+        // var path="/"+hadPath+system+"/"+myDate.getFullYear()+"/"+eval(myDate.getMonth()+1)+"/"+myDate.getDate()+"/"+orgCode+"/"+opcode;
+        // var path = "/" + hadPath + myDate.getFullYear() + "/" + eval(myDate.getMonth() + 1) + "/" + myDate.getDate() + myDate.getHours() + myDate.getMilliseconds() + "/" + batchId;
+        console.log("httpfiletransIp=" + httpfiletransIp + " httpfiletransPort=" + httpfiletransPort + " uuid=" + uuid + " imagePath=" + imagePath + " fileNames=" + fileNames);
+        debugger;
+        var ret = g_oImageMng.PutHttpFiles(httpfiletransIp, httpfiletransPort, uuid, imagePath + "*.JPG", 1); //报错
+        debugger;
+        if (ret.indexOf("FailedList") >= 0 || ret.indexOf("500") >= 0) {
+            alert("上传图像失败");
+            return;
+        } else {
+            var prefix = ctx + "archCollection/amsRecord";
+            var scanFileNames = $("#fileNames").val();
+            $.ajax({
+                url: prefix + '/uploadImg',
+                method: 'post',
+                data: {
+                    imageSavePath: imagePath,
+                    billId: billId,
+                    SDKPath: uuid,
+                    fileNames: fileNames,
+                    batchId: batchId,
+                    createUser: createUser,
+                    scanFileName: scanFileNames
+                },
+                success: function (result) {
+                    // 成功后跳转影像页面
+                    if (result.code == 0) {
+                        var url = prefix + "/toUpload/" + batchId + "/111";
+                        $.modal.parentTab("文件上传", url);
+                    }
+                },
+                error: function () {
+                    alert("error")
+                }
+            });
+        }
+    }
+
+    function RenameSelectedAllImg() {
+        g_oImageMng.RenameAllImg();
+    }
+
+
+    // 调用初始化控件
+    $(document).ready(function () {
+        //alert("ready");
+        setTimeout(InitPageInfo, 500);
+    })
+
+    /*----------------------------------------短排按钮方法------------------------------------------------------*/
+    // 长排按钮扫描仪
+    $("#ChoiceScannerShort").click(function () {
+        g_oImageMng.InitControlType(1);
+        g_oImageMng.ChoiceScanner()
+    })
+
+    // 短排按钮扫描
+    $("#scanShort").click(function () {
+        g_oImageMng.Scan()
+    })
+
+    // 短排按钮插入
+    $("#InsertScanShort").click(function () {
+        g_oImageMng.InsertScan()
+    })
+
+    // 短排按钮替换
+    $("#RescanShort").click(function () {
+        g_oImageMng.Rescan()
+    })
+
+    // 短排按钮删除
+    $("#DeleteCurrentFileShort").click(function () {
+        g_oImageMng.DeleteCurrentFile()
+    })
+
+    // 短排按钮提交
+    $("#submitBatchShort").click(function () {
+        submitBatch()
+    })
+
+    /*----------------------------------------长排按钮方法------------------------------------------------------*/
+    // 左箭头进出方法
+    var arrowFlag = true;
+    $('#leftArrow').click(function () {
+        if (arrowFlag) {
+            arrowFlag = false;
+            $('#leftArrow').attr('src', '../../../img/jts.gif')
+            $(".sm_bjs").show()
+
+        } else {
+            arrowFlag = true;
+            $('#leftArrow').attr('src', '../../../img/jts1.gif')
+            $(".sm_bjs").hide()
+
+        }
+    })
+
+    //长排按钮扫描
+    $("#scan").click(function () {
+        // g_oImageMng.InitControlType(1);
+        g_oImageMng.Scan()
+    })
+
+    // 长排按钮删除
+    $("#DeleteCurrentFile").click(function () {
+        g_oImageMng.DeleteCurrentFile()
+    })
+
+    // 长排按钮提交
+    $("#submitBatch").click(function () {
+        submitBatch()
+    })
+
+    // 长排按钮插入
+    $("#InsertScan").click(function () {
+        g_oImageMng.InsertScan()
+    })
+
+    // 长排按钮替换
+    $("#Rescan").click(function () {
+        g_oImageMng.Rescan()
+    })
+
+    // 长排按钮去水印
+    $("#calVisualWMString").click(function () {
+        g_oImageMng.EnableInsertWM(false);
+        g_oImageMng.SetVisualWMString("");
+    })
+
+    // 长排按钮水印
+    $("#setVisualWMString").click(function () {
+        g_oImageMng.EnableInsertWM(true);
+        g_oImageMng.SetVisualWMString("中关村银行");
+        g_oImageMng.SetVisualWMLocation(3);
+        g_oImageMng.SetWMTextColor(255, 59, 48);
+    })
+
+    // 长排按钮扫描仪
+    $("#ChoiceScanner").click(function () {
+        g_oImageMng.InitControlType(1);
+        g_oImageMng.ChoiceScanner()
+    })
+
+    // 长排按钮设置
+    $("#SetParameters").click(function () {
+        g_oImageMng.SetParameters()
+    })
+
+    // 长排按钮清空
+    $("#DeleteAllFiles").click(function () {
+        g_oImageMng.DeleteAllFiles()
+    })
+
+    // 长排按钮放大
+    $("#ZoomOut").click(function () {
+        g_oImageMng.ZoomOut()
+    })
+
+    // 长排按钮缩小
+    $("#ZoomIn").click(function () {
+        g_oImageMng.ZoomIn()
+    })
+
+    // 长排按钮左转
+    $("#RotateImageLeft").click(function () {
+        g_oImageMng.Rotate(-90)
+    })
+
+    // 长排按钮右转
+    $("#RotateImageRight").click(function () {
+        g_oImageMng.Rotate(90)
+    })
+
+    // 长排按钮首页
+    $("#ShowFirstPage").click(function () {
+        g_oImageMng.ShowFirstPage()
+    })
+
+    // 长排按钮上一页
+    $("#ShowPreviousPage").click(function () {
+        g_oImageMng.ShowPreviousPage()
+    })
+
+    // 长排按钮下一页
+    $("#ShowNextPage").click(function () {
+        g_oImageMng.ShowNextPage()
+    })
+
+    // 长排按钮尾页
+    $("#ShowLastPage").click(function () {
+        g_oImageMng.ShowLastPage()
+    })
+
+    /**----------------------------控件绑定上事件方法集合-------------------------------------*/
+
+
+
+    // 控件初始化
+    function InitPageInfo() {
+        if (document.readyState == "complete") {
+            g_oImageMng.SetVender("京北方信息技术股份有限公司");
+            // SetType();
+            g_oImageMng.SetScanFrontAndBackJPEGQuality(50, 100);
+            g_oImageMng.InitControlType(1);
+            // alert(1412)
+            g_oImageMng.SetScanPath(scanSavePath + dateStr);
+        } else {
+            document.onreadystatechange = function () {
+                if (document.readyState == "complete") {
+                    g_oImageMng.SetVender("京北方信息技术股份有限公司");
+                    g_oImageMng.SetScanFrontAndBackJPEGQuality(50, 100);
+                    g_oImageMng.InitControlType(1);
+                    initGlobalPara();
+                    document.getElementById("divMenu").style.top = g_oImageMng.obj().height;
+                }
+                g_oImageMng.SetScanPath(scanSavePath + $("#batchId").val());
+            }
+        }
+    }
+
+    function initGlobalPara() {
+        //arcId = "";
+        // ftpPath = "";
+        // transFailedFilePath="";
+        // windowStatus = "";
+        // failedCount=0;
+        // upLoadSuccess = "";
+        // imageNum = 0;
+        // g_bChoose = false;
+        // g_bTransSuccess = false;     //以后需要修改为Cookie的方式
+        //
+        // g_bCanSubmit = false;
+        //getPageParameter();
+        g_oImageMng.LoadListImage("");
+        g_oImageMng.ShowFirstPage();
+        //	g_oImageMng.SetCommFlag(16,1);
+        // document.getElementById("curIndex").value = 0;
+        // document.getElementById("imgTotal").value = imageNum;
+        // document.getElementById("statusMsg").value = windowStatus;
+        $("#curIndex").val(0);
+        $("#imgTotal").val(0);
+        $("#statusMsg").val("");
+    }
+
+    function getFileNames() {
+        var fileNames = "";
+        var count = g_oImageMng.GetImagesCount();
+        for (var i = 0; i < count; i++) {
+            var fileLength = g_oImageMng.GetImageFileName(i).length;
+
+            fileNames = fileNames + "," + g_oImageMng.GetImageFileName(i).substr(fileLength - 12, fileLength);
+        }
+        if (fileNames.length > 0) {
+            fileNames = fileNames.substr(1);
+        }
+        //alert("fileNames=" + fileNames);
+        return fileNames;
+    }
+
+    //zhangran test
+    function OnSelectImage(nIndex, nCount) {
+        if (nIndex > nCount) return;
+        var filePath = g_oImageMng.GetImageFileName(nIndex - 1);
+        // var filePath = .GetImageFileName(nIndex - 1);
+        // document.getElementById("curIndex").value = nIndex;
+        // document.getElementById("imgTotal").value = nCount;
+        // document.getElementById("shortfilepath").value = filePath.substr(filePath.lastIndexOf("\\") + 1);
+        $("#curIndex").val(nIndex);
+        $("#imgTotal").val(nCount);
+        $("#shortfilepath").val(filePath.substr(filePath.lastIndexOf("\\") + 1));
+
+    }
+
+    function OnTwainScanOneOver(strFileName, nSize, bObversed) {
+        try {
+            //setPageIndex();loaded
+            // alert("扫描完一张");
+            //  g_oImageMng.generate../../../imgmall();
+        } catch (e) {
+            //alert("调用父页面 tallFlashNewFile 出错！");
+        }
+    }
+
+    //add by zlh 2014-12-19
+    function OnTwainScanOver(flag, szDes) {
+        try {
+            //setPageIndex();
+            get_barcode();
+            // alert("扫描完1");
+        } catch (e) {
+            //alert("调用父页面 tallFlashNewFile 出错！");
+        }
+    }
+
+    //识别条码，全版本识别版本
+    // var LastResult='';
+    // var src = checkedImage[i].getAttribute("src").trim();
+    // function get_barcode(){
+    //
+    //     var count = parseInt(g_oImageMng.GetImagesCount());
+    //     for (var i = 0;i<count;i++){
+    //         var strFilename = g_oImageMng.GetImageFileName(i);
+    //         var val = g_oImageMng.getImgBarcodes(strFilename, 0);
+    //         if(val!=null && val!=""){
+    //             LastResult=val;
+    //         }
+    //         g_oImageMng.setImgBarcodeByIndex(i, LastResult);
+    //     }
+    // }
+
+    var barCode = "";
+    var e_ctnNo = "";
+
+    //识别条码，优先识别电子化合同流水号版本
+    function get_barcode() {
+        var count = parseInt(g_oImageMng.GetImagesCount());
+        // var barCode=$("#barCode");
+        // var e_ctnNo=$("#e_ctnNo");
+        for (var i = 0; i < count; i++) {
+            var strFilename = g_oImageMng.GetImageFileName(i);
+            var everyBarCode = "";
+
+            if (e_ctnNo == "" || e_ctnNo == null) {
+                //优先识别电子化合同流水号
+                e_ctnNo = g_oImageMng.getImgBarcodes(strFilename, 3);//识别电子化合同流水号
+                //$("#e_ctnNo").val(g_oImageMng.getImgBarcodes(strFilename, 3));
+                if (e_ctnNo == "" || e_ctnNo == null) {//当前纸上无电子化合同流水号
+                    everyBarCode = g_oImageMng.getImgBarcodes(strFilename, 1);//识别条码
+                }
+            } else {//已识别出电子化合同流水号
+                everyBarCode = g_oImageMng.getImgBarcodes(strFilename, 1);//识别条码
+            }
+            if (everyBarCode != "" && everyBarCode != null) {
+                barCode = everyBarCode;
+                //$("#barCode").val(everyBarCode);
+            }
+            g_oImageMng.setImgBarcodeByIndex(i, barCode);
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

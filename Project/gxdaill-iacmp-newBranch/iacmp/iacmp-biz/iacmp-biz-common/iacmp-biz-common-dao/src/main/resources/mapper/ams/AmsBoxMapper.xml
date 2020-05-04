@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsBoxMapper">
+
+    <resultMap type="AmsBox" id="AmsBoxResult">
+        <result property="boxPk" column="BOX_PK"/>
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="boxYear" column="BOX_YEAR"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="opOrgCode" column="OP_ORG_CODE"/>
+        <result property="opOrgName" column="OP_ORG_NAME"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="remark" column="REMARK"/>
+        <result property="cabId" column="CAB_ID"/>
+        <result property="cabName" column="CAB_NAME"/>
+        <result property="depId" column="DEP_ID"/>
+        <result property="depName" column="DEP_NAME"/>
+        <result property="depType" column="DEP_TYPE"/>
+        <result property="arcTypeCode" column="ARC_TYPE_CODE"/>
+        <result property="childTypeCode" column="CHILD_TYPE_CODE"/>
+        <result property="childType" column="CHILD_TYPE"/>
+        <result property="crtTime" column="CRT_TIME"/>
+        <result property="incabTime" column="INCAB_TIME"/>
+    </resultMap>
+
+    <sql id="selectAmsBoxVo">
+        select BOX_PK, ID, CODE, NAME, ORG_CODE, ORG_NAME, STATUS, BOX_YEAR, VAL_PERIOD, OP_ORG_CODE, OP_ORG_NAME,
+        ARC_TYPE, REMARK, CAB_ID, CAB_NAME, DEP_ID, DEP_NAME, DEP_TYPE, ARC_TYPE_CODE, CHILD_TYPE_CODE, CHILD_TYPE,
+        CRT_TIME, INCAB_TIME from ams_box
+    </sql>
+
+    <select id="selectAmsBoxList" parameterType="AmsBoxVO" resultMap="AmsBoxResult">
+        <include refid="selectAmsBoxVo"/>
+        <where>
+            <if test="boxPk != null  and boxPk != '' ">and BOX_PK = #{boxPk}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE LIKE concat('%',#{code},'%')</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="boxYear != null  and boxYear != '' ">and BOX_YEAR = #{boxYear}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="opOrgCode != null  and opOrgCode != '' ">and OP_ORG_CODE = #{opOrgCode}</if>
+            <if test="opOrgName != null  and opOrgName != '' ">and OP_ORG_NAME = #{opOrgName}</if>
+            <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="cabId != null  and cabId != '' ">and CAB_ID = #{cabId}</if>
+            <if test="cabName != null  and cabName != '' ">and CAB_NAME = #{cabName}</if>
+            <if test="depId != null  and depId != '' ">and DEP_ID = #{depId}</if>
+            <if test="depName != null  and depName != '' ">and DEP_NAME = #{depName}</if>
+            <if test="depType != null and depType != ''  ">and DEP_TYPE = #{depType}</if>
+            <if test="arcTypeCode != null  and arcTypeCode != '' ">and ARC_TYPE_CODE = #{arcTypeCode}</if>
+            <if test="childTypeCode != null  and childTypeCode != '' ">and CHILD_TYPE_CODE = #{childTypeCode}</if>
+            <if test="childType != null  and childType != '' ">and CHILD_TYPE = #{childType}</if>
+            <if test="crtTime != null ">and to_char(CRT_TIME,'yyyy-mm-dd') = to_char(#{crtTime},'yyyy-mm-dd')</if>
+            <if test="incabTime != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') = to_char(#{incabTime},'yyyy-mm-dd')</if>
+            <if test="incabTimeStart != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') >=
+                to_char(#{incabTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="incabTimeEnd != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{incabTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+
+    <select id="selectAmsBoxes" resultMap="AmsBoxResult">
+        <include refid="selectAmsBoxVo"/>
+        <where>
+            <if test="amsBox.boxPk != null  and amsBox.boxPk != '' ">and BOX_PK = #{amsBox.boxPk}</if>
+            <if test="amsBox.id != null  and amsBox.id != '' ">and ID = #{amsBox.id}</if>
+            <if test="amsBox.code != null  and amsBox.code != '' ">and CODE LIKE
+                concat(concat('%',#{amsBox.code}),'%')
+            </if>
+            <if test="amsBox.name != null  and amsBox.name != '' ">and NAME = #{amsBox.name}</if>
+            <if test="deptList.size()>0">
+                and ORG_CODE in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsBox.orgName != null  and amsBox.orgName != '' ">and ORG_NAME = #{amsBox.orgName}</if>
+            <if test="amsBox.status != null  and amsBox.status != '' ">and STATUS = #{amsBox.status}</if>
+            <if test="amsBox.boxYear != null  and amsBox.boxYear != '' ">and BOX_YEAR = #{amsBox.boxYear}</if>
+            <if test="amsBox.valPeriod != null  and amsBox.valPeriod != '' ">and VAL_PERIOD = #{amsBox.valPeriod}</if>
+            <if test="amsBox.opOrgCode != null  and amsBox.opOrgCode != '' ">and OP_ORG_CODE = #{amsBox.opOrgCode}</if>
+            <if test="amsBox.opOrgName != null  and amsBox.opOrgName != '' ">and OP_ORG_NAME = #{amsBox.opOrgName}</if>
+            <if test="amsBox.arcType != null  and amsBox.arcType != '' ">and ARC_TYPE = #{amsBox.arcType}</if>
+            <if test="amsBox.remark != null  and amsBox.remark != '' ">and REMARK = #{amsBox.remark}</if>
+            <if test="amsBox.cabId != null  and amsBox.cabId != '' ">and CAB_ID = #{amsBox.cabId}</if>
+            <if test="amsBox.cabName != null  and amsBox.cabName != '' ">and CAB_NAME = #{amsBox.cabName}</if>
+            <if test="amsBox.depId != null  and amsBox.depId != '' ">and DEP_ID = #{amsBox.depId}</if>
+            <if test="amsBox.depName != null  and amsBox.depName != '' ">and DEP_NAME = #{amsBox.depName}</if>
+            <if test="amsBox.depType != null  and amsBox.depType != ''  ">and DEP_TYPE = #{amsBox.depType}</if>
+            <if test="amsBox.arcTypeCode != null  and amsBox.arcTypeCode != '' ">and ARC_TYPE_CODE =
+                #{amsBox.arcTypeCode}
+            </if>
+            <if test="amsBox.childTypeCode != null  and amsBox.childTypeCode != '' ">and CHILD_TYPE_CODE =
+                #{amsBox.childTypeCode}
+            </if>
+            <if test="amsBox.childType != null  and amsBox.childType != '' ">and CHILD_TYPE = #{amsBox.childType}</if>
+            <if test="amsBox.incabTimeStart != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{amsBox.incabTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="amsBox.incabTimeEnd != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{amsBox.incabTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+
+    <select id="selectAmsBoxListByOpts" resultMap="AmsBoxResult">
+        <include refid="selectAmsBoxVo"/>
+        <where>
+            <if test="amsBox.boxPk != null  and amsBox.boxPk != '' ">and BOX_PK = #{amsBox.boxPk}</if>
+            <if test="amsBox.id != null  and amsBox.id != '' ">and ID = #{amsBox.id}</if>
+            <if test="amsBox.code != null  and amsBox.code != '' ">and CODE = #{amsBox.code}</if>
+            <if test="amsBox.name != null  and amsBox.name != '' ">and NAME = #{amsBox.name}</if>
+            <if test="deptList.size()>0">
+                and ORG_CODE in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsBox.orgName != null  and amsBox.orgName != '' ">and ORG_NAME = #{amsBox.orgName}</if>
+            <if test="amsBox.status != null  and amsBox.status != '' ">and STATUS = #{amsBox.status}</if>
+            <if test="amsBox.boxYear != null  and amsBox.boxYear != '' ">and BOX_YEAR = #{amsBox.boxYear}</if>
+            <if test="amsBox.valPeriod != null  and amsBox.valPeriod != '' ">and VAL_PERIOD = #{amsBox.valPeriod}</if>
+            <if test="amsBox.opOrgCode != null  and amsBox.opOrgCode != '' ">and OP_ORG_CODE = #{amsBox.opOrgCode}</if>
+            <if test="amsBox.opOrgName != null  and amsBox.opOrgName != '' ">and OP_ORG_NAME = #{amsBox.opOrgName}</if>
+            <if test="amsBox.arcType != null  and amsBox.arcType != '' ">and ARC_TYPE = #{amsBox.arcType}</if>
+            <if test="amsBox.remark != null  and amsBox.remark != '' ">and REMARK = #{amsBox.remark}</if>
+            <if test="amsBox.cabId != null  and amsBox.cabId != '' ">and CAB_ID = #{amsBox.cabId}</if>
+            <if test="amsBox.cabName != null  and amsBox.cabName != '' ">and CAB_NAME = #{amsBox.cabName}</if>
+            <if test="amsBox.depId != null  and amsBox.depId != '' ">and DEP_ID = #{amsBox.depId}</if>
+            <if test="amsBox.depName != null  and amsBox.depName != '' ">and DEP_NAME = #{amsBox.depName}</if>
+            <if test="amsBox.depType != null and amsBox.depType != ''  ">and DEP_TYPE = #{amsBox.depType}</if>
+            <if test="amsBox.arcTypeCode != null  and amsBox.arcTypeCode != '' ">and ARC_TYPE_CODE =
+                #{amsBox.arcTypeCode}
+            </if>
+            <if test="amsBox.childTypeCode != null  and amsBox.childTypeCode != '' ">and CHILD_TYPE_CODE =
+                #{amsBox.childTypeCode}
+            </if>
+            <if test="amsBox.childType != null  and amsBox.childType != '' ">and CHILD_TYPE = #{amsBox.childType}</if>
+            <if test="amsBox.crtTime != null ">and to_char(CRT_TIME,'yyyy-mm-dd') =
+                to_char(#{amsBox.crtTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsBox.incabTime != null ">and INCAB_TIME = #{amsBox.incabTime}</if>
+            <if test="amsBox.incabTimeStart != null ">and INCAB_TIME >= #{amsBox.incabTimeStart}</if>
+            <if test="amsBox.incabTimeEnd != null ">and INCAB_TIME &lt;= #{amsBox.incabTimeEnd}</if>
+            AND STATUS IN (00,10)
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+
+    <select id="selectAmsBoxById" parameterType="String" resultMap="AmsBoxResult">
+        <include refid="selectAmsBoxVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsBox" parameterType="AmsBox">
+        insert into ams_box
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE,</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="boxYear != null  and boxYear != ''  ">BOX_YEAR,</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">VAL_PERIOD,</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE,</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">OP_ORG_NAME,</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="cabId != null  and cabId != ''  ">CAB_ID,</if>
+            <if test="cabName != null  and cabName != ''  ">CAB_NAME,</if>
+            <if test="depId != null  and depId != ''  ">DEP_ID,</if>
+            <if test="depName != null  and depName != ''  ">DEP_NAME,</if>
+            <if test="depType != null and depType != ''  ">DEP_TYPE,</if>
+            <if test="arcTypeCode != null  and arcTypeCode != ''  ">ARC_TYPE_CODE,</if>
+            <if test="childTypeCode != null  and childTypeCode != ''  ">CHILD_TYPE_CODE,</if>
+            <if test="childType != null  and childType != ''  ">CHILD_TYPE,</if>
+            <if test="crtTime != null  ">CRT_TIME,</if>
+            <if test="incabTime != null  ">INCAB_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="orgCode != null  and orgCode != ''  ">#{orgCode},</if>
+            <if test="orgName != null  and orgName != ''  ">#{orgName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="boxYear != null  and boxYear != ''  ">#{boxYear},</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">#{valPeriod},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">#{opOrgCode},</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">#{opOrgName},</if>
+            <if test="arcType != null  and arcType != ''  ">#{arcType},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="cabId != null  and cabId != ''  ">#{cabId},</if>
+            <if test="cabName != null  and cabName != ''  ">#{cabName},</if>
+            <if test="depId != null  and depId != ''  ">#{depId},</if>
+            <if test="depName != null  and depName != ''  ">#{depName},</if>
+            <if test="depType != null and depType != ''  ">#{depType},</if>
+            <if test="arcTypeCode != null  and arcTypeCode != ''  ">#{arcTypeCode},</if>
+            <if test="childTypeCode != null  and childTypeCode != ''  ">#{childTypeCode},</if>
+            <if test="childType != null  and childType != ''  ">#{childType},</if>
+            <if test="crtTime != null  ">#{crtTime},</if>
+            <if test="incabTime != null  ">#{incabTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsBox" parameterType="AmsBox">
+        update ams_box
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE = #{orgCode},</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME = #{orgName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="boxYear != null  and boxYear != ''  ">BOX_YEAR = #{boxYear},</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">VAL_PERIOD = #{valPeriod},</if>
+            <if test="opOrgCode != null  and opOrgCode != ''  ">OP_ORG_CODE = #{opOrgCode},</if>
+            <if test="opOrgName != null  and opOrgName != ''  ">OP_ORG_NAME = #{opOrgName},</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE = #{arcType},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="cabId != null  and cabId != ''  ">CAB_ID = #{cabId},</if>
+            <if test="cabName != null  and cabName != ''  ">CAB_NAME = #{cabName},</if>
+            <if test="depId != null  and depId != ''  ">DEP_ID = #{depId},</if>
+            <if test="depName != null  and depName != ''  ">DEP_NAME = #{depName},</if>
+            <if test="depType != null  and depType != ''  ">DEP_TYPE = #{depType},</if>
+            <if test="arcTypeCode != null  and arcTypeCode != ''  ">ARC_TYPE_CODE = #{arcTypeCode},</if>
+            <if test="childTypeCode != null  and childTypeCode != ''  ">CHILD_TYPE_CODE = #{childTypeCode},</if>
+            <if test="childType != null  and childType != ''  ">CHILD_TYPE = #{childType},</if>
+            <if test="crtTime != null  ">CRT_TIME = #{crtTime},</if>
+            <if test="incabTime != null  ">INCAB_TIME = #{incabTime},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsBoxById" parameterType="String">
+        delete from ams_box where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsBoxByIds" parameterType="String">
+        delete from ams_box where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询档案入库列表-->
+    <select id="selectArchStoreList" resultMap="AmsBoxResult">
+        select BOX_PK, ID, CODE, NAME, ORG_CODE, ORG_NAME, STATUS, BOX_YEAR, VAL_PERIOD, OP_ORG_CODE, OP_ORG_NAME,
+        ARC_TYPE, REMARK, CAB_ID, CAB_NAME, DEP_ID, DEP_NAME, DEP_TYPE, ARC_TYPE_CODE, CHILD_TYPE_CODE, CHILD_TYPE,
+        CRT_TIME, INCAB_TIME from ams_box
+        <where>
+            <if test="amsBox.boxPk != null  and amsBox.boxPk != '' ">and BOX_PK = #{amsBox.boxPk}</if>
+            <if test="amsBox.id != null  and amsBox.id != '' ">and ID = #{amsBox.id}</if>
+            <if test="amsBox.code != null  and amsBox.code != '' ">and CODE LIKE
+                concat(concat('%',#{amsBox.code}),'%')
+            </if>
+            <if test="amsBox.name != null  and amsBox.name != '' ">and NAME = #{amsBox.name}</if>
+            <if test="deptList.size()>0">
+                and ORG_CODE in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsBox.orgName != null  and amsBox.orgName != '' ">and ORG_NAME = #{amsBox.orgName}</if>
+            <if test="amsBox.status != null  and amsBox.status != '' ">and STATUS = #{amsBox.status}</if>
+            <if test="amsBox.boxYear != null  and amsBox.boxYear != '' ">and BOX_YEAR = #{amsBox.boxYear}</if>
+            <if test="amsBox.valPeriod != null  and amsBox.valPeriod != '' ">and VAL_PERIOD = #{amsBox.valPeriod}</if>
+            <if test="amsBox.opOrgCode != null  and amsBox.opOrgCode != '' ">and OP_ORG_CODE = #{amsBox.opOrgCode}</if>
+            <if test="amsBox.opOrgName != null  and amsBox.opOrgName != '' ">and OP_ORG_NAME = #{amsBox.opOrgName}</if>
+            <if test="amsBox.arcType != null  and amsBox.arcType != '' ">and ARC_TYPE = #{amsBox.arcType}</if>
+            <if test="amsBox.remark != null  and amsBox.remark != '' ">and REMARK = #{amsBox.remark}</if>
+            <if test="amsBox.cabId != null  and amsBox.cabId != '' ">and CAB_ID = #{amsBox.cabId}</if>
+            <if test="amsBox.cabName != null  and amsBox.cabName != '' ">and CAB_NAME = #{amsBox.cabName}</if>
+            <if test="amsBox.depId != null  and amsBox.depId != '' ">and DEP_ID = #{amsBox.depId}</if>
+            <if test="amsBox.depName != null  and amsBox.depName != '' ">and DEP_NAME = #{amsBox.depName}</if>
+            <if test="amsBox.depType != null  and amsBox.depType != ''  ">and DEP_TYPE = #{amsBox.depType}</if>
+            <if test="amsBox.arcTypeCode != null  and amsBox.arcTypeCode != '' ">and ARC_TYPE_CODE =
+                #{amsBox.arcTypeCode}
+            </if>
+            <if test="amsBox.childTypeCode != null  and amsBox.childTypeCode != '' ">and CHILD_TYPE_CODE =
+                #{amsBox.childTypeCode}
+            </if>
+            <if test="amsBox.childType != null  and amsBox.childType != '' ">and CHILD_TYPE = #{amsBox.childType}</if>
+            <if test="amsBox.crtTime != null ">and to_char(CRT_TIME,'yyyy-mm-dd') =
+                to_char(#{amsBox.crtTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsBox.incabTime != null ">and to_char(INCAB_TIME,'yyyy-mm-dd') =
+                to_char(#{amsBox.incabTime},'yyyy-mm-dd')
+            </if>
+            and STATUS in(10,20)
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+    <!--查询档案移库列表-->
+    <select id="selectMoveCabList" resultMap="AmsBoxResult">
+        select
+        t.ID, t.CODE, t.NAME, t.ORG_CODE, t.ORG_NAME, t.STATUS, t.BOX_YEAR, t.VAL_PERIOD, t.OP_ORG_CODE, t.OP_ORG_NAME,
+        t.ARC_TYPE, t.REMARK, t.CAB_ID, t.CAB_NAME, t.DEP_ID, t.DEP_NAME, t.DEP_TYPE, t.ARC_TYPE_CODE,
+        t.CHILD_TYPE_CODE, t.CHILD_TYPE, t.CRT_TIME, t.INCAB_TIME
+        from(
+        SELECT
+        b.BOX_PK, b.ID ID, b.CODE CODE, b.NAME NAME, b.ORG_CODE ORG_CODE, b.ORG_NAME ORG_NAME, b.STATUS STATUS,
+        b.BOX_YEAR BOX_YEAR, b.VAL_PERIOD VAL_PERIOD, b.OP_ORG_CODE OP_ORG_CODE, b.OP_ORG_NAME OP_ORG_NAME, b.ARC_TYPE
+        ARC_TYPE, b.REMARK REMARK, b.CAB_ID CAB_ID, b.CAB_NAME CAB_NAME, b.DEP_ID DEP_ID, b.DEP_NAME DEP_NAME,
+        b.DEP_TYPE DEP_TYPE, b.ARC_TYPE_CODE ARC_TYPE_CODE, b.CHILD_TYPE_CODE CHILD_TYPE_CODE, b.CHILD_TYPE CHILD_TYPE,
+        b.CRT_TIME CRT_TIME, b.INCAB_TIME INCAB_TIME
+        FROM ams_box b,
+        (SELECT * from ams_depot
+        <where>
+            <if test="amsBox.depType != null and amsBox.depType != null">
+                DEPOT_TYPE = #{amsBox.depType}
+            </if>
+        </where>
+        ) d
+        where b.DEP_ID = d.id
+        ) t
+        <where>
+            <if test="amsBox.boxPk != null  and amsBox.boxPk != '' ">and b.BOX_PK = #{amsBox.boxPk}</if>
+            <if test="amsBox.id != null  and amsBox.id != '' ">and t.ID = #{amsBox.id}</if>
+            <if test="amsBox.code != null  and amsBox.code != '' ">and t.CODE like
+                concat(concat('%',#{amsBox.code}),'%')
+            </if>
+            <if test="amsBox.name != null  and amsBox.name != '' ">and t.NAME like
+                concat(concat('%',#{amsBox.name}),'%')
+            </if>
+            <if test="amsBox.orgCode != null  and amsBox.orgCode != '' ">and t.ORG_CODE = #{amsBox.orgCode}</if>
+            <if test="deptList.size()>0">
+                and t.ORG_CODE in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsBox.orgName != null  and amsBox.orgName != '' ">and t.ORG_NAME = #{amsBox.orgName}</if>
+            <if test="amsBox.status != null  and amsBox.status != '' ">and t.STATUS = #{amsBox.status}</if>
+            <if test="amsBox.boxYear != null  and amsBox.boxYear != '' ">and t.BOX_YEAR = #{amsBox.boxYear}</if>
+            <if test="amsBox.valPeriod != null  and amsBox.valPeriod != '' ">and t.VAL_PERIOD = #{amsBox.valPeriod}</if>
+            <if test="amsBox.opOrgCode != null  and amsBox.opOrgCode != '' ">and t.OP_ORG_CODE = #{amsBox.opOrgCode}
+            </if>
+            <if test="amsBox.opOrgName != null  and amsBox.opOrgName != '' ">and t.OP_ORG_NAME = #{amsBox.opOrgName}
+            </if>
+            <if test="amsBox.arcType != null  and amsBox.arcType != '' ">and t.ARC_TYPE = #{amsBox.arcType}</if>
+            <if test="amsBox.remark != null  and amsBox.remark != '' ">and t.REMARK = #{amsBox.remark}</if>
+            <if test="amsBox.cabId != null  and amsBox.cabId != '' ">and t.CAB_ID = #{amsBox.cabId}</if>
+            <if test="amsBox.cabName != null  and amsBox.cabName != '' ">and t.CAB_NAME like
+                concat(concat('%',#{amsBox.cabName}),'%')
+            </if>
+            <if test="amsBox.depId != null  and amsBox.depId != '' ">and t.DEP_ID = #{amsBox.depId}</if>
+            <if test="amsBox.depName != null  and amsBox.depName != '' ">and t.DEP_NAME like
+                concat(concat('%',#{amsBox.depName}),'%')
+            </if>
+            <if test="amsBox.depType != null  and amsBox.depType != ''  ">and t.DEP_TYPE = #{amsBox.depType}</if>
+            <if test="amsBox.arcTypeCode != null  and amsBox.arcTypeCode != '' ">and t.ARC_TYPE_CODE =
+                #{amsBox.arcTypeCode}
+            </if>
+            <if test="amsBox.childTypeCode != null  and amsBox.childTypeCode != '' ">and t.CHILD_TYPE_CODE =
+                #{amsBox.childTypeCode}
+            </if>
+            <if test="amsBox.childType != null  and amsBox.childType != '' ">and t.CHILD_TYPE = #{amsBox.childType}</if>
+            <if test="amsBox.crtTime != null ">and to_char(t.CRT_TIME,'yyyy-mm-dd') =
+                to_char(#{amsBox.crtTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsBox.incabTime != null ">and to_char(t.INCAB_TIME,'yyyy-mm-dd') =
+                to_char(#{amsBox.incabTime},'yyyy-mm-dd')
+            </if>
+            and t.STATUS in (5,6)
+            and t.ARC_TYPE_CODE NOT in ('12100', '11100')
+        </where>
+        ORDER BY t.CRT_TIME DESC
+    </select>
+
+    <!--查询档案移库-->
+    <select id="selectArchMoveCab">
+        SELECT * FROM ams_box
+        where status in ('5','6')
+        <if test="boxPk != null  and boxPk != '' ">and BOX_PK = #{boxPk}</if>
+        <if test="id != null  and id != '' ">and ID = #{id}</if>
+        <if test="code != null  and code != '' ">and CODE like concat(concat('%',#{code}),'%')</if>
+        <if test="name != null  and name != '' ">and NAME like concat(concat('%',#{name}),'%')</if>
+        <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+        <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+        <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+        <if test="boxYear != null  and boxYear != '' ">and BOX_YEAR = #{boxYear}</if>
+        <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+        <if test="opOrgCode != null  and opOrgCode != '' ">and OP_ORG_CODE = #{opOrgCode}</if>
+        <if test="opOrgName != null  and opOrgName != '' ">and OP_ORG_NAME = #{opOrgName}</if>
+        <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+        <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+        <if test="cabId != null  and cabId != '' ">and CAB_ID = #{cabId}</if>
+        <if test="cabName != null  and cabName != '' ">and CAB_NAME like concat(concat('%',#{cabName}),'%')</if>
+        <if test="depId != null  and depId != '' ">and DEP_ID = #{depId}</if>
+        <if test="depName != null  and depName != '' ">and DEP_NAME like concat(concat('%',#{depName}),'%')</if>
+        <if test="depType != null  and depType != ''  ">and DEP_TYPE = #{depType}</if>
+        <if test="arcTypeCode != null  and arcTypeCode != '' ">and ARC_TYPE_CODE = #{arcTypeCode}</if>
+        <if test="childTypeCode != null  and childTypeCode != '' ">and CHILD_TYPE_CODE = #{childTypeCode}</if>
+        <if test="childType != null  and childType != '' ">and CHILD_TYPE = #{childType}</if>
+        <if test="crtTime != null ">and CRT_TIME = #{crtTime}</if>
+        <if test="incabTime != null ">and INCAB_TIME = #{incabTime}</if>
+        and id in(
+        select box_code from ams_archives where box_code is not null group by box_code)
+        ORDER BY CRT_TIME DESC
+    </select>
+
+</mapper>

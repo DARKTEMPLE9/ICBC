@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class endService implements Runnable{
+public class endService implements Runnable {
 
     @Autowired
     private MenuService menuService;
 
-    public String sss(){
+    public String sss() {
         System.out.println("=========== endService调用成功  =============");
         Thread thread = new Thread();
         thread.setName("开始一个新的线程");

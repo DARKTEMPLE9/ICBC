@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案借阅历史列表')"/>
+    <style>
+        .hiddenDiv {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-div">
+    <div class="row">
+        <form class="form-horizontal" id="form-amsBorrowInfo-reappl" th:object="${amsBorrowInfo}">
+            <input type="hidden" id="id" name="id" class='submitInput form-control' th:field="*{id}">
+            <input type="hidden" id="appDepCode" name="appDepCode" th:field="*{appDepCode}"/>
+            <input type="hidden" id="opDepNo" name="opDepNo" th:field="*{opDepNo}"/>
+            <input type="hidden" id="batchId" name="batchId" th:field="*{batchId}"/>
+            <input type="hidden" id="batchNo" name="batchNo" th:field="*{batchNo}"/>
+            <input type="hidden" id="arcId" name="archiveId" th:field="*{archiveId}"/>
+            <input type="hidden" id="fileNo" name="fileNo" th:field="*{fileNo}"/>
+            <input type="hidden" id="borDays" name="borDays" th:field="*{borDays}"/>
+            <input type="hidden" id="arcBillDeptCode" name="arcBillDeptCode" th:field="*{arcBillDeptCode}"/>
+            <input type="hidden" id="arcBillDeptName" name="arcBillDeptName" th:field="*{arcBillDeptName}"/>
+            <!--            <input type="hidden" id="arcType" name="arcType" th:field="*{arcType}"/>-->
+            <input type="hidden" id="respOpName" name="respOpName" th:field="*{respOpName}"/>
+            <input type="hidden" id="arcLevel" name="arcLevel" th:field="*{arcLevel}"/>
+
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">档案信息</h4>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">档号：</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcNo}"
+                               readonly='readonly' maxlength='255' id="arcNo" placeholder=""
+                               value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">档案名称:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcName}"
+                               readonly='readonly' maxlength='255' id="arcName" placeholder=""
+                               value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">档案类型:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcBillName}"
+                               readonly='readonly' maxlength='255' id="arcBillName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">档案形态:</label>
+                    <div class="col-sm-8 newInputDiv" th:switch="*{arcType}">
+                        <input th:case="10" class='submitInput form-control ' type="text" th:value="电子形态"
+                               readonly='readonly' maxlength='255' id="arcType" placeholder=""
+                               value="">
+                        <input th:case="20" class='submitInput form-control ' type="text" th:value="实物形态"
+                               readonly='readonly' maxlength='255' id="arcType" placeholder=""
+                               value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">所属部门:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{opDepName}"
+                               readonly='readonly' maxlength='255' id="opDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">申请利用</h4>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">申请人:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{appOpName}"
+                               readonly='readonly' maxlength='255' id="appOpName"
+                               placeholder="" value="">
+                        <input type="hidden" id="appOpCode" name="appOpCode" th:field="*{appOpCode}"/>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">申请部门:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{appDepName}"
+                               readonly='readonly' maxlength='255' id="appDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">利用形式:</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <input type="hidden" id="borType" name="borType" th:value="*{borType}"/>
+                        <input class='submitInput form-control ' type="text"
+                               readonly='readonly' maxlength='255' id="borTypeL" placeholder=""
+                               value=""/>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label"><font class='JBFNotNull'>★</font>利用目的：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <select class='selectpicker submitInput form-control'
+                                id="usePurpose" name="usePurpose">
+                            <option value='学术研究' selected="selected">学术研究</option>
+                            <option value='经济建设'>经济建设</option>
+                            <option value='宣传教育'>宣传教育</option>
+                            <option value='工作查考'>工作查考</option>
+                            <option value='其他'>其他</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6" id="staEle">
+                    <label class="col-sm-3 control-label"><font class='JBFNotNull'>★</font>利用开始日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='time-input form-control' notNull='true' id="borStaTimeEle"
+                               th:value="${#dates.format(amsBorrowInfo.borStaTime,'yyyy-MM-dd')}"
+                               type="text" dataType='date' name="borStaTime" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6" id="staEle1">
+                    <label class="col-sm-3 control-label"><font class='JBFNotNull'>★</font>归还日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='time-input form-control' notNull='true' id="borEndTimeEle"
+                               placeholder="电子档案，最大间隔30天"
+                               th:value="${#dates.format(amsBorrowInfo.borEndTime,'yyyy-MM-dd')}"
+                               type="text" dataType='date' name="borEndTime" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6" id="staMat">
+                    <label class="col-sm-3 control-label"><font class='JBFNotNull'>★</font>利用开始日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='time-input form-control' notNull='true' id="borStaTimeMat"
+                               th:value="${#dates.format(amsBorrowInfo.borStaTime,'yyyy-MM-dd')}"
+                               type="text" dataType='date' name="borStaTime" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6" id="staMat1">
+                    <label class="col-sm-3 control-label"><font class='JBFNotNull'>★</font>归还日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='time-input form-control' notNull='true' id="borEndTimeMat"
+                               placeholder="实体档案，最大间隔5天"
+                               th:value="${#dates.format(amsBorrowInfo.borEndTime,'yyyy-MM-dd')}"
+                               type="text" dataType='date' name="borEndTime" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label"><font
+                            class='JBFNotNull'>★</font>利用事由:</label>
+                    <div class="col-sm-8 newInputDiv">
+							<textarea rows="5" cols="" class='submitInput form-control'
+                                      notNull='true' type="" dataType='text'
+                                      th:field="*{appReason}" placeholder="请输入200字以内" th:maxlength="200"
+                                      id="appReason" name="appReason"></textarea>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6" id="hidDiv" style="display: none;">
+                    <label class="col-sm-3 labelCss newLable"><font class='JBFNotNull'>★</font>利用形式：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <select class='selectpicker submitInput form-control '
+                                id="borForm" name="borForm">
+                            <option value='查阅' selected="selected">查阅</option>
+                            <option value='复印件'>复印件</option>
+                            <option value='原件'>原件</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">复印份数：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <input class='submitInput form-control' type="text"
+                               oninput="value=value.replace(/[^\d]/g,'')"
+                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                               maxlength='9' name="copyNum" placeholder=""
+                               value="" style="width:95%" th:field="*{copyNum}">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">借出份数：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <input class='submitInput form-control' type="text"
+                               oninput="value=value.replace(/[^\d]/g,'')"
+                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                               maxlength='9' name="loanNum" placeholder=""
+                               value="" th:field="*{loanNum}">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">利用操作</h4>
+                <div class="form-group col-sm-6" id="agentArea">
+                    <label class="col-sm-3 control-label">提交上级：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <select class='selectpicker submitInput form-control'
+                                id="agentCode" name="agentCode" required>
+                            <option th:each="user,userStat:${user}" th:value="${user.userId}"
+                                    th:text="${user.userName}">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 buttonsbar" style="float: right;">
+                    <!--<button title='保存' type='button' class='btn btn-primary'-->
+                    <!--id='mySave' value='保存' onclick="toSave()"-->
+                    <!--style='margin-right: 2px; margin-top: 0px; margin-bottom: 0px;'>-->
+                    <!--<span class='glyphicon glyphicon-ok'></span>&nbsp;保存-->
+                    <!--</button>-->
+                    <!--<button title='取消' type='button' class='btn btn-primary'-->
+                    <!--id='mySave' value='取消' onclick="toClose()"-->
+                    <!--style='margin-right: 2px; margin-top: 0px; margin-bottom: 0px;'>-->
+                    <!--<span class='glyphicon glyphicon-ok'></span>&nbsp;保存-->
+                    <!--</button>-->
+                    <button title='提交申请' type='button' class='btn btn-primary'
+                            id='mySub' value='申请' onclick="submitHandler()"
+                            style='margin-right: -2%; margin-top: 0px; margin-bottom: 0px;'>
+                        <span class='glyphicon glyphicon-ok'></span>&nbsp;申请
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    $(function () {
+        //根据参数判断：为10 ，则为续借，考虑归还时间为可选择，考虑利用档案类型，来选择隐藏内容是否显示。为20，为利用实物，时间不变。
+        // var flag = $.urlParam("b");
+        //利用档案类型：10,为电子；20为实物。
+        // var borType =$.urlParam("c");
+        // if(flag =="10"){
+        //     if(borType == "20")
+        //         $("#hidDiv").show();
+        // }else{
+        //     $("#hidDiv").show();
+        // }
+
+        // alert($("#agentCode").val());
+        var borType = $("#borType").val();
+        if (borType == "10") {
+            $("#borTypeL").val("申请在线查阅");
+            // 定义了两类日期框，当位电子时，删除实体的日期框
+            $("#staMat").remove()
+            $("#staMat1").remove()
+        } else {
+            $("#borTypeL").val("申请实体利用");
+            // 定义了两类日期框，当位实体时，删除电子的日期框
+            $("#staEle").remove()
+            $("#staEle1").remove()
+        }
+
+        var users = [[${user}]];
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].userName == 'end') {
+                $('#agentArea').addClass('hiddenDiv');
+                $('#mySub').addClass('hiddenDiv');
+                break;
+            }
+        }
+    });
+
+    var prefix = ctx + "borrow/amsBorrowInfo";
+
+    // 日期
+    layui.use('laydate', function () {
+        // 定义了两类共四个日期框，根据电子或实物分别显示
+        var laydate = layui.laydate;
+        // 电子档案限制30天
+        var startDate = laydate.render({
+            elem: '#borStaTimeEle',
+            min: 'nowTime', //今天及以后
+            // max: $('#borDays').val(),
+            theme: 'molv',
+            trigger: 'click',
+            done: function (value, date) {//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+                $("#borEndTimeEle").val("")
+                if (value !== '') {
+                    endDate.config.min.year = date.year;
+                    endDate.config.min.month = date.month - 1;
+                    endDate.config.min.date = date.date + 1;
+                    endDate.config.max.year = date.year;
+                    endDate.config.max.month = date.month;
+                    endDate.config.max.date = date.date;
+                }
+            }
+        });
+        var endDate = laydate.render({
+            elem: '#borEndTimeEle',
+            min: $('#borStaTimeEle').val(),
+            btns: ['clear'],
+            theme: 'molv',
+            trigger: 'click',
+            done: function (value, date) {//控件在打开时触发，回调返回一个参数
+                if ($("#borStaTimeEle").val() == "") {
+                    $.modal.alert("请先填写利用开始时间")
+                    $("#borEndTimeEle").val("")
+                }
+            }
+        });
+        // 实体档案限制5天
+        var startDate1 = laydate.render({
+            elem: '#borStaTimeMat',
+            min: 'nowTime', //今天及以后
+            // max: $('#borDays').val(),
+            theme: 'molv',
+            trigger: 'click',
+            done: function (value, date) {//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+                $("#borEndTimeMat").val("")
+                if (value !== '') {
+                    endDate1.config.min.year = date.year;
+                    endDate1.config.min.month = date.month - 1;
+                    endDate1.config.min.date = date.date + 1;
+                    endDate1.config.max.year = date.year;
+                    endDate1.config.max.month = date.month - 1;
+                    endDate1.config.max.date = date.date + 5;
+                }
+            }
+        });
+        var endDate1 = laydate.render({
+            elem: '#borEndTimeMat',
+            min: $('#borStaTimeMat').val(),
+            btns: ['clear'],
+            theme: 'molv',
+            trigger: 'click',
+            done: function (value, date) {//控件在打开时触发，回调返回一个参数
+                if ($("#borStaTimeMat").val() == "") {
+                    $.modal.alert("请先填写利用开始时间")
+                    $("#borEndTimeMat").val("")
+                }
+            }
+        });
+    });
+
+    //提交申请
+    function submitHandler() {
+        if ($.validate.form()) {
+            // $.operate.save(prefix + "/borrow", $('#form-amsBorrowInfo-reappl').serialize());
+            save(prefix + "/borrow", $('#form-amsBorrowInfo-reappl').serialize());
+        }
+    }
+
+    //保存
+    function toSave() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/toSave", $('#form-amsBorrowInfo-reappl').serialize());
+        }
+    };
+
+    function save(url, data, callback) {
+        var config = {
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+                $.modal.disable();
+            },
+            success: function (result) {
+                if (typeof callback == "function") {
+                    callback(result);
+                }
+                successCallback(result);
+                var nextUserNo = $("#agentCode").val();
+                $.ajax({
+                    url: prefix + "/sendEmailToNextUser",
+                    data: {"nextUserNo": nextUserNo, "processId": result.data},
+                    type: "post"
+                });
+            }
+        };
+        $.ajax(config)
+    }
+
+    function successCallback(result) {
+        if (result.code == web_status.SUCCESS) {
+            $.modal.reload();
+            $.modal.msgSuccess(result.msg);
+        } else if (result.code == web_status.WARNING) {
+            $.modal.reload();
+            $.modal.alertWarning(result.msg)
+        } else {
+            $.modal.alertError(result.msg);
+        }
+        $.modal.closeLoading();
+        $.modal.enable();
+    }
+
+</script>
+
+</body>
+</html>

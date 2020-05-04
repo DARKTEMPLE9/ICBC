@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.PmsBatchMapper">
+
+    <resultMap type="PmsBatch" id="PmsBatchResult">
+        <result property="id" column="ID"/>
+        <result property="regbillglideNo" column="REGBILLGLIDENO"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="modelList" column="MODEL_LIST"/>
+        <result property="status" column="STATUS"/>
+        <result property="modelCode" column="MODEL_CODE"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="budgetId" column="BUDGET_ID"/>
+        <result property="attriDept" column="DEPT_ID"/>
+        <result property="attriDeptName" column="DEPT_NAME"/>
+        <result property="buildDept" column="BUILD_DEPT"/>
+        <result property="buildDeptName" column="DEPT_NAME"/>
+        <result property="projectManager" column="PROJECT_MANAGER"/>
+        <result property="projectManagerName" column="projectManagerName"/>
+        <result property="productManager" column="PRODUCT_MANAGER"/>
+        <result property="productManagerName" column="productManagerName"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="sysLevel" column="SYS_LEVEL"/>
+        <result property="sysType" column="SYS_TYPE"/>
+        <result property="projectBatch" column="PROJECT_BATCH"/>
+        <association property="dept" javaType="net.northking.iacmp.system.domain.SysDept">
+            <id column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+        </association>
+    </resultMap>
+    <resultMap type="PmsBatchVO" id="PmsBatchResultVO">
+        <result property="id" column="ID"/>
+        <result property="regbillglideNo" column="REGBILLGLIDENO"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="modelList" column="MODEL_LIST"/>
+        <result property="status" column="STATUS"/>
+        <result property="modelCode" column="MODEL_CODE"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="budgetId" column="BUDGET_ID"/>
+        <result property="attriDept" column="DEPT_ID"/>
+        <result property="attriDeptName" column="DEPT_NAME"/>
+        <result property="buildDept" column="BUILD_DEPT"/>
+        <result property="buildDeptName" column="DEPT_NAME"/>
+        <result property="projectManager" column="PROJECT_MANAGER"/>
+        <result property="projectManagerName" column="projectManagerName"/>
+        <result property="productManager" column="PRODUCT_MANAGER"/>
+        <result property="productManagerName" column="productManagerName"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="sysLevel" column="SYS_LEVEL"/>
+        <result property="sysType" column="SYS_TYPE"/>
+        <result property="projectBatch" column="PROJECT_BATCH"/>
+        <association property="dept" javaType="net.northking.iacmp.system.domain.SysDept">
+            <id column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectPmsBatchVo">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM, p.CREATE_TIME,
+        p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,p.BUILD_DEPT ,p.BUDGET_ID,
+        p.PROJECT_MANAGER,p.PROJECT_NAME, s.DEPT_NAME,su.USER_NAME
+        from pms_batch p left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID
+        left join sys_user su on p.PROJECT_MANAGER = su.login_name
+    </sql>
+
+
+    <sql id="selectPmsBatchAndDept">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM, p.CREATE_TIME,
+        p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,p.PROJECT_NAME,p.STATUS,s.dept_name,
+        cm.MODEL_CODE from pms_batch p left join sys_dept s on p.DEPT_ID = s.DEPT_ID left join cms_model cm on
+        p.MODEL_LIST = cm.ID
+    </sql>
+
+    <select id="selectAllPmsBatch" parameterType="PmsBatch" resultMap="PmsBatchResult">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM,
+        p.CREATE_TIME, p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,
+        p.BUILD_DEPT ,p.STATUS,
+        p.BUDGET_ID,p.PROJECT_MANAGER,p.PRODUCT_MANAGER,p.PROJECT_NAME,p.SYS_LEVEL,p.SYS_TYPE,s.DEPT_NAME,
+        su.USER_NAME as projectManagerName,
+        su1.USER_NAME as productManagerName
+        from pms_batch p
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID
+        left join sys_user su on p.PROJECT_MANAGER = su.login_name
+        left join sys_user su1 on p.PRODUCT_MANAGER = su1.login_name
+        <where>
+            p.PROJECT_BATCH = '1'
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE like
+                concat('%',#{operationCode},'%')
+            </if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="projectManagerName != null and projectManagerName != '' ">and su.USER_NAME like
+                concat('%',#{projectManagerName},'%')
+            </if>
+            <if test="projectManager != null and projectManager != '' ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and p.PRODUCT_MANAGER = #{productManager}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="sysLevel!=null and sysLevel != '' ">
+                and p.SYS_LEVEL =#{sysLevel}
+            </if>
+            <if test="sysType!=null and sysType != '' ">
+                and p.SYS_TYPE =#{sysType}
+            </if>
+            <if test="status!=null and status != '' ">
+                and p.STATUS=#{status}
+            </if>
+            <if test="params != null">
+                <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                    and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+                </if>
+                <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                    and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPmsBatchList" parameterType="PmsBatch" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchAndDept"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="regbillglideNo != null  and regbillglideNo != '' ">and REGBILLGLIDENO = #{regbillglideNo}</if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE = #{operationCode}</if>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="dept!=null">
+                <if test="dept.deptName != null and dept.deptName != '' ">and DEPT_NAME like concat('%',
+                    #{dept.deptName}, '%')
+                </if>
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="orderNum != null ">and ORDER_NUM = #{orderNum}</if>
+            <if test="createTime != null ">and p.CREATE_TIME = #{createTime}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="sysId != null ">and SYS_ID = #{sysId}</if>
+            <if test="modelList != null ">and MODEL_LIST = #{modelList}</if>
+            <if test="updateTime != null ">and p.UPDATE_TIME = #{updateTime}</if>
+            <if test="updateBy != null and updateBy != '' ">and p.UPDATE_BY = #{updateBy}</if>
+            <if test="metadata != null  and metadata != '' ">and METADATA = #{metadata}</if>
+            <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+            </if>
+            <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+            </if>
+            and p.PROJECT_BATCH = '1'
+        </where>
+    </select>
+
+    <sql id="selectPmsBatchByRole">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM, p.CREATE_TIME,
+        p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,p.BUILD_DEPT ,p.BUDGET_ID,
+        p.PROJECT_MANAGER,p.PRODUCT_MANAGER,p.PROJECT_NAME,p.SYS_CODE,s.DEPT_NAME,p.STATUS,p.SYS_LEVEL,p.SYS_TYPE,
+        su.user_name as projectManagerName,
+        su1.user_name as productManagerName
+        from pms_batch p
+        left join sys_dept r on p.BUILD_DEPT = r.DEPT_ID
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID
+        left join sys_user su on p.PROJECT_MANAGER = su.login_name
+        left join sys_user su1 on p.PRODUCT_MANAGER = su1.login_name
+    </sql>
+
+    <select id="selectPmsBatchBySysRoles" parameterType="PmsBatch" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchByRole"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="regbillglideNo != null  and regbillglideNo != '' ">and REGBILLGLIDENO = #{regbillglideNo}</if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE like
+                concat('%',#{operationCode},'%')
+            </if>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="createTime != null ">and p.CREATE_TIME = #{createTime}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="sysId != null ">and SYS_ID = #{sysId}</if>
+            <if test="updateTime != null ">and p.UPDATE_TIME = #{updateTime}</if>
+            <if test="updateBy != null and updateBy != '' ">and p.UPDATE_BY = #{updateBy}</if>
+            <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+            </if>
+            <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+            </if>
+            <if test="dataScope != null and ( dataScope == '4' or dataScope == 4)">
+                and ((p.BUILD_DEPT = #{dataScopeDept} or s.ANCESTORS like CONCAT('%',#{dataScopeDept},'%'))
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or
+                    <foreach collection="auxiliaryDeptList" item="item" separator=" or " index="index">
+                        (p.BUILD_DEPT = #{item} or s.ANCESTORS like CONCAT('%',#{item},'%'))
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="buildDept != null and buildDept!= '' ">
+                and (p.BUILD_DEPT = #{buildDept}
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or p.BUILD_DEPT in
+                    <foreach item="item" collection="auxiliaryDeptList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="deptIds != null and deptIds.size()>0">
+                and p.BUILD_DEPT in
+                <foreach item="item" collection="deptIds" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="projectManager != null and projectManager != '' ">and PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and PRODUCT_MANAGER = #{productManager}</if>
+            <if test="sysLevel != null and sysLevel != '' ">and SYS_LEVEL = #{sysLevel}</if>
+            <if test="sysType != null and sysType != '' ">and SYS_TYPE = #{sysType}</if>
+            <if test="status != null and status != '' ">and p.STATUS = #{status}</if>
+            <if test="status == null or status == '' ">
+                <if test=" statusList!= null ">
+                    and p.STATUS in
+                    <foreach item="item" collection="statusList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </if>
+            and p.PROJECT_BATCH = '1'
+        </where>
+    </select>
+    <select id="selectPmsBatchVOBySysRoles" parameterType="PmsBatch" resultMap="PmsBatchResultVO">
+        -- select p.id,p.create_time,p.REGBILLGLIDENO,p.OPERATIONCODE from pms_batch p
+        <include refid="selectPmsBatchVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="regbillglideNo != null  and regbillglideNo != '' ">and REGBILLGLIDENO = #{regbillglideNo}</if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE like
+                concat('%',#{operationCode},'%')
+            </if>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="createTime != null ">and p.CREATE_TIME = #{createTime}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="sysId != null ">and SYS_ID = #{sysId}</if>
+            <if test="updateTime != null ">and p.UPDATE_TIME = #{updateTime}</if>
+            <if test="updateBy != null and updateBy != '' ">and p.UPDATE_BY = #{updateBy}</if>
+            <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+            </if>
+            <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+            </if>
+            <if test="dataScope != null and ( dataScope == '4' or dataScope == 4)">
+                and ((p.BUILD_DEPT = #{dataScopeDept} or s.ANCESTORS like CONCAT('%',#{dataScopeDept},'%'))
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or
+                    <foreach collection="auxiliaryDeptList" item="item" separator=" or " index="index">
+                        (p.BUILD_DEPT = #{item} or s.ANCESTORS like CONCAT('%',#{item},'%'))
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="buildDept != null and buildDept!= '' ">
+                and (p.BUILD_DEPT = #{buildDept}
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or p.BUILD_DEPT in
+                    <foreach item="item" collection="auxiliaryDeptList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="deptIds != null and deptIds.size()>0">
+                and p.BUILD_DEPT in
+                <foreach item="item" collection="deptIds" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="projectManager != null and projectManager != '' ">and PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and PRODUCT_MANAGER = #{productManager}</if>
+            <if test="sysLevel != null and sysLevel != '' ">and SYS_LEVEL = #{sysLevel}</if>
+            <if test="sysType != null and sysType != '' ">and SYS_TYPE = #{sysType}</if>
+            <if test="status != null and status != '' ">and p.STATUS = #{status}</if>
+            <if test="status == null or status == '' ">
+                <if test=" statusList!= null ">
+                    and p.STATUS in
+                    <foreach item="item" collection="statusList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </if>
+            and p.PROJECT_BATCH = '1'
+        </where>
+    </select>
+
+    <sql id="selectPmsBatchByDataRole">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM, p.CREATE_TIME,
+        p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,p.BUILD_DEPT ,p.BUDGET_ID,
+        p.PROJECT_MANAGER,p.PRODUCT_MANAGER,p.PROJECT_NAME,p.SYS_CODE,s.DEPT_NAME,p.STATUS,p.SYS_LEVEL,p.SYS_TYPE,su.USER_NAME
+        from cms_role_project c left join pms_batch p on p.BATCH_ID = c.PMS_BATCH_ID
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID left join sys_user su on p.PROJECT_MANAGER = su.login_name
+    </sql>
+
+    <select id="selectPmsBatchByCondition" parameterType="PmsBatch" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchByDataRole"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="regbillglideNo != null  and regbillglideNo != '' ">and REGBILLGLIDENO = #{regbillglideNo}</if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE like
+                concat('%',#{operationCode},'%')
+            </if>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="projectManagerName != null and projectManagerName != '' ">and su.USER_NAME like
+                concat('%',#{projectManagerName},'%')
+            </if>
+            <if test="projectManager != null and projectManager != '' ">and PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and PRODUCT_MANAGER = #{productManager}</if>
+            <if test="createTime != null ">and p.CREATE_TIME = #{createTime}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="sysId != null ">and SYS_ID = #{sysId}</if>
+            <if test="updateTime != null ">and p.UPDATE_TIME = #{updateTime}</if>
+            <if test="updateBy != null and updateBy != '' ">and p.UPDATE_BY = #{updateBy}</if>
+            <if test="metadata != null  and metadata != '' ">and METADATA = #{metadata}</if>
+            <if test="buildDept != null and buildDept!= '' ">and p.BUILD_DEPT = #{buildDept}</if>
+            <if test="sysLevel != null and sysLevel!= '' ">and p.SYS_LEVEL = #{sysLevel}</if>
+            <if test="sysType != null and sysType!= '' ">and p.SYS_TYPE = #{sysType}</if>
+            <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+            </if>
+            <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+            </if>
+            <choose>
+                <when test="dataScope == '2' or dataScope == 2 ">
+                    and c.ROLE_ID in
+                    <foreach item="item" collection="dataRoles" index="index" open="(" separator="," close=")">
+                        #{item.id}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and (p.PROJECT_MANAGER = #{projectManager})
+                </otherwise>
+            </choose>
+            <if test="status != null and status!= '' ">and p.STATUS = #{status}</if>
+            and p.STATUS not in ('1')
+            and p.PROJECT_BATCH = '1'
+        </where>
+    </select>
+
+    <resultMap type="PmsBatch" id="PmsBatchResultById">
+        <result property="id" column="ID"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="modelList" column="MODEL_LIST"/>
+        <result property="status" column="STATUS"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="budgetId" column="BUDGET_ID"/>
+        <result property="buildDept" column="BUILD_DEPT"/>
+        <result property="buildDeptName" column="buildDeptName"/>
+        <result property="attriDept" column="DEPT_ID"/>
+        <result property="attriDeptName" column="attriDeptName"/>
+        <result property="projectManager" column="PROJECT_MANAGER"/>
+        <result property="projectManagerName" column="projectManagerName"/>
+        <result property="productManager" column="PRODUCT_MANAGER"/>
+        <result property="productManagerName" column="productManagerName"/>
+        <result property="sysLevel" column="SYS_LEVEL"/>
+        <result property="sysType" column="SYS_TYPE"/>
+    </resultMap>
+
+    <select id="selectPmsBatchById" parameterType="Long" resultMap="PmsBatchResultById">
+        select p.ID, p.REGBILLGLIDENO, p.OPERATIONCODE, p.CREATE_BY, p.DEPT_ID, p.ORDER_NUM, p.CREATE_TIME,
+        p.BATCH_ID, p.SYS_ID, p.MODEL_LIST, p.UPDATE_TIME, p.UPDATE_BY, p.METADATA,p.BUILD_DEPT ,p.BUDGET_ID,
+        p.PROJECT_MANAGER,p.PRODUCT_MANAGER,p.PROJECT_NAME,p.STATUS,p.SYS_LEVEL,p.SYS_TYPE,
+        s.DEPT_NAME as buildDeptName,
+        s1.DEPT_NAME as attriDeptName,
+        su.USER_NAME as projectManagerName,
+        su1.USER_NAME as productManagerName
+        from pms_batch p
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID
+        left join sys_dept s1 on p.DEPT_ID = s1.DEPT_ID
+        left join sys_user su on p.PROJECT_MANAGER = su.login_name
+        left join sys_user su1 on p.PRODUCT_MANAGER = su1.login_name
+        where ID = #{id}
+    </select>
+
+    <!--根据条件查询是否有该批次-->
+    <select id="selectPmsBatchByOpt" parameterType="java.lang.String" resultMap="PmsBatchResult">
+        select * from pms_batch where OPERATIONCODE = #{operationCode}
+    </select>
+
+    <insert id="insertPmsBatch" parameterType="PmsBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into pms_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="regbillglideNo != null  and regbillglideNo != ''  ">REGBILLGLIDENO,</if>
+            <if test="operationCode != null  and operationCode != ''  ">OPERATIONCODE,</if>
+            <if test="createBy != null  ">CREATE_BY,</if>
+            <if test="deptId != null  ">DEPT_ID,</if>
+            <if test="deptName != null  and deptName != ''  ">DEPT_NAME,</if>
+            <if test="orderNum != null  ">ORDER_NUM,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="batchId != null  ">BATCH_ID,</if>
+            <if test="sysId != null  ">SYS_ID,</if>
+            <if test="sysCode != null  ">SYS_CODE,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="modelList != null  ">MODEL_LIST,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="updateBy != null  ">UPDATE_BY,</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA,</if>
+            <if test="buildDept != null  and buildDept != ''  ">BUILD_DEPT,</if>
+            <if test="budgetId != null  and budgetId != ''  ">BUDGET_ID,</if>
+            <if test="projectManager != null  and projectManager != ''  ">PROJECT_MANAGER,</if>
+            <if test="productManager != null  and productManager != ''  ">PRODUCT_MANAGER,</if>
+            <if test="projectName != null  and projectName != ''  ">PROJECT_NAME,</if>
+            <if test="sysLevel != null  and sysLevel != ''  ">SYS_LEVEL,</if>
+            <if test="sysType != null  and sysType != ''  ">SYS_TYPE,</if>
+            <if test="projectBatch != null  and projectBatch != ''  ">PROJECT_BATCH,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="regbillglideNo != null  and regbillglideNo != ''  ">#{regbillglideNo},</if>
+            <if test="operationCode != null  and operationCode != ''  ">#{operationCode},</if>
+            <if test="createBy != null  ">#{createBy},</if>
+            <if test="deptId != null  ">#{deptId},</if>
+            <if test="deptName != null  and deptName != '' ">#{deptName},</if>
+            <if test="orderNum != null  ">#{orderNum},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="batchId != null  ">#{batchId},</if>
+            <if test="sysId != null  ">#{sysId},</if>
+            <if test="sysCode != null  ">#{sysCode},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="modelList != null  ">#{modelList},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="updateBy != null  ">#{updateBy},</if>
+            <if test="metadata != null  and metadata != ''  ">#{metadata},</if>
+            <if test="buildDept != null  and buildDept != ''  ">#{buildDept},</if>
+            <if test="budgetId != null  and budgetId != ''  ">#{budgetId},</if>
+            <if test="projectManager != null  and projectManager != ''  ">#{projectManager},</if>
+            <if test="productManager != null  and productManager != ''  ">#{productManager},</if>
+            <if test="projectName != null  and projectName != ''  ">#{projectName},</if>
+            <if test="sysLevel != null  and sysLevel != ''  ">#{sysLevel},</if>
+            <if test="sysType != null  and sysType != ''  ">#{sysType},</if>
+            <if test="projectBatch != null  and projectBatch != ''  ">#{projectBatch},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePmsBatch" parameterType="PmsBatch">
+        update pms_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="regbillglideNo != null  and regbillglideNo != ''  ">REGBILLGLIDENO = #{regbillglideNo},</if>
+            <if test="operationCode != null  and operationCode != ''  ">OPERATIONCODE = #{operationCode},</if>
+            <if test="createBy != null  ">CREATE_BY = #{createBy},</if>
+            <if test="deptId != null  ">DEPT_ID = #{deptId},</if>
+            <if test="deptName != null and deptName != '' ">DEPT_NAME = #{deptName},</if>
+            <if test="orderNum != null ">ORDER_NUM = #{orderNum},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="batchId != null  ">BATCH_ID = #{batchId},</if>
+            <if test="sysId != null  ">SYS_ID = #{sysId},</if>
+            <if test="sysCode != null  ">SYS_CODE = #{sysCode},</if>
+            <if test="modelList != null  ">MODEL_LIST = #{modelList},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="updateBy != null  ">UPDATE_BY = #{updateBy},</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA = #{metadata},</if>
+            <if test="buildDept != null  and buildDept != ''  ">BUILD_DEPT = #{buildDept},</if>
+            <if test="budgetId != null  and budgetId != ''  ">BUDGET_ID = #{budgetId},</if>
+            <if test="projectManager != null  and projectManager != ''  ">PROJECT_MANAGER = #{projectManager},</if>
+            <if test="projectName != null  and projectName != ''  ">PROJECT_NAME = #{projectName},</if>
+            <if test="productManager != null  and productManager != ''  ">PRODUCT_MANAGER = #{productManager},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="sysLevel != null  and sysLevel != ''  ">SYS_LEVEL = #{sysLevel},</if>
+            <if test="sysType != null  and sysType != ''  ">SYS_TYPE = #{sysType},</if>
+            <if test="projectBatch != null  and projectBatch != ''  ">PROJECT_BATCH = #{projectBatch},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deletePmsBatchById" parameterType="Long">
+        delete from pms_batch where ID = #{id}
+    </delete>
+
+    <delete id="deletePmsBatchByIds" parameterType="String">
+        update pms_batch set STATUS = 1 where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询出所有项目id-->
+    <select id="selectAllPmsId" parameterType="PmsBatch" resultType="java.lang.String">
+        select p.ID from pms_batch p where p.PROJECT_BATCH = '1' and p.PROJECT_MANAGER = #{projectManager}
+    </select>
+
+    <!--条件查询项目id-->
+    <select id="selectPmsIdListByRole" parameterType="PmsBatch" resultType="java.lang.String">
+        select p.ID
+        from pms_batch p
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID
+        left join sys_user su on p.PROJECT_MANAGER = su.login_name
+        <where>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="dataScope != null and ( dataScope == '4' or dataScope == 4)">
+                and ((p.BUILD_DEPT = #{dataScopeDept} or s.ANCESTORS like CONCAT('%',#{dataScopeDept},'%'))
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or
+                    <foreach collection="auxiliaryDeptList" item="item" separator=" or " index="index">
+                        (p.BUILD_DEPT = #{item} or s.ANCESTORS like CONCAT('%',#{item},'%'))
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="buildDept != null and buildDept!= '' ">
+                and (p.BUILD_DEPT = #{buildDept}
+                <if test="auxiliaryDeptList != null and auxiliaryDeptList.length>0 ">
+                    or p.BUILD_DEPT in
+                    <foreach item="item" collection="auxiliaryDeptList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                )
+            </if>
+            <if test="deptIds != null and deptIds.size()>0 ">
+                and p.BUILD_DEPT in
+                <foreach item="item" collection="deptIds" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="projectManager != null and projectManager != '' ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and p.PRODUCT_MANAGER = #{productManager}</if>
+            <choose>
+                <when test="statusList != null and statusList.size()>0 ">
+                    and p.STATUS in
+                    <foreach item="item" collection="statusList" index="index" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and p.STATUS in ('0','2','3','4')
+                </otherwise>
+            </choose>
+            and p.PROJECT_BATCH = '1'
+        </where>
+    </select>
+
+    <select id="selectPmsIdList" parameterType="PmsBatch" resultType="java.lang.String">
+        select p.ID
+        from pms_batch p left join cms_role_project c on p.BATCH_ID = c.PMS_BATCH_ID
+        left join sys_dept s on p.BUILD_DEPT = s.DEPT_ID left join sys_user su on p.PROJECT_MANAGER = su.login_name
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="regbillglideNo != null  and regbillglideNo != '' ">and REGBILLGLIDENO = #{regbillglideNo}</if>
+            <if test="projectName != null  and projectName != '' ">and PROJECT_NAME like
+                concat('%',#{projectName},'%')
+            </if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE like
+                concat('%',#{operationCode},'%')
+            </if>
+            <if test="createBy != null and createBy != '' ">and p.CREATE_BY = #{createBy}</if>
+            <if test="deptName!=null and deptName != '' ">
+                and s.DEPT_NAME like concat('%',#{deptName},'%')
+            </if>
+            <if test="deptId != null ">and p.DEPT_ID = #{deptId}</if>
+            <if test="projectManager != null and projectManager != '' ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            <if test="productManager != null and productManager != '' ">and p.PRODUCT_MANAGER = #{productManager}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="sysId != null ">and SYS_ID = #{sysId}</if>
+            <if test="updateTime != null ">and p.UPDATE_TIME = #{updateTime}</if>
+            <if test="updateBy != null and updateBy != '' ">and p.UPDATE_BY = #{updateBy}</if>
+            <if test="buildDept != null and buildDept!= '' ">and p.BUILD_DEPT = #{buildDept}</if>
+            <if test="params.createTimeStart != null and params.createTimeStart != ''"><!-- 开始时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &gt;= date_format(#{params.createTimeStart},'%y%m%d')
+            </if>
+            <if test="params.createTimeEnd != null and params.createTimeEnd != ''"><!-- 结束时间检索 -->
+                and date_format(p.CREATE_TIME,'%y%m%d') &lt;= date_format(#{params.createTimeEnd},'%y%m%d')
+            </if>
+            <if test="dataScope != null and dataScope!= '' ">
+                <choose>
+                    <when test="dataScope == '2' or dataScope == 2 ">
+                        and c.ROLE_ID in
+                        <foreach item="item" collection="dataRoles" index="index" open="(" separator="," close=")">
+                            #{item.id}
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        and (p.PROJECT_MANAGER = #{projectManager})
+                    </otherwise>
+                </choose>
+            </if>
+            and p.STATUS not in ('1') and p.PROJECT_BATCH = '1'
+            order by p.ID asc
+        </where>
+    </select>
+
+    <!--通过角色查找项目名称(写死系统编码PMO)-->
+    <select id="selectRoleProjectTree" parameterType="Long" resultType="String">
+        select concat(p.id, p.project_name) as project_name
+        from pms_batch p
+        left join cms_role_project rp on p.batch_id = rp.pms_batch_id
+        where rp.role_id = #{roleId} and p.PROJECT_BATCH = '1'
+        order by p.create_time desc
+    </select>
+    <!--根据BatchId查询批次-->
+    <select id="selectPmsBatchByBatchId" resultMap="PmsBatchResult">
+        select * from pms_batch where BATCH_ID = #{batchId}
+    </select>
+    <!--校验项目名称唯一性-->
+    <select id="checkProjectNameUnique" parameterType="String" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchVo"/>
+        where p.project_name = #{projectName} and p.status &lt;&gt; '1'
+    </select>
+
+    <!--校验项目编号唯一性-->
+    <select id="checkOperationCodeUnique" parameterType="String" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchVo"/>
+        where p.operationCode = #{operationCode} and p.status &lt;&gt; '1'
+    </select>
+
+    <!--预算编号-->
+    <select id="checkBudgetIdUnique" parameterType="String" resultMap="PmsBatchResult">
+        <include refid="selectPmsBatchVo"/>
+        where p.BUDGET_ID = #{budgetId} and p.status &lt;&gt; '1'
+    </select>
+
+    <!--批量查询pmsbatch-->
+    <select id="selectPmsBatchByBatchIds" resultMap="PmsBatchResult">
+        select DISTINCT * from pms_batch b where b.BATCH_ID in
+        <foreach collection="collect" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        ORDER BY b.BATCH_ID
+    </select>
+
+
+    <!--批量查询pmsbatch-->
+    <select id="selectPIdsByDataRole" resultType="java.lang.Long">
+        select PMS_BATCH_ID from cms_role_project where ROLE_ID = #{roleId}
+    </select>
+</mapper>

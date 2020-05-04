@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
+
 @Service
 public class SystemtMenuServiceImpl implements SystemtMenuService {
 
@@ -42,9 +43,9 @@ public class SystemtMenuServiceImpl implements SystemtMenuService {
     }
 
     private void addTo(MenuInf menu, Map<String, Object> menuTree) {
-        List<Map<String, Object>> children = (List<Map<String, Object>>)menuTree.get("children");
-        String treeMenuId = (String)menuTree.get("menuId");
-        MenuInf menuObj = (MenuInf)menuTree.get("menuObj");
+        List<Map<String, Object>> children = (List<Map<String, Object>>) menuTree.get("children");
+        String treeMenuId = (String) menuTree.get("menuId");
+        MenuInf menuObj = (MenuInf) menuTree.get("menuObj");
         int lvl = (menu.getMenulevel() == null) ? 1 : menu.getMenulevel().shortValue();
         int lvlObj = (menuObj == null || menuObj.getMenulevel() == null) ? 1 : menuObj.getMenulevel().shortValue();
         if (StringUtils.equals(menu.getParentCode(), treeMenuId) || (treeMenuId
@@ -55,7 +56,7 @@ public class SystemtMenuServiceImpl implements SystemtMenuService {
             node.put("children", new ArrayList());
             int len = children.size();
             for (int i = 0; i < children.size(); i++) {
-                if (((MenuInf)((Map)children.get(i)).get("menuObj")).getMenuOrder().longValue() > ((MenuInf)node.get("menuObj")).getMenuOrder().longValue()) {
+                if (((MenuInf) ((Map) children.get(i)).get("menuObj")).getMenuOrder().longValue() > ((MenuInf) node.get("menuObj")).getMenuOrder().longValue()) {
                     children.add(i, node);
                     break;
                 }
@@ -65,9 +66,9 @@ public class SystemtMenuServiceImpl implements SystemtMenuService {
         } else if ((treeMenuId
                 .equals("0") && lvl > 1) || (lvl > lvlObj &&
                 StringUtils.equals(menu.getMenuCode().substring(0, lvlObj * 3), menuObj.getMenuCode()))) {
-             for (int i = 0; i < children.size(); i++) {
+            for (int i = 0; i < children.size(); i++) {
                 Map<String, Object> subTree = children.get(i);
-                MenuInf subMenuObj = (MenuInf)subTree.get("menuObj");
+                MenuInf subMenuObj = (MenuInf) subTree.get("menuObj");
                 if (StringUtils.equals(menu.getMenuCode().substring(0, subMenuObj.getMenulevel().shortValue() * 3), subMenuObj.getMenuCode())) {
                     addTo(menu, subTree);
                     break;
@@ -84,7 +85,9 @@ public class SystemtMenuServiceImpl implements SystemtMenuService {
         return null;
     }
 
-    public Map<String, Object> getAllAccessedMenu(String currentUserId) { return null; }
+    public Map<String, Object> getAllAccessedMenu(String currentUserId) {
+        return null;
+    }
 
     public Map<String, Object> getAllAccessedMenu() {
         List<MenuInf> menus = this.systemMenuMapper.getAllMenus();
@@ -92,5 +95,7 @@ public class SystemtMenuServiceImpl implements SystemtMenuService {
         return menuTree;
     }
 
-    public String generalMenu(HttpServletRequest request, HttpServletResponse response, Model data) throws IOException { return null; }
+    public String generalMenu(HttpServletRequest request, HttpServletResponse response, Model data) throws IOException {
+        return null;
+    }
 }

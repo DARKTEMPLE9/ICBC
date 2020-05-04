@@ -6,5 +6,5 @@ import com.springboot.pojo.User;
 
 @Mapper
 public interface UserMapper {
-	User findByUserName(String userName);
+    User findByUserName(String userName);
 }

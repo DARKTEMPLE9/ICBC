@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfActBranchMapper">
+
+    <resultMap type="WfActBranch" id="WfActBranchResult">
+        <result property="id" column="ID"/>
+        <result property="toProcActId" column="TO_PROC_ACT_ID"/>
+        <result property="fromProcActId" column="FROM_PROC_ACT_ID"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="field" column="FIELD"/>
+        <result property="compOperator" column="COMP_OPERATOR"/>
+        <result property="value" column="VALUE"/>
+        <result property="processId" column="PROCESS_ID"/>
+    </resultMap>
+
+    <sql id="selectWfActBranchVo">
+        select ID, TO_PROC_ACT_ID, FROM_PROC_ACT_ID, DESCRIPTION, FIELD, COMP_OPERATOR, VALUE, PROCESS_ID from
+        wf_act_branch
+    </sql>
+
+    <select id="selectWfActBranchList" parameterType="WfActBranch" resultMap="WfActBranchResult">
+        <include refid="selectWfActBranchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="toProcActId != null  and toProcActId != '' ">and TO_PROC_ACT_ID = #{toProcActId}</if>
+            <if test="fromProcActId != null  and fromProcActId != '' ">and FROM_PROC_ACT_ID = #{fromProcActId}</if>
+            <if test="description != null  and description != '' ">and DESCRIPTION = #{description}</if>
+            <if test="field != null  and field != '' ">and FIELD = #{field}</if>
+            <if test="compOperator != null ">and COMP_OPERATOR = #{compOperator}</if>
+            <if test="value != null  and value != '' ">and VALUE = #{value}</if>
+            <if test="processId != null  and processId != '' ">and PROCESS_ID = #{processId}</if>
+        </where>
+    </select>
+
+    <select id="selectWfActBranchById" parameterType="String" resultMap="WfActBranchResult">
+        <include refid="selectWfActBranchVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfActBranch" parameterType="WfActBranch">
+        insert into wf_act_branch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="toProcActId != null  and toProcActId != ''  ">TO_PROC_ACT_ID,</if>
+            <if test="fromProcActId != null  and fromProcActId != ''  ">FROM_PROC_ACT_ID,</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION,</if>
+            <if test="field != null  and field != ''  ">FIELD,</if>
+            <if test="compOperator != null  ">COMP_OPERATOR,</if>
+            <if test="value != null  and value != ''  ">VALUE,</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="toProcActId != null  and toProcActId != ''  ">#{toProcActId},</if>
+            <if test="fromProcActId != null  and fromProcActId != ''  ">#{fromProcActId},</if>
+            <if test="description != null  and description != ''  ">#{description},</if>
+            <if test="field != null  and field != ''  ">#{field},</if>
+            <if test="compOperator != null  ">#{compOperator},</if>
+            <if test="value != null  and value != ''  ">#{value},</if>
+            <if test="processId != null  and processId != ''  ">#{processId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfActBranch" parameterType="WfActBranch">
+        update wf_act_branch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="toProcActId != null  and toProcActId != ''  ">TO_PROC_ACT_ID = #{toProcActId},</if>
+            <if test="fromProcActId != null  and fromProcActId != ''  ">FROM_PROC_ACT_ID = #{fromProcActId},</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION = #{description},</if>
+            <if test="field != null  and field != ''  ">FIELD = #{field},</if>
+            <if test="compOperator != null  ">COMP_OPERATOR = #{compOperator},</if>
+            <if test="value != null  and value != ''  ">VALUE = #{value},</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID = #{processId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfActBranchById" parameterType="String">
+        delete from wf_act_branch where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfActBranchByIds" parameterType="String">
+        delete from wf_act_branch where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

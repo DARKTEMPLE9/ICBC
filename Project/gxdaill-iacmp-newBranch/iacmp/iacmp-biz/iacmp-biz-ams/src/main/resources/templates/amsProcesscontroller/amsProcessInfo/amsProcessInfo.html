@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('审批列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            审批编号：<input type="text" name="exaAppId"/>
+                        </li>
+
+                        <li>
+                            著录编号：<input type="text" name="brachId"/>
+                        </li>
+
+                        <li>
+                            档案编号：<input type="text" name="arcNo"/>
+                        </li>
+
+                        <li>
+                            档案名称：<input type="text" name="arcName"/>
+                        </li>
+
+                        <li>
+                            审批类型：<input type="text" name="exaAppType"/>
+                        </li>
+
+                        <li>
+                            申请人号：<input type="text" name="appOpNo"/>
+                        </li>
+
+                        <li>
+                            申请人名：<input type="text" name="appOpName"/>
+                        </li>
+
+                        <li>
+                            申请人部门号：<input type="text" name="appOrgNo"/>
+                        </li>
+
+                        <li>
+                            申请人部门名称：<input type="text" name="appOrgName"/>
+                        </li>
+
+                        <li>
+                            申请时间：<input type="text" name="appTime"/>
+                        </li>
+
+                        <li>
+                            申请备注：<input type="text" name="appRemark"/>
+                        </li>
+
+                        <li>
+                            当前处理人号：<input type="text" name="nowDispOpNo"/>
+                        </li>
+
+                        <li>
+                            当前处理人名称：<input type="text" name="nowDispOpName"/>
+                        </li>
+
+                        <li>
+                            当前处理人部门号：<input type="text" name="nowDispOrgNo"/>
+                        </li>
+
+                        <li>
+                            当前处理人部门名称：<input type="text" name="nowDispOrgName"/>
+                        </li>
+
+                        <li>
+                            当前审批意见：<input type="text" name="nowDispOpnion"/>
+                        </li>
+
+                        <li>
+                            当前审批时间：<input type="text" name="nowDispTime"/>
+                        </li>
+
+                        <li>
+                            上次处理人号：<input type="text" name="preDispOpNo"/>
+                        </li>
+
+                        <li>
+                            上次处理人名称：<input type="text" name="preDispOpName"/>
+                        </li>
+
+                        <li>
+                            上次处理人部门号：<input type="text" name="preDispOrgNo"/>
+                        </li>
+
+                        <li>
+                            上次处理人部门名称：<input type="text" name="preDispOrgName"/>
+                        </li>
+
+                        <li>
+                            上次审批意见：<input type="text" name="preDispOpnion"/>
+                        </li>
+
+                        <li>
+                            上次处理时间：<input type="text" name="preDispTime"/>
+                        </li>
+
+                        <li>
+                            审批结束时间：<input type="text" name="exaAppEndTime"/>
+                        </li>
+
+                        <li>
+                            审批状态(10-未提交;20-审判中;30-已审批;)：<input type="text" name="exaAppStatus"/>
+                        </li>
+
+                        <li>
+                            审批结果(10-同意;20-不同意;)：<input type="text" name="exaAppResult"/>
+                        </li>
+
+                        <li>
+                            是否退回（10-无;20-已退回;）：<input type="text" name="exaBack"/>
+                        </li>
+
+                        <li>
+                            流程ID：<input type="text" name="processId"/>
+                        </li>
+
+                        <li>
+                            当前流程节点ID：<input type="text" name="nowProcessId"/>
+                        </li>
+
+                        <li>
+                            汇总审批状态(1-不为空;0-为空;)：<input type="text" name="foSearch"/>
+                        </li>
+
+                        <li>
+                            档案形态（10-电子形态;20-实物形态）：<input type="text" name="arcFormat"/>
+                        </li>
+
+                        <li>
+                            代理人名：<input type="text" name="agentName"/>
+                        </li>
+
+                        <li>
+                            借阅ID：<input type="text" name="borrowId"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()"
+               shiro:hasPermission="amsProcesscontroller:amsProcessInfo:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="amsProcesscontroller:amsProcessInfo:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="amsProcesscontroller:amsProcessInfo:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()"
+               shiro:hasPermission="amsProcesscontroller:amsProcessInfo:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('amsProcesscontroller:amsProcessInfo:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('amsProcesscontroller:amsProcessInfo:remove')}]];
+    var prefix = ctx + "amsProcesscontroller/amsProcessInfo";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "审批",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'exaAppId',
+                    title: '审批编号',
+                    sortable: true
+                },
+                {
+                    field: 'brachId',
+                    title: '著录编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcNo',
+                    title: '档案编号',
+                    sortable: true
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'exaAppType',
+                    title: '审批类型',
+                    sortable: true
+                },
+                {
+                    field: 'appOpNo',
+                    title: '申请人号',
+                    sortable: true
+                },
+                {
+                    field: 'appOpName',
+                    title: '申请人名',
+                    sortable: true
+                },
+                {
+                    field: 'appOrgNo',
+                    title: '申请人部门号',
+                    sortable: true
+                },
+                {
+                    field: 'appOrgName',
+                    title: '申请人部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'appTime',
+                    title: '申请时间',
+                    sortable: true
+                },
+                {
+                    field: 'appRemark',
+                    title: '申请备注',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispOpNo',
+                    title: '当前处理人号',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispOpName',
+                    title: '当前处理人名称',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispOrgNo',
+                    title: '当前处理人部门号',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispOrgName',
+                    title: '当前处理人部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispOpnion',
+                    title: '当前审批意见',
+                    sortable: true
+                },
+                {
+                    field: 'nowDispTime',
+                    title: '当前审批时间',
+                    sortable: true
+                },
+                {
+                    field: 'preDispOpNo',
+                    title: '上次处理人号',
+                    sortable: true
+                },
+                {
+                    field: 'preDispOpName',
+                    title: '上次处理人名称',
+                    sortable: true
+                },
+                {
+                    field: 'preDispOrgNo',
+                    title: '上次处理人部门号',
+                    sortable: true
+                },
+                {
+                    field: 'preDispOrgName',
+                    title: '上次处理人部门名称',
+                    sortable: true
+                },
+                {
+                    field: 'preDispOpnion',
+                    title: '上次审批意见',
+                    sortable: true
+                },
+                {
+                    field: 'preDispTime',
+                    title: '上次处理时间',
+                    sortable: true
+                },
+                {
+                    field: 'exaAppEndTime',
+                    title: '审批结束时间',
+                    sortable: true
+                },
+                {
+                    field: 'exaAppStatus',
+                    title: '审批状态(10-未提交;20-审判中;30-已审批;)',
+                    sortable: true
+                },
+                {
+                    field: 'exaAppResult',
+                    title: '审批结果(10-同意;20-不同意;)',
+                    sortable: true
+                },
+                {
+                    field: 'exaBack',
+                    title: '是否退回（10-无;20-已退回;）',
+                    sortable: true
+                },
+                {
+                    field: 'processId',
+                    title: '流程ID',
+                    sortable: true
+                },
+                {
+                    field: 'nowProcessId',
+                    title: '当前流程节点ID',
+                    sortable: true
+                },
+                {
+                    field: 'foSearch',
+                    title: '汇总审批状态(1-不为空;0-为空;)',
+                    sortable: true
+                },
+                {
+                    field: 'arcFormat',
+                    title: '档案形态（10-电子形态;20-实物形态）',
+                    sortable: true
+                },
+                {
+                    field: 'agentName',
+                    title: '代理人名',
+                    sortable: true
+                },
+                {
+                    field: 'borrowId',
+                    title: '借阅ID',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

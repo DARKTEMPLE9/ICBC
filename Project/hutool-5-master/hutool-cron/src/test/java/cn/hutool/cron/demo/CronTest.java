@@ -13,48 +13,48 @@ import cn.hutool.cron.task.Task;
  */
 public class CronTest {
 
-	@Test
-	@Ignore
-	public void customCronTest() {
-		CronUtil.schedule("*/2 * * * * *", (Task) () -> Console.log("Task excuted."));
+    @Test
+    @Ignore
+    public void customCronTest() {
+        CronUtil.schedule("*/2 * * * * *", (Task) () -> Console.log("Task excuted."));
 
-		// 支持秒级别定时任务
-		CronUtil.setMatchSecond(true);
-		CronUtil.start();
-	}
+        // 支持秒级别定时任务
+        CronUtil.setMatchSecond(true);
+        CronUtil.start();
+    }
 
-	@Test
-	@Ignore
-	public void cronTest() {
-		// 支持秒级别定时任务
-		CronUtil.setMatchSecond(true);
-		CronUtil.getScheduler().setDaemon(false);
-		CronUtil.start();
+    @Test
+    @Ignore
+    public void cronTest() {
+        // 支持秒级别定时任务
+        CronUtil.setMatchSecond(true);
+        CronUtil.getScheduler().setDaemon(false);
+        CronUtil.start();
 
-		ThreadUtil.sleep(3000);
-		CronUtil.stop();
-	}
-	
-	@Test
-	@Ignore
-	public void cronTest2() {
-		// 支持秒级别定时任务
-		CronUtil.setMatchSecond(true);
-		CronUtil.start();
-		
-		ThreadUtil.sleep(30000);
-	}
+        ThreadUtil.sleep(3000);
+        CronUtil.stop();
+    }
 
-	@Test
+    @Test
+    @Ignore
+    public void cronTest2() {
+        // 支持秒级别定时任务
+        CronUtil.setMatchSecond(true);
+        CronUtil.start();
+
+        ThreadUtil.sleep(30000);
+    }
+
+    @Test
 //	@Ignore
-	public void addAndRemoveTest() {
-		String id = CronUtil.schedule("*/2 * * * * *", (Runnable) () -> Console.log("task running : 2s"));
+    public void addAndRemoveTest() {
+        String id = CronUtil.schedule("*/2 * * * * *", (Runnable) () -> Console.log("task running : 2s"));
 
-		Console.log(id);
-		CronUtil.remove(id);
+        Console.log(id);
+        CronUtil.remove(id);
 
-		// 支持秒级别定时任务
-		CronUtil.setMatchSecond(true);
-		CronUtil.start();
-	}
+        // 支持秒级别定时任务
+        CronUtil.setMatchSecond(true);
+        CronUtil.start();
+    }
 }

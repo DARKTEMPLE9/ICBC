@@ -16,16 +16,16 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ExcelServiceImpl implements ExcelService{
+public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private ExcelMapper excelMapper;
 
     @Override
     public void excel() {
-        String[] headers = {"主键","姓名","性别","身高",
-                "EXPORT_A_1_主键","EXPORT_A_1_关联EXPORT_A的主键","EXPORT_A_1_备注","EXPORT_A_1_数量",
-                "EXPORT_A_1_1_主键","EXPORT_A_1_关联EXPORT_A的主键","EXPORT_A_1_1_的主键","EXPORT_A_1_备注","EXPORT_A_1_数量"
+        String[] headers = {"主键", "姓名", "性别", "身高",
+                "EXPORT_A_1_主键", "EXPORT_A_1_关联EXPORT_A的主键", "EXPORT_A_1_备注", "EXPORT_A_1_数量",
+                "EXPORT_A_1_1_主键", "EXPORT_A_1_关联EXPORT_A的主键", "EXPORT_A_1_1_的主键", "EXPORT_A_1_备注", "EXPORT_A_1_数量"
         };
         String title = "测试";
 
@@ -79,20 +79,20 @@ public class ExcelServiceImpl implements ExcelService{
         }
 
         /*
-        * 生成表格内容
-        * */
+         * 生成表格内容
+         * */
 
         //获取数据
         //产生数据行
         int row_index = 1; //行下标
         int lie_index = 0; //列下标
-        int count = 0 ;
+        int count = 0;
         int count_2 = 0;
         List<Export_a> list_a = excelMapper.queryExcel();
         /*一级数据*/
         for (Export_a export_a : list_a) {
             String row_id = export_a.getRow_id();
-            List<Export_a_1> export_a_1List =  excelMapper.queryExcel_a_1(row_id);
+            List<Export_a_1> export_a_1List = excelMapper.queryExcel_a_1(row_id);
             count = 0;
             /*二级数据*/
             for (Export_a_1 export_a_1 : export_a_1List) {
@@ -105,7 +105,7 @@ public class ExcelServiceImpl implements ExcelService{
                     XSSFRow row1 = sheet.createRow(row_index);//创建行
                     XSSFCell cell = row1.createCell(0);//创建单元格,从零开始 可用于合并行
 
-                    if(count == 0){
+                    if (count == 0) {
                         /*一级菜单数据*/
                         cell.setCellValue(export_a.getRow_id());//设置内容
                         row1.createCell(1).setCellValue(export_a.getName());
@@ -115,7 +115,7 @@ public class ExcelServiceImpl implements ExcelService{
                         sheet.addMergedRegion(region);
                         count = 1;
                     }
-                    if(count_2 == 0){
+                    if (count_2 == 0) {
                         /*二级菜单数据*/
                         row1.createCell(4).setCellValue(export_a_1.getRow_id());
                         row1.createCell(5).setCellValue(export_a_1.getExport_a_row_id());
@@ -163,8 +163,6 @@ public class ExcelServiceImpl implements ExcelService{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
 
     }

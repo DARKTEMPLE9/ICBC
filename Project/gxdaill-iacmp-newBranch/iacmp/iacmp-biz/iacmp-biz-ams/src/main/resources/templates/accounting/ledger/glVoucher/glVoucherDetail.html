@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="include :: header('详情')"/>
+    <!--<link href="../static/ajax/libs/bootstrap-table/bootstrap-table.min.css" th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>-->
+    <style>
+        #form-batch-edit {
+            margin-left: -25px;
+        }
+
+        #form-batch-edit div {
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-left: 25px;
+
+        }
+
+        #form-batch-edit div label {
+            width: 65px;
+        }
+
+        #form-batch-edit div input.form-input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: transparent;
+            outline: none;
+            height: 29px !important;
+            width: 200px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+
+<body class="white-bg">
+<div id="printBox">
+    <div id="printBtnDiv" style="margin-left: 20px;margin-top: 10px;">
+        <button id="printBtn" class="btn btn-info" onclick="doPrint()"><span class='glyphicon glyphicon-print'></span>&nbsp;打印
+        </button>
+    </div>
+
+    <div id="printInfoCont" class="wrapper wrapper-content">
+
+        <!--<div class="col-sm-12 search-collapse">-->
+        <!--<div class="col-sm-12" th:object="${glVoucher}">-->
+        <!--<form class="form-horizontal m" id="form-batch-edit">-->
+        <!--<div class="">-->
+        <!--<label class="">审核人：</label>-->
+
+        <!--<input id="approver" name="approver" th:value="*{approver}" class="form-input" type="text"  readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">制单人：</label>-->
+
+        <!--<input id="billmaker" name="billmaker" th:value="*{billmaker}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">审核日期：</label>-->
+
+        <!--<input id="checkeddate" name="checkeddate" th:value="*{checkeddate}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">凭证编码：</label>-->
+
+        <!--<input id="num" name="num" th:value="*{num}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">冲销凭证：</label>-->
+
+        <!--<input id="offervoucher" name="offervoucher" th:value="*{offervoucher}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">会计期间：</label>-->
+
+        <!--<input id="period" name="period" th:value="*{period}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class=" ">核算账簿：</label>-->
+
+        <!--<input id="pkAccountingbook" name="pkAccountingbook" th:value="*{pkAccountingbook}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">出纳：</label>-->
+
+        <!--<input id="pkCasher" name="pkCasher" th:value="*{pkCasher}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">凭证类别：</label>-->
+
+        <!--<input id="pkVouchertype" name="pkVouchertype" th:value="*{pkVouchertype}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">制单日期：</label>-->
+
+        <!--<input id="prepareddate" name="prepareddate" th:value="*{prepareddate}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">签字日期：</label>-->
+
+        <!--<input id="signdate" name="signdate" th:value="*{signdate}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">借方合计：</label>-->
+
+        <!--<input id="totaldebit" name="totaldebit" th:value="*{#numbers.formatCurrency(totaldebit)}" class="form-input" type="text" readonly="readonly">-->
+        <!--&lt;!&ndash;<input id="totaldebit" name="totaldebit" th:value="*{#numbers.formatDecimal(totaldebit,1,'COMMA',2,'POINT')}" class="form-input" type="text" readonly="readonly">&ndash;&gt;-->
+
+        <!--</div>-->
+        <!--<div class="">-->
+        <!--<label class="">会计年度：</label>-->
+
+        <!--<input id="year" name="year" th:value="*{year}" class="form-input" type="text" readonly="readonly">-->
+
+        <!--</div>-->
+        <!--</form>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-sm-12 ">
+            <div style="float: left;margin-top: -7px;">
+                <font id="pkAccountingbook" th:object="${glVoucher}">核算账簿
+                    <span th:text="${glVoucher.pkAccountingbook}"></span>
+                </font>
+            </div>
+            <br/><br/>
+            <div style="float: left;margin-right: 18%;margin-top: -7px;">
+                <font id="prepareddate" th:object="${glVoucher}">制单日期：
+                    <span th:text="${glVoucher.prepareddate}"></span>
+                </font>
+            </div>
+            <div style="float: right;margin-top: -7px;">
+                <font id="pkVouchertype" th:object="${glVoucher}">凭证类别：
+                    <span th:text="${glVoucher.pkVouchertype}"></span>
+                </font>
+            </div>
+            <br/>
+            <div style="float: left;margin-top: -7px;">
+                <font id="period" th:object="${glVoucher}">会计期间：
+                    <span th:text="${glVoucher.period}"></span>
+                </font>
+            </div>
+        </div>
+
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+
+        <div class="col-sm-12" style="margin-top: 30px">
+            <div style="float: left;margin-right: 18%;margin-top: -7px;">
+                <font id="assid" th:object="${glVoucher}">辅助核算：
+                    <span th:text="${glVoucher.assid}"></span>
+                </font>
+            </div>
+            <div style="float: right;margin-right: 3%;margin-top: -7px;">
+                <font id="totaldebit" th:object="${glVoucher}">借方合计：
+                    <span th:text="${glVoucher.totaldebit}"></span>
+                </font>
+            </div>
+            <br/><br/>
+            <div style="float: left;margin-top: -7px;">
+                <font th:object="${glVoucher}">现金流量
+                </font>
+            </div>
+            <br/>
+            <div style="float: left;margin-right: 18%;margin-top: -7px;">
+                <font id="pkManagerv" th:object="${glVoucher}">记账人：
+                    <span th:text="${glVoucher.pkManagerv}"></span>
+                </font>
+            </div>
+            <div style="float: left;margin-right: 18%;margin-top: -7px;">
+                <font id="approver" th:object="${glVoucher}">审核人：
+                    <span th:text="${glVoucher.approver}"></span>
+                </font>
+            </div>
+            <div style="float: right;margin-top: -7px;">
+                <font id="billmaker" th:object="${glVoucher}">制单人：
+                    <span th:text="${glVoucher.billmaker}"></span>
+                </font>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<!--<th:block th:include="include :: printPrintArea-js" />-->
+<!--<script src="ajax/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript" th:src="@{/ajax/libs/bootstrap-table/bootstrap-table.min.js}" ></script>-->
+<script th:inline="javascript">
+    var res = [[${glDetailList}]];
+    var direction = [[${@dict.getType('direction')}]];
+    $(function () {
+        $("#bootstrap-table").bootstrapTable({
+            striped: true, // 是否显示行间隔色
+            toolbar: "toolbar",
+            //search : "false",
+            switchable: true,
+            pagination: false, // 是否分页
+            showExport: true,
+            showColumns: true,
+            columns: [
+
+                {
+                    field: 'detailindex',
+                    title: '分录号',
+
+                },
+                {
+                    field: 'pkUnit',
+                    title: '业务单元',
+                    /*  formatter: function(value, item, index) {
+                          return $.table.selectDictLabel(pkUnit, item.pkUnit);
+                      }*/
+                },
+                {
+                    field: 'oppositesubj',
+                    title: '对方科目',
+                },
+                {
+                    field: 'assid',
+                    title: '辅助核算',
+                    // visible: false,
+                },
+                {
+                    field: 'pkCurrtype',
+                    title: '币种',
+                    /*  formatter: function(value, item, index) {
+                          return $.table.selectDictLabel(pkCurrtype, item.pkCurrtype);
+                      }*/
+                },
+                {
+                    field: 'debitamount',
+                    title: '原币借方金额',
+
+                },
+                {
+                    field: 'debitquantity',
+                    title: '借方数量',
+
+                },
+                {
+                    field: 'creditamount',
+                    title: '原币贷方金额',
+
+                },
+                {
+                    field: 'creditquantity',
+                    title: '贷方数量',
+
+                },
+                {
+                    field: 'bankaccount',
+                    title: '银行账户',
+                    visible: false,
+
+                },
+                {
+                    field: 'contrastflag',
+                    title: '对账标志',
+                    visible: false,
+                    /*  formatter: function(value, item, index) {
+                          return $.table.selectDictLabel(contrastflag, item.contrastflag);
+                      }*/
+                },
+                {
+                    field: 'direction',
+                    title: '发生额方向',
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(direction, item.direction);
+                    }
+                },
+                {
+                    field: 'discardflagv',// y n  null
+                    title: '作废标志',
+                    visible: false,
+                },
+                {
+                    field: 'dr',
+                    title: '删除标志',// 0   1
+                    visible: false,
+                    /* formatter: function(value, item, index) {
+                         return $.table.selectDictLabel(dr, item.dr);
+                     }*/
+                },
+                {
+                    field: 'pkManagerv',
+                    title: '记账人',
+                    visible: false,
+
+                },
+                {
+                    field: 'pkOrg',
+                    title: '财务组织',
+                    visible: false,
+                },
+                {
+                    field: 'pkUnitV',
+                    title: '业务单元',
+                    visible: false,
+                    /* formatter: function(value, item, index) {
+                         return $.table.selectDictLabel(pkUnitV, item.pkUnitV);
+                     }*/
+                },
+                {
+                    field: 'voucherkindv',
+                    title: '凭证类型',
+                    visible: false,
+                    /*   formatter: function(value, item, index) {
+                           return $.table.selectDictLabel(voucherkindv, item.voucherkindv);
+                       }*/
+                }
+            ],
+            data: res,
+        });
+
+    });
+</script>
+<script type="text/javascript">
+
+    function doPrint() {
+        $("#printInfoCont").print({
+            globalStyles: true,//是否包含父文档的样式，默认为true
+            mediaPrint: false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+            stylesheet: null,//外部样式表的URL地址，默认为null
+            noPrintSelector: "printBtnDiv",//不想打印的元素的jQuery选择器，默认为".no-print"
+            iframe: true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+            append: null,//将内容添加到打印内容的后面
+            prepend: null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+            deferred: $.Deferred()
+        });
+        // $("#printArea").printArea();
+    }
+
+
+</script>
+</body>
+</html>

@@ -6,5 +6,5 @@ package cn.hutool.http;
  * @author Looly
  */
 public enum Method {
-	GET, POST, HEAD, OPTIONS, PUT, DELETE, TRACE, CONNECT, PATCH
+    GET, POST, HEAD, OPTIONS, PUT, DELETE, TRACE, CONNECT, PATCH
 }

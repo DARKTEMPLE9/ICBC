@@ -15,8 +15,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	
-	@Bean
+
+    @Bean
     public Docket buildDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInf())
@@ -25,6 +25,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     private ApiInfo buildApiInf() {
         return new ApiInfoBuilder()
                 .title("系统RESTful API文档")

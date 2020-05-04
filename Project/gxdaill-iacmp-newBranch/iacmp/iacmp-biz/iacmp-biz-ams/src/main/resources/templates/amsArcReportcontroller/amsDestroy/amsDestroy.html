@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .select-list label {
+        width: 95px;
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('档案销毁列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <!--							<li>-->
+                        <!--								<label>销毁人号：</label>-->
+                        <!--								<input type="text" name="opUserCode"/>-->
+                        <!--							</li>-->
+                        <li>
+                            <label>档案名称：</label>
+                            <input type="text" name="amsArcName"/>
+                        </li>
+                        <li>
+                            <label style="">销毁人名：</label>
+                            <input type="text" id="opUserName" name="opUserName"
+                                   onclick="selectUser('opUserName');opUserName.blur();return false;"
+                                   placeholder="请选择销毁人" readonly/>
+                        </li>
+                        <!--							<li>-->
+                        <!--								<label>销毁人机构号：</label>-->
+                        <!--								<input type="text" name="opOrgCode"/>-->
+                        <!--							</li>-->
+                        <li>
+                            <label>销毁人机构名：</label>
+                            <input type="text" id="opOrgName" name="opOrgName"
+                                   onclick="selectDeptTree();opOrgName.blur();"
+                                   readonly="readonly" placeholder="请选择部门" style="cursor: pointer"/>
+                            <!--								<input type="text" id="opOrgName" name="opOrgName" onclick="selectDeptTree()"/>-->
+                        </li>
+
+                        <li class="select-time">
+                            <label style="margin-right: 3px;">销毁时间： </label>
+                            <input type="text" style="width: 93px;" class="input-sm form-control" id="startTime"
+                                   placeholder="" name="opDate"/>
+                            <span>-</span>
+                            <input type="text" style="width: 93px;" class="input-sm form-control" id="endTime"
+                                   placeholder="" name="opDate"/>
+                        </li>
+                        <li>
+                            <label>销毁原因：</label>
+                            <input type="text" name="destroyReason"/>
+                        </li>
+
+                        <li>
+                            <label>档案数量：</label>
+                            <input type="text" name="archivesNum" maxlength="9"
+                                   oninput="value=value.replace(/[^\d]/g,'')"
+                                   onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+                        </li>
+
+                        <!--							<li>-->
+                        <!--								<label style="">附件：</label>-->
+                        <!--								<input type="text" name="destroyAttachment"/>-->
+                        <!--							</li>-->
+
+                        <!--							<li>-->
+                        <!--								<label >销毁档案id：</label>-->
+                        <!--								<input type="text" name="amsArcId"/>-->
+                        <!--							</li>-->
+
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()"
+               shiro:hasPermission="amsArcReportcontroller:amsDestroy:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="amsArcReportcontroller:amsDestroy:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="amsArcReportcontroller:amsDestroy:remove">-->
+            <!--<i class="fa fa-remove"></i> 删除-->
+            <!--</a>-->
+            <a class="btn btn-warning" onclick="exportExcel()"
+               shiro:hasPermission="amsArcReportcontroller:amsDestroy:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:detail')}]];
+    var editFlag = [[${@permission.hasPermi('amsArcReportcontroller:amsDestroy:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('amsArcReportcontroller:amsDestroy:remove')}]];
+    var prefix = ctx + "amsArcReportcontroller/amsDestroy";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "档案销毁",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'amsArcName',
+                    title: '销毁档案',
+                    sortable: true
+
+                },
+                {
+                    field: 'opUserCode',
+                    title: '销毁人号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'opUserName',
+                    title: '销毁人名',
+                    sortable: true
+                },
+                {
+                    field: 'opOrgCode',
+                    title: '销毁人机构号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'opOrgName',
+                    title: '销毁人机构名',
+                    sortable: true
+                },
+                {
+                    field: 'opDate',
+                    title: '销毁时间',
+                    sortable: true
+                },
+                {
+                    field: 'destroyReason',
+                    title: '销毁原因',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'archivesNum',
+                    title: '档案数量',
+                    sortable: true
+                },
+                {
+                    field: 'destroyAttachment',
+                    title: '附件',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'amsArcId',
+                    title: '销毁档案id',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a title="详情"  class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.amsArcId + '\')"><i class="fa fa-search"></i>详情</a> ');
+
+                        // actions.push('<a class="btn btn-primary btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function exportExcel() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var data = rows.join();
+        console.log(data);
+        $.modal.confirm("确定导出" + $.table._option.modalName + "数据吗？", function () {
+            // var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+            var exportUrl = prefix + "/export?destoryIds=" + data;
+            $.modal.loading("正在导出数据，请稍后...");
+            $.post(exportUrl, data, function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+                $.modal.closeLoading();
+            });
+        });
+    }
+
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 详情页
+    function openDetail(id) {
+        var url = ctx + "amsArcReportcontroller/amsArchives/detail/" + id;
+        $.modal.openTab("档案登记详情", url);
+    }
+
+    function selectDeptTree() {
+        var url = ctx + "amsArcReportcontroller/amsArchives/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#opOrgName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

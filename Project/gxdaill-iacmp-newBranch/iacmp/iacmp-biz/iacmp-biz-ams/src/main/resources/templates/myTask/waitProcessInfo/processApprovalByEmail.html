@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('审批历史列表')"/>
+</head>
+
+<body style="background-color: #ffffff;">
+
+<!-- 遮罩层（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<!-- end遮罩层（Modal） -->
+
+<div class="modal fade" id="message" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body"></div>
+            <div class="modal-body">
+                <h4 class="h4Message"></h4>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
+<a href='genhtml/bootstrapDemo/amsArcReg/manageNoTreeHelp.html'
+   type='button' class='btn fr' target='newwin' style='display: none;'><img
+        style='max-height: 32px;' src='/NorthkingCRUD/img/help.png'></a>
+<form class="form-horizontal" id='form-amsProcessInfo-edit' role='form' th:object="${amsProcessInfo}">
+    <div class='container manage' id='container111'>
+        <div class='row'>
+            <div class="h4">
+                <b>审批任务</b>
+                <button style="float: right;margin-top: -7px" type="button" class="btn btn-info"
+                        onclick="selectHistory()">审批记录
+                </button>
+
+            </div>
+            <hr size="1" width="100%" color="black" noshade="noshade"
+                style="margin-top: 0px; margin-bottom: 5px; height: 1px; background-color: lightgray;"/>
+            <div class="p70 ">
+                <input id="id" name="id" th:value="*{id}" type="hidden">
+                <input id="arcNo" name="arcNo" th:value="*{arcNo}" type="hidden">
+                <input id="arcName" name="arcName" th:value="*{arcName}" type="hidden">
+                <!--<input id="exaAppType" name="arcNo" th:value="*{exaAppType}" type="hidden">-->
+                <input id="nowDispOrgNo" name="nowDispOrgNo" th:value="*{nowDispOrgNo}" type="hidden">
+                <input id="sysUserId" name="sysUserId" th:value="${sysUserId}" type="hidden">
+                <input id="nowDispOpId" name="nowDispOpId" th:value="*{nowDispOpNo}" type="hidden">
+                <input id="appOpNo" name="appOpNo" th:value="*{appOpNo}" class="form-control" type="hidden">
+                <input id="appOrgNo" name="appOrgNo" th:value="*{appOrgNo}" class="form-control" type="hidden">
+                <input id="exaAppResult" name="exaAppResult" th:value="*{exaAppResult}" class="form-control"
+                       type="hidden">
+                <input id="exaAppStatus" name="exaAppStatus" th:value="*{exaAppStatus}" class="form-control"
+                       type="hidden">
+                <input id="exaBack" name="exaBack" th:value="*{exaBack}" class="form-control" type="hidden">
+                <input id="agentName" name="agentName" th:value="*{agentName}" class="form-control" type="hidden">
+                <!--                <div class="form-group">-->
+                <!--                    <a class="btn btn-danger" style="float: right;margin-right: 30px" onclick="returnThis()">-->
+                <!--                        退回-->
+                <!--                    </a>-->
+            </div>
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">申请信息</h4>
+                <div class="form-group form-group-sm">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审批单号：</label>
+                        <div class="col-sm-7">
+                            <input id="exaAppId" readonly='readonly' name="exaAppId" th:value="*{exaAppId}"
+                                   class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请时间：</label>
+                        <div class="col-sm-7">
+                            <input id="appTime" readonly='readonly' name="appTime"
+                                   th:value="${#dates.format(amsProcessInfo.appTime,'yyyy-MM-dd HH:mm:ss')}"
+                                   class="form-control" type="text">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请部门：</label>
+                        <div class="col-sm-7">
+                            <input id="appOrgName" readonly='readonly' name="appOrgName" th:value="*{appOrgName}"
+                                   class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请人：</label>
+                        <div class="col-sm-7">
+                            <input id="appOpName" readonly='readonly' name="appOpName" th:value="*{appOpName}"
+                                   class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审批类型：</label>
+                        <!--                            <div class="col-sm-7">-->
+                        <div class="col-sm-7" th:switch="*{exaAppType}">
+                            <input id="exaAppType" name="exaAppType" th:case="10" value="电子调阅" class="form-control"
+                                   type="text" readonly>
+                            <input id="exaAppType" name="exaAppType" th:case="20" value="实物调阅" class="form-control"
+                                   type="text" readonly>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">借阅缘由：</label>
+                        <div class="col-sm-7">
+                                <textarea rows="5" cols="" class='submitInput form-control'
+                                          type="" dataType='text' readonly='readonly' maxlength='200'
+                                          id="borrowId" name="borrowId" th:text="*{borrowId}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">档案信息</h4>
+                <!-- <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <button type='button' class="btn  btn-primary" id='findZL'
+                            value='新增' title='' onclick="lookBatch()">
+                            <span class='glyphicon glyphicon-pencil'></span>&nbsp;查看著录信息
+                        </button>
+                        <button type='button' class='btn  btn-warning' id='myLook'
+                            value='确认接收' title='' onclick="lookImage()">
+                            <span class='glyphicon glyphicon-pencil'></span>&nbsp;查看影像信息
+                        </button>
+                    </div>
+                </div> -->
+                <div id='resultDiv'>
+                    <table
+                            class='table table-striped table-hover table-condensed table-bordered'
+                            style="table-layout: fixed;width: 100%;"
+                            id='resultTable'>
+                        <thead>
+                        <tr>
+                            <th id='id' style='text-align: left; width: 4%'>序号</th>
+                            <th style='text-align: left;'>档号</th>
+                            <th style='text-align: left;'>档案名称</th>
+                            <th style='text-align: left;'>档案类型</th>
+                            <th style='text-align: left;'>所属部门</th>
+                            <th style='text-align: left;'>归档部门</th>
+                            <!-- <th style='text-align: left; width: 16%;'>操作</th> -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th style='text-align: left; width: 4%'>1</th>
+                            <th style='text-align: left;' th:text="*{arcNo}"></th>
+                            <th style='text-align: left;' th:text="*{arcName}"></th>
+                            <th style='text-align: left;' th:switch="*{exaAppType}">
+                                <div th:case="10" th:text="电子档案"></div>
+                                <div th:case="20" th:text="实物档案"></div>
+                            </th>
+                            <th style='text-align: left;' th:text="*{appOrgName}"></th>
+                            <th style='text-align: left;' th:text="${amsBorrowInfo.filingDepaName}"></th>
+                            <!-- <th style='text-align: left; width: 16%;'>操作</th> -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">审批意见</h4>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">审批意见：</label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name="nowDispOpnion" id="nowDispOpnion">
+                            <option value='同意' selected="selected">同意</option>
+                            <option value='不同意'>不同意</option>
+                        </select>
+                        <!--                            <input id="nowDispOpnion" name="nowDispOpnion" th:value="*{nowDispOpnion}" class="form-control" type="text">-->
+
+                    </div>
+                </div>
+                <div class="form-group" id="leaderDiv">
+                    <label class="col-sm-2 control-label">提交上级：</label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name="NowDispOpNo" id="NowDispOpNo">
+                            <option th:each="user,userStat:${user}" th:value="${user.userId}"
+                                    th:text="${user.userName}">
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    </div>
+    <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">窗口标题</h4>
+                    <small class="font-bold">这里可以显示副标题。
+                </div>
+                <div class="modal-body">
+                    <p><strong>RuoYi</strong>是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术，她提供了诸多的强大的可以重新组合的UI组件，并集成了最新的jQuery版本(v2.1.1)，当然，也集成了很多功能强大，用途广泛的jQuery插件，她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA等等，当然，您也可以对她进行深度定制，以做出更强系统。
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>-->
+        <button type="button" class="btn btn-primary" onclick="submitHandler()">保存</button>
+    </div>
+</form>
+
+<th:block th:include="include :: footer"/>
+<script type="text/javascript">
+    var prefix = ctx + "myTask/waitProcessInfo";
+
+    //最后一个节点
+    $(function () {
+        if ($("#NowDispOpNo option").length == 1) {
+            if ($("#NowDispOpNo option")[0].text === 'end') {
+                $("#leaderDiv").css("display", "none")
+            }
+        }
+    })
+
+    function selectHistory(id, width, height) {
+        // $.modal.open("查询历史审批意见", prefix + "/approvalHistory/"+id);
+        var options = {
+            title: "审批记录",
+            width: width,
+            height: height,
+            url: prefix + "/approvalHistory/" + $("#id").attr('value'),
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 退回按钮
+    function returnThis() {
+        //var thisStatus = ${amsArcReg.recRemark};
+        var status = $("#exaBack").attr('value');
+        var id = $("#id").attr('value');
+        var exaAppStatus = $("#exaAppStatus").val();
+        if (status == '20') {
+            alert("已退回，请勿重复操作！");
+            return;
+        }
+        if (exaAppStatus == '30') {//该流程已审批，不需要再次审批
+            alert("该流程已审批完成,请勿重复操作！");
+            return;
+        }
+        if ($.validate.form()) {
+            $.operate.post(prefix + "/returnProcess/" + id);
+        }
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+        $.modal.reload()
+
+    }
+
+</script>
+<script type="text/javascript">
+    var prefix = ctx + "myTask/waitProcessInfo"
+    $("#form-amsProcessInfo-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    //保存
+    function submitHandler() {
+        var nowDispOpnion = $("#nowDispOpnion").val();//审批意见
+        if (nowDispOpnion == "同意") {//审批通过
+            var exaAppStatus = $("#exaAppStatus").val();
+            if (exaAppStatus == '30') {//该流程已审批，不需要再次审批
+                alert("该流程已审批完成,请勿重复操作！");
+                return;
+            } else {
+                var nowDispOpId = $("#nowDispOpId").val();
+                var sysUserId = $("#sysUserId").val();
+                if (exaAppStatus == '20' && nowDispOpId != sysUserId) {
+                    alert("该流程已审批完成,请勿重复操作！");
+                    return;
+                }
+                if ($.validate.form()) {
+                    save(prefix + "/edit", $('#form-amsProcessInfo-edit').serialize());
+                    setTimeout(function () {
+                        var id = $("#id").val();
+                        location.href = ctx + 'myTask/waitProcessInfo/editByEmail?id=' + id;
+                    }, 2000);
+                }
+            }
+
+
+        } else {//退回
+            returnThis();
+        }
+
+    }
+
+    function save(url, data, callback) {
+        var config = {
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+                $.modal.disable();
+            },
+            success: function (result) {
+                if (typeof callback == "function") {
+                    callback(result);
+                }
+                successCallback(result);
+                var sysUserId = $("#sysUserId").val();
+                var nextUserNo = $("#NowDispOpNo").val();
+                if (sysUserId != nextUserNo) {//当前是不是最后一个节点
+                    $.ajax({
+                        url: prefix + "/sendEmailToNextUser",
+                        data: {"nextUserNo": nextUserNo, "processId": result.data},
+                        type: "post"
+                    });
+                }
+
+            }
+        };
+        $.ajax(config)
+    }
+
+    function successCallback(result) {
+        if (result.code == web_status.SUCCESS) {
+            $.modal.msgSuccess(result.msg);
+        } else if (result.code == web_status.WARNING) {
+            $.modal.alertWarning(result.msg)
+        } else {
+            $.modal.alertError(result.msg);
+        }
+        $.modal.closeLoading();
+        $.modal.enable();
+    }
+</script>
+
+</body>
+
+
+</html>

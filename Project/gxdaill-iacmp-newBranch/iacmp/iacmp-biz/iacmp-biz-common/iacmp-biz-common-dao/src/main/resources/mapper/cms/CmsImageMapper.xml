@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsImageMapper">
+
+    <resultMap type="CmsImage" id="CmsImageResult">
+        <result property="id" column="ID"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+        <result property="randomName" column="RANDOM_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="ecmFileId" column="ECM_FILE_ID"/>
+        <result property="width" column="WIDTH"/>
+        <result property="height" column="HEIGHT"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="compressFileId" column="COMPRESS_FILE_ID"/>
+        <result property="templateId" column="TEMPLATE_ID"/>
+        <result property="imageSize" column="IMAGE_SIZE"/>
+        <result property="imagePath" column="IMAGE_PATH"/>
+        <result property="ocrResult" column="OCR_RESULT"/>
+        <result property="ocrStatus" column="OCR_STATUS"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="deleteTime" column="DELETE_TIME"/>
+        <result property="deleteUser" column="DELETE_USER"/>
+        <result property="pzNum" column="PZ_NUM"/>
+        <result property="imageSource" column="IMAGE_SOURCE"/>
+        <result property="ocrType" column="OCR_TYPE"/>
+        <result property="version" column="VERSION"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="imageSysCode" column="IMAGE_SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="modelId" column="MODEL_ID"/>
+        <result property="trg" column="TRG"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+    </resultMap>
+
+    <resultMap type="net.northking.iacmp.common.bean.dto.cms.CmsImageDTO" id="CmsImageDTOResult">
+        <result property="id" column="ID"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+        <result property="randomName" column="RANDOM_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="ecmFileId" column="ECM_FILE_ID"/>
+        <result property="width" column="WIDTH"/>
+        <result property="height" column="HEIGHT"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="compressFileId" column="COMPRESS_FILE_ID"/>
+        <result property="templateId" column="TEMPLATE_ID"/>
+        <result property="imageSize" column="IMAGE_SIZE"/>
+        <result property="imagePath" column="IMAGE_PATH"/>
+        <result property="ocrResult" column="OCR_RESULT"/>
+        <result property="ocrStatus" column="OCR_STATUS"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="deleteTime" column="DELETE_TIME"/>
+        <result property="deleteUser" column="DELETE_USER"/>
+        <result property="pzNum" column="PZ_NUM"/>
+        <result property="imageSource" column="IMAGE_SOURCE"/>
+        <result property="ocrType" column="OCR_TYPE"/>
+        <result property="version" column="VERSION"/>
+        <result property="metadata" column="METADATA"/>
+        <result property="imageSysCode" column="IMAGE_SYS_CODE"/>
+        <result property="deptName" column="DEPT_NAME"/>
+        <result property="modelId" column="MODEL_ID"/>
+        <result property="trg" column="TRG"/>
+        <result property="md5" column="MD5"/>
+        <result property="hadoopType" column="HADOOP_TYPE"/>
+        <result property="sysZone" column="SYS_ZONE"/>
+        <result property="pid" column="ID1"/>
+        <result property="regbillglideNo" column="REGBILLGLIDENO"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="pOrderNum" column="ORDER_NUM1"/>
+        <result property="pBatchId" column="BATCH_ID1"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="pModelId" column="MODEL_ID1"/>
+        <result property="pMetadata" column="METADATA1"/>
+        <result property="pDeptName" column="DEPT_NAME1"/>
+        <result property="buildDept" column="BUILD_DEPT"/>
+        <result property="budgetId" column="BUDGET_ID"/>
+        <result property="projectManager" column="PROJECT_MANAGER"/>
+        <result property="billCode" column="BILL_CODE"/>
+    </resultMap>
+
+    <sql id="selectCmsImageVo">
+        select ID, IMAGE_ID, IMAGE_NO, IMAGE_NAME, RANDOM_NAME, STATUS, BATCH_ID, CREATE_TIME, UPDATE_TIME , ORDER_NUM,
+        WIDTH, HEIGHT, BILL_ID, TEMPLATE_ID, IMAGE_SIZE, IMAGE_PATH, OCR_RESULT, OCR_STATUS, REMARK, CREATE_USER,
+        DELETE_TIME, DELETE_USER, PZ_NUM, IMAGE_SOURCE, OCR_TYPE, VERSION, METADATA, IMAGE_SYS_CODE, DEPT_NAME, MD5,
+        MODEL_ID,TRG ,HADOOP_TYPE,SYS_ZONE from cms_image
+    </sql>
+
+    <sql id="selectCmsImageVo2">
+        select ci.ID, ci.IMAGE_ID, ci.IMAGE_NO, ci.IMAGE_NAME, ci.RANDOM_NAME, ci.STATUS, ci.BATCH_ID, ci.CREATE_TIME,
+        ci.UPDATE_TIME , ci.ORDER_NUM, ci.WIDTH, ci.HEIGHT, ci.BILL_ID, ci.TEMPLATE_ID, ci.IMAGE_SIZE, ci.IMAGE_PATH,
+        ci.OCR_RESULT, ci.OCR_STATUS, ci.REMARK, ci.CREATE_USER, ci.DELETE_TIME, ci.DELETE_USER, ci.PZ_NUM,
+        ci.IMAGE_SOURCE,
+        ci.OCR_TYPE, ci.VERSION, ci.METADATA, ci.IMAGE_SYS_CODE, ci.DEPT_NAME, ci.MD5, ci.MODEL_ID,ci.TRG,cb.BILL_NAME
+        from cms_image ci left join cms_bill cb on ci.BILL_ID = cb.ID
+    </sql>
+
+    <!--根据MD5查询文件-->
+    <select id="selectCmsImageByMd5" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        WHERE MD5 = #{md5} and status = #{status} ORDER BY ID desc
+    </select>
+
+    <!--根据MD5查询文件-->
+    <select id="selectOneImageByMd5" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        WHERE MD5 = #{md5} group by MD5
+    </select>
+
+    <select id="selectCountCmsImageByMd5" parameterType="String" resultType="java.lang.Integer">
+        select count(1) from cms_image
+        WHERE MD5 = #{md5}
+    </select>
+
+    <select id="selectCmsImageList" parameterType="CmsImage" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        <where>
+            STATUS = 0
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="imageId != null ">and IMAGE_ID = #{imageId}</if>
+            <if test="imageName != null  and imageName != '' ">and IMAGE_NAME = #{imageName}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="orderNum != null ">and ORDER_NUM = #{orderNum}</if>
+            <if test="ecmFileId != null  and ecmFileId != '' ">and ECM_FILE_ID = #{ecmFileId}</if>
+            <if test="width != null  and width != '' ">and WIDTH = #{width}</if>
+            <if test="height != null  and height != '' ">and HEIGHT = #{height}</if>
+            <if test="billId != null  and billId != '' ">and BILL_ID = #{billId}</if>
+            <if test="compressFileId != null  and compressFileId != '' ">and COMPRESS_FILE_ID = #{compressFileId}</if>
+            <if test="templateId != null  and templateId != '' ">and TEMPLATE_ID = #{templateId}</if>
+            <if test="imageSize != null ">and IMAGE_SIZE = #{imageSize}</if>
+            <if test="imagePath != null  and imagePath != '' ">and IMAGE_PATH = #{imagePath}</if>
+            <if test="ocrResult != null  and ocrResult != '' ">and OCR_RESULT = #{ocrResult}</if>
+            <if test="ocrStatus != null  and ocrStatus != '' ">and OCR_STATUS = #{ocrStatus}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null ">and CREATE_USER = #{createUser}</if>
+            <if test="deleteTime != null ">and DELETE_TIME = #{deleteTime}</if>
+            <if test="deleteUser != null ">and DELETE_USER = #{deleteUser}</if>
+            <if test="pzNum != null ">and PZ_NUM = #{pzNum}</if>
+            <if test="imageSource != null  and imageSource != '' ">and IMAGE_SOURCE = #{imageSource}</if>
+            <if test="ocrType != null  and ocrType != '' ">and OCR_TYPE = #{ocrType}</if>
+            <if test="version != null  and version != '' ">and VERSION = #{version}</if>
+            <if test="metadata != null  and metadata != '' ">and METADATA = #{metadata}</if>
+            <if test="modelId != null">and MODEL_ID = #{modelId}</if>
+            <if test="imageSysCode != null and imageSysCode != '' ">and IMAGE_SYS_CODE = #{imageSysCode}</if>
+            <if test="deptName != null and deptName != '' ">and DEPT_NAME = #{deptName}</if>
+        </where>
+        group by IMAGE_NO order by CREATE_TIME
+    </select>
+
+    <!--批量查询cmsImage-->
+    <select id="selectCmsImageByIds" parameterType="java.util.List" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        <where>
+            ID IN
+            <foreach item="item" collection="imageIds" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <!--批量查询cmsImage-->
+    <select id="selectCmsImageByIdArray" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        where ID in
+        <foreach item="item" collection="imageIds" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectCmsImageById" parameterType="Long" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectCmsImageByImageId" parameterType="Long" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        where IMAGE_ID = #{id} and STATUS = '0'
+    </select>
+
+    <select id="selectCmsImageListByOpts" resultMap="CmsImageDTOResult">
+        select f.*,p.*,b.BILL_CODE from cms_image f LEFT JOIN cms_bill b on b.id = f.BILL_ID INNER JOIN pms_batch p on
+        f.BATCH_ID = p.BATCH_ID
+        <where>
+            <if test="id != null ">and f.ID = #{id}</if>
+            <if test="imageId != null ">and f.IMAGE_ID = #{imageId}</if>
+            <if test="imageName != null  and imageName != '' ">and f.IMAGE_NAME like concat('%',#{imageName},'%')</if>
+            <if test="status != null ">and f.STATUS = #{status}</if>
+            <if test="batchId != null ">and f.BATCH_ID = #{batchId}</if>
+            <if test="updateTimeStart != null ">and f.CREATE_TIME >= #{updateTimeStart}</if>
+            <if test="updateTimeEnd != null ">and f.CREATE_TIME &lt;= #{updateTimeEnd}</if>
+            <if test="orderNum != null ">and f.ORDER_NUM = #{orderNum}</if>
+            <if test="imagePath != null  and imagePath != '' ">and f.IMAGE_PATH = #{imagePath}</if>
+            <if test="imageSize != null ">and f.IMAGE_SIZE = #{imageSize}</if>
+            <if test="ocrType != null  and ocrType != '' ">and f.OCR_TYPE = #{ocrType}</if>
+            <if test="billId != null ">and f.BILL_ID = #{billId}</if>
+            <if test="remark != null  and remark != '' ">and f.REMARK like concat('%',#{remark},'%')</if>
+            <if test="createUser != null ">and f.CREATE_USER = #{createUser}</if>
+            <if test="imageSource != null  and imageSource != '' ">and f.IMAGE_SOURCE = #{imageSource}</if>
+            <if test="version != null  and version != '' ">and f.VERSION = #{version}</if>
+            <if test="metadata != null  and metadata != '' ">and f.METADATA = #{metadata}</if>
+            <if test="imageSysCode != null ">and f.IMAGE_SYS_CODE = #{imageSysCode}</if>
+            <if test="deptName != null and deptName != ''">and p.DEPT_NAME = #{pDeptName}</if>
+            <if test="buildDept != null and buildDept != ''">and p.BUILD_DEPT = #{buildDept}</if>
+            <if test="modelId != null ">and p.MODEL_ID = #{pModelId}</if>
+            <if test="budgetId != null ">and p.BUDGET_ID = #{budgetId}</if>
+            <if test="projectManager != null ">and p.PROJECT_MANAGER = #{projectManager}</if>
+            and f.`STATUS` =1
+        </where>
+    </select>
+
+    <select id="selectCmsImageListByBillCode" parameterType="java.lang.String" resultMap="CmsImageDTOResult">
+        select f.*,b.BILL_CODE from cms_image f LEFT JOIN cms_bill b on b.id = f.BILL_ID where b.BILL_CODE = #{billCode}
+        and f.`STATUS` = '1'
+    </select>
+
+    <insert id="insertCmsImage" parameterType="CmsImage" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageId != null  ">IMAGE_ID,</if>
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME,</if>
+            <if test="randomName != null  and randomName != ''  ">RANDOM_NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="batchId != null  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="orderNum != null  ">ORDER_NUM,</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID,</if>
+            <if test="width != null  and width != ''  ">WIDTH,</if>
+            <if test="height != null  and height != ''  ">HEIGHT,</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID,</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID,</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID,</if>
+            <if test="imageSize != null  ">IMAGE_SIZE,</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH,</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">OCR_RESULT,</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">OCR_STATUS,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  ">CREATE_USER,</if>
+            <if test="deleteTime != null  ">DELETE_TIME,</if>
+            <if test="deleteUser != null  ">DELETE_USER,</if>
+            <if test="pzNum != null  ">PZ_NUM,</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE,</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE,</if>
+            <if test="version != null  and version != ''  ">VERSION,</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA,</if>
+            <if test="imageSysCode != null and imageSysCode != '' ">IMAGE_SYS_CODE,</if>
+            <if test="deptName != null and deptName != '' ">DEPT_NAME,</if>
+            <if test="modelId != null">MODEL_ID,</if>
+            <if test="md5 != null  ">MD5,</if>
+            <if test="hadoopType != null  ">HADOOP_TYPE,</if>
+            <if test="sysZone != null  ">SYS_ZONE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="imageId != null  ">#{imageId},</if>
+            <if test="imageName != null  and imageName != ''  ">#{imageName},</if>
+            <if test="randomName != null  and randomName != ''  ">#{randomName},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="batchId != null  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="orderNum != null  ">#{orderNum},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">#{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">#{width},</if>
+            <if test="height != null  and height != ''  ">#{height},</if>
+            <if test="billId != null  and billId != ''  ">#{billId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">#{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">#{templateId},</if>
+            <if test="imageSize != null  ">#{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">#{imagePath},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">#{ocrResult},</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">#{ocrStatus},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  ">#{createUser},</if>
+            <if test="deleteTime != null  ">#{deleteTime},</if>
+            <if test="deleteUser != null  ">#{deleteUser},</if>
+            <if test="pzNum != null  ">#{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">#{imageSource},</if>
+            <if test="ocrType != null  and ocrType != ''  ">#{ocrType},</if>
+            <if test="version != null  and version != ''  ">#{version},</if>
+            <if test="metadata != null  and metadata != ''  ">#{metadata},</if>
+            <if test="imageSysCode != null and imageSysCode != '' ">#{imageSysCode},</if>
+            <if test="deptName != null and deptName != '' ">#{deptName},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="md5 != null  ">#{md5},</if>
+            <if test="hadoopType != null  ">#{hadoopType},</if>
+            <if test="sysZone != null  ">#{sysZone},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsImage" parameterType="CmsImage">
+        update cms_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageId != null  ">IMAGE_ID = #{imageId},</if>
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME = #{imageName},</if>
+            <if test="randomName != null  and randomName != ''  ">RANDOM_NAME = #{randomName},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="batchId != null  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="orderNum != null  ">ORDER_NUM = #{orderNum},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID = #{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">WIDTH = #{width},</if>
+            <if test="height != null  and height != ''  ">HEIGHT = #{height},</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID = #{billId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID = #{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID = #{templateId},</if>
+            <if test="imageSize != null  ">IMAGE_SIZE = #{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH = #{imagePath},</if>
+            <if test="ocrResult != null  and ocrResult != ''  ">OCR_RESULT = #{ocrResult},</if>
+            <if test="ocrStatus != null  and ocrStatus != ''  ">OCR_STATUS = #{ocrStatus},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  ">CREATE_USER = #{createUser},</if>
+            <if test="deleteTime != null  ">DELETE_TIME = #{deleteTime},</if>
+            <if test="deleteUser != null  ">DELETE_USER = #{deleteUser},</if>
+            <if test="pzNum != null  ">PZ_NUM = #{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE = #{imageSource},</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE = #{ocrType},</if>
+            <if test="version != null  and version != ''  ">VERSION = #{version},</if>
+            <if test="metadata != null  and metadata != ''  ">METADATA = #{metadata},</if>
+            <if test="imageSysCode != null and imageSysCode != '' ">IMAGE_SYS_CODE = #{imageSysCode},</if>
+            <if test="deptName != null and deptName != '' ">DEPT_NAME = #{deptName},</if>
+            <if test="md5 != null and md5 != '' ">MD5 = #{md5},</if>
+            <if test="hadoopType != null and hadoopType != '' ">HADOOP_TYPE = #{hadoopType},</if>
+            <if test="sysZone != null and sysZone != '' ">SYS_ZONE = #{sysZone},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--批量新增-->
+    <insert id="insertCmsImages" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_image
+        (IMAGE_ID,IMAGE_NAME,RANDOM_NAME,STATUS,BATCH_ID,CREATE_TIME,UPDATE_TIME,ORDER_NUM,ECM_FILE_ID,
+        WIDTH,HEIGHT,BILL_ID,COMPRESS_FILE_ID,TEMPLATE_ID,IMAGE_SIZE,IMAGE_PATH,OCR_RESULT,OCR_STATUS,
+        REMARK,CREATE_USER,DELETE_TIME,DELETE_USER,PZ_NUM,IMAGE_SOURCE,OCR_TYPE,VERSION,METADATA,
+        IMAGE_SYS_CODE,DEPT_NAME,MODEL_ID,MD5,HADOOP_TYPE,SYS_ZONE)
+        <trim prefix="values " suffix=";" suffixOverrides=",">
+            <foreach item="item" collection="originCmsImages" index="index" separator=",">
+                (#{item.imageId},#{item.imageName},#{item.randomName},#{item.status},
+                #{item.batchId},#{item.createTime},#{item.updateTime},#{item.orderNum},
+                #{item.ecmFileId},#{item.width},#{item.height},#{item.billId},#{item.compressFileId},
+                #{item.templateId},#{item.imageSize},#{item.imagePath},#{item.ocrResult},#{item.ocrStatus},
+                #{item.remark},#{item.createUser},#{item.deleteTime},#{item.deleteUser},#{item.pzNum},
+                #{item.imageSource},#{item.ocrType},#{item.version},#{item.metadata},#{item.imageSysCode},
+                #{item.deptName},#{item.modelId},#{item.md5},#{item.hadoopType},#{item.sysZone})
+            </foreach>
+        </trim>
+    </insert>
+
+    <!--批量更新-->
+    <update id="updateCmsImages" parameterType="java.util.List">
+        update cms_image SET
+        <foreach item="item" collection="originCmsImages" index="index">
+            IMAGE_ID = case id when #{item.id} then #{item.imageId} end,
+            IMAGE_NAME = case id when #{item.id} then #{item.imageName} end,
+            RANDOM_NAME = case id when #{item.id} then #{item.randomName} end,
+            STATUS = case id when #{item.id} then #{item.status} end,
+            BATCH_ID = case id when #{item.id} then #{item.batchId} end,
+            CREATE_TIME = case id when #{item.id} then #{item.createTime} end,
+            UPDATE_TIME = case id when #{item.id} then #{item.updateTime} end,
+            ORDER_NUM = case id when #{item.id} then #{item.orderNum} end,
+            ECM_FILE_ID = case id when #{item.id} then #{item.ecmFileId} end,
+            WIDTH = case id when #{item.id} then #{item.width} end,
+            HEIGHT = case id when #{item.id} then #{item.height} end,
+            BILL_ID = case id when #{item.id} then #{item.billId} end,
+            COMPRESS_FILE_ID = case id when #{item.id} then #{item.compressFileId} end,
+            TEMPLATE_ID = case id when #{item.id} then #{item.templateId} end,
+            IMAGE_SIZE = case id when #{item.id} then #{item.imageSize} end,
+            IMAGE_PATH = case id when #{item.id} then #{item.imagePath} end,
+            OCR_RESULT = case id when #{item.id} then #{item.ocrResult} end,
+            OCR_STATUS = case id when #{item.id} then #{item.ocrStatus} end,
+            REMARK = case id when #{item.id} then #{item.remark} end,
+            CREATE_USER = case id when #{item.id} then #{item.createUser} end,
+            DELETE_TIME = case id when #{item.id} then #{item.deleteTime} end,
+            DELETE_USER = case id when #{item.id} then #{item.deleteUser} end,
+            PZ_NUM = case id when #{item.id} then #{item.pzNum} end,
+            IMAGE_SOURCE = case id when #{item.id} then #{item.imageSource} end,
+            OCR_TYPE = case id when #{item.id} then #{item.ocrType} end,
+            VERSION = case id when #{item.id} then #{item.version} end,
+            METADATA = case id when #{item.id} then #{item.metadata} end,
+            IMAGE_SYS_CODE = case id when #{item.id} then #{item.imageSysCode} end,
+            DEPT_NAME = case id when #{item.id} then #{item.deptName} end,
+            MD5 = case id when #{item.id} then #{item.md5} end,
+            HADOOP_TYPE = case id when #{item.id} then #{item.hadoopType} end,
+            SYS_ZONE = case id when #{item.id} then #{item.sysZone} end
+        </foreach>
+        <where>
+            ID IN
+            <foreach item="item" collection="originCmsImages" index="index" open="(" separator="," close=")">
+                #{item.id}
+            </foreach>
+        </where>
+    </update>
+
+    <!--逻辑单删除-->
+    <delete id="deleteCmsImageById" parameterType="Long">
+        update cms_image set STATUS = 1 where ID = #{id}
+    </delete>
+
+    <!--逻辑多删除-->
+    <delete id="deleteCmsImageByIds" parameterType="String">
+        update cms_image set STATUS = '1' where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectImageByBatchId" parameterType="java.util.Map" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        <where>
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+        </where>
+    </select>
+
+    <!--通过影像名称查询所有版本的影像-->
+    <select id="selectImageHistory" parameterType="java.util.Map" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo2"/>
+        <where>
+            ci.STATUS = '0'
+            <if test="batchId != null ">and ci.BATCH_ID = #{batchId}</if>
+            <if test="billId != null">and (ci.BILL_ID = #{billId} or ci.BILL_ID in (select ID from cms_bill where
+                PARENT_ID = #{billId}))
+            </if>
+            <if test="names != null ">and IMAGE_NAME in
+                <foreach item="name" collection="names" open="(" separator="," close=")">
+                    #{name}
+                </foreach>
+            </if>
+        </where>
+        order by IMAGE_NAME, CREATE_TIME desc
+    </select>
+
+    <!--通过条件查询影像-->
+    <select id="selectImageByCondition" parameterType="java.util.Map" resultMap="CmsImageResult">
+        select ci.ID, ci.IMAGE_ID, ci.IMAGE_NO, ci.IMAGE_NAME, ci.RANDOM_NAME, ci.STATUS, ci.BATCH_ID, ci.CREATE_TIME,
+        ci.UPDATE_TIME , ci.ORDER_NUM, ci.WIDTH, ci.HEIGHT, ci.BILL_ID, ci.TEMPLATE_ID, ci.IMAGE_SIZE, ci.IMAGE_PATH,
+        ci.OCR_RESULT, ci.OCR_STATUS, ci.REMARK, ci.CREATE_USER, ci.DELETE_TIME, ci.DELETE_USER, ci.PZ_NUM,
+        ci.IMAGE_SOURCE,
+        ci.OCR_TYPE, ci.VERSION, ci.METADATA, ci.IMAGE_SYS_CODE, ci.DEPT_NAME, ci.MD5,
+        ci.MODEL_ID,ci.TRG,cb.BILL_NAME,ci.HADOOP_TYPE
+        from (select * from cms_image order by CREATE_TIME desc) ci left join cms_bill cb on ci.BILL_ID = cb.ID
+        <where>
+            ci.STATUS = '0'
+            <if test="batchId != null ">and ci.BATCH_ID = #{batchId}</if>
+            <if test="billId != null">and (ci.BILL_ID = #{billId} or ci.BILL_ID in (select ID from cms_bill where
+                PARENT_ID = #{billId}))
+            </if>
+        </where>
+        group by IMAGE_NAME order by IMAGE_NAME, CREATE_TIME desc
+    </select>
+
+    <!--通过条件查询影像-->
+    <select id="selectImageListByCondition" parameterType="java.util.Map" resultMap="CmsImageResult">
+        <include refid="selectCmsImageVo"/>
+        <where>
+            STATUS = '0'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null">and BILL_ID = #{billId}</if>
+        </where>
+        order by CREATE_TIME desc
+    </select>
+
+    <!--通过条件查询影像数量-->
+    <select id="selectImageNumByCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(distinct IMAGE_NAME) from cms_image
+        <where>
+            STATUS = '0'
+            <if test="batchId != null ">and BATCH_ID = #{batchId}</if>
+            <if test="billId != null">and BILL_ID = #{billId}</if>
+        </where>
+    </select>
+
+    <!--通过影像编号逻辑删除-->
+    <delete id="deleteCmsImageByMD5s" parameterType="String">
+        update cms_image set STATUS = '1' where MD5 in
+        <foreach item="MD5" collection="array" open="(" separator="," close=")">
+            #{MD5}
+        </foreach>
+    </delete>
+
+    <!--条件逻辑删除-->
+    <delete id="deleteCmsImageByCondition" parameterType="java.util.HashMap">
+        update cms_image set STATUS = '1' where
+        BATCH_ID = #{batchId} and (BILL_ID = #{billId} or BILL_ID in (select ID from cms_bill where PARENT_ID =
+        #{billId}))
+        <if test="imageNames != null ">
+            and IMAGE_NAME in
+            <foreach item="imageName" collection="imageNames" open="(" separator="," close=")">
+                #{imageName}
+            </foreach>
+        </if>
+    </delete>
+
+    <!--更新目标影像的分类id-->
+    <update id="updateCmsImageBill" parameterType="java.util.HashMap">
+        update cms_image set
+        <if test="trg != null and trg != '' ">TRG = #{trg},</if>
+        BILL_ID = #{targetBillId} where
+        BATCH_ID = #{batchId}
+        and BILL_ID in
+        <foreach item="billId" collection="billIds" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+        and IMAGE_NAME in
+        <foreach item="imageName" collection="imageNames" open="(" separator="," close=")">
+            #{imageName}
+        </foreach>
+    </update>
+
+</mapper>

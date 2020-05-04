@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('修改影像批次')"/>
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+
+</head>
+<style>
+    .thisRemove {
+        cursor: pointer;
+    }
+
+    .file-input {
+        display: inline;
+    }
+
+    .hidden-xs {
+        font-size: 12px;
+    }
+
+    .btn-file {
+        margin: 0px 0px 5px;
+        padding: 3px 10px 5px 10px;
+    }
+
+    .glyphicon-folder-open {
+        font-size: x-small;
+    }
+
+    .mid-left {
+        /*width: 130px;*/
+        text-align: left;
+    }
+
+    .thisOnFileNum {
+        position: absolute;
+        background-color: yellowgreen;
+        padding: 3px 10px 3px 10px;
+        z-index: 888;
+        top: -5px;
+        left: 0px;
+        border-radius: 10px;
+    }
+</style>
+<body class="white-bg">
+<div class="ui-layout-center">
+    <div class="container-div">
+        <div class="row">
+            <div style="width: 100%; position: relative;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" style="height: calc(100vh - 30px);overflow: auto">
+                        <form class="form-horizontal m-t" method="post" id="form-amsRecord-amsRecord">
+                            <!--隐藏域，为了取以前的title-->
+                            <input type="text" id="filesName" hidden>
+                            <!--隐藏域，为了接收目录选择-->
+                            <input type="text" id="catalogId" hidden>
+                            <div style="border-bottom: 1px solid gray;margin-bottom: 5px;height: 25px;position: relative;">
+                                <span id="thisTitle"
+                                      style="margin-left: 10px;margin-top: -10px;font-weight:600;font-size:16px">文件详细</span>
+                                <div id="thisOnFileNum" class="thisOnFileNum" style="display: none">1</div>
+                                <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                                </div>
+                            </div>
+
+                            <div class="bs-bars pull-right">
+                                <div class="btn-group-sm" id="toolbar" role="group">
+                                    <!--上传按钮-->
+                                    <input id="fileInput" type="file" multiple shiro:hasPermission="file:upload">
+                                    <a class="btn btn-success" onclick="fileHistory()"
+                                       shiro:hasPermission="file:history">
+                                        <i class="fa fa-history" id="iconHistory"></i> <span id="swiHistory">历史</span>
+                                    </a>
+                                    <a id="download" class="btn btn-warning" onclick="downFiles()"
+                                       shiro:hasPermission="file:downloadFile">
+                                        <i class="fa fa-download"></i> 下载
+                                    </a>
+                                    <a id="remove" class="btn btn-danger" onclick="fileRemve()"
+                                       shiro:hasPermission="file:delete">
+                                        <i class="fa fa-remove"></i> 删除
+                                    </a>
+                                    <a id="key" class="btn btn-info" onclick="selectDeptTree();"
+                                       shiro:hasPermission="file:updateBill">
+                                        <i class="fa fa-key"></i> 更改分类
+                                    </a>
+                                    <!--<a id="onFileNum" class="btn btn-default"-->
+                                    <!--style="background-color: rgb(28,132,198);border-color: rgb(28,132,198);color: #FFFFFF;"-->
+                                    <!--onclick="updateOnFileNum();"-->
+                                    <!--shiro:hasPermission="file:updateOnFileNum">-->
+                                    <!--<i class="fa fa-default"></i> 修改归档数-->
+                                    <!--</a>-->
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div>
+                                <div id="normalBox">
+                                    <ul id="rightBox">
+                                        <!--<li class="filesShow" style="border-bottom: 0.5px solid #CDCDC1;margin-bottom: 5px">-->
+                                        <!--<i class="fa fa-picture-o"></i>&nbsp;-->
+                                        <!--<span>财审委审批</span>-->
+                                        <!--<span style="float: right;">2019-01-01</span>-->
+                                        <!--</li>-->
+                                    </ul>
+                                </div>
+                                <div id="historyBox">
+                                    <ul id="rightBoxHistory">
+                                        <!--<li class="filesShow"-->
+                                        <!--style="border-bottom: 0.5px solid #CDCDC1;margin-bottom: 5px">-->
+                                        <!--<i class="fa fa-remove thisRemove"></i>&nbsp;<i class="fa fa-picture-o"></i>-->
+                                        <!--<span>(未结项)财审委审批</span>-->
+                                        <!--<span style="float: right;">2019-01-01 15:13:20</span>-->
+                                        <!--</li>-->
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--定义弹出层，为了图片和音视频的预览-->
+<div class="ibox-content">
+    <button id="videoButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4"
+            style="display: none">基本动画
+    </button>
+    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn">
+                <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>-->
+                <!--</button>-->
+                <!--</div>-->
+
+                <!--D:\work1122\iacmp-parent\iacmp-biz\iacmp-biz-ams\src\main\resources\static\img\dsfghgdhfdjggkhj.tif-->
+                <div id="showContent" class="modal-bod">
+                    <video controls id="media" autoplay style="width: 90%;height: 90%;object-fit: fill;display: none">
+                        <source id="v1" src="">
+                    </video>
+                    <img id="photos" style="height: 90%;width: 90%;display: none" src="" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="closeVideo()">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<!-- 文件上传 -->
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<input id="pmsBatchId" name="pmsBatchId" th:value="${pmsBatchId}" type="hidden">
+<input id="batchId" name="batchId" th:value="${batchId}" type="hidden">
+<input id="modelId" name="modelId" th:value="${modelId}" type="hidden">
+<input id="billName" name="billName" th:value="${billName}" type="hidden">
+<input id="nodeId" name="nodeId" th:value="${nodeId}" type="hidden">
+<input id="sysCode" name="sysCode" th:value="${sysCode}" type="hidden">
+<!--<input id="cmsFileImageVOList" name="cmsFileImageVOList" th:value="${cmsFileImageVOList}" type="hidden">-->
+<script th:inline="javascript">
+    // 允许最大上传文件
+    var maxUploadSize = [[${maxUploadSize}]];
+    // 定义全局变量归档数量
+    var oldFileNum = [[${onFileNum}]];
+    var nemFileNum = [[${onFileNum}]];
+
+    // 全局变量，文件数量，为了父页面响应式
+    var firstNum = 0;
+    var detChaNum = 0
+
+    // 服务器地址
+    var serverAddress = [[${serverAddress}]];
+    $(function () {
+        $(".showContent").height($(window).height() - 300);
+        $(".showContent").width(800)
+    })
+    // 获取父页面的，项目当前完成状态
+    var thisCompletionStatus = parent.$('#completionStatus').val()
+
+    // 定义全局变量
+    var filesName = "";
+    $(function () {
+        // 展示绿色的归档数
+        if ([[${onFileNum}]]) {
+            $("#thisOnFileNum").show()
+        }
+        $("#thisOnFileNum").text([[${onFileNum}]]);
+
+        var billNames = $("#billName").val()
+
+        $("#thisTitle").text(billNames)
+        var arr = [[${cmsFileImageVOList}]];
+        // 调用拼接文件方法
+        splicingFile(arr)
+        // 刚进入页面，获取此时的title
+        filesName = $("#thisTitle").text();
+        // 设置气泡定位距离
+        var titleWidth = $("#thisTitle").width() + 15 + "px";
+        $("#thisOnFileNum").css("left", titleWidth);
+
+        // 刚进入页面，获取此时li标签数量
+        firstNum = $("#normalBox li").length;
+        // 设置改变后的数量初始值为刚进入页面的量
+        detChaNum = firstNum;
+    });
+
+    $(function () {
+        var panehHidden = false;
+        if ($(this).width() < 769) {
+            panehHidden = true;
+        }
+        $('body').layout({initClosed: panehHidden, west__size: 300});
+
+        var article = [[${cmsFileImageVOList}]];
+    });
+
+    // 文件双击预览事件
+    $("#rightBox").on("dblclick", "li", function () {
+        var fileType = $(($(this)[0])).find("input").val().split(".")[$(($(this)[0])).find("input").val().split(".").length - 1];
+        var fileImageId = $($(this)[0]).find("input").attr("id");
+        var fileUrl = $($(this)[0]).find("input").attr("url");
+        // console.log(fileUrl)
+        showFiles(fileType, fileImageId, fileUrl)
+    })
+    // 历史文件双击预览
+    $("#rightBoxHistory").on("dblclick", "li", function () {
+        var fileType = $(($(this)[0])).find("span:eq(0)").text().split(".")[$(($(this)[0])).find("span:eq(0)").text().split(".").length - 1];
+        var fileImageId = $($(this)[0]).find("span:eq(0)").attr("id");
+        var fileUrl = $($(this)[0]).find("span:eq(0)").attr("url");
+        // console.log(fileUrl)
+        showFiles(fileType, fileImageId, fileUrl)
+    })
+
+    $("#historyBox").hide();
+
+    // 查看文件历史版本
+    var switchFlag = true;
+    var prefix = ctx + "pms/pmsBatch";
+
+    // 在线预览
+    function showFiles(fileType, fileImageId, fileUrl) {
+
+        // 文件类型转小写
+        fileType = fileType.toLowerCase();
+        if (fileType == "doc" || fileType == "docx" || fileType == "xls" || fileType == "xlsx"
+            || fileType == "ppt" || fileType == "pptx" || fileType == "txt" || fileType == "pdf") {
+            if (fileType == "pdf") {
+                window.open(serverAddress + "/pdf/pms/fileView/openPdfView?id=" + fileImageId)
+            } else if (fileType == "txt") {
+                window.open(serverAddress + "/pdf/pms/fileView/openTextView?id=" + fileImageId);
+            } else if (fileType == "doc" || fileType == "docx") {
+                window.open(serverAddress + "/pdf/pms/fileView/openWordView?id=" + fileImageId)
+            } else if (fileType == "xlsx" || fileType == "xls") {
+                window.open(serverAddress + "/pdf/pms/fileView/openExcelView?id=" + fileImageId);
+            }
+            return;
+        }
+
+        if (fileType == "rar" || fileType == "zip" || fileType == "tif") {
+            $.modal.alertWarning("不支持在线预览，请下载后查看");
+            return;
+        }
+
+        if (fileType == "jpg" || fileType == "png" || fileType == "bmp" || fileType == "gif") {
+            // $.modal.openTab("音视频播放", prefix + "/toVideo/?fileId=" + fileId)
+            $("#photos").show()
+            $("#media").hide()
+            $("#photos").attr("src", fileUrl)
+            $("#videoButton").click();
+            return;
+        }
+
+        if (fileType == "mp3" || fileType == "mp4" || fileType == "avi" || fileType == "mpeg" || fileType == "rmvb") {
+            // $.modal.openTab("音视频播放", prefix + "/toVideo/?fileId=" + fileId)
+            $("#photos").hide()
+            $("#media").show()
+            $("#v1").attr("src", fileUrl)
+            $("#videoButton").click();
+            $("#media").load()
+            return;
+        } else {
+            $.modal.alertWarning("不支持在线预览，请下载后查看");
+            return;
+        }
+    }
+
+    // 拼接展示的文件列表
+    function splicingFile(arr) {
+        arr.forEach(function (e) {
+            var billName = e.billName;
+            if (billName == null) {
+                billName = "未分类"
+            }
+            var arr = e.filePath.split("/");
+            var formatFirst = e.voName;
+            var formatSecond = e.type;
+            var createTime = e.createTime.substring(0, 10) + '&nbsp;' + e.createTime.substring(11, 19);
+            // 文件类型转小写
+            formatSecond = formatSecond.toLowerCase();
+            if (formatSecond == "doc" || formatSecond == "docx") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "'  name='fileImageBox'  type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-word-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>")
+            } else if (formatSecond == "xls" || formatSecond == "xlsx") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-excel-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>");
+            } else if (formatSecond == "ppt" || formatSecond == "pptx" || formatSecond == "pdf") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-powerpoint-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>")
+            } else if (formatSecond == "txt") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-text-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                );
+            } else if (formatSecond == "jpg" || formatSecond == "png" || formatSecond == "tif" || formatSecond == "gif" || formatSecond == "bmp") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-photo-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (formatSecond == "rar" || formatSecond == "zip") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-zip-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (formatSecond == "mp3") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-sound-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (formatSecond == "mp4" || formatSecond == "avi" || formatSecond == "mpeg" || formatSecond == "rmvb") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.voName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-video-o\"></i>&nbsp;<span>&nbsp;" + formatFirst + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            }
+
+        });
+    }
+
+    // 查看文件历史
+    function fileHistory() {
+        // 获得选中的文件或影像
+        var fileImageNames = [];
+        // 文件id，用于后台接收到查询出文件或影像实体类取batchId
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageNames.push($(this).val());
+        });
+
+        // 为选择文件查看历史
+        if (fileImageNames.length < 1) {
+            $.modal.alertWarning("请选择需要查看的文件");
+            return;
+        }
+        // 文件列表div和历史版本div切换
+        if (switchFlag) {
+            $("#historyBox").show();
+            var historyName = "";
+            for (var i = 0; i < fileImageNames.length; i++) {
+                historyName = historyName + fileImageNames[i].split(".")[0] + ";";
+            }
+            historyName = historyName.substring(0, historyName.length - 1)
+            $("#thisTitle").text(historyName + "文件历史记录")
+            $("#normalBox").hide();
+            // 隐藏除历史外的其他按钮
+            $("#swiHistory").text("返回")
+            $("#iconHistory").removeClass("fa fa-edit")
+            $("#iconHistory").addClass("glyphicon glyphicon-chevron-left")
+            $(".file-input").hide()
+            $(".btn-warning").hide()
+            $(".btn-danger").hide()
+            $(".btn-info").hide()
+            $("#onFileNum").hide();
+            $("#thisOnFileNum").hide()
+
+        } else {
+            var uploadBIllIds = [[${uploadBIllIds}]];
+            var billId = [[${billId}]];
+            $("#swiHistory").text("历史")
+            $("#iconHistory").removeClass("glyphicon glyphicon-chevron-left")
+            $("#iconHistory").addClass("fa fa-edit")
+            $("#normalBox").show();
+            $("#thisTitle").text(filesName)
+            $("#historyBox").hide();
+
+            if (uploadBIllIds.indexOf(billId) == -1) {
+                // 展示下载按钮
+                $(".btn-warning").show()
+            } else {
+                // 展示所有按钮
+                $(".file-input").show()
+                $(".btn-warning").show()
+                $(".btn-danger").show()
+                $(".btn-info").show()
+                $("#onFileNum").show()
+                $("#thisOnFileNum").show()
+            }
+
+        }
+        switchFlag = !switchFlag;
+
+        var nodeId = $("#nodeId").val();
+
+        $.ajax({
+            type: "post",
+            url: ctx + "pms/pmsBatch/historyVersion",
+            data: {
+                pmsBatchId: $("#pmsBatchId").val(),
+                billId: nodeId.split("_")[2],
+                fileImageNames: fileImageNames.join(","),
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (result) {
+                var voList = result.fileImageList;
+                if (voList != null && voList != undefined && voList.length > 0) {
+                    $("#rightBoxHistory").empty();
+                    voList.forEach(function (e) {
+                        var billName = e.billName;
+                        if (billName == null) {
+                            billName = "未分类"
+                        }
+                        var arr = e.filePath.split("/");
+                        var formatFirst = e.voName;
+                        var formatSecond = arr[arr.length - 1].split(".")[1];
+                        var createTime = e.createTime.substring(0, 10) + '&nbsp;' + e.createTime.substring(11, 19);
+
+                        if (formatSecond) {
+                            // 文件类型转小写
+                            formatSecond = formatSecond.toLowerCase();
+                        }
+                        if (formatSecond == "doc" || formatSecond == "docx") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-word-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "xls" || formatSecond == "xlsx") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-excel-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "ppt" || formatSecond == "pptx" || formatSecond == "pdf") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-powerpoint-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "txt") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-text-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "jpg" || formatSecond == "png" || formatSecond == "tif" || formatSecond == "gif" || formatSecond == "bmp") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-photo-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "rar" || formatSecond == "zip") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-zip-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "mp3") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-sound-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else if (formatSecond == "mp4" || formatSecond == "avi" || formatSecond == "mpeg" || formatSecond == "rmvb") {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-video-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        } else {
+                            $("#rightBoxHistory").append(
+                                "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                                "<i class=\"fa fa-file-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + formatFirst + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                            );
+                        }
+                    });
+                }
+            },
+            error: function (request) {
+                $.modal.alertError("保存失败，请稍后重试");
+            }
+        });
+    }
+
+    // 下载
+    function downFiles() {
+        // debugger;
+        // 获得选中的文件或影像
+        var fileImageNos = [];
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageNos.push($(this).attr("id"));
+        });
+        // 为选择文件查看历史
+        if (fileImageNos.length < 1) {
+            $.modal.alertWarning("请选择需要下载的文件");
+            return;
+        }
+        $.modal.confirm("确定下载该文件吗?", function () {
+            if (fileImageNos.length > 1) {
+                window.location.href = ctx + "file/downloadFiles?fileIds=" + fileImageNos.join(",");
+            } else {
+                // 下载单个文件
+                window.location.href = ctx + "file/downloadFile?fileId=" + fileImageNos[0];
+            }
+
+        })
+
+    }
+
+    // 逻辑删除文件
+    function fileRemve() {
+        // 获得选中的文件或影像
+        var fileImageIds = [];
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageIds.push($(this).attr("id"));
+        });
+        // 为选择文件查看历史
+        if (fileImageIds.length < 1) {
+            $.modal.alertWarning("请选择要删除的文件!");
+            return;
+        }
+        //选中多个文件批量下载
+
+        $.modal.confirm("确定删除文件吗?", function () {
+            $.ajax({
+                type: "post",
+                url: ctx + "file/pms/pmsBatch/fileRemove",
+                data: {
+                    fileImageIds: fileImageIds.join(","),
+                    nodeId: $("#nodeId").val()
+                },
+                success: function (result) {
+                    if (result.code != null && result.code == 0) {
+                        $.modal.alertSuccess("删除成功!");
+                        // 刷新文件列表
+                        for (var i = 0; i < fileImageIds.length; i++) {
+                            $("#" + fileImageIds[i]).parent().remove()
+                        }
+                        // 删除，获取此时li标签数量
+                        detChaNum = $("#normalBox li").length;
+                    }
+                },
+                error: function (error) {
+                    $.modal.alertWarning("删除失败!");
+                }
+            });
+        });
+    }
+
+    // 上传按钮
+    function batchUpload() {
+        $("#fileInput").click();
+    }
+
+    // 文件上传
+    $(document).ready(function () {
+        $(function () {
+            debugger;
+            $(".hidden-xs").text("上传");
+
+            // 系统管理员
+            var currentRole = [[${currentRole}]];
+            if (currentRole != undefined && currentRole == "admin") {
+                $(".hidden-xs").parent().show();
+                $(".glyphicon-ban-circle").parent().hide();
+                $("#remove").show();
+                $("#key").show();
+                $("#download").show();
+                $("#onFileNum").show();
+            } else {
+                $("#onFileNum").hide();
+                $("#key").hide();
+                $("#remove").hide();
+            }
+
+            // 当前分类
+            var billId = [[${billId}]];
+            // 安历史展示的分类
+            var hisBillIds = [[${hisBillIds}]];
+            // 开启了上传了分类
+            var uploadBIllIds = [[${uploadBIllIds}]];
+            // 当前用户拥有的项目经理角色
+            var projectManagerRole = [[${projectManagerRole}]];
+            // 项目的项目经理
+            var projectManager = [[${projectManager}]];
+            // 当前用户拥有的项目产品角色
+            var productManagerRole = [[${productManagerRole}]];
+            // 项目的产品经理
+            var productManager = [[${productManager}]];
+            // 分类所拥有的按钮
+            var cmsBill = [[${cmsBill}]];
+            var menus = cmsBill.menus;
+            // 判断上传按钮是否隐藏
+            if (uploadBIllIds.indexOf(billId) != -1) {
+                if (menus != undefined && menus.length > 0) {
+                    for (var i = 0; i < menus.length; i++) {
+                        if (menus[i].perms.indexOf("file:upload") > -1) {
+                            break;
+                        }
+                        if (i == menus.length - 1) {
+                            $(".hidden-xs").parent().hide();
+                        }
+                    }
+                } else {
+                    $(".hidden-xs").parent().hide();
+                }
+            } else {
+                $(".hidden-xs").parent().hide();
+            }
+
+            // 目录选择 删除
+            if (menus != undefined && menus.length > 0) {
+                for (var i = 0; i < menus.length; i++) {
+                    if (menus[i].perms.indexOf("file:updateBill") > -1) {
+                        $("#key").show();
+                    }
+                    if (menus[i].perms.indexOf("file:delete") > -1) {
+                        $("#remove").show();
+                    }
+                }
+            }
+
+            debugger
+            // 判断修改归档数
+            if (hisBillIds.indexOf(billId) != -1) {
+                if (currentRole != undefined && currentRole == "admin") {
+                    $("#onFileNum").show();
+                } else if (projectManager != undefined && projectManager != '' && projectManager != null && projectManager == projectManagerRole) {
+                    if (thisCompletionStatus != 2) {
+                        // 已结项
+                        $("#onFileNum").show();
+                    } else {
+                        $("#onFileNum").hide();
+                    }
+                } else if (productManager != undefined && productManager != '' && productManager != null && productManager == productManagerRole) {
+                    if (thisCompletionStatus != 2) {
+                        // 已结项
+                        $("#onFileNum").show();
+                    } else {
+                        $("#onFileNum").hide();
+                    }
+                } else {
+                    var roleProjects = [[${roleProjects}]];
+                    var batchId = [[${batchId}]];
+                    if (thisCompletionStatus != 2) {
+                        if (roleProjects != undefined && batchId != undefined && roleProjects.indexOf(batchId) != -1) {
+                            $("#onFileNum").show();
+                        } else {
+                            $("#onFileNum").hide();
+                        }
+                    } else {
+                        $("#onFileNum").hide();
+                    }
+                }
+            } else {
+                $("#onFileNum").hide();
+            }
+
+            // 根据项目状态，判断是否隐藏上传按钮
+            // if (thisCompletionStatus == 2) {
+            //     //已结项
+            //     $(".hidden-xs").parent().hide();
+            //     $("#remove").hide();
+            //     $("#key").hide();
+            // }
+
+            if (thisCompletionStatus == 1) {
+                // 已废弃，系统管理员也不展示
+                $(".hidden-xs").parent().hide();
+                $("#remove").hide();
+                $("#key").hide();
+                $("#download").hide();
+                $("#onFileNum").hide();
+            }
+        })
+        var prefix = ctx + "file/";
+
+        $("#fileInput").fileinput({
+            showUpload: false, //是否显示上传按钮
+            showClose: false,//是否显示关闭按钮
+            showRemove: false, //显示移除按钮
+            showPreview: false, //是否显示预览
+            showCaption: false,//是否显示标题
+            // showBrowse:false,//是否显示浏览按钮
+            dropZoneEnabled: false,//是否显示拖拽区域
+
+            // 上传文件路径
+            uploadUrl: prefix + "/upload",
+            //是否为异步上传
+            uploadAsync: true,
+            upload: function () {
+                var formData = new FormData();
+                for (var i = 0, len = $('#fileInput')[0].files.length; i < len; i++) {
+                    if ($('#fileInput')[0].files[i].size > maxUploadSize * 1024) {
+                        $.modal.alertError($('#fileInput')[0].files[i].name + "大于" + maxUploadSize / 1024 + "M无法上传");
+                        $.modal.closeLoading();
+                        formData = null;
+                        return;
+                    } else {
+                        formData.append('files', $('#fileInput')[0].files[i]);
+                    }
+                }
+                formData.append("nodeId", $("#nodeId").val());
+                $.modal.loading("上传中，请稍后...");
+                $.ajax({
+                    url: prefix + "/pms/pmsBatch/getUploadParams",
+                    type: 'post',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.jsonParam != null && result.jsonParam != undefined) {
+                            formData.append("json", JSON.stringify(result.jsonParam));
+                            $.ajax({
+                                url: prefix + "/upload",
+                                type: 'post',
+                                cache: false,
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.totalResultCode == 0) {
+                                        // 如果文件上传成功，则再查询当前分类下的文件列表并刷新
+                                        $.ajax({
+                                            url: ctx + "pms/pmsBatch/refreshFiles",
+                                            type: "post",
+                                            cache: false,
+                                            data: {
+                                                nodeId: $("#nodeId").val()
+                                            },
+                                            dataType: "json",
+                                            success: function (result) {
+                                                // 刷新文件列表
+                                                if (result.newFileList != null && result.newFileList != undefined) {
+                                                    $.modal.msgSuccess("上传成功！");
+                                                }
+
+                                                // 清空原数据，追加ajax返回的数据
+                                                $('#rightBox').html("")
+                                                var arr = result.newFileList;
+                                                // 调用拼接文件方法
+                                                splicingFile(arr)
+                                                $.modal.closeLoading();
+                                                // 上传成功，获取li标签数量
+                                                detChaNum = $("#normalBox li").length;
+                                            },
+                                            error: function (result) {
+                                                $.modal.msgError("上传失败");
+                                                $.modal.closeLoading()
+                                                $.operate.successCallback(result);
+                                            }
+
+                                        });
+                                    } else {
+                                        $.modal.alertError("上传失败，文件格式不对或大小超限，请刷新重试");
+                                        $.modal.closeLoading()
+                                        return;
+                                    }
+
+                                },
+                                error: function (result) {
+                                    $.modal.closeLoading()
+                                    $.operate.successCallback(result);
+                                }
+                            });
+                        }
+                    },
+                    error: function (result) {
+                        $.modal.closeLoading()
+                        $.operate.successCallback(result)
+                    }
+                });
+            },
+        });
+        // 选择文件的回调函数
+        $("#fileInput").on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        })
+        $("#fileInput").on("fileuploaded", function (event, data) {
+            if (data.response) {
+                alert('处理成功');
+            }
+        })
+    });
+
+    // 目录选择
+    function selectDeptTree() {
+        // 获得选中的文件或影像
+        var fileImageNames = [];
+        var billIds = [];
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageNames.push($(this).val());
+            billIds.push($(this).attr("billId"));
+        });
+        var billId = $("#nodeId").val().split("_")[2];
+        // 为选择文件选择目录
+        if (fileImageNames.length < 1) {
+            $.modal.alertWarning("请选择要分类的文件");
+            return;
+        }
+
+        var url = prefix + "/billSelect?pmsBatchId=" + $("#pmsBatchId").val() + "&billId=" + billId + "&fileImageNames=" + encodeURI(fileImageNames.join(",")) + "&billIds=" + billIds.join(",");
+        var options = {
+            title: '选择分类',
+            width: "420",
+            url: url,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#catalogId').val(body.find('#treeId').val());
+                // layer.close(index);
+                doSubmit()
+            },
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 修改归档数
+    function updateOnFileNum() {
+        // var onFileNum = prompt("请输入归档数");
+        var onFileNum = "";
+        layer.prompt({title: '请输入归档数'}, function (text, index) {
+            onFileNum = text;
+            // 取消
+            if (onFileNum == undefined) {
+                return;
+            }
+            // 验证非0开头
+            var reg = /^\+?[1-9][0-9]*$/;
+            if (reg.test(onFileNum)) {
+                if (onFileNum > 9999) {
+                    $.modal.alertError("不能大于9999");
+                    return;
+                }
+                var pmsBatchId = [[${pmsBatchId}]];
+                var billId = [[${billId}]];
+                $.ajax({
+                    type: "post",
+                    url: ctx + "file/pms/pmsBatch/updateMonitorNum",
+                    data: {
+                        pmsBatchId: pmsBatchId,
+                        billId: billId,
+                        onFileNum: onFileNum
+                    },
+                    success: function (reuslt) {
+                        // filesName = $("#billName").val() + "(" + reuslt.data + ")";
+                        // $("#thisTitle").text(filesName);
+                        $("#thisOnFileNum").text(reuslt.data);
+                        // 给全局变量新归档数赋值
+                        nemFileNum = parseInt(reuslt.data);
+                    }
+
+                });
+            } else {
+                $.modal.alertError("输入有误，请输入正整数");
+            }
+            layer.close(index);
+        });
+    }
+
+    function doSubmit(index, layero) {
+        // alert(body.find('#treeId').val())
+        // alert(body.find('#treeName').val())
+        // 获得选中的文件或影像
+        var fileImageNames = [];
+        var billIds = [];
+        // 文件id，用于后台查询出实体类取batchId
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageNames.push($(this).val());
+            billIds.push($(this).attr("billId"));
+        });
+        // 按日期成对分类
+        var pairBillIds = [[${pairBillIds}]];
+        // 目标分类
+        var targetBillId = $("#catalogId").val().split("_")[4];
+        var trg = "";
+        var dateReg = /(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
+        if (pairBillIds.indexOf(targetBillId) > -1) {
+            layer.prompt({
+                title: '此分类为按日期成对展示，请输入日期',
+                value: "\" type=\"text\" class=\"form-control\" placeholder=\"yyyy-MM-dd\"",
+            }, function (text, index) {
+                trg = text;
+                // 取消
+                if (trg == undefined) {
+                    return;
+                } else {
+                    if (!dateReg.test(trg)) {
+                        $.modal.alertError("输入格式有误，请重新输入，如：2019-12-18");
+                        return;
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: prefix + "/choiceBill",
+                        data: {
+                            pmsBatchId: $("#pmsBatchId").val(),
+                            billIds: billIds.join(","),
+                            fileImageNames: fileImageNames.join(","),
+                            targetBillId: targetBillId,
+                            trg: trg
+                        },
+                        success: function (result) {
+                            $.modal.alert("更新成功!");
+                            $.modal.close();
+                            $.modal.reload();
+                        },
+                        error: function () {
+                            $.modal.alert("更新失败!");
+                        },
+                    });
+                }
+                layer.close(index);
+            });
+        } else {
+            $.ajax({
+                type: "post",
+                url: prefix + "/choiceBill",
+                data: {
+                    pmsBatchId: $("#pmsBatchId").val(),
+                    billIds: billIds.join(","),
+                    fileImageNames: fileImageNames.join(","),
+                    targetBillId: targetBillId,
+                    trg: trg
+                },
+                success: function (result) {
+                    $.modal.alert("更新成功!");
+                    $.modal.close();
+                    $.modal.reload();
+                },
+                error: function () {
+                    $.modal.alert("更新失败!");
+                },
+            });
+        }
+
+        // $.modal.close(prefix + "/detail");
+    }
+
+    function closeVideo() {
+        $('#media').get(0).pause();
+    }
+
+    function submitHandler() {
+        if (nemFileNum != oldFileNum) {
+            $.modal.close();
+            // parent.$.treeTable.refresh();
+            $.modal.reload();
+        } else if (firstNum == 0 && detChaNum != 0) {
+            parent.fatResponse("check");
+            $.modal.close();
+        } else if (firstNum != 0 && detChaNum == 0) {
+            parent.fatResponse("close");
+            $.modal.close();
+        } else {
+            $.modal.close();
+        }
+    }
+
+    function closeHandler() {
+        submitHandler()
+    }
+
+    function closeAllLay() {
+        parent.layer.closeAll();
+        parent.location.reload()
+    }
+
+</script>
+</body>
+</html>

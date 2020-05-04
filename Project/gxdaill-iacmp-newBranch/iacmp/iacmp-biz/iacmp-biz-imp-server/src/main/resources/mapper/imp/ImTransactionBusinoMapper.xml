@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImTransactionBusinoMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImTransactionBusino" id="ImTransactionBusinoResult">
+        <result property="id" column="ID"/>
+        <result property="transactionNo" column="TRANSACTION_NO"/>
+        <result property="busino" column="BUSINO"/>
+    </resultMap>
+
+    <sql id="selectImTransactionBusinoVo">
+        select ID, TRANSACTION_NO, BUSINO from im_transaction_busino
+    </sql>
+
+    <select id="selectImTransactionBusinoList" parameterType="net.northking.iacmp.imp.domain.ImTransactionBusino"
+            resultMap="ImTransactionBusinoResult">
+        <include refid="selectImTransactionBusinoVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="transactionNo != null  and transactionNo != '' ">and TRANSACTION_NO = #{transactionNo}</if>
+            <if test="busino != null  and busino != '' ">and BUSINO = #{busino}</if>
+        </where>
+    </select>
+
+    <select id="selectImTransactionBusinoById" parameterType="String" resultMap="ImTransactionBusinoResult">
+        <include refid="selectImTransactionBusinoVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImTransactionBusino" parameterType="net.northking.iacmp.imp.domain.ImTransactionBusino">
+        insert into im_transaction_busino
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="transactionNo != null  and transactionNo != ''  ">TRANSACTION_NO,</if>
+            <if test="busino != null  and busino != ''  ">BUSINO,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="transactionNo != null  and transactionNo != ''  ">#{transactionNo},</if>
+            <if test="busino != null  and busino != ''  ">#{busino},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImTransactionBusino" parameterType="net.northking.iacmp.imp.domain.ImTransactionBusino">
+        update im_transaction_busino
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="transactionNo != null  and transactionNo != ''  ">TRANSACTION_NO = #{transactionNo},</if>
+            <if test="busino != null  and busino != ''  ">BUSINO = #{busino},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImTransactionBusinoById" parameterType="String">
+        delete from im_transaction_busino where ID = #{id}
+    </delete>
+
+    <delete id="deleteImTransactionBusinoByIds" parameterType="String">
+        delete from im_transaction_busino where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectImTransactionBusinoBySysBusiNo" parameterType="String"
+            resultMap="ImTransactionBusinoResult">
+        <include refid="selectImTransactionBusinoVo"/>
+        where TRANSACTION_NO = #{sysBusiNo}
+    </select>
+
+</mapper>

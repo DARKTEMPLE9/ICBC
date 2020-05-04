@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfWorkItemMapper">
+
+    <resultMap type="WfWorkItem" id="WfWorkItemResult">
+        <result property="id" column="ID"/>
+        <result property="processActId" column="PROCESS_ACT_ID"/>
+        <result property="processInstId" column="PROCESS_INST_ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="judgeValue" column="JUDGE_VALUE"/>
+        <result property="remarkValue" column="REMARK_VALUE"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="operId" column="OPER_ID"/>
+        <result property="operCode" column="OPER_CODE"/>
+        <result property="operName" column="OPER_NAME"/>
+        <result property="acquiredTime" column="ACQUIRED_TIME"/>
+        <result property="finishedTime" column="FINISHED_TIME"/>
+    </resultMap>
+
+    <sql id="selectWfWorkItemVo">
+        select ID, PROCESS_ACT_ID, PROCESS_INST_ID, CODE, NAME, STATUS, JUDGE_VALUE, REMARK_VALUE, CREATE_TIME, OPER_ID,
+        OPER_CODE, OPER_NAME, ACQUIRED_TIME, FINISHED_TIME from wf_work_item
+    </sql>
+
+    <select id="selectWfWorkItemList" parameterType="WfWorkItem" resultMap="WfWorkItemResult">
+        <include refid="selectWfWorkItemVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="processActId != null  and processActId != '' ">and PROCESS_ACT_ID = #{processActId}</if>
+            <if test="processInstId != null  and processInstId != '' ">and PROCESS_INST_ID = #{processInstId}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="judgeValue != null  and judgeValue != '' ">and JUDGE_VALUE = #{judgeValue}</if>
+            <if test="remarkValue != null  and remarkValue != '' ">and REMARK_VALUE = #{remarkValue}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="operId != null  and operId != '' ">and OPER_ID = #{operId}</if>
+            <if test="operCode != null  and operCode != '' ">and OPER_CODE = #{operCode}</if>
+            <if test="operName != null  and operName != '' ">and OPER_NAME = #{operName}</if>
+            <if test="acquiredTime != null ">and ACQUIRED_TIME = #{acquiredTime}</if>
+            <if test="finishedTime != null ">and FINISHED_TIME = #{finishedTime}</if>
+        </where>
+    </select>
+
+    <select id="selectWfWorkItemById" parameterType="String" resultMap="WfWorkItemResult">
+        <include refid="selectWfWorkItemVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfWorkItem" parameterType="WfWorkItem">
+        insert into wf_work_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="processActId != null  and processActId != ''  ">PROCESS_ACT_ID,</if>
+            <if test="processInstId != null  and processInstId != ''  ">PROCESS_INST_ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="judgeValue != null  and judgeValue != ''  ">JUDGE_VALUE,</if>
+            <if test="remarkValue != null  and remarkValue != ''  ">REMARK_VALUE,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="operId != null  and operId != ''  ">OPER_ID,</if>
+            <if test="operCode != null  and operCode != ''  ">OPER_CODE,</if>
+            <if test="operName != null  and operName != ''  ">OPER_NAME,</if>
+            <if test="acquiredTime != null  ">ACQUIRED_TIME,</if>
+            <if test="finishedTime != null  ">FINISHED_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="processActId != null  and processActId != ''  ">#{processActId},</if>
+            <if test="processInstId != null  and processInstId != ''  ">#{processInstId},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="judgeValue != null  and judgeValue != ''  ">#{judgeValue},</if>
+            <if test="remarkValue != null  and remarkValue != ''  ">#{remarkValue},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="operId != null  and operId != ''  ">#{operId},</if>
+            <if test="operCode != null  and operCode != ''  ">#{operCode},</if>
+            <if test="operName != null  and operName != ''  ">#{operName},</if>
+            <if test="acquiredTime != null  ">#{acquiredTime},</if>
+            <if test="finishedTime != null  ">#{finishedTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfWorkItem" parameterType="WfWorkItem">
+        update wf_work_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processActId != null  and processActId != ''  ">PROCESS_ACT_ID = #{processActId},</if>
+            <if test="processInstId != null  and processInstId != ''  ">PROCESS_INST_ID = #{processInstId},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="judgeValue != null  and judgeValue != ''  ">JUDGE_VALUE = #{judgeValue},</if>
+            <if test="remarkValue != null  and remarkValue != ''  ">REMARK_VALUE = #{remarkValue},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="operId != null  and operId != ''  ">OPER_ID = #{operId},</if>
+            <if test="operCode != null  and operCode != ''  ">OPER_CODE = #{operCode},</if>
+            <if test="operName != null  and operName != ''  ">OPER_NAME = #{operName},</if>
+            <if test="acquiredTime != null  ">ACQUIRED_TIME = #{acquiredTime},</if>
+            <if test="finishedTime != null  ">FINISHED_TIME = #{finishedTime},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfWorkItemById" parameterType="String">
+        delete from wf_work_item where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfWorkItemByIds" parameterType="String">
+        delete from wf_work_item where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

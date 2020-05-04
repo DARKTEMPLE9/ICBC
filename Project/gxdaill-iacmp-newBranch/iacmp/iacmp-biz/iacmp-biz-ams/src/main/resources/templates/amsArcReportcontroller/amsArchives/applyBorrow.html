@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('申请利用')"/>
+</head>
+
+<body style="background-color: #ffffff;">
+
+<form class="form-horizontal" id='form-amsProcessInfo-add' role='form' th:object="${amsArchives}">
+    <div class='container manage' id='container111'>
+        <div class='row'>
+            <div class="p70 ">
+                <input id="arcId" name="archiveId" th:value="*{id}" type="hidden">
+                <input id="arcNo" name="arcNo" th:value="*{arcNo}" type="hidden">
+                <input id="opDepNo" name="opDepNo" th:value="*{opDepNo}" type="hidden">
+                <input id="arcType" name="arcType" th:value="*{arcType}" type="hidden">
+                <input id="carrier" name="carrier" th:value="*{carrier}" type="hidden">
+                <input id="arcBillCode" name="arcBillCode" th:value="*{arcBillCode}" type="hidden">
+                <input id="arcBillDeptCode" name="arcBillDeptCode" th:value="*{arcBillDeptCode}" type="hidden">
+                <input id="batchId" name="batchId" th:value="*{batchId}" type="hidden">
+                <input id="batchNo" name="batchNo" th:value="*{batchNo}" type="hidden">
+                <input id="arcLevel" name="arcLevel" th:value="*{arcLevel}" type="hidden"/>
+                <input id="entityBorrowed" name="entityBorrowed" th:value="${entityBorrowed}" type="hidden"/>
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                    </div>
+                </div>
+                <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                    <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">基本信息</h4>
+                    <div class="form-group form-group-sm">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">档案名称：</label>
+                            <div class="col-sm-8">
+                                <input name="arcName" id="arcName" th:value="*{name}" type="text" class="form-control"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">文件编号：</label>
+                            <div class="col-sm-8">
+                                <input name="fileNo" id="fileNo" th:value="*{arcNo}" type="text" class="form-control"
+                                       readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">责任者：</label>
+                            <div class="col-sm-8">
+                                <input name="respOpName" id="respOpName" th:value="*{respOpName}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">所属部门：</label>
+                            <div class="col-sm-8">
+                                <input name="opDepName" id="opDepName" th:value="*{opDepName}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">档案类型：</label>
+                            <div class="col-sm-8">
+                                <input name="arcBillName" id="arcBillName" th:value="*{arcBillName}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">二级目录：</label>
+                            <div class="col-sm-8">
+                                <input name="arcBillDeptName" id="arcBillDeptName" th:value="*{arcBillDept}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                    <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">申请表</h4>
+                    <div class="form-group form-group-sm" th:object="${sysUser}">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">申请人：</label>
+                            <div class="col-sm-8">
+                                <input id="appOpCode" name="appOpCode" th:value="*{userId}" type="hidden">
+                                <input name="appOpName" id="appOpName" th:value="*{userName}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">申请部门：</label>
+                            <div class="col-sm-8">
+                                <input id="appDepCode" name="appDepCode" th:value="*{deptId}" type="hidden">
+                                <input name="appDepName" id="appDepName" th:value="*{dept.deptName}" type="text"
+                                       class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">利用形式：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="borType" id="borType">
+                                    <!--                                    <option value='20' selected="selected" >申请实体查阅</option>-->
+                                    <!--                                    <option value='10' >申请电子查阅</option>-->
+                                </select></div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★查阅天数：</label>
+                            <div class="col-sm-8">
+                                <input name="borDays" id="borDays" value="" type="text" class="form-control" required
+                                       maxlength="2" placeholder="最大天数30"
+                                       oninput="value=value.replace(/[^\d]/g,'');if(value>30)value=30"
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★利用开始日期：</label>
+                            <div class="col-sm-8">
+                                <input name="borStaTime" id="borStaTime" type="date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★利用结束日期：</label>
+                            <div class="col-sm-8">
+                                <input name="borEndTime" id="borEndTime" type="date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★利用目的：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="usePurpose" id="usePurpose" required>
+                                    <option value='学术研究' selected="selected">学术研究</option>
+                                    <option value='经济建设'>经济建设</option>
+                                    <option value='宣传教育'>宣传教育</option>
+                                    <option value='工作查考'>工作查考</option>
+                                    <option value='其他'>其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★利用事由：</label>
+                            <div class="col-sm-8">
+                                <textarea style="width: 100%;" rows="5" cols="" notNull='true' dataType='text'
+                                          maxlength='200' id="appReason" name="appReason" required
+                                          placeholder="请输入100字以内" th:maxlength="100"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">★借阅形式：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="borForm" id="borForm" required>
+                                    <option value='read' selected="selected">查阅</option>
+                                    <option value='copies'>复印件</option>
+                                    <option value='masterCopy'>原件</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6" id="copyNumBox">
+                            <label class="col-sm-3 control-label">复印份数：</label>
+                            <div class="col-sm-8">
+                                <input name="copyNum" id="copyNum" th:placeholder="请输入9位以内数字" type="text"
+                                       class="form-control" th:maxlength="9"
+                                       oninput="value=value.replace(/[^\d]/g,'')"
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">借出份数：</label>
+                            <div class="col-sm-8">
+                                <input name="loanNum" id="loanNum" type="text" class="form-control" maxlength="9"
+                                       oninput="value=value.replace(/[^\d]/g,'')" th:placeholder="请输入9位以内数字"
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+                    <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">利用审批</h4>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">提交上级：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="agentCode" id="agentCode" required>
+                                <option th:each="user,userStat:${user}" th:value="${user.userId}"
+                                        th:text="${user.userName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+</form>
+<input id="isSuccess" type="hidden" th:value="${isSuccess}">
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+
+    $(function () {
+        var val = $('#borForm option:selected').val();
+        $('#copyNumBox').hide();
+        if (val == 'copies') {
+            $('#copyNumBox').show();
+        } else {
+            $('#copyNumBox').hide();
+        }
+
+        //利用形式
+        var carrier = $("#carrier").val();
+        var arcType = $("#arcType").val();
+        // var optionStr="<option value='20' selected=\"selected\" id=\"entity\">申请实体查阅</option>\n" +
+        //     "                                    <option value='10' id=\"elec\">申请电子查阅</option>";
+        // $("#borType").html(optionStr);
+        var optionStr;
+        if (arcType == "10") {//电子
+            if (carrier != "03") {//该档案既有电子也有实体
+                //既有实物也有电子，实物借出只能借阅电子，实物没借出实物电子都可借阅
+                var entityBorrowed = $("#entityBorrowed").val();
+                if (entityBorrowed == "true") {//该档案实体已经借出,只能借电子
+                    optionStr = "<option value='10' selected='selected'>申请电子查阅</option>";
+                } else {
+                    optionStr = "<option value='20' selected='selected'>申请实体查阅</option>" + "<option value='10'>申请电子查阅</option>";
+                }
+            } else {//只有电子，只能借阅电子
+                optionStr = "<option value='10' selected='selected'>申请电子查阅</option>";
+            }
+
+        } else {//实物，只能借阅实物
+            optionStr = "<option value='20' selected='selected'>申请实体查阅</option>";
+        }
+        $("#borType").html(optionStr);
+
+        // 查阅天数,复印份数,借出份数只能输入以0开头的数字
+        $("input[name='borDays'],input[name='copyNum'],input[name='loanNum']").keyup(function () {
+            var val = $(this).val();
+            if (val.length == 1) {
+                $(this).val(val.replace(/[^1-9]/g, ''));
+            } else {
+                $(this).val(val.replace(/\D/g, ''));
+
+                if (val.substring(0, 1) == '0') {
+                    $(this).val('');
+                }
+            }
+        });
+
+        // 日期框的限制
+        var nowTime = new Date();
+        $("#borDays").bind("input propertychange", function (event) {
+            $("#borStaTime").val("")
+            $("#borEndTime").val("")
+        });
+
+        // 两个时间框
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var startDate = laydate.render({
+                elem: '#borStaTime',
+                min: 'nowTime', //今天及以后
+                // max: $('#borDays').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+                    if ($("#borDays").val() == "") {
+                        $.modal.alert("请先填写查阅天数")
+                        $("#borStaTime").val("")
+                    }
+                    var maxTime = parseInt($('#borDays').val());
+                    $("#borEndTime").val("")
+                    if (value !== '') {
+                        endDate.config.max.year = date.year;
+                        endDate.config.max.month = date.month - 1;
+                        endDate.config.max.date = date.date + maxTime;
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date + maxTime;
+                    }
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#borEndTime',
+                min: $('#borStaTime').val(),
+                btns: ['clear'],
+                // max: $('#borStaTime').val() + $('#borDays').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {//控件在打开时触发，回调返回一个参数
+                    if ($("#borStaTime").val() == "") {
+                        $.modal.alert("请先填写利用开始时间")
+                        $("#borEndTime").val("")
+                    }
+                }
+            });
+        });
+    });
+    //    选择借阅模式
+    $('#borForm').change(function () {
+        var val = $('#borForm option:selected').val();
+        if (val == 'copies') {
+            $('#copyNumBox').show();
+        } else {
+            $('#copyNumBox').hide();
+        }
+    })
+</script>
+<script th:inline="javascript">
+    // var isSuccess=[[${isSuccess}]];
+    var prefix = ctx + "amsArcReportcontroller/amsBorrowInfo";
+    $("#form-amsProcessInfo-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            // $.operate.save(prefix + "/add", $('#form-amsProcessInfo-add').serialize());
+            save(prefix + "/add", $('#form-amsProcessInfo-add').serialize());
+        }
+
+    }
+
+
+    function save(url, data, callback) {
+        var config = {
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+                $.modal.disable();
+            },
+            success: function (result) {
+                if (typeof callback == "function") {
+                    callback(result);
+                }
+                $.operate.successCallback(result);
+                var nextUserNo = $("#agentCode").val();
+                $.ajax({
+                    url: prefix + "/sendEmailToNextUser",
+                    data: {"nextUserNo": nextUserNo, "processId": result.data},
+                    type: "post"
+                });
+            }
+        };
+        $.ajax(config)
+    }
+
+</script>
+
+</body>
+
+</html>

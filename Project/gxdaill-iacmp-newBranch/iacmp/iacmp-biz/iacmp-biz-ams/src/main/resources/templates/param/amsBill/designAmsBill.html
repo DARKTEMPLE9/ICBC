@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('用户列表')"/>
+    <style>
+        .hiddenDiv {
+            display: none;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+
+<div class="ui-layout-center">
+    <div class="container-div">
+        <div class="row">
+            <div id="bottomDiv" style="width: 70%;margin: 0 auto;position: relative">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" method="post" id="form-amsRecord-amsRecord">
+                            <div style=" border-bottom: 1px solid gray;margin-bottom: 16px">
+                                <h3 id="thisTitle" style="margin-left: 40px;margin-top: -10px">分类模型设计</h3>
+                                <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                                    <div class="col-sm-12 col-sm-offset-3" style="margin-right: 50px">
+                                        <button id="" class="btn btn-danger" type="button" onclick="delTr()">删除</button>
+                                        <button id="i_select_files0" onclick="fresh()" class="btn btn-info"
+                                                type="button">重置
+                                        </button>
+                                        <button type="submit" class="btn btn-primary " onclick="checkModel()">确认模型
+                                        </button>
+                                        <button type="submit" class="btn btn-danger" onclick="backToPage()">返回</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="addReg">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★档案名称：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcName" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★形成日期：</span>
+                                    </label>
+                                    <div class="col-sm-8 date">
+                                        <input name="arcCreTime" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★档案类型：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcBill" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★二级类目：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcBillDept" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★保管期限：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="10" name="valPeriod" disabled>10年</label>&nbsp;
+                                        <input type="radio" value="30" name="valPeriod" disabled>30年</label>&nbsp;
+                                        <input type="radio" value="99" name="valPeriod" disabled>永久</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★密级：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="01" name="arcLevel" disabled>绝密</label>&nbsp;
+                                        <input type="radio" value="02" name="arcLevel" disabled>机密</label>&nbsp;
+                                        <input type="radio" value="03" name="arcLevel" disabled>秘密</label>&nbsp;
+                                        <input type="radio" value="04" name="arcLevel" disabled>内部公开</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <!--<input name="regcheck" type="checkbox">&nbsp;-->
+                                        <span>★是否移交行档室：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="1" name="hasMoveBank" disabled>是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" value="2" name="hasMoveBank" disabled>否</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="expenseInvolve">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★是否涉及费用：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="1" name="expenseInvolve" disabled>是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" value="2" name="expenseInvolve" disabled>否</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcFormat">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★是否电子化：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="10" name="arcFormat" disabled>是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" value="20" name="arcFormat" disabled>否</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="isNoMedium">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★有无介质：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" value="1" name="isNoMedium" disabled>是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" value="0" name="isNoMedium" disabled>否</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="respOpName">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★责任者：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="respOpName" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcCode">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★文件编号：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcCode" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcPageNum">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>页数：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcPageNum" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcNum">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★份数：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcNum" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="totalTransactions">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★笔数：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="totalTransactions" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="photographer">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★摄录人员：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="photographer" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="duration">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★时长：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="duration" type="text" class="form-control" placeholder
+                                               value="  时   分   秒" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="caption">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★文字说明：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="caption" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="conferIns">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★授予单位：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="conferIns" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="receiveIns">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★接收单位：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="receiveIns" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="originMode">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★来源：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="originMode" style="display: none;">
+                                        <select class="form-control" name="originMode" disabled>
+                                            <option value="">全部</option>
+                                            <option>经营产生</option>
+                                            <option>上级下发</option>
+                                            <option>移交</option>
+                                            <option>征集</option>
+                                            <option>收集</option>
+                                            <option>购买</option>
+                                            <option>捐赠</option>
+                                            <option>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="bill">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★分类：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="bill" style="display: none;">
+                                        <select class="form-control" name="bill" disabled>
+                                            <option>全部</option>
+                                            <option>重大活动</option>
+                                            <option>员工培训</option>
+                                            <option>公司荣誉</option>
+                                            <option>文化建设</option>
+                                            <option>关怀指导</option>
+                                            <option>同业交流</option>
+                                            <option>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="counterpart">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>★相对方：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="counterpart" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="peopleName">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>姓名：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="peopleName" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="peopleCard">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>身份证号：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="peopleCard" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="carrier">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>载体形式：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="carrier" style="display: none;">
+                                        <select class="form-control" name="carrier" disabled>
+                                            <Option>全部</Option>
+                                            <option>纸质档案</option>
+                                            <option>音像档案</option>
+                                            <option>电子档案</option>
+                                            <option>实物档案</option>
+                                            <option>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcLayout">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>格式：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="arcLayout" style="display: none;">
+                                        <select class="form-control" name="arcLayout" disabled>
+                                            <option>全部</option>
+                                            <option>mp4</option>
+                                            <option>wmv</option>
+                                            <option>rmvb</option>
+                                            <option>mkv</option>
+                                            <option>avi</option>
+                                            <option>flv</option>
+                                            <option>mp3</option>
+                                            <option>wav</option>
+                                            <option>wma</option>
+                                            <option>ogg</option>
+                                            <option>ape</option>
+                                            <option>acc</option>
+                                            <option>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="afourNum">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>A4数：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="afourNum" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="themeSpeech">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>主题词：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="themeSpeech" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="language">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>语种：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="language" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="originType">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>来源单位或个人：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="originType" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="cutting">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>开本：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="cutting" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="otherName">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>并列题名：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="otherName" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="forwardNo">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>转发文号：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="forwardNo" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="forwardName">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>转发文题名：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="forwardName" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="receiptNo">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>收文编号：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="receiptNo" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="etc">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>附件：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="etc" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="etcNum">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>附件数：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="etcNum" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="edition">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>版次：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="edition" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="practDesc">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>描述：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="practDesc" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcCopyright">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>版权：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="arcCopyright" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="keyWord">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>关键字：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input name="keyWord" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="remark">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>备注信息：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="remark" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="arcAbstract">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>摘要：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="arcAbstract" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="busiNo">
+                                    <label class="col-sm-3 control-label">
+                                        <input name="regcheck" type="checkbox">&nbsp;
+                                        <span>全局流水号：</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="busiNo" class="form-control" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jnewAddFun.js" type="text/javascript" th:src="@{/js/newAddFun.js}"></script>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<script th:inline="javascript">
+
+    var mould;
+
+    $(function () {
+
+        //初始化方法
+        init();
+
+        var postData = $("#form-amsRecord-amsRecord").custom_serialize();
+        // console.log(" postData = " + postData);
+        var tmpDic = {};
+        for (var i in postData.split("&")) {
+            var row = postData.split("&")[i];
+            tmpDic[row.split("=")[0]] = decodeURIComponent(row.split("=")[1]);
+        }
+        // console.log(" tmpDic = " + tmpDic);
+
+        $.each(tmpDic, function (dic) {
+            $('#' + dic).addClass('hiddenDiv');
+        });
+
+        if (mould != "") {
+            var mouldStr = mould.split(",");
+            console.log(" mouldStr = " + mouldStr);
+            for (var i = 0; i < mouldStr.length; i++) {
+                $.each(tmpDic, function (item) {
+                    // console.log(i); //获取键值
+                    if (item == mouldStr[i]) {
+                        // console.log(" item = " + item);
+                        $('#' + item).removeClass('hiddenDiv');
+                    }
+                });
+            }
+        }
+
+    });
+
+    function init() {
+        var dataId = [[${amsBill.Id}]];
+        $.ajax({
+            //请求方式
+            type: "GET",
+            dataType: "json",
+            //请求地址
+            url: ctx + "param/amsBill/getAmsBillMould/" + dataId,
+            async: false,
+            //请求成功
+            success: function (result) {
+                mould = result["mould"];
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    /* 确认模型，表单数据提交 */
+    function checkModel() {
+        var arr = ["arcName", "arcCreTime", "arcBill", "arcBillDept", "valPeriod", "arcLevel", "hasMoveBank"]
+        var chObj = $("input[name=regcheck]:checkbox");
+        chObj.each(function () {
+            var itemId = $(this).parent().siblings().parent().attr("id");
+            if ($('#' + itemId).hasClass('hiddenDiv')) {
+                return true;
+            } else {
+                arr.push($(this).parent().siblings().children().attr("name"));
+            }
+        });
+        var data = {};
+        data.mouldStr = arr.join(",");
+        data.id = [[${amsBill.Id}]];
+        $.ajax({
+            //请求方式
+            type: "POST",
+            data: data,
+            dataType: "json",
+            //请求地址
+            url: ctx + "param/amsBill/designAmsBill",
+            async: false,
+            //请求成功
+            success: function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    alert(result.msg);
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            },
+            complete: function () {
+                $.modal.closeTab();
+            }
+        });
+    }
+
+    // 删除表格方法
+    function delTr() {
+        if ($("input:checkbox:checked").val() == null) {
+            $.modal.alert('请选中某条记录！');
+            return;
+        }
+
+        $.modal.confirm("是否删除选中项？", function () {
+            var chobj = $("input[name=regcheck]:checkbox");
+            chobj.each(function () {
+                if ($(this).prop("checked")) {
+                    // console.log(delid)
+                    // $(this).parent().parent().remove();
+                    $(this).parent().parent().addClass('hiddenDiv');
+                }
+            });
+        });
+    }
+
+    // 重制当前
+    function fresh() {
+        // location.reload();
+
+        //移除样式
+        var chobj = $("input[name=regcheck]:checkbox");
+        chobj.each(function () {
+            $(this).parent().parent().removeClass('hiddenDiv');
+        });
+    }
+
+    // 返回页面
+    function backToPage() {
+        $.modal.closeTab();
+    }
+
+    // 日期框js
+    $(function () {
+        <!-- laydate -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            var startDate = laydate.render({
+                elem: '#laydate-startTime',
+                max: $('#laydate-endTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+
+            var endDate = laydate.render({
+                elem: '#laydate-endTime',
+                min: $('#laydate-startTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 开始时间小于结束时间
+                    if (value !== '') {
+                        startDate.config.max.year = date.year;
+                        startDate.config.max.month = date.month - 1;
+                        startDate.config.max.date = date.date;
+                    } else {
+                        startDate.config.max.year = '';
+                        startDate.config.max.month = '';
+                        startDate.config.max.date = '';
+                    }
+                }
+            });
+
+            // formTime
+            var formTime = laydate.render({
+                elem: '#formTime',
+                max: $('#formTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    formTime.config.max.year = date.year;
+                    formTime.config.max.month = date.month;
+                    formTime.config.max.date = date.date;
+                }
+            });
+        });
+    });
+
+    $.fn.custom_serialize = function () {
+        var a = this.serializeArray();
+        var $radio = $('input[type=radio],input[type=checkbox]', this);
+        var temp = {};
+        $.each($radio, function () {
+            if (!temp.hasOwnProperty(this.name)) {
+                if ($("input[name='" + this.name + "']:checked").length == 0) {
+                    temp[this.name] = "";
+                    a.push({name: this.name, value: ""});
+                }
+            }
+        });
+        //console.log(a);
+        return jQuery.param(a);
+    };
+
+</script>
+</body>
+</html>

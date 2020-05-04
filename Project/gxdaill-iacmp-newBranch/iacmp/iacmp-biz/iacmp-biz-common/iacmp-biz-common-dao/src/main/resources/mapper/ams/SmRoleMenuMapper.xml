@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.SmRoleMenuMapper">
+
+    <resultMap type="SmRoleMenu" id="SmRoleMenuResult">
+        <result property="menuId" column="MENU_ID"/>
+        <result property="id" column="ID"/>
+        <result property="roleId" column="ROLE_ID"/>
+    </resultMap>
+
+    <sql id="selectSmRoleMenuVo">
+        select MENU_ID, ID, ROLE_ID from sm_role_menu
+    </sql>
+
+    <select id="selectSmRoleMenuList" parameterType="SmRoleMenu" resultMap="SmRoleMenuResult">
+        <include refid="selectSmRoleMenuVo"/>
+        <where>
+            <if test="menuId != null  and menuId != '' ">and MENU_ID = #{menuId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="roleId != null  and roleId != '' ">and ROLE_ID = #{roleId}</if>
+        </where>
+    </select>
+
+    <select id="selectSmRoleMenuById" parameterType="String" resultMap="SmRoleMenuResult">
+        <include refid="selectSmRoleMenuVo"/>
+        where MENU_ID = #{menuId}
+    </select>
+
+    <insert id="insertSmRoleMenu" parameterType="SmRoleMenu">
+        insert into sm_role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuId != null  and menuId != ''  ">MENU_ID,</if>
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="roleId != null  and roleId != ''  ">ROLE_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuId != null  and menuId != ''  ">#{menuId},</if>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="roleId != null  and roleId != ''  ">#{roleId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmRoleMenu" parameterType="SmRoleMenu">
+        update sm_role_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID = #{id},</if>
+            <if test="roleId != null  and roleId != ''  ">ROLE_ID = #{roleId},</if>
+        </trim>
+        where MENU_ID = #{menuId}
+    </update>
+
+    <delete id="deleteSmRoleMenuById" parameterType="String">
+        delete from sm_role_menu where MENU_ID = #{menuId}
+    </delete>
+
+    <delete id="deleteSmRoleMenuByIds" parameterType="String">
+        delete from sm_role_menu where MENU_ID in
+        <foreach item="menuId" collection="array" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </delete>
+
+</mapper>

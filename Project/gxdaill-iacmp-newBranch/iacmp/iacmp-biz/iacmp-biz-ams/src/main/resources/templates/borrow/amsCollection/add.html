@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增专题库')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsCollection-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专题库：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专题库类型：</label>
+            <div class="col-sm-8">
+                <input id="archivesId" name="archivesId" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">保管期限：</label>
+            <div class="col-sm-8">
+                <input id="valPeroid" name="valPeroid" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属年份：</label>
+            <div class="col-sm-8">
+                <input id="boxYear" name="boxYear" class="form-control" type="text" required>
+            </div>
+        </div>
+
+        <!--<div class="form-group">	-->
+        <!--<label class="col-sm-3 control-label">档案所属专题库id：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="specArch" name="specArch" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "borrow/amsCollection"
+    $("#form-amsCollection-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-amsCollection-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

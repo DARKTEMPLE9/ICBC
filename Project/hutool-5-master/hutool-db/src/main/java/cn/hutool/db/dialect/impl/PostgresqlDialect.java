@@ -6,18 +6,18 @@ import cn.hutool.db.sql.Wrapper;
 
 /**
  * Postgree方言
- * @author loolly
  *
+ * @author loolly
  */
-public class PostgresqlDialect extends AnsiSqlDialect{
-	private static final long serialVersionUID = 3889210427543389642L;
+public class PostgresqlDialect extends AnsiSqlDialect {
+    private static final long serialVersionUID = 3889210427543389642L;
 
-	public PostgresqlDialect() {
-		wrapper = new Wrapper('"');
-	}
+    public PostgresqlDialect() {
+        wrapper = new Wrapper('"');
+    }
 
-	@Override
-	public DialectName dialectName() {
-		return DialectName.POSTGREESQL;
-	}
+    @Override
+    public DialectName dialectName() {
+        return DialectName.POSTGREESQL;
+    }
 }

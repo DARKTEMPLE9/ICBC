@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsBillDeptMapper">
+
+    <resultMap type="AmsBillDept" id="AmsBillDeptResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="code" column="CODE"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="billDeptId" column="BILL_DEPT_ID"/>
+    </resultMap>
+
+    <sql id="selectAmsBillDeptVo">
+        select ID, NAME, CODE, SYS_ID, BILL_ORDER from ams_bill_dept
+    </sql>
+
+    <select id="selectAmsBillDeptList" parameterType="AmsBillDept" resultMap="AmsBillDeptResult">
+        <include refid="selectAmsBillDeptVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME like concat('%',concat(#{name},'%'))</if>
+            <if test="code != null  and code != '' ">and CODE like concat('%',concat(#{code},'%'))</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="billOrder != null  and billOrder != '' ">and BILL_ORDER = #{billOrder}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsBillDeptById" parameterType="String" resultMap="AmsBillDeptResult">
+        <include refid="selectAmsBillDeptVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsBillDept" parameterType="AmsBillDept" useGeneratedKeys="true" keyProperty="billDeptId">
+        insert into ams_bill_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID,</if>
+            <if test="billOrder != null  and billOrder != ''  ">BILL_ORDER,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="sysId != null  and sysId != ''  ">#{sysId},</if>
+            <if test="billOrder != null  and billOrder != ''  ">#{billOrder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsBillDept" parameterType="AmsBillDept">
+        update ams_bill_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID = #{sysId},</if>
+            <if test="billOrder != null  and billOrder != ''  ">BILL_ORDER = #{billOrder},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsBillDeptById" parameterType="String">
+        delete from ams_bill_dept where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsBillDeptByIds" parameterType="String">
+        delete from ams_bill_dept where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

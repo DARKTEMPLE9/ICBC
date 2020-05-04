@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.WfProcessActMapper">
+
+    <resultMap type="WfProcessAct" id="WfProcessActResult">
+        <result property="id" column="ID"/>
+        <result property="processId" column="PROCESS_ID"/>
+        <result property="subProcessId" column="SUB_PROCESS_ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="isJudgeState" column="IS_JUDGE_STATE"/>
+        <result property="positonX" column="POSITON_X"/>
+        <result property="positionY" column="POSITION_Y"/>
+        <result property="status" column="STATUS"/>
+        <result property="actType" column="ACT_TYPE"/>
+    </resultMap>
+
+    <sql id="selectWfProcessActVo">
+        select ID, PROCESS_ID, SUB_PROCESS_ID, CODE, NAME, IS_JUDGE_STATE, POSITON_X, POSITION_Y, STATUS, ACT_TYPE from
+        wf_process_act
+    </sql>
+
+    <select id="selectWfProcessActList" parameterType="WfProcessAct" resultMap="WfProcessActResult">
+        <include refid="selectWfProcessActVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="processId != null  and processId != '' ">and PROCESS_ID = #{processId}</if>
+            <if test="subProcessId != null  and subProcessId != '' ">and SUB_PROCESS_ID = #{subProcessId}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="isJudgeState != null ">and IS_JUDGE_STATE = #{isJudgeState}</if>
+            <if test="positonX != null ">and POSITON_X = #{positonX}</if>
+            <if test="positionY != null ">and POSITION_Y = #{positionY}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="actType != null ">and ACT_TYPE = #{actType}</if>
+        </where>
+    </select>
+
+    <select id="selectWfProcessActById" parameterType="String" resultMap="WfProcessActResult">
+        <include refid="selectWfProcessActVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertWfProcessAct" parameterType="WfProcessAct">
+        insert into wf_process_act
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID,</if>
+            <if test="subProcessId != null  and subProcessId != ''  ">SUB_PROCESS_ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="isJudgeState != null  ">IS_JUDGE_STATE,</if>
+            <if test="positonX != null  ">POSITON_X,</if>
+            <if test="positionY != null  ">POSITION_Y,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="actType != null  ">ACT_TYPE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="processId != null  and processId != ''  ">#{processId},</if>
+            <if test="subProcessId != null  and subProcessId != ''  ">#{subProcessId},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="isJudgeState != null  ">#{isJudgeState},</if>
+            <if test="positonX != null  ">#{positonX},</if>
+            <if test="positionY != null  ">#{positionY},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="actType != null  ">#{actType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfProcessAct" parameterType="WfProcessAct">
+        update wf_process_act
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processId != null  and processId != ''  ">PROCESS_ID = #{processId},</if>
+            <if test="subProcessId != null  and subProcessId != ''  ">SUB_PROCESS_ID = #{subProcessId},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="isJudgeState != null  ">IS_JUDGE_STATE = #{isJudgeState},</if>
+            <if test="positonX != null  ">POSITON_X = #{positonX},</if>
+            <if test="positionY != null  ">POSITION_Y = #{positionY},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="actType != null  ">ACT_TYPE = #{actType},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteWfProcessActById" parameterType="String">
+        delete from wf_process_act where ID = #{id}
+    </delete>
+
+    <delete id="deleteWfProcessActByIds" parameterType="String">
+        delete from wf_process_act where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsApproveInfoMapper">
+
+    <resultMap type="AmsApproveInfo" id="AmsApproveInfoResult">
+        <result property="id" column="ID"/>
+        <result property="exaAppInfoId" column="EXA_APP_INFO_ID"/>
+        <result property="exaAppId" column="EXA_APP_ID"/>
+        <result property="exaAppOpNo" column="EXA_APP_OP_NO"/>
+        <result property="exaAppOpName" column="EXA_APP_OP_NAME"/>
+        <result property="exaAppOrgNo" column="EXA_APP_ORG_NO"/>
+        <result property="exaAppOrgName" column="EXA_APP_ORG_NAME"/>
+        <result property="exaAppOpnion" column="EXA_APP_OPNION"/>
+        <result property="exaAppTime" column="EXA_APP_TIME"/>
+        <result property="exaAppResult" column="EXA_APP_RESULT"/>
+        <result property="exaBack" column="EXA_BACK"/>
+        <result property="processId" column="PROCESS_ID"/>
+        <result property="nowProcessId" column="NOW_PROCESS_ID"/>
+        <result property="agentOpNo" column="AGENT_OP_NO"/>
+        <result property="agentOpName" column="AGENT_OP_NAME"/>
+        <result property="agentFlag" column="AGENT_FLAG"/>
+        <result property="infoId" column="INFO_ID"/>
+    </resultMap>
+
+    <sql id="selectAmsApproveInfoVo">
+        select ID, EXA_APP_INFO_ID, EXA_APP_ID, EXA_APP_OP_NO, EXA_APP_OP_NAME, EXA_APP_ORG_NO, EXA_APP_ORG_NAME,
+        EXA_APP_OPNION, EXA_APP_TIME, EXA_APP_RESULT, EXA_BACK, PROCESS_ID, NOW_PROCESS_ID, AGENT_OP_NO, AGENT_OP_NAME,
+        AGENT_FLAG from ams_approve_info
+    </sql>
+
+    <select id="selectAmsApproveInfoList" parameterType="AmsApproveInfo" resultMap="AmsApproveInfoResult">
+        <include refid="selectAmsApproveInfoVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != '' ">and EXA_APP_INFO_ID = #{exaAppInfoId}</if>
+            <if test="exaAppId != null  and exaAppId != '' ">and EXA_APP_ID = #{exaAppId}</if>
+            <if test="exaAppOpNo != null  and exaAppOpNo != '' ">and EXA_APP_OP_NO = #{exaAppOpNo}</if>
+            <if test="exaAppOpName != null  and exaAppOpName != '' ">and EXA_APP_OP_NAME = #{exaAppOpName}</if>
+            <if test="exaAppOrgNo != null  and exaAppOrgNo != '' ">and EXA_APP_ORG_NO = #{exaAppOrgNo}</if>
+            <if test="exaAppOrgName != null  and exaAppOrgName != '' ">and EXA_APP_ORG_NAME = #{exaAppOrgName}</if>
+            <if test="exaAppOpnion != null  and exaAppOpnion != '' ">and EXA_APP_OPNION = #{exaAppOpnion}</if>
+            <if test="exaAppTime != null ">and EXA_APP_TIME = #{exaAppTime}</if>
+            <if test="exaAppResult != null  and exaAppResult != '' ">and EXA_APP_RESULT = #{exaAppResult}</if>
+            <if test="exaBack != null  and exaBack != '' ">and EXA_BACK = #{exaBack}</if>
+            <if test="processId != null  and processId != '' ">and PROCESS_ID = #{processId}</if>
+            <if test="nowProcessId != null  and nowProcessId != '' ">and NOW_PROCESS_ID = #{nowProcessId}</if>
+            <if test="agentOpNo != null  and agentOpNo != '' ">and AGENT_OP_NO = #{agentOpNo}</if>
+            <if test="agentOpName != null  and agentOpName != '' ">and AGENT_OP_NAME = #{agentOpName}</if>
+            <if test="agentFlag != null  and agentFlag != '' ">and AGENT_FLAG = #{agentFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsApproveInfoById" parameterType="String" resultMap="AmsApproveInfoResult">
+        <include refid="selectAmsApproveInfoVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectAmsApproveInfoByexaAppId" parameterType="String" resultMap="AmsApproveInfoResult">
+        <include refid="selectAmsApproveInfoVo"/>
+        where exa_app_id = #{exaappid}
+    </select>
+
+    <insert id="insertAmsApproveInfo" parameterType="AmsApproveInfo" useGeneratedKeys="true" keyProperty="infoId">
+        insert into ams_approve_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">EXA_APP_INFO_ID,</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID,</if>
+            <if test="exaAppOpNo != null  and exaAppOpNo != ''  ">EXA_APP_OP_NO,</if>
+            <if test="exaAppOpName != null  and exaAppOpName != ''  ">EXA_APP_OP_NAME,</if>
+            <if test="exaAppOrgNo != null  and exaAppOrgNo != ''  ">EXA_APP_ORG_NO,</if>
+            <if test="exaAppOrgName != null  and exaAppOrgName != ''  ">EXA_APP_ORG_NAME,</if>
+            <if test="exaAppOpnion != null  and exaAppOpnion != ''  ">EXA_APP_OPNION,</if>
+            <if test="exaAppTime != null  ">EXA_APP_TIME,</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">EXA_APP_RESULT,</if>
+            <if test="exaBack != null  and exaBack != ''  ">EXA_BACK,</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID,</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">NOW_PROCESS_ID,</if>
+            <if test="agentOpNo != null  and agentOpNo != ''  ">AGENT_OP_NO,</if>
+            <if test="agentOpName != null  and agentOpName != ''  ">AGENT_OP_NAME,</if>
+            <if test="agentFlag != null  and agentFlag != ''  ">AGENT_FLAG,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">#{exaAppInfoId},</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">#{exaAppId},</if>
+            <if test="exaAppOpNo != null  and exaAppOpNo != ''  ">#{exaAppOpNo},</if>
+            <if test="exaAppOpName != null  and exaAppOpName != ''  ">#{exaAppOpName},</if>
+            <if test="exaAppOrgNo != null  and exaAppOrgNo != ''  ">#{exaAppOrgNo},</if>
+            <if test="exaAppOrgName != null  and exaAppOrgName != ''  ">#{exaAppOrgName},</if>
+            <if test="exaAppOpnion != null  and exaAppOpnion != ''  ">#{exaAppOpnion},</if>
+            <if test="exaAppTime != null  ">#{exaAppTime},</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">#{exaAppResult},</if>
+            <if test="exaBack != null  and exaBack != ''  ">#{exaBack},</if>
+            <if test="processId != null  and processId != ''  ">#{processId},</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">#{nowProcessId},</if>
+            <if test="agentOpNo != null  and agentOpNo != ''  ">#{agentOpNo},</if>
+            <if test="agentOpName != null  and agentOpName != ''  ">#{agentOpName},</if>
+            <if test="agentFlag != null  and agentFlag != ''  ">#{agentFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsApproveInfo" parameterType="AmsApproveInfo">
+        update ams_approve_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="exaAppInfoId != null  and exaAppInfoId != ''  ">EXA_APP_INFO_ID = #{exaAppInfoId},</if>
+            <if test="exaAppId != null  and exaAppId != ''  ">EXA_APP_ID = #{exaAppId},</if>
+            <if test="exaAppOpNo != null  and exaAppOpNo != ''  ">EXA_APP_OP_NO = #{exaAppOpNo},</if>
+            <if test="exaAppOpName != null  and exaAppOpName != ''  ">EXA_APP_OP_NAME = #{exaAppOpName},</if>
+            <if test="exaAppOrgNo != null  and exaAppOrgNo != ''  ">EXA_APP_ORG_NO = #{exaAppOrgNo},</if>
+            <if test="exaAppOrgName != null  and exaAppOrgName != ''  ">EXA_APP_ORG_NAME = #{exaAppOrgName},</if>
+            <if test="exaAppOpnion != null  and exaAppOpnion != ''  ">EXA_APP_OPNION = #{exaAppOpnion},</if>
+            <if test="exaAppTime != null  ">EXA_APP_TIME = #{exaAppTime},</if>
+            <if test="exaAppResult != null  and exaAppResult != ''  ">EXA_APP_RESULT = #{exaAppResult},</if>
+            <if test="exaBack != null  and exaBack != ''  ">EXA_BACK = #{exaBack},</if>
+            <if test="processId != null  and processId != ''  ">PROCESS_ID = #{processId},</if>
+            <if test="nowProcessId != null  and nowProcessId != ''  ">NOW_PROCESS_ID = #{nowProcessId},</if>
+            <if test="agentOpNo != null  and agentOpNo != ''  ">AGENT_OP_NO = #{agentOpNo},</if>
+            <if test="agentOpName != null  and agentOpName != ''  ">AGENT_OP_NAME = #{agentOpName},</if>
+            <if test="agentFlag != null  and agentFlag != ''  ">AGENT_FLAG = #{agentFlag},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsApproveInfoById" parameterType="String">
+        delete from ams_approve_info where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsApproveInfoByIds" parameterType="String">
+        delete from ams_approve_info where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

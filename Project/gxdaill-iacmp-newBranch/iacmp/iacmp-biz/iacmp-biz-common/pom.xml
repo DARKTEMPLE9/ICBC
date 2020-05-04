@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>net.northking.iacmp</groupId>
+        <artifactId>iacmp-biz</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>iacmp-biz-common</artifactId>
+    <packaging>pom</packaging>
+    <name>iacmp biz common module</name>
+    <modelVersion>4.0.0</modelVersion>
+    <description>IACMP Biz Common Module</description>
+
+    <modules>
+        <!--公共核心模块-->
+        <module>iacmp-biz-common-core</module>
+        <!--公共领域模型-->
+        <module>iacmp-biz-common-bean</module>
+        <!--公共dao层-->
+        <module>iacmp-biz-common-dao</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+</project>

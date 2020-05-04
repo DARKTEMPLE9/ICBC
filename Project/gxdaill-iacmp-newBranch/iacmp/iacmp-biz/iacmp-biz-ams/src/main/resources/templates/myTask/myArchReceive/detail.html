@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改档案著录')"/>
+    <style>
+        .hiddenDiv {
+            display: none;
+        }
+    </style>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsBatch-edit" th:object="${amsBatch}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <h4 class="form-header h4">著录信息</h4>
+
+        <div id="arcNo" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案编号：</label>
+            <div class="col-sm-8">
+                <input name="arcNo" th:field="*{arcNo}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="arcName" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案名称：</label>
+            <div class="col-sm-8">
+                <input name="arcName" th:field="*{arcName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcCreTime" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">形成日期：</label>
+            <div class="col-sm-8">
+                <input name="arcCreTime" th:value="${#dates.format(amsBatch?.arcCreTime,'yyyy-MM-dd')}"
+                       class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="arcBill" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案类型：</label>
+            <div class="col-sm-8">
+                <input name="arcBill" th:field="*{arcBill}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcBillDept" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">二级类目：</label>
+            <div class="col-sm-8">
+                <input name="arcBillDept" th:field="*{arcBillDept}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="valPeriod" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">保管期限：</label>
+            <div class="col-sm-8" th:if="*{valPeriod==null}">
+                <input name="valPeriod" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{valPeriod!=null}" th:switch="*{valPeriod}">
+                <input name="valPeriod" th:case="10" value="10年" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="valPeriod" th:case="30" value="30年" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="valPeriod" th:case="99" value="永久" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="arcLevel" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">密级：</label>
+            <div class="col-sm-8" th:if="*{arcLevel==null}">
+                <input name="arcLevel" th:field="*{arcLevel}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{arcLevel!=null}" th:switch="*{arcLevel}">
+                <input name="arcLevel" th:case="01" value="绝密" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="arcLevel" th:case="02" value="机密" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="arcLevel" th:case="03" value="秘密" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="arcLevel" th:case="04" value="内部" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input th:case="*" value=" " class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="hasMoveBank" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">是否移交行档室:</label>
+            <div class="col-sm-8" th:switch="*{arcHasMoveBank}">
+                <input name="arcHasMoveBank" th:case="0" value="否" class="form-control"
+                       type="text" readonly disabled>
+                <input name="arcHasMoveBank" th:case="1" value="是" class="form-control"
+                       type="text" readonly disabled>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" id="recTim">
+            <label class="col-sm-4 control-label">接收时间:</label>
+            <div class="col-sm-8">
+                <!--<th:if="${amsBatch.arcHasMoveBank}=='0'">-->
+                <input id="receiveTime1" name="receiveTime"
+                       th:value="${#dates.format(amsBatch.receiveTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control"
+                       type="text" readonly disabled>
+                <!--</th:if>-->
+                <!--<th:if="${amsBatch.arcHasMoveBank}=='1'">-->
+                <input id="receivingTime1" name="receivingTime"
+                       th:value="${#dates.format(amsBatch.receivingTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control"
+                       type="text" readonly disabled>
+                <!--</th:if>-->
+            </div>
+        </div>
+        <div id="expenseInvolve" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">是否涉及费用：</label>
+            <div class="col-sm-8" th:if="*{expenseInvolve==null}">
+                <input name="expenseInvolve" th:field="*{expenseInvolve}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{expenseInvolve!=null}" th:switch="*{expenseInvolve}">
+                <input name="expenseInvolve" th:case="0" value="否" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="expenseInvolve" th:case="1" value="是" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="arcFormat" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">档案形态：</label>
+            <div class="col-sm-8" th:if="*{arcFormat==null}">
+                <input name="arcFormat" th:field="*{arcFormat}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{arcFormat!=null}" th:switch="*{arcFormat}">
+                <input name="arcFormat" th:case="10" value="电子形态" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="arcFormat" th:case="20" value="实物形态" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcFormat} == '20'">
+            <label class="col-sm-4 control-label">不电子化的原因:</label>
+            <div class="col-sm-8">
+                <input name="reason" th:field="*{reason}" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcFormat} == '10'" style="display: none;">
+            <label class="col-sm-4 control-label">不电子化的原因:</label>
+            <div class="col-sm-8">
+                <input name="reason" th:field="*{reason}" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="isNoMedium" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">有无介质：</label>
+            <div class="col-sm-8" th:if="*{isNoMedium==null}">
+                <input name="isNoMedium" th:field="*{isNoMedium}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{isNoMedium!=null}" th:switch="*{isNoMedium}">
+                <input name="isNoMedium" th:case="0" value="无" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input name="isNoMedium" th:case="1" value="有" class="form-control" type="text" readonly="readonly"
+                       disabled>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="respOpName" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">责任者：</label>
+            <div class="col-sm-8">
+                <input name="respOpName" th:field="*{respOpName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcCode" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">文件编号：</label>
+            <div class="col-sm-8">
+                <input name="arcCode" th:field="*{arcCode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcPageNum" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">页数：</label>
+            <div class="col-sm-8">
+                <input name="arcPageNum" th:field="*{arcPageNum}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcNum" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">份数：</label>
+            <div class="col-sm-8">
+                <input name="arcNum" th:field="*{arcNum}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="totalTransactions" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">笔数：</label>
+            <div class="col-sm-8">
+                <input name="totalTransactions" th:field="*{totalTransactions}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="photographer" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">摄录人员：</label>
+            <div class="col-sm-8">
+                <input name="photographer" th:field="*{photographer}" class="form-control"
+                       type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="duration" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">时长：</label>
+            <div class="col-sm-8">
+                <input name="duration" th:field="*{duration}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="caption" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">文字说明：</label>
+            <div class="col-sm-8">
+                <input name="caption" th:field="*{caption}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="conferIns" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">授予单位：</label>
+            <div class="col-sm-8">
+                <input name="conferIns" th:field="*{conferIns}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="receiveIns" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">接收单位：</label>
+            <div class="col-sm-8">
+                <input name="receiveIns" th:field="*{receiveIns}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="originMode" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">来源：</label>
+            <div class="col-sm-8" th:if="*{originMode==null}">
+                <input name="originMode" th:field="*{originMode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{originMode!=null}" th:switch="*{originMode}">
+                <input name="originMode" th:case="1" value="经营产生" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="2" value="上级下发" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="3" value="移交" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="4" value="征集" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="5" value="收集" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="6" value="购买" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="7" value="捐赠" class="form-control" type="text" readonly>
+                <input name="originMode" th:case="8" value="其他" class="form-control" type="text" readonly>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="bill" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">分类：</label>
+            <div class="col-sm-8" th:if="*{bill==null}">
+                <input name="bill" th:field="*{bill}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{bill!=null}" th:switch="*{bill}">
+                <input name="bill" th:case="1" value="全部" class="form-control" type="text" readonly>
+                <input name="bill" th:case="2" value="重大活动" class="form-control" type="text" readonly>
+                <input name="bill" th:case="3" value="员工培训" class="form-control" type="text" readonly>
+                <input name="bill" th:case="4" value="公司荣誉" class="form-control" type="text" readonly>
+                <input name="bill" th:case="5" value="文化建设" class="form-control" type="text" readonly>
+                <input name="bill" th:case="6" value="关怀指导" class="form-control" type="text" readonly>
+                <input name="bill" th:case="7" value="同业交流" class="form-control" type="text" readonly>
+                <input name="bill" th:case="8" value="其他" class="form-control" type="text" readonly>
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="counterpart" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">相对方：</label>
+            <div class="col-sm-8">
+                <input name="arcDesc" th:field="*{counterpart}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="peopleName" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">姓名：</label>
+            <div class="col-sm-8">
+                <input name="peopleName" th:field="*{peopleName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="peopleCard" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">身份证号：</label>
+            <div class="col-sm-8">
+                <input name="peopleCard" th:field="*{peopleCard}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="carrier" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">载体形式：</label>
+            <div class="col-sm-8" th:if="*{carrier==null}">
+                <input name="carrier" th:field="*{carrier}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{carrier!=null}">
+                <!--<input id="carrier" name="carrier" th:field="*{carrier}" class="form-control" type="text" readonly>-->
+                <input name="carrier" th:if="*{carrier} == '01'" class="form-control" type="text" value="纸质档案"
+                       readonly="readonly" disabled>
+                <input name="carrier" th:if="*{carrier} == '02'" class="form-control" type="text" value="音像档案"
+                       readonly="readonly" disabled>
+                <input name="carrier" th:if="*{carrier} == '03'" class="form-control" type="text" value="电子档案"
+                       readonly="readonly" disabled>
+                <input name="carrier" th:if="*{carrier} == '04'" class="form-control" type="text" value="实物档案"
+                       readonly="readonly" disabled>
+                <input name="carrier" th:if="*{carrier} == '99'" class="form-control" type="text" value="其他档案"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="arcLayout" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">格式：</label>
+            <div class="col-sm-8" th:if="*{arcLayout==null}">
+                <input name="arcLayout" th:field="*{arcLayout}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+            <div class="col-sm-8" th:if="*{arcLayout!=null}" th:switch="*{arcLayout}">
+                <!--<input id="arcLayout" name="arcLayout" th:field="*{arcLayout}" class="form-control" type="text" readonly="readonly" disabled>-->
+                <input name="arcLayout" th:case='0' class="form-control" type="text" readonly="readonly" disabled
+                       value="全部">
+                <input name="arcLayout" th:case='1' class="form-control" type="text" readonly="readonly" disabled
+                       value="mp4">
+                <input name="arcLayout" th:case='2' class="form-control" type="text" readonly="readonly" disabled
+                       value="wmv">
+                <input name="arcLayout" th:case='3' class="form-control" type="text" readonly="readonly" disabled
+                       value="rmvb">
+                <input name="arcLayout" th:case='4' class="form-control" type="text" readonly="readonly" disabled
+                       value="mkv">
+                <input name="arcLayout" th:case='5' class="form-control" type="text" readonly="readonly" disabled
+                       value="avi">
+                <input name="arcLayout" th:case='6' class="form-control" type="text" readonly="readonly" disabled
+                       value="flv">
+                <input name="arcLayout" th:case='7' class="form-control" type="text" readonly="readonly" disabled
+                       value="mp3">
+                <input name="arcLayout" th:case='8' class="form-control" type="text" readonly="readonly" disabled
+                       value="wav">
+                <input name="arcLayout" th:case='9' class="form-control" type="text" readonly="readonly" disabled
+                       value="wma">
+                <input name="arcLayout" th:case='10' class="form-control" type="text" readonly="readonly" disabled
+                       value="ogg">
+                <input name="arcLayout" th:case='11' class="form-control" type="text" readonly="readonly" disabled
+                       value="ape">
+                <input name="arcLayout" th:case='12' class="form-control" type="text" readonly="readonly" disabled
+                       value="acc">
+                <input name="arcLayout" th:case='13' class="form-control" type="text" readonly="readonly" disabled
+                       value="其他">
+                <input th:case="*" class="form-control" type="text" readonly disabled>
+            </div>
+        </div>
+        <div id="afourNum" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">A4数：</label>
+            <div class="col-sm-8">
+                <input name="afourNum" th:field="*{afourNum}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="themeSpeech" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">主题词：</label>
+            <div class="col-sm-8">
+                <input name="themeSpeech" th:field="*{themeSpeech}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="language" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">语种：</label>
+            <div class="col-sm-8">
+                <input name="language" th:field="*{language}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="originType" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">来源单位或个人：</label>
+            <div class="col-sm-8">
+                <input name="originType" th:field="*{originType}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="cutting" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">开本：</label>
+            <div class="col-sm-8">
+                <input name="cutting" th:field="*{cutting}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="otherName" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">并列题名：</label>
+            <div class="col-sm-8">
+                <input name="otherName" th:field="*{otherName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="forwardNo" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">转发文号：</label>
+            <div class="col-sm-8">
+                <input name="forwardNo" th:field="*{forwardNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="forwardName" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">转发文题名：</label>
+            <div class="col-sm-8">
+                <input name="forwardName" th:field="*{forwardName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="receiptNo" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">收文编号：</label>
+            <div class="col-sm-8">
+                <input name="receiptNo" th:field="*{receiptNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="eTC" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">附注：</label>
+            <div class="col-sm-8">
+                <input name="eTC" th:field="*{eTC}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="etcNum" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">附件数：</label>
+            <div class="col-sm-8">
+                <input name="etcNum" th:field="*{etcNum}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="edition" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">版次：</label>
+            <div class="col-sm-8">
+                <input name="edition" th:field="*{edition}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="practDesc" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">描述：</label>
+            <div class="col-sm-8">
+                <input name="practDesc" th:field="*{practDesc}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="arcCopyright" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">版权：</label>
+            <div class="col-sm-8">
+                <input name="arcCopyright" th:field="*{arcCopyright}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="keyWord" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">关键字：</label>
+            <div class="col-sm-8">
+                <input name="keyWord" th:field="*{keyWord}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div id="remark" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">备注信息：</label>
+            <div class="col-sm-8">
+                <input name="remark" th:field="*{remark}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div id="arcAbstract" class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">摘要：</label>
+            <div class="col-sm-8">
+                <input name="arcAbstract" th:field="*{arcAbstract}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" th:object="${amsBatch}">
+        <h4 class="form-header h4">登记信息</h4>
+
+        <div class="form-group col-sm-6" th:if="*{batchNo!=null}">
+            <label class="col-sm-4 control-label">注入批次号：</label>
+            <div class="col-sm-8">
+                <input name="batchNo" th:field="*{batchNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{orgCode!=null}">
+            <label class="col-sm-4 control-label">部门代码：</label>
+            <div class="col-sm-8">
+                <input name="orgCode" th:field="*{orgCode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{orgName!=null}">
+            <label class="col-sm-4 control-label">部门名称：</label>
+            <div class="col-sm-8">
+                <input name="orgName" th:field="*{orgName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{crtTime!=null}">
+            <label class="col-sm-4 control-label">创建时间：</label>
+            <div class="col-sm-8">
+                <input name="crtTime" th:value="${#dates.format(amsBatch?.crtTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{crtNo!=null}">
+            <label class="col-sm-4 control-label">创建人号：</label>
+            <div class="col-sm-8">
+                <input name="crtNo" th:field="*{crtNo}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{crtName!=null}">
+            <label class="col-sm-4 control-label">创建人名称：</label>
+            <div class="col-sm-8">
+                <input name="crtName" th:field="*{crtName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{modTime!=null}">
+            <label class="col-sm-4 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input name="modTime" th:value="${#dates.format(amsBatch?.modTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{modNo!=null}">
+            <label class="col-sm-4 control-label">修改人号：</label>
+            <div class="col-sm-8">
+                <input name="modNo" th:field="*{modNo}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{modName!=null}">
+            <label class="col-sm-4 control-label">修改人名称：</label>
+            <div class="col-sm-8">
+                <input name="modName" th:field="*{modName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{status!=null}">
+            <label class="col-sm-4 control-label">档案当前状态：</label>
+            <div class="col-sm-8" th:switch="*{status}">
+                <input name="status" th:case="10" value="已销毁" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="9" value="待废弃" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="8" value="已废弃" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="7" value="已出库" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="6" value="退回" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="5" value="已入库" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="4" value="待入库" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="3" value="待入盒" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="2" value="申请中" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="1" value="已注入" class="form-control" type="text"
+                       readonly="readonly" disabled>
+                <input name="status" th:case="0" value="已删除" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcTransfer!=null}">
+            <label class="col-sm-4 control-label">档案移交人：</label>
+            <div class="col-sm-8">
+                <input name="arcTransfer" th:field="*{arcTransfer}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{turnInNo!=null}">
+            <label class="col-sm-4 control-label">上交人号：</label>
+            <div class="col-sm-8">
+                <input name="turnInNo" th:field="*{turnInNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{turnInName!=null}">
+            <label class="col-sm-4 control-label">上交人名称：</label>
+            <div class="col-sm-8">
+                <input name="turnInName" th:field="*{turnInName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{receiveNo!=null}">
+            <label class="col-sm-4 control-label">接收人号：</label>
+            <div class="col-sm-8">
+                <input name="receiveNo" th:field="*{receiveNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{receiveName!=null}">
+            <label class="col-sm-4 control-label">接收人名称：</label>
+            <div class="col-sm-8">
+                <input name="receiveName" th:field="*{receiveName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{returnReason!=null}">
+            <label class="col-sm-4 control-label">退回原因：</label>
+            <div class="col-sm-8">
+                <input name="returnReason" th:field="*{returnReason}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{apprInfoId!=null}">
+            <label class="col-sm-4 control-label">审批信息：</label>
+            <div class="col-sm-8">
+                <input name="apprInfoId" th:field="*{apprInfoId}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{respDepaName!=null}">
+            <label class="col-sm-4 control-label">责任部门：</label>
+            <div class="col-sm-8">
+                <input name="respDepaName" th:field="*{respDepaName}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{filingDepa!=null}">
+            <label class="col-sm-4 control-label">归档部门：</label>
+            <div class="col-sm-8">
+                <input name="filingDepa" th:field="*{filingDepa}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{practType!=null}">
+            <label class="col-sm-4 control-label">实物分类：</label>
+            <div class="col-sm-8">
+                <input name="practType" th:field="*{practType}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcText!=null}">
+            <label class="col-sm-4 control-label">文本：</label>
+            <div class="col-sm-8">
+                <input name="arcText" th:field="*{arcText}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{saveAddress!=null}">
+            <label class="col-sm-4 control-label">存放地点：</label>
+            <div class="col-sm-8">
+                <input name="saveAddress" th:field="*{saveAddress}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{medelType!=null}">
+            <label class="col-sm-4 control-label">媒体类别：</label>
+            <div class="col-sm-8">
+                <input name="medelType" th:field="*{medelType}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{medelCode!=null}">
+            <label class="col-sm-4 control-label">媒体编号：</label>
+            <div class="col-sm-8">
+                <input name="medelCode" th:field="*{medelCode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{filingTime!=null}">
+            <label class="col-sm-4 control-label">归档日期：</label>
+            <div class="col-sm-8">
+                <input name="filingTime" th:value="${#dates.format(amsBatch?.filingTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{respDepaCode!=null}">
+            <label class="col-sm-4 control-label">责任部门编号：</label>
+            <div class="col-sm-8">
+                <input name="respDepaCode" th:field="*{respDepaCode}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{respOpCode!=null}">
+            <label class="col-sm-4 control-label">责任者编号：</label>
+            <div class="col-sm-8">
+                <input name="respOpCode" th:field="*{respOpCode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcBillCode!=null}">
+            <label class="col-sm-4 control-label">档案类型编号：</label>
+            <div class="col-sm-8">
+                <input name="arcBillCode" th:field="*{arcBillCode}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{filingDepaCode!=null}">
+            <label class="col-sm-4 control-label">归档单位编号：</label>
+            <div class="col-sm-8">
+                <input name="filingDepaCode" th:field="*{filingDepaCode}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcBillDeptCode!=null}">
+            <label class="col-sm-4 control-label">部门档案类型编号：</label>
+            <div class="col-sm-8">
+                <input name="arcBillDeptCode" th:field="*{arcBillDeptCode}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{photoNo!=null}">
+            <label class="col-sm-4 control-label">照片号：</label>
+            <div class="col-sm-8">
+                <input name="photoNo" th:field="*{photoNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{negativesNo!=null}">
+            <label class="col-sm-4 control-label">底片号：</label>
+            <div class="col-sm-8">
+                <input name="negativesNo" th:field="*{negativesNo}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{indexMark!=null}">
+            <label class="col-sm-4 control-label">参见号：</label>
+            <div class="col-sm-8">
+                <input name="indexMark" th:field="*{indexMark}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{arcDesc!=null}">
+            <label class="col-sm-4 control-label">描述：</label>
+            <div class="col-sm-8">
+                <input name="arcDesc" th:field="*{arcDesc}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{serviceType!=null}">
+            <label class="col-sm-4 control-label">业务类型：</label>
+            <div class="col-sm-8">
+                <input name="serviceType" th:field="*{serviceType}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{receivingOpinion!=null}">
+            <label class="col-sm-4 control-label">接收意见：</label>
+            <div class="col-sm-8">
+                <input name="receivingOpinion" th:field="*{receivingOpinion}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <!--<div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">入盒执行人Code：</label>
+            <div class="col-sm-8">
+                <input id="boxOpCode" name="boxOpCode" th:field="*{boxOpCode}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>-->
+        <div class="form-group col-sm-6" th:if="*{boxOpName!=null}">
+            <label class="col-sm-4 control-label">入盒执行人：</label>
+            <div class="col-sm-8">
+                <input name="boxOpName" th:field="*{boxOpName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <!--	<div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">入盒执行部门Code：</label>
+                <div class="col-sm-8">
+                    <input id="boxOrgCode" name="boxOrgCode" th:field="*{boxOrgCode}" class="form-control" type="text" readonly="readonly" disabled>
+                </div>
+            </div>-->
+        <div class="form-group col-sm-6" th:if="*{boxOrgName!=null}">
+            <label class="col-sm-4 control-label">入盒执行部门：</label>
+            <div class="col-sm-8">
+                <input name="boxOrgName" th:field="*{boxOrgName}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{boxId!=null}">
+            <label class="col-sm-4 control-label">所在盒：</label>
+            <div class="col-sm-8">
+                <input name="boxId" th:field="*{boxId}" class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{updatePath!=null}">
+            <label class="col-sm-4 control-label">著录修改页面：</label>
+            <div class="col-sm-8">
+                <input name="updatePath" th:field="*{updatePath}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{viewPath!=null}">
+            <label class="col-sm-4 control-label">著录查看页面：</label>
+            <div class="col-sm-8">
+                <input name="viewPath" th:field="*{viewPath}" class="form-control" type="text" readonly="readonly"
+                       disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{expense!=null}">
+            <label class="col-sm-4 control-label">费用金额：</label>
+            <div class="col-sm-8">
+                <input name="expense" th:field="*{expense}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{businessStartTime!=null}">
+            <label class="col-sm-4 control-label">业务起始日：</label>
+            <div class="col-sm-8">
+                <input name="businessStartTime" th:field="*{businessStartTime}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{businessEndTime!=null}">
+            <label class="col-sm-4 control-label">业务到期日：</label>
+            <div class="col-sm-8">
+                <input name="businessEndTime" th:field="*{businessEndTime}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <!--<div class="form-group col-sm-6" th:if="*{receivingTime!=null}">-->
+        <!--<label class="col-sm-4 control-label">接收时间：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input name="receivingTime" th:value="${#dates.format(amsBatch?.receivingTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text" readonly="readonly" disabled>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group col-sm-6" th:if="*{storageLocation!=null}">
+            <label class="col-sm-4 control-label">档案存放地址：</label>
+            <div class="col-sm-8">
+                <input name="storageLocation" th:field="*{storageLocation}" class="form-control" type="text"
+                       readonly="readonly" disabled>
+            </div>
+        </div>
+        <div class="form-group col-sm-6" th:if="*{turnInTime!=null}">
+            <label class="col-sm-4 control-label">移交时间：</label>
+            <div class="col-sm-8">
+                <input name="turnInTime" th:value="${#dates.format(amsBatch?.turnInTime,'yyyy-MM-dd HH:mm:ss')}"
+                       class="form-control" type="text" readonly="readonly" disabled>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    $(function () {
+        var arr1 = []
+        var chObj = $("#form-amsBatch-edit").children("div");
+        chObj.each(function () {
+            arr1.push($(this).attr("id"))
+        });
+        var thisMouldStr = [[${mouldStr}]];
+        var arr2 = thisMouldStr.split(",")
+        var arr3 = [];
+
+        for (var i = 0; i < arr1.length; i++) {
+            for (var j = 0; j < arr2.length; j++) {
+                if (arr1[i] == arr2[j]) {
+                    break;
+                }
+                if (j == arr2.length - 1) {
+                    if (arr1[i] != arr2[j]) {
+                        arr3.push(arr1[i]);
+                    }
+                }
+            }
+        }
+        /*循环数组3，删除项目*/
+        for (var k = 0; k < arr3.length; k++) {
+            var thisId = arr3[k]
+            $("#" + thisId).hide()
+        }
+
+        if ([[${amsBatch.arcBillDept}]] == "音频档案" || [[${amsBatch.arcBillDept}]] == "视频档案") {
+            $("#durationHidden").show()
+        }
+        var hasMoveBank = [[${amsBatch.arcHasMoveBank}]];
+        if (hasMoveBank == '0') {
+            $('#receivingTime1').addClass('hiddenDiv');
+        } else if (hasMoveBank == '1') {
+            $('#receiveTime1').addClass('hiddenDiv');
+        } else {
+            $('#recTim').addClass('hiddenDiv');
+        }
+    })
+    var prefix = ctx + "myTask/myArchReceive";
+    $("#form-amsBatch-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsBatch-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

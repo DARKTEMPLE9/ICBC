@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImDictMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImDict" id="ImDictResult">
+        <result property="id" column="ID"/>
+        <result property="dictCode" column="DICT_CODE"/>
+        <result property="dictName" column="DICT_NAME"/>
+    </resultMap>
+
+    <sql id="selectImDictVo">
+        select ID, DICT_CODE, DICT_NAME from im_dict
+    </sql>
+
+    <select id="selectImDictList" resultMap="ImDictResult">
+        <include refid="selectImDictVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="dictCode != null  and dictCode != '' ">and DICT_CODE = #{dictCode}</if>
+            <if test="dictName != null  and dictName != '' ">and DICT_NAME = #{dictName}</if>
+        </where>
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(1) from im_dict
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="dictCode != null  and dictCode != '' ">and DICT_CODE = #{dictCode}</if>
+            <if test="dictName != null  and dictName != '' ">and DICT_NAME = #{dictName}</if>
+        </where>
+    </select>
+
+    <select id="selectImDictById" parameterType="Long" resultMap="ImDictResult">
+        <include refid="selectImDictVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="addDict" useGeneratedKeys="true" keyProperty="id">
+        insert into im_dict (dict_code,dict_name) VALUES(#{dictCode},#{dictName})
+    </insert>
+
+    <update id="updateImDict" parameterType="net.northking.iacmp.imp.domain.ImDict">
+        update im_dict
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dictCode != null  and dictCode != ''  ">DICT_CODE = #{dictCode},</if>
+            <if test="dictName != null  and dictName != ''  ">DICT_NAME = #{dictName},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImDictById" parameterType="Long">
+        delete from im_dict where ID = #{id}
+    </delete>
+
+    <delete id="deleteImDictByIds" parameterType="String">
+        delete from im_dict where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

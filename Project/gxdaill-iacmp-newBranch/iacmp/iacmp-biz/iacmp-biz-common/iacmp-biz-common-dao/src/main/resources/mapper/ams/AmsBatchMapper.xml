@@ -1,0 +1,1283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsBatchMapper">
+
+    <resultMap type="AmsBatch" id="AmsBatchResult">
+        <result property="id" column="ID"/>
+        <result property="batchNo" column="BATCH_NO"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="crtTime" column="CRT_TIME"/>
+        <result property="crtNo" column="CRT_NO"/>
+        <result property="crtName" column="CRT_NAME"/>
+        <result property="modTime" column="MOD_TIME"/>
+        <result property="modNo" column="MOD_NO"/>
+        <result property="modName" column="MOD_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="arcName" column="ARC_NAME"/>
+        <result property="arcTransfer" column="ARC_TRANSFER"/>
+        <result property="remark" column="REMARK"/>
+        <result property="turnInNo" column="TURN_IN_NO"/>
+        <result property="turnInName" column="TURN_IN_NAME"/>
+        <result property="receiveNo" column="RECEIVE_NO"/>
+        <result property="receiveName" column="RECEIVE_NAME"/>
+        <result property="returnReason" column="RETURN_REASON"/>
+        <result property="apprInfoId" column="APPR_INFO_ID"/>
+        <result property="respDepaName" column="RESP_DEPA_NAME"/>
+        <result property="respOpName" column="RESP_OP_NAME"/>
+        <result property="arcCode" column="ARC_CODE"/>
+        <result property="arcNum" column="ARC_NUM"/>
+        <result property="arcPageNum" column="ARC_PAGE_NUM"/>
+        <result property="arcLevel" column="ARC_LEVEL"/>
+        <result property="arcCreTime" column="ARC_CRE_TIME"/>
+        <result property="filingDepa" column="FILING_DEPA"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="themeSpeech" column="THEME_SPEECH"/>
+        <result property="cutting" column="CUTTING"/>
+        <result property="language" column="LANGUAGE"/>
+        <result property="carrier" column="CARRIER"/>
+        <result property="otherName" column="OTHER_NAME"/>
+        <result property="forwardNo" column="FORWARD_NO"/>
+        <result property="forwardName" column="FORWARD_NAME"/>
+        <result property="receiptNo" column="RECEIPT_NO"/>
+        <result property="eTC" column="ETC"/>
+        <result property="etcNum" column="ETC_NUM"/>
+        <result property="practType" column="PRACT_TYPE"/>
+        <result property="practDesc" column="PRACT_DESC"/>
+        <result property="edition" column="EDITION"/>
+        <result property="afourNum" column="AFOUR_NUM"/>
+        <result property="arcText" column="ARC_TEXT"/>
+        <result property="originType" column="ORIGIN_TYPE"/>
+        <result property="saveAddress" column="SAVE_ADDRESS"/>
+        <result property="medelType" column="MEDEL_TYPE"/>
+        <result property="medelCode" column="MEDEL_CODE"/>
+        <result property="filingTime" column="FILING_TIME"/>
+        <result property="expenseInvolve" column="EXPENSE_INVOLVE"/>
+        <result property="arcBill" column="ARC_BILL"/>
+        <result property="arcFormat" column="ARC_FORMAT"/>
+        <result property="originMode" column="ORIGIN_MODE"/>
+        <result property="arcAbstract" column="ARC_ABSTRACT"/>
+        <result property="respDepaCode" column="RESP_DEPA_CODE"/>
+        <result property="respOpCode" column="RESP_OP_CODE"/>
+        <result property="arcBillCode" column="ARC_BILL_CODE"/>
+        <result property="filingDepaCode" column="FILING_DEPA_CODE"/>
+        <result property="arcBillDept" column="ARC_BILL_DEPT"/>
+        <result property="arcBillDeptCode" column="ARC_BILL_DEPT_CODE"/>
+        <result property="conferIns" column="CONFER_INS"/>
+        <result property="receiveIns" column="RECEIVE_INS"/>
+        <result property="photoNo" column="PHOTO_NO"/>
+        <result property="negativesNo" column="NEGATIVES_NO"/>
+        <result property="photographer" column="PHOTOGRAPHER"/>
+        <result property="indexMark" column="INDEX_MARK"/>
+        <result property="bill" column="BILL"/>
+        <result property="arcDesc" column="ARC_DESC"/>
+        <result property="arcCopyright" column="ARC_COPYRIGHT"/>
+        <result property="arcLayout" column="ARC_LAYOUT"/>
+        <result property="serviceType" column="SERVICE_TYPE"/>
+        <result property="keyWord" column="KEY_WORD"/>
+        <result property="receivingOpinion" column="RECEIVING_OPINION"/>
+        <result property="boxOpCode" column="box_op_code"/>
+        <result property="boxOpName" column="box_op_name"/>
+        <result property="boxOrgCode" column="box_org_code"/>
+        <result property="boxOrgName" column="box_org_name"/>
+        <result property="boxId" column="box_id"/>
+        <result property="updatePath" column="UPDATE_PATH"/>
+        <result property="viewPath" column="VIEW_PATH"/>
+        <result property="expense" column="EXPENSE"/>
+        <result property="reason" column="REASON"/>
+        <result property="isNoMedium" column="IS_NO_MEDIUM"/>
+        <result property="caption" column="CAPTION"/>
+        <result property="duration" column="DURATION"/>
+        <result property="businessStartTime" column="business_start_time"/>
+        <result property="businessEndTime" column="business_end_time"/>
+        <result property="receivingTime" column="RECEIVING_TIME"/>
+        <result property="storageLocation" column="STORAGE_LOCATION"/>
+        <result property="turnInTime" column="TURN_IN_TIME"/>
+        <result property="receiveTime" column="RECEIVE_TIME"/>
+        <result property="totalTransactions" column="total_transactions"/>
+        <result property="arcHasMoveBank" column="arc_has_move_bank"/>
+        <result property="peopleName" column="people_name"/>
+        <result property="peopleCard" column="people_card"/>
+        <result property="batchPk" column="batch_pk"/>
+        <result property="busiNo" column="busi_no"/>
+    </resultMap>
+
+    <resultMap type="AmsBatchDTO" id="AmsBatchDTOResult">
+        <result property="id" column="ID"/>
+        <result property="batchNo" column="BATCH_NO"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="crtTime" column="CRT_TIME"/>
+        <result property="crtNo" column="CRT_NO"/>
+        <result property="crtName" column="CRT_NAME"/>
+        <result property="modTime" column="MOD_TIME"/>
+        <result property="modNo" column="MOD_NO"/>
+        <result property="modName" column="MOD_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="arcName" column="ARC_NAME"/>
+        <result property="arcTransfer" column="ARC_TRANSFER"/>
+        <result property="remark" column="REMARK"/>
+        <result property="turnInNo" column="TURN_IN_NO"/>
+        <result property="turnInName" column="TURN_IN_NAME"/>
+        <result property="receiveNo" column="RECEIVE_NO"/>
+        <result property="receiveName" column="RECEIVE_NAME"/>
+        <result property="returnReason" column="RETURN_REASON"/>
+        <result property="apprInfoId" column="APPR_INFO_ID"/>
+        <result property="respDepaName" column="RESP_DEPA_NAME"/>
+        <result property="respOpName" column="RESP_OP_NAME"/>
+        <result property="arcCode" column="ARC_CODE"/>
+        <result property="arcNum" column="ARC_NUM"/>
+        <result property="arcPageNum" column="ARC_PAGE_NUM"/>
+        <result property="arcLevel" column="ARC_LEVEL"/>
+        <result property="arcCreTime" column="ARC_CRE_TIME"/>
+        <result property="filingDepa" column="FILING_DEPA"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="themeSpeech" column="THEME_SPEECH"/>
+        <result property="cutting" column="CUTTING"/>
+        <result property="language" column="LANGUAGE"/>
+        <result property="carrier" column="CARRIER"/>
+        <result property="otherName" column="OTHER_NAME"/>
+        <result property="forwardNo" column="FORWARD_NO"/>
+        <result property="forwardName" column="FORWARD_NAME"/>
+        <result property="receiptNo" column="RECEIPT_NO"/>
+        <result property="eTC" column="ETC"/>
+        <result property="etcNum" column="ETC_NUM"/>
+        <result property="practType" column="PRACT_TYPE"/>
+        <result property="practDesc" column="PRACT_DESC"/>
+        <result property="edition" column="EDITION"/>
+        <result property="afourNum" column="AFOUR_NUM"/>
+        <result property="arcText" column="ARC_TEXT"/>
+        <result property="originType" column="ORIGIN_TYPE"/>
+        <result property="saveAddress" column="SAVE_ADDRESS"/>
+        <result property="medelType" column="MEDEL_TYPE"/>
+        <result property="medelCode" column="MEDEL_CODE"/>
+        <result property="filingTime" column="FILING_TIME"/>
+        <result property="expenseInvolve" column="EXPENSE_INVOLVE"/>
+        <result property="arcBill" column="ARC_BILL"/>
+        <result property="arcFormat" column="ARC_FORMAT"/>
+        <result property="originMode" column="ORIGIN_MODE"/>
+        <result property="arcAbstract" column="ARC_ABSTRACT"/>
+        <result property="respDepaCode" column="RESP_DEPA_CODE"/>
+        <result property="respOpCode" column="RESP_OP_CODE"/>
+        <result property="arcBillCode" column="ARC_BILL_CODE"/>
+        <result property="filingDepaCode" column="FILING_DEPA_CODE"/>
+        <result property="arcBillDept" column="ARC_BILL_DEPT"/>
+        <result property="arcBillDeptCode" column="ARC_BILL_DEPT_CODE"/>
+        <result property="conferIns" column="CONFER_INS"/>
+        <result property="receiveIns" column="RECEIVE_INS"/>
+        <result property="photoNo" column="PHOTO_NO"/>
+        <result property="negativesNo" column="NEGATIVES_NO"/>
+        <result property="photographer" column="PHOTOGRAPHER"/>
+        <result property="indexMark" column="INDEX_MARK"/>
+        <result property="bill" column="BILL"/>
+        <result property="arcDesc" column="ARC_DESC"/>
+        <result property="arcCopyright" column="ARC_COPYRIGHT"/>
+        <result property="arcLayout" column="ARC_LAYOUT"/>
+        <result property="serviceType" column="SERVICE_TYPE"/>
+        <result property="keyWord" column="KEY_WORD"/>
+        <result property="receivingOpinion" column="RECEIVING_OPINION"/>
+        <result property="boxOpCode" column="box_op_code"/>
+        <result property="boxOpName" column="box_op_name"/>
+        <result property="boxOrgCode" column="box_org_code"/>
+        <result property="boxOrgName" column="box_org_name"/>
+        <result property="boxId" column="box_id"/>
+        <result property="updatePath" column="UPDATE_PATH"/>
+        <result property="viewPath" column="VIEW_PATH"/>
+        <result property="expense" column="EXPENSE"/>
+        <result property="reason" column="REASON"/>
+        <result property="isNoMedium" column="IS_NO_MEDIUM"/>
+        <result property="caption" column="CAPTION"/>
+        <result property="duration" column="DURATION"/>
+        <result property="businessStartTime" column="business_start_time"/>
+        <result property="businessEndTime" column="business_end_time"/>
+        <result property="receivingTime" column="RECEIVING_TIME"/>
+        <result property="storageLocation" column="STORAGE_LOCATION"/>
+        <result property="turnInTime" column="TURN_IN_TIME"/>
+        <result property="receiveTime" column="RECEIVE_TIME"/>
+        <result property="totalTransactions" column="total_transactions"/>
+        <result property="peopleName" column="people_name"/>
+        <result property="peopleCard" column="people_card"/>
+        <result property="regOpName" column="REG_OP_NAME"/>
+        <result property="regTime" column="REG_TIME"/>
+
+    </resultMap>
+
+    <sql id="selectAmsBatchVo">
+        select ID, BATCH_NO, ORG_CODE, ORG_NAME, CRT_TIME, CRT_NO, CRT_NAME, MOD_TIME, MOD_NO, MOD_NAME,STATUS, ARC_NO,
+        ARC_NAME, ARC_TRANSFER, REMARK, TURN_IN_NO, TURN_IN_NAME, RECEIVE_NO, RECEIVE_NAME, RETURN_REASON, APPR_INFO_ID,
+        RESP_DEPA_NAME, RESP_OP_NAME, ARC_CODE, ARC_NUM, ARC_PAGE_NUM, ARC_LEVEL, ARC_CRE_TIME, FILING_DEPA, VAL_PERIOD,
+        THEME_SPEECH, CUTTING, LANGUAGE, CARRIER, OTHER_NAME, FORWARD_NO, FORWARD_NAME, RECEIPT_NO, ETC, ETC_NUM,
+        PRACT_TYPE, PRACT_DESC, EDITION, AFOUR_NUM, ARC_TEXT, ORIGIN_TYPE, SAVE_ADDRESS, MEDEL_TYPE, MEDEL_CODE,
+        FILING_TIME, EXPENSE_INVOLVE, ARC_BILL, ARC_FORMAT, ORIGIN_MODE, ARC_ABSTRACT, RESP_DEPA_CODE, RESP_OP_CODE,
+        ARC_BILL_CODE, FILING_DEPA_CODE, ARC_BILL_DEPT, ARC_BILL_DEPT_CODE, CONFER_INS, RECEIVE_INS, PHOTO_NO,
+        NEGATIVES_NO, PHOTOGRAPHER, INDEX_MARK, BILL, ARC_DESC, ARC_COPYRIGHT, ARC_LAYOUT, SERVICE_TYPE, KEY_WORD,
+        RECEIVING_OPINION, box_op_code, box_op_name, box_org_code, box_org_name, box_id, UPDATE_PATH, VIEW_PATH,
+        EXPENSE, REASON, IS_NO_MEDIUM, CAPTION, DURATION, business_start_time, business_end_time, STORAGE_LOCATION,
+        TURN_IN_TIME, RECEIVE_TIME,RECEIVING_TIME
+        ,total_transactions,arc_has_move_bank,people_name,people_card,busi_no,COUNTERPART from ams_batch
+    </sql>
+
+    <sql id="selectAmsTransfer">
+        select b.ID, b.BATCH_NO, b.ORG_CODE, b.ORG_NAME, b.CRT_TIME, b.CRT_NO,b.arc_has_move_bank, b.CRT_NAME,
+        b.MOD_TIME, b.MOD_NO, b.MOD_NAME,b.STATUS, b.ARC_NO, b.ARC_NAME, b.ARC_TRANSFER, b.REMARK, b.TURN_IN_NO,
+        b.TURN_IN_NAME, b.RECEIVE_NO, b.RECEIVE_NAME, b.RETURN_REASON, b.APPR_INFO_ID, b.RESP_DEPA_NAME, b.RESP_OP_NAME,
+        b.ARC_CODE, b.ARC_NUM, b.ARC_PAGE_NUM, b.ARC_LEVEL, b.ARC_CRE_TIME, b.FILING_DEPA, b.VAL_PERIOD, b.THEME_SPEECH,
+        b.CUTTING, b.LANGUAGE, b.CARRIER, b.OTHER_NAME, b.FORWARD_NO, b.FORWARD_NAME, b.RECEIPT_NO, b.ETC, b.ETC_NUM,
+        b.PRACT_TYPE, b.PRACT_DESC, b.EDITION, b.AFOUR_NUM, b.ARC_TEXT, r.REG_OP_NAME, b.ARC_BILL,r.REG_TIME from
+        ams_batch b
+        LEFT JOIN ams_arc_reg r
+        ON b.ARC_NO=r.ID
+    </sql>
+
+    <select id="selectAmsBatchVOList" parameterType="AmsBatchVO" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="receiveNo != null  and receiveNo != '' ">and RECEIVE_NO = #{receiveNo}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like concat(concat('%',#{arcName}),'%')</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME like
+                concat(concat('%',#{respOpName}),'%')
+            </if>
+            <if test="receivingTimeStart != null ">and
+                to_char(RECEIVING_TIME,'yyyy-mm-dd') &gt;= to_char(#{receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and
+                to_char(RECEIVING_TIME,'yyyy-mm-dd') &lt;= to_char(#{receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="crtTimeStart != null ">and
+                to_char(CRT_TIME,'yyyy-mm-dd') &gt;= to_char(#{crtTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="crtTimeEnd != null ">and
+                to_char(CRT_TIME,'yyyy-mm-dd') &lt;= to_char(#{crtTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <!--            <if test="orgCode != null  and orgCode != '' ">and-->
+            <!--            (ORG_CODE = #{orgCode} or ORG_CODE IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET-->
+            <!--                (#{orgCode},ancestors) ))-->
+            <!--            </if>-->
+            <!--            <if test="orgCode != null and orgCode != '' ">and-->
+            <!--                ORG_CODE IN-->
+            <!--                (-->
+            <!--                (SELECT DEPT_ID FROM SYS_DEPT WHERE DEPT_ID = #{orgCode})-->
+            <!--                UNION-->
+            <!--                (SELECT DEPT_ID FROM SYS_DEPT WHERE ANCESTORS = #{orgCode})-->
+            <!--                )-->
+            <!--            </if>-->
+            <if test="orgCode != null  and orgCode != '' ">and
+                ORG_CODE = #{orgCode}
+            </if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+
+            <!--            <if test="recTimeGte != null ">and-->
+            <!--                to_char(RECEIVE_TIME,'yyyy-mm-dd') &gt;= to_char(#{regTimeGte},'yyyy-mm-dd')</if>-->
+            <!--            <if test="recTimeGte != null ">and-->
+            <!--                to_char(RECEIVE_TIME,'yyyy-mm-dd') &lt;= to_char(#{regTimeGte},'yyyy-mm-dd')</if>-->
+
+            <!--            <if test="recTimeGte != null ">and-->
+            <!--                <![CDATA[ TURN_IN_TIME >= DATE_FORMAT(#{recTimeGte},'%Y-%m-%d') ]]></if>-->
+            <!--            <if test="recTimeLte != null ">and-->
+            <!--                <![CDATA[ TURN_IN_TIME <= DATE_FORMAT(#{recTimeLte},'%Y-%m-%d') ]]></if>-->
+            <!--            <if test="regTimeGte != null ">and-->
+            <!--                <![CDATA[ RECEIVE_TIME >= DATE_FORMAT(#{regTimeGte},'%Y-%m-%d') ]]></if>-->
+            <!--            <if test="regTimeLte != null ">and-->
+            <!--                <![CDATA[ RECEIVE_TIME <= DATE_FORMAT(#{regTimeLte},'%Y-%m-%d') ]]></if>-->
+        </where>
+        order by CRT_TIME desc
+    </select>
+
+    <select id="selectAmsBatchVOs" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="amsBatchVO.id != null  and amsBatchVO.id != '' ">and ID = #{amsBatchVO.id}</if>
+            <if test="amsBatchVO.crtNo != null  and amsBatchVO.crtNo != '' ">and CRT_NO = #{amsBatchVO.crtNo}</if>
+            <if test="amsBatchVO.receiveNo != null  and amsBatchVO.receiveNo != '' ">and RECEIVE_NO =
+                #{amsBatchVO.receiveNo}
+            </if>
+            <if test="amsBatchVO.arcName != null  and amsBatchVO.arcName != '' ">and ARC_NAME like
+                CONCAT(CONCAT('%',#{amsBatchVO.arcName}),'%')
+            </if>
+            <if test="amsBatchVO.respOpName != null  and amsBatchVO.respOpName != '' ">and RESP_OP_NAME like
+                CONCAT(CONCAT('%',#{amsBatchVO.respOpName}),'%')
+            </if>
+            <if test="amsBatchVO.receivingTimeStart != null ">and
+                <![CDATA[ DATE_FORMAT(RECEIVING_TIME,'%Y-%m-%d') >= DATE_FORMAT(#{amsBatchVO.receivingTimeStart},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.receivingTimeEnd != null ">and
+                <![CDATA[ DATE_FORMAT(RECEIVING_TIME,'%Y-%m-%d') <= DATE_FORMAT(#{amsBatchVO.receivingTimeEnd},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.crtTimeStart != null ">and
+                <![CDATA[ DATE_FORMAT(CRT_TIME,'%Y-%m-%d') >= DATE_FORMAT(#{amsBatchVO.crtTimeStart},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.crtTimeEnd != null ">and
+                <![CDATA[ DATE_FORMAT(CRT_TIME,'%Y-%m-%d') <= DATE_FORMAT(#{amsBatchVO.crtTimeEnd},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.arcBillDept != null  and amsBatchVO.arcBillDept != '' ">and ARC_BILL_DEPT =
+                #{amsBatchVO.arcBillDept}
+            </if>
+            <if test="amsBatchVO.arcBill != null  and amsBatchVO.arcBill != '' ">and ARC_BILL = #{amsBatchVO.arcBill}
+            </if>
+            <if test="deptList.size()>0">
+                and ORG_CODE in
+                <foreach item="deptid" collection="deptList" open="(" separator="," close=")">
+                    #{deptid}
+                </foreach>
+            </if>
+            <if test="amsBatchVO.status != null  and amsBatchVO.status != '' ">and STATUS = #{amsBatchVO.status}</if>
+            <if test="amsBatchVO.recTimeGte != null ">and
+                <![CDATA[ TURN_IN_TIME >= DATE_FORMAT(#{amsBatchVO.recTimeGte},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.recTimeLte != null ">and
+                <![CDATA[ TURN_IN_TIME <= DATE_FORMAT(#{amsBatchVO.recTimeLte},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.regTimeGte != null ">and
+                <![CDATA[ RECEIVE_TIME >= DATE_FORMAT(#{amsBatchVO.regTimeGte},'%Y-%m-%d') ]]></if>
+            <if test="amsBatchVO.regTimeLte != null ">and
+                <![CDATA[ RECEIVE_TIME <= DATE_FORMAT(#{amsBatchVO.regTimeLte},'%Y-%m-%d') ]]></if>
+        </where>
+        order by CRT_TIME desc
+    </select>
+
+
+    <select id="selectAmsBatchList" parameterType="AmsBatch" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="batchNo != null  and batchNo != '' ">and BATCH_NO = #{batchNo}</if>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and CRT_TIME = #{crtTime}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME = #{crtName}</if>
+            <if test="modTime != null ">and MOD_TIME = #{modTime}</if>
+            <if test="modNo != null  and modNo != '' ">and MOD_NO = #{modNo}</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="arcNo != null  and arcNo != '' ">and ARC_NO = #{arcNo}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like CONCAT(CONCAT('%',#{arcName}),'%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and ARC_TRANSFER = #{arcTransfer}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="turnInNo != null  and turnInNo != '' ">and TURN_IN_NO = #{turnInNo}</if>
+            <if test="turnInName != null  and turnInName != '' ">and TURN_IN_NAME = #{turnInName}</if>
+            <if test="receiveNo != null  and receiveNo != '' ">and RECEIVE_NO = #{receiveNo}</if>
+            <if test="receiveName != null  and receiveName != '' ">and RECEIVE_NAME = #{receiveName}</if>
+            <if test="returnReason != null  and returnReason != '' ">and RETURN_REASON = #{returnReason}</if>
+            <if test="apprInfoId != null  and apprInfoId != '' ">and APPR_INFO_ID = #{apprInfoId}</if>
+            <if test="respDepaName != null  and respDepaName != '' ">and RESP_DEPA_NAME = #{respDepaName}</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME = #{respOpName}</if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE = #{arcCode}</if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and ARC_CRE_TIME = #{arcCreTime}</if>
+            <if test="filingDepa != null  and filingDepa != '' ">and FILING_DEPA = #{filingDepa}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="themeSpeech != null  and themeSpeech != '' ">and THEME_SPEECH = #{themeSpeech}</if>
+            <if test="cutting != null  and cutting != '' ">and CUTTING = #{cutting}</if>
+            <if test="language != null  and language != '' ">and LANGUAGE = #{language}</if>
+            <if test="carrier != null  and carrier != '' ">and CARRIER = #{carrier}</if>
+            <if test="otherName != null  and otherName != '' ">and OTHER_NAME = #{otherName}</if>
+            <if test="forwardNo != null  and forwardNo != '' ">and FORWARD_NO = #{forwardNo}</if>
+            <if test="forwardName != null  and forwardName != '' ">and FORWARD_NAME = #{forwardName}</if>
+            <if test="receiptNo != null  and receiptNo != '' ">and RECEIPT_NO = #{receiptNo}</if>
+            <if test="eTC != null  and eTC != '' ">and ETC = #{eTC}</if>
+            <if test="etcNum != null ">and ETC_NUM = #{etcNum}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="practDesc != null  and practDesc != '' ">and PRACT_DESC = #{practDesc}</if>
+            <if test="edition != null  and edition != '' ">and EDITION = #{edition}</if>
+            <if test="afourNum != null ">and AFOUR_NUM = #{afourNum}</if>
+            <if test="arcText != null  and arcText != '' ">and ARC_TEXT = #{arcText}</if>
+            <if test="originType != null  and originType != '' ">and ORIGIN_TYPE = #{originType}</if>
+            <if test="saveAddress != null  and saveAddress != '' ">and SAVE_ADDRESS = #{saveAddress}</if>
+            <if test="medelType != null  and medelType != '' ">and MEDEL_TYPE = #{medelType}</if>
+            <if test="medelCode != null  and medelCode != '' ">and MEDEL_CODE = #{medelCode}</if>
+            <if test="filingTime != null ">and FILING_TIME = #{filingTime}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="arcAbstract != null  and arcAbstract != '' ">and ARC_ABSTRACT = #{arcAbstract}</if>
+            <if test="respDepaCode != null  and respDepaCode != '' ">and RESP_DEPA_CODE = #{respDepaCode}</if>
+            <if test="respOpCode != null  and respOpCode != '' ">and RESP_OP_CODE = #{respOpCode}</if>
+            <if test="arcBillCode != null  and arcBillCode != '' ">and ARC_BILL_CODE = #{arcBillCode}</if>
+            <if test="filingDepaCode != null  and filingDepaCode != '' ">and FILING_DEPA_CODE = #{filingDepaCode}</if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+            </if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS = #{conferIns}</if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS = #{receiveIns}</if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO = #{photoNo}</if>
+            <if test="negativesNo != null  and negativesNo != '' ">and NEGATIVES_NO = #{negativesNo}</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER = #{photographer}</if>
+            <if test="indexMark != null  and indexMark != '' ">and INDEX_MARK = #{indexMark}</if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="arcDesc != null  and arcDesc != '' ">and ARC_DESC = #{arcDesc}</if>
+            <if test="arcCopyright != null  and arcCopyright != '' ">and ARC_COPYRIGHT = #{arcCopyright}</if>
+            <if test="arcLayout != null  and arcLayout != '' ">and ARC_LAYOUT = #{arcLayout}</if>
+            <if test="serviceType != null  and serviceType != '' ">and SERVICE_TYPE = #{serviceType}</if>
+            <if test="keyWord != null  and keyWord != '' ">and KEY_WORD = #{keyWord}</if>
+            <if test="receivingOpinion != null  and receivingOpinion != '' ">and RECEIVING_OPINION =
+                #{receivingOpinion}
+            </if>
+            <if test="boxOpCode != null  and boxOpCode != '' ">and box_op_code = #{boxOpCode}</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="boxOpName != null  and boxOpName != '' ">and box_op_name = #{boxOpName}</if>
+            <if test="boxOrgCode != null  and boxOrgCode != '' ">and box_org_code = #{boxOrgCode}</if>
+            <if test="boxOrgName != null  and boxOrgName != '' ">and box_org_name = #{boxOrgName}</if>
+            <if test="boxId != null  and boxId != '' ">and box_id = #{boxId}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="expense != null  and expense != '' ">and EXPENSE = #{expense}</if>
+            <if test="reason != null  and reason != '' ">and REASON = #{reason}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION = #{caption}</if>
+            <if test="duration != null  and duration != '' ">and DURATION = #{duration}</if>
+            <if test="businessStartTime != null ">and business_start_time = #{businessStartTime}</if>
+            <if test="businessEndTime != null ">and business_end_time = #{businessEndTime}</if>
+            <if test="receivingTime != null ">and RECEIVING_TIME = #{receivingTime}</if>
+            <if test="storageLocation != null  and storageLocation != '' ">and STORAGE_LOCATION = #{storageLocation}
+            </if>
+            <if test="turnInTime != null ">and TURN_IN_TIME = #{turnInTime}</if>
+            <if test="receiveTime != null ">and RECEIVE_TIME = #{receiveTime}</if>
+        </where>
+        order by RECEIVING_TIME
+    </select>
+
+    <select id="selectarchReceiveList" parameterType="AmsBatch" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="batchNo != null  and batchNo != '' ">and BATCH_NO = #{batchNo}</if>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME like CONCAT(CONCAT('%',#{orgName}),'%')</if>
+            <if test="crtTime != null ">and CRT_TIME = #{crtTime}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME = #{crtName}</if>
+            <if test="modTime != null ">and MOD_TIME = #{modTime}</if>
+            <if test="modNo != null  and modNo != '' ">and MOD_NO = #{modNo}</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="arcNo != null  and arcNo != '' ">and ARC_NO = #{arcNo}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like CONCAT(CONCAT('%',#{arcName}),'%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and ARC_TRANSFER like
+                CONCAT(CONCAT('%',#{arcTransfer}),'%')
+            </if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="turnInNo != null  and turnInNo != '' ">and TURN_IN_NO = #{turnInNo}</if>
+            <if test="turnInName != null  and turnInName != '' ">and TURN_IN_NAME = #{turnInName}</if>
+            <if test="receiveNo != null  and receiveNo != '' ">and RECEIVE_NO = #{receiveNo}</if>
+            <if test="receiveName != null  and receiveName != '' ">and RECEIVE_NAME = #{receiveName}</if>
+            <if test="returnReason != null  and returnReason != '' ">and RETURN_REASON = #{returnReason}</if>
+            <if test="apprInfoId != null  and apprInfoId != '' ">and APPR_INFO_ID = #{apprInfoId}</if>
+            <if test="respDepaName != null  and respDepaName != '' ">and RESP_DEPA_NAME = #{respDepaName}</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME = #{respOpName}</if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE = #{arcCode}</if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and ARC_CRE_TIME = #{arcCreTime}</if>
+            <if test="filingDepa != null  and filingDepa != '' ">and FILING_DEPA = #{filingDepa}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="themeSpeech != null  and themeSpeech != '' ">and THEME_SPEECH = #{themeSpeech}</if>
+            <if test="cutting != null  and cutting != '' ">and CUTTING = #{cutting}</if>
+            <if test="language != null  and language != '' ">and LANGUAGE = #{language}</if>
+            <if test="carrier != null  and carrier != '' ">and CARRIER = #{carrier}</if>
+            <if test="otherName != null  and otherName != '' ">and OTHER_NAME = #{otherName}</if>
+            <if test="forwardNo != null  and forwardNo != '' ">and FORWARD_NO = #{forwardNo}</if>
+            <if test="forwardName != null  and forwardName != '' ">and FORWARD_NAME = #{forwardName}</if>
+            <if test="receiptNo != null  and receiptNo != '' ">and RECEIPT_NO = #{receiptNo}</if>
+            <if test="eTC != null  and eTC != '' ">and ETC = #{eTC}</if>
+            <if test="etcNum != null ">and ETC_NUM = #{etcNum}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="practDesc != null  and practDesc != '' ">and PRACT_DESC = #{practDesc}</if>
+            <if test="edition != null  and edition != '' ">and EDITION = #{edition}</if>
+            <if test="afourNum != null ">and AFOUR_NUM = #{afourNum}</if>
+            <if test="arcText != null  and arcText != '' ">and ARC_TEXT = #{arcText}</if>
+            <if test="originType != null  and originType != '' ">and ORIGIN_TYPE = #{originType}</if>
+            <if test="saveAddress != null  and saveAddress != '' ">and SAVE_ADDRESS = #{saveAddress}</if>
+            <if test="medelType != null  and medelType != '' ">and MEDEL_TYPE = #{medelType}</if>
+            <if test="medelCode != null  and medelCode != '' ">and MEDEL_CODE = #{medelCode}</if>
+            <if test="filingTime != null ">and FILING_TIME = #{filingTime}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL like CONCAT(CONCAT('%',#{arcBill}),'%')</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="arcFormat1 != null  and arcFormat1 != '' ">and ARC_FORMAT = #{arcFormat1}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="arcAbstract != null  and arcAbstract != '' ">and ARC_ABSTRACT = #{arcAbstract}</if>
+            <if test="respDepaCode != null  and respDepaCode != '' ">and RESP_DEPA_CODE = #{respDepaCode}</if>
+            <if test="respOpCode != null  and respOpCode != '' ">and RESP_OP_CODE = #{respOpCode}</if>
+            <if test="arcBillCode != null  and arcBillCode != '' ">and ARC_BILL_CODE = #{arcBillCode}</if>
+            <if test="filingDepaCode != null  and filingDepaCode != '' ">and FILING_DEPA_CODE = #{filingDepaCode}</if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+            </if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS = #{conferIns}</if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS = #{receiveIns}</if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO = #{photoNo}</if>
+            <if test="negativesNo != null  and negativesNo != '' ">and NEGATIVES_NO = #{negativesNo}</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER = #{photographer}</if>
+            <if test="indexMark != null  and indexMark != '' ">and INDEX_MARK = #{indexMark}</if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="arcDesc != null  and arcDesc != '' ">and ARC_DESC = #{arcDesc}</if>
+            <if test="arcCopyright != null  and arcCopyright != '' ">and ARC_COPYRIGHT = #{arcCopyright}</if>
+            <if test="arcLayout != null  and arcLayout != '' ">and ARC_LAYOUT = #{arcLayout}</if>
+            <if test="serviceType != null  and serviceType != '' ">and SERVICE_TYPE = #{serviceType}</if>
+            <if test="keyWord != null  and keyWord != '' ">and KEY_WORD = #{keyWord}</if>
+            <if test="receivingOpinion != null  and receivingOpinion != '' ">and RECEIVING_OPINION =
+                #{receivingOpinion}
+            </if>
+            <if test="boxOpCode != null  and boxOpCode != '' ">and box_op_code = #{boxOpCode}</if>
+            <if test="boxOpName != null  and boxOpName != '' ">and box_op_name = #{boxOpName}</if>
+            <if test="boxOrgCode != null  and boxOrgCode != '' ">and box_org_code = #{boxOrgCode}</if>
+            <if test="boxOrgName != null  and boxOrgName != '' ">and box_org_name = #{boxOrgName}</if>
+            <if test="boxId != null  and boxId != '' ">and box_id = #{boxId}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="expense != null  and expense != '' ">and EXPENSE = #{expense}</if>
+            <if test="reason != null  and reason != '' ">and REASON = #{reason}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION = #{caption}</if>
+            <if test="duration != null  and duration != '' ">and DURATION = #{duration}</if>
+            <if test="businessStartTime != null ">and business_start_time = #{businessStartTime}</if>
+            <if test="businessEndTime != null ">and business_end_time = #{businessEndTime}</if>
+            <if test="receivingTime != null ">and RECEIVING_TIME = #{receivingTime}</if>
+            <if test="receivingTimeY != null  and receivingTimeY != '' ">and to_char(RECEIVING_TIME,'yyyy') =
+                #{receivingTimeY}
+            </if>
+            <if test="storageLocation != null  and storageLocation != '' ">and STORAGE_LOCATION = #{storageLocation}
+            </if>
+            <if test="turnInTime != null ">and TURN_IN_TIME = #{turnInTime}</if>
+            <if test="turnInTimeStart != null ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{turnInTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="turnInTimeEnd != null ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{turnInTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="receiveTime != null ">and RECEIVE_TIME = #{receiveTime}</if>
+            <if test="receivingTimeStart != null ">and to_char(RECEIVING_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and to_char(RECEIVING_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+
+    <select id="selectmyReceiveList" parameterType="AmsBatch" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="batchNo != null  and batchNo != '' ">and BATCH_NO = #{batchNo}</if>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and CRT_TIME = #{crtTime}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME = #{crtName}</if>
+            <if test="modTime != null ">and MOD_TIME = #{modTime}</if>
+            <if test="modNo != null  and modNo != '' ">and MOD_NO = #{modNo}</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="arcNo != null  and arcNo != '' ">and ARC_NO = #{arcNo}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME LIKE CONCAT(CONCAT('%',#{arcName}),'%')</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and ARC_TRANSFER = #{arcTransfer}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="turnInNo != null  and turnInNo != '' ">and TURN_IN_NO = #{turnInNo}</if>
+            <if test="turnInName != null  and turnInName != '' ">and TURN_IN_NAME = #{turnInName}</if>
+            <if test="receiveNo != null  and receiveNo != '' ">and RECEIVE_NO = #{receiveNo}</if>
+            <if test="receiveName != null  and receiveName != '' ">and RECEIVE_NAME = #{receiveName}</if>
+            <if test="returnReason != null  and returnReason != '' ">and RETURN_REASON = #{returnReason}</if>
+            <if test="apprInfoId != null  and apprInfoId != '' ">and APPR_INFO_ID = #{apprInfoId}</if>
+            <if test="respDepaName != null  and respDepaName != '' ">and RESP_DEPA_NAME = #{respDepaName}</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME = #{respOpName}</if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE = #{arcCode}</if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and ARC_CRE_TIME = #{arcCreTime}</if>
+            <if test="filingDepa != null  and filingDepa != '' ">and FILING_DEPA = #{filingDepa}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="themeSpeech != null  and themeSpeech != '' ">and THEME_SPEECH = #{themeSpeech}</if>
+            <if test="cutting != null  and cutting != '' ">and CUTTING = #{cutting}</if>
+            <if test="language != null  and language != '' ">and LANGUAGE = #{language}</if>
+            <if test="carrier != null  and carrier != '' ">and CARRIER = #{carrier}</if>
+            <if test="otherName != null  and otherName != '' ">and OTHER_NAME = #{otherName}</if>
+            <if test="forwardNo != null  and forwardNo != '' ">and FORWARD_NO = #{forwardNo}</if>
+            <if test="forwardName != null  and forwardName != '' ">and FORWARD_NAME = #{forwardName}</if>
+            <if test="receiptNo != null  and receiptNo != '' ">and RECEIPT_NO = #{receiptNo}</if>
+            <if test="eTC != null  and eTC != '' ">and ETC = #{eTC}</if>
+            <if test="etcNum != null ">and ETC_NUM = #{etcNum}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="practDesc != null  and practDesc != '' ">and PRACT_DESC = #{practDesc}</if>
+            <if test="edition != null  and edition != '' ">and EDITION = #{edition}</if>
+            <if test="afourNum != null ">and AFOUR_NUM = #{afourNum}</if>
+            <if test="arcText != null  and arcText != '' ">and ARC_TEXT = #{arcText}</if>
+            <if test="originType != null  and originType != '' ">and ORIGIN_TYPE = #{originType}</if>
+            <if test="saveAddress != null  and saveAddress != '' ">and SAVE_ADDRESS = #{saveAddress}</if>
+            <if test="medelType != null  and medelType != '' ">and MEDEL_TYPE = #{medelType}</if>
+            <if test="medelCode != null  and medelCode != '' ">and MEDEL_CODE = #{medelCode}</if>
+            <if test="filingTime != null ">and FILING_TIME = #{filingTime}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="arcAbstract != null  and arcAbstract != '' ">and ARC_ABSTRACT = #{arcAbstract}</if>
+            <if test="respDepaCode != null  and respDepaCode != '' ">and RESP_DEPA_CODE = #{respDepaCode}</if>
+            <if test="respOpCode != null  and respOpCode != '' ">and RESP_OP_CODE = #{respOpCode}</if>
+            <if test="arcBillCode != null  and arcBillCode != '' ">and ARC_BILL_CODE = #{arcBillCode}</if>
+            <if test="filingDepaCode != null  and filingDepaCode != '' ">and FILING_DEPA_CODE = #{filingDepaCode}</if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+            </if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS = #{conferIns}</if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS = #{receiveIns}</if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO = #{photoNo}</if>
+            <if test="negativesNo != null  and negativesNo != '' ">and NEGATIVES_NO = #{negativesNo}</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER = #{photographer}</if>
+            <if test="indexMark != null  and indexMark != '' ">and INDEX_MARK = #{indexMark}</if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="arcDesc != null  and arcDesc != '' ">and ARC_DESC = #{arcDesc}</if>
+            <if test="arcCopyright != null  and arcCopyright != '' ">and ARC_COPYRIGHT = #{arcCopyright}</if>
+            <if test="arcLayout != null  and arcLayout != '' ">and ARC_LAYOUT = #{arcLayout}</if>
+            <if test="serviceType != null  and serviceType != '' ">and SERVICE_TYPE = #{serviceType}</if>
+            <if test="keyWord != null  and keyWord != '' ">and KEY_WORD = #{keyWord}</if>
+            <if test="receivingOpinion != null  and receivingOpinion != '' ">and RECEIVING_OPINION =
+                #{receivingOpinion}
+            </if>
+            <if test="boxOpCode != null  and boxOpCode != '' ">and box_op_code = #{boxOpCode}</if>
+            <if test="boxOpName != null  and boxOpName != '' ">and box_op_name = #{boxOpName}</if>
+            <if test="boxOrgCode != null  and boxOrgCode != '' ">and box_org_code = #{boxOrgCode}</if>
+            <if test="boxOrgName != null  and boxOrgName != '' ">and box_org_name = #{boxOrgName}</if>
+            <if test="boxId != null  and boxId != '' ">and box_id = #{boxId}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="expense != null  and expense != '' ">and EXPENSE = #{expense}</if>
+            <if test="reason != null  and reason != '' ">and REASON = #{reason}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION = #{caption}</if>
+            <if test="duration != null  and duration != '' ">and DURATION = #{duration}</if>
+            <if test="businessStartTime != null ">and business_start_time = #{businessStartTime}</if>
+            <if test="businessEndTime != null ">and business_end_time = #{businessEndTime}</if>
+            <if test="receivingTime != null ">and RECEIVING_TIME = #{receivingTime}</if>
+            <if test="storageLocation != null  and storageLocation != '' ">and STORAGE_LOCATION = #{storageLocation}
+            </if>
+            <if test="turnInTime != null ">and TURN_IN_TIME = #{turnInTime}</if>
+            <if test="turnInTimeStart != null ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{turnInTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="turnInTimeEnd != null ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{turnInTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="receiveTime != null ">and RECEIVE_TIME = #{receiveTime}</if>
+        </where>
+        ORDER BY RECEIVING_TIME DESC
+    </select>
+
+    <select id="selectAmsBatchById" parameterType="String" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectAmsBatchDTOById" parameterType="String" resultMap="AmsBatchDTOResult">
+        <include refid="selectAmsTransfer"/>
+        where b.ID = #{id}
+    </select>
+
+    <select id="selectAmsBatchByarcId" parameterType="String" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        where ARC_NO = #{id}
+    </select>
+
+    <select id="queryDeptName" resultType="java.lang.String">
+        select ORG_NAME from ams_batch group by ORG_NAME
+    </select>
+
+
+    <select id="queryqueryResult" parameterType="String" resultType="Map">
+        SELECT ORG_NAME orgName, GROUP_CONCAT(ARC_BILL) arcBill, GROUP_CONCAT(num) arcNum FROM (SELECT ORG_NAME,
+        ARC_BILL, COUNT(ARC_BILL) AS num, ARC_BILL_CODE FROM ams_batch WHERE
+        ORG_NAME = #{orgName} AND STATUS >= 3 AND STATUS &lt;=5 GROUP BY ARC_BILL, ORG_NAME, ARC_BILL_CODE) a GROUP BY
+        ORG_NAME
+    </select>
+
+    <select id="queryAllDept" resultType="java.lang.String">
+        select NAME from sm_organ
+    </select>
+
+
+    <insert id="insertAmsBatch" parameterType="AmsBatch" useGeneratedKeys="false" keyProperty="batchPk">
+        insert into ams_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO,</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE,</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME,</if>
+            <if test="crtTime != null  ">CRT_TIME,</if>
+            <if test="crtNo != null  and crtNo != ''  ">CRT_NO,</if>
+            <if test="crtName != null  and crtName != ''  ">CRT_NAME,</if>
+            <if test="modTime != null  ">MOD_TIME,</if>
+            <if test="modNo != null  and modNo != ''  ">MOD_NO,</if>
+            <if test="modName != null  and modName != ''  ">MOD_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO,</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME,</if>
+            <if test="arcTransfer != null  and arcTransfer != ''  ">ARC_TRANSFER,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="turnInNo != null  and turnInNo != ''  ">TURN_IN_NO,</if>
+            <if test="turnInName != null  and turnInName != ''  ">TURN_IN_NAME,</if>
+            <if test="receiveNo != null  and receiveNo != ''  ">RECEIVE_NO,</if>
+            <if test="receiveName != null  and receiveName != ''  ">RECEIVE_NAME,</if>
+            <if test="returnReason != null  and returnReason != ''  ">RETURN_REASON,</if>
+            <if test="apprInfoId != null  and apprInfoId != ''  ">APPR_INFO_ID,</if>
+            <if test="respDepaName != null  and respDepaName != ''  ">RESP_DEPA_NAME,</if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME,</if>
+            <if test="arcCode != null  and arcCode != ''  ">ARC_CODE,</if>
+            <if test="arcNum != null  ">ARC_NUM,</if>
+            <if test="arcPageNum != null  ">ARC_PAGE_NUM,</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">ARC_LEVEL,</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME,</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">total_transactions,</if>
+            <if test="filingDepa != null  and filingDepa != ''  ">FILING_DEPA,</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">VAL_PERIOD,</if>
+            <if test="themeSpeech != null  and themeSpeech != ''  ">THEME_SPEECH,</if>
+            <if test="cutting != null  and cutting != ''  ">CUTTING,</if>
+            <if test="language != null  and language != ''  ">LANGUAGE,</if>
+            <if test="carrier != null  and carrier != ''  ">CARRIER,</if>
+            <if test="otherName != null  and otherName != ''  ">OTHER_NAME,</if>
+            <if test="forwardNo != null  and forwardNo != ''  ">FORWARD_NO,</if>
+            <if test="forwardName != null  and forwardName != ''  ">FORWARD_NAME,</if>
+            <if test="receiptNo != null  and receiptNo != ''  ">RECEIPT_NO,</if>
+            <if test="eTC != null  and eTC != ''  ">ETC,</if>
+            <if test="etcNum != null  ">ETC_NUM,</if>
+            <if test="practType != null  and practType != ''  ">PRACT_TYPE,</if>
+            <if test="practDesc != null  and practDesc != ''  ">PRACT_DESC,</if>
+            <if test="edition != null  and edition != ''  ">EDITION,</if>
+            <if test="afourNum != null  ">AFOUR_NUM,</if>
+            <if test="arcText != null  and arcText != ''  ">ARC_TEXT,</if>
+            <if test="originType != null  and originType != ''  ">ORIGIN_TYPE,</if>
+            <if test="saveAddress != null  and saveAddress != ''  ">SAVE_ADDRESS,</if>
+            <if test="medelType != null  and medelType != ''  ">MEDEL_TYPE,</if>
+            <if test="medelCode != null  and medelCode != ''  ">MEDEL_CODE,</if>
+            <if test="filingTime != null  ">FILING_TIME,</if>
+            <if test="expenseInvolve != null  and expenseInvolve != ''  ">EXPENSE_INVOLVE,</if>
+            <if test="arcBill != null  and arcBill != ''  ">ARC_BILL,</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">ARC_FORMAT,</if>
+            <if test="originMode != null  and originMode != ''  ">ORIGIN_MODE,</if>
+            <if test="arcAbstract != null  and arcAbstract != ''  ">ARC_ABSTRACT,</if>
+            <if test="respDepaCode != null  and respDepaCode != ''  ">RESP_DEPA_CODE,</if>
+            <if test="respOpCode != null  and respOpCode != ''  ">RESP_OP_CODE,</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">ARC_BILL_CODE,</if>
+            <if test="filingDepaCode != null  and filingDepaCode != ''  ">FILING_DEPA_CODE,</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">ARC_BILL_DEPT,</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">ARC_BILL_DEPT_CODE,</if>
+            <if test="conferIns != null  and conferIns != ''  ">CONFER_INS,</if>
+            <if test="receiveIns != null  and receiveIns != ''  ">RECEIVE_INS,</if>
+            <if test="photoNo != null  and photoNo != ''  ">PHOTO_NO,</if>
+            <if test="negativesNo != null  and negativesNo != ''  ">NEGATIVES_NO,</if>
+            <if test="photographer != null  and photographer != ''  ">PHOTOGRAPHER,</if>
+            <if test="indexMark != null  and indexMark != ''  ">INDEX_MARK,</if>
+            <if test="bill != null  and bill != ''  ">BILL,</if>
+            <if test="arcDesc != null  and arcDesc != ''  ">ARC_DESC,</if>
+            <if test="arcCopyright != null  and arcCopyright != ''  ">ARC_COPYRIGHT,</if>
+            <if test="arcLayout != null  and arcLayout != ''  ">ARC_LAYOUT,</if>
+            <if test="serviceType != null  and serviceType != ''  ">SERVICE_TYPE,</if>
+            <if test="keyWord != null  and keyWord != ''  ">KEY_WORD,</if>
+            <if test="receivingOpinion != null  and receivingOpinion != ''  ">RECEIVING_OPINION,</if>
+            <if test="boxOpCode != null  and boxOpCode != ''  ">box_op_code,</if>
+            <if test="boxOpName != null  and boxOpName != ''  ">box_op_name,</if>
+            <if test="boxOrgCode != null  and boxOrgCode != ''  ">box_org_code,</if>
+            <if test="boxOrgName != null  and boxOrgName != ''  ">box_org_name,</if>
+            <if test="boxId != null  and boxId != ''  ">box_id,</if>
+            <if test="updatePath != null  and updatePath != ''  ">UPDATE_PATH,</if>
+            <if test="viewPath != null  and viewPath != ''  ">VIEW_PATH,</if>
+            <if test="expense != null  and expense != ''  ">EXPENSE,</if>
+            <if test="reason != null  and reason != ''  ">REASON,</if>
+            <if test="isNoMedium != null  and isNoMedium != ''  ">IS_NO_MEDIUM,</if>
+            <if test="caption != null  and caption != ''  ">CAPTION,</if>
+            <if test="duration != null  and duration != ''  ">DURATION,</if>
+            <if test="businessStartTime != null  ">business_start_time,</if>
+            <if test="businessEndTime != null  ">business_end_time,</if>
+            <if test="receivingTime != null  ">RECEIVING_TIME,</if>
+            <if test="storageLocation != null  and storageLocation != ''  ">STORAGE_LOCATION,</if>
+            <if test="turnInTime != null  ">TURN_IN_TIME,</if>
+            <if test="receiveTime != null  ">RECEIVE_TIME,</if>
+            <if test="arcHasMoveBank != null and arcHasMoveBank != ''  ">arc_has_move_bank,</if>
+            <if test="peopleName != null and peopleName != ''  ">people_name,</if>
+            <if test="peopleCard != null and peopleCard != ''  ">people_card,</if>
+            <if test="busiNo != null and busiNo != ''  ">busi_no,</if>
+            <if test="counterpart != null and counterpart != ''  ">COUNTERPART,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="batchNo != null  and batchNo != ''  ">#{batchNo},</if>
+            <if test="orgCode != null  and orgCode != ''  ">#{orgCode},</if>
+            <if test="orgName != null  and orgName != ''  ">#{orgName},</if>
+            <if test="crtTime != null  ">#{crtTime},</if>
+            <if test="crtNo != null  and crtNo != ''  ">#{crtNo},</if>
+            <if test="crtName != null  and crtName != ''  ">#{crtName},</if>
+            <if test="modTime != null  ">#{modTime},</if>
+            <if test="modNo != null  and modNo != ''  ">#{modNo},</if>
+            <if test="modName != null  and modName != ''  ">#{modName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="arcNo != null  and arcNo != ''  ">#{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">#{arcName},</if>
+            <if test="arcTransfer != null  and arcTransfer != ''  ">#{arcTransfer},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="turnInNo != null  and turnInNo != ''  ">#{turnInNo},</if>
+            <if test="turnInName != null  and turnInName != ''  ">#{turnInName},</if>
+            <if test="receiveNo != null  and receiveNo != ''  ">#{receiveNo},</if>
+            <if test="receiveName != null  and receiveName != ''  ">#{receiveName},</if>
+            <if test="returnReason != null  and returnReason != ''  ">#{returnReason},</if>
+            <if test="apprInfoId != null  and apprInfoId != ''  ">#{apprInfoId},</if>
+            <if test="respDepaName != null  and respDepaName != ''  ">#{respDepaName},</if>
+            <if test="respOpName != null  and respOpName != ''  ">#{respOpName},</if>
+            <if test="arcCode != null  and arcCode != ''  ">#{arcCode},</if>
+            <if test="arcNum != null  ">#{arcNum},</if>
+            <if test="arcPageNum != null  ">#{arcPageNum},</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">#{arcLevel},</if>
+            <if test="arcCreTime != null  ">#{arcCreTime},</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">#{totalTransactions},</if>
+            <if test="filingDepa != null  and filingDepa != ''  ">#{filingDepa},</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">#{valPeriod},</if>
+            <if test="themeSpeech != null  and themeSpeech != ''  ">#{themeSpeech},</if>
+            <if test="cutting != null  and cutting != ''  ">#{cutting},</if>
+            <if test="language != null  and language != ''  ">#{language},</if>
+            <if test="carrier != null  and carrier != ''  ">#{carrier},</if>
+            <if test="otherName != null  and otherName != ''  ">#{otherName},</if>
+            <if test="forwardNo != null  and forwardNo != ''  ">#{forwardNo},</if>
+            <if test="forwardName != null  and forwardName != ''  ">#{forwardName},</if>
+            <if test="receiptNo != null  and receiptNo != ''  ">#{receiptNo},</if>
+            <if test="eTC != null  and eTC != ''  ">#{eTC},</if>
+            <if test="etcNum != null  ">#{etcNum},</if>
+            <if test="practType != null  and practType != ''  ">#{practType},</if>
+            <if test="practDesc != null  and practDesc != ''  ">#{practDesc},</if>
+            <if test="edition != null  and edition != ''  ">#{edition},</if>
+            <if test="afourNum != null  ">#{afourNum},</if>
+            <if test="arcText != null  and arcText != ''  ">#{arcText},</if>
+            <if test="originType != null  and originType != ''  ">#{originType},</if>
+            <if test="saveAddress != null  and saveAddress != ''  ">#{saveAddress},</if>
+            <if test="medelType != null  and medelType != ''  ">#{medelType},</if>
+            <if test="medelCode != null  and medelCode != ''  ">#{medelCode},</if>
+            <if test="filingTime != null  ">#{filingTime},</if>
+            <if test="expenseInvolve != null  and expenseInvolve != ''  ">#{expenseInvolve},</if>
+            <if test="arcBill != null  and arcBill != ''  ">#{arcBill},</if>
+            <if test="arcFormat != null  and arcFormat != ''  ">#{arcFormat},</if>
+            <if test="originMode != null  and originMode != ''  ">#{originMode},</if>
+            <if test="arcAbstract != null  and arcAbstract != ''  ">#{arcAbstract},</if>
+            <if test="respDepaCode != null  and respDepaCode != ''  ">#{respDepaCode},</if>
+            <if test="respOpCode != null  and respOpCode != ''  ">#{respOpCode},</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">#{arcBillCode},</if>
+            <if test="filingDepaCode != null  and filingDepaCode != ''  ">#{filingDepaCode},</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">#{arcBillDept},</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">#{arcBillDeptCode},</if>
+            <if test="conferIns != null  and conferIns != ''  ">#{conferIns},</if>
+            <if test="receiveIns != null  and receiveIns != ''  ">#{receiveIns},</if>
+            <if test="photoNo != null  and photoNo != ''  ">#{photoNo},</if>
+            <if test="negativesNo != null  and negativesNo != ''  ">#{negativesNo},</if>
+            <if test="photographer != null  and photographer != ''  ">#{photographer},</if>
+            <if test="indexMark != null  and indexMark != ''  ">#{indexMark},</if>
+            <if test="bill != null  and bill != ''  ">#{bill},</if>
+            <if test="arcDesc != null  and arcDesc != ''  ">#{arcDesc},</if>
+            <if test="arcCopyright != null  and arcCopyright != ''  ">#{arcCopyright},</if>
+            <if test="arcLayout != null  and arcLayout != ''  ">#{arcLayout},</if>
+            <if test="serviceType != null  and serviceType != ''  ">#{serviceType},</if>
+            <if test="keyWord != null  and keyWord != ''  ">#{keyWord},</if>
+            <if test="receivingOpinion != null  and receivingOpinion != ''  ">#{receivingOpinion},</if>
+            <if test="boxOpCode != null  and boxOpCode != ''  ">#{boxOpCode},</if>
+            <if test="boxOpName != null  and boxOpName != ''  ">#{boxOpName},</if>
+            <if test="boxOrgCode != null  and boxOrgCode != ''  ">#{boxOrgCode},</if>
+            <if test="boxOrgName != null  and boxOrgName != ''  ">#{boxOrgName},</if>
+            <if test="boxId != null  and boxId != ''  ">#{boxId},</if>
+            <if test="updatePath != null  and updatePath != ''  ">#{updatePath},</if>
+            <if test="viewPath != null  and viewPath != ''  ">#{viewPath},</if>
+            <if test="expense != null  and expense != ''  ">#{expense},</if>
+            <if test="reason != null  and reason != ''  ">#{reason},</if>
+            <if test="isNoMedium != null  and isNoMedium != ''  ">#{isNoMedium},</if>
+            <if test="caption != null  and caption != ''  ">#{caption},</if>
+            <if test="duration != null  and duration != ''  ">#{duration},</if>
+            <if test="businessStartTime != null  ">#{businessStartTime},</if>
+            <if test="businessEndTime != null  ">#{businessEndTime},</if>
+            <if test="receivingTime != null  ">#{receivingTime},</if>
+            <if test="storageLocation != null  and storageLocation != ''  ">#{storageLocation},</if>
+            <if test="turnInTime != null  ">#{turnInTime},</if>
+            <if test="receiveTime != null  ">#{receiveTime},</if>
+            <if test="arcHasMoveBank != null and arcHasMoveBank != ''  ">#{arcHasMoveBank},</if>
+            <if test="peopleName != null and peopleName != ''  ">#{peopleName},</if>
+            <if test="peopleCard != null and peopleCard != ''  ">#{peopleCard},</if>
+            <if test="busiNo != null and busiNo != ''  ">#{busiNo},</if>
+            <if test="counterpart != null and counterpart != ''  ">#{counterpart},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsBatch" parameterType="AmsBatch">
+        update ams_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO = #{batchNo},</if>
+            <if test="orgCode != null  and orgCode != ''  ">ORG_CODE = #{orgCode},</if>
+            <if test="orgName != null  and orgName != ''  ">ORG_NAME = #{orgName},</if>
+            <if test="crtTime != null  ">CRT_TIME = #{crtTime},</if>
+            <if test="crtNo != null  and crtNo != ''  ">CRT_NO = #{crtNo},</if>
+            <if test="crtName != null  and crtName != ''  ">CRT_NAME = #{crtName},</if>
+            <if test="modTime != null  ">MOD_TIME = #{modTime},</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">total_transactions =
+                #{totalTransactions},
+            </if>
+            <if test="modNo != null  and modNo != ''  ">MOD_NO = #{modNo},</if>
+            <if test="modName != null  and modName != ''  ">MOD_NAME = #{modName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO = #{arcNo},</if>
+            <if test="arcName != null  and arcName != ''  ">ARC_NAME = #{arcName},</if>
+            <if test="arcTransfer != null  and arcTransfer != ''  ">ARC_TRANSFER = #{arcTransfer},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="turnInNo != null">TURN_IN_NO = #{turnInNo},</if>
+            <if test="turnInName != null">TURN_IN_NAME = #{turnInName},</if>
+            <if test="receiveNo != null">RECEIVE_NO = #{receiveNo},</if>
+            <if test="receiveName != null">RECEIVE_NAME = #{receiveName},</if>
+            <if test="returnReason != null">RETURN_REASON = #{returnReason},</if>
+            <if test="apprInfoId != null">APPR_INFO_ID = #{apprInfoId},</if>
+            <if test="respDepaName != null">RESP_DEPA_NAME = #{respDepaName},</if>
+            <if test="respOpName != null">RESP_OP_NAME = #{respOpName},</if>
+            <if test="arcCode != null">ARC_CODE = #{arcCode},</if>
+            <if test="arcNum != null">ARC_NUM = #{arcNum},</if>
+            <if test="arcPageNum != null">ARC_PAGE_NUM = #{arcPageNum},</if>
+            <if test="arcLevel != null">ARC_LEVEL = #{arcLevel},</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME = #{arcCreTime},</if>
+            <if test="filingDepa != null">FILING_DEPA = #{filingDepa},</if>
+            <if test="valPeriod != null">VAL_PERIOD = #{valPeriod},</if>
+            <if test="themeSpeech != null">THEME_SPEECH = #{themeSpeech},</if>
+            <if test="cutting != null">CUTTING = #{cutting},</if>
+            <if test="language != null">LANGUAGE = #{language},</if>
+            <if test="carrier != null">CARRIER = #{carrier},</if>
+            <if test="otherName != null">OTHER_NAME = #{otherName},</if>
+            <if test="forwardNo != null">FORWARD_NO = #{forwardNo},</if>
+            <if test="forwardName != null">FORWARD_NAME = #{forwardName},</if>
+            <if test="receiptNo != null">RECEIPT_NO = #{receiptNo},</if>
+            <if test="eTC != null">ETC = #{eTC},</if>
+            <if test="etcNum != null">ETC_NUM = #{etcNum},</if>
+            <if test="practType != null">PRACT_TYPE = #{practType},</if>
+            <if test="practDesc != null">PRACT_DESC = #{practDesc},</if>
+            <if test="edition != null">EDITION = #{edition},</if>
+            <if test="afourNum != null">AFOUR_NUM = #{afourNum},</if>
+            <if test="arcText != null  and arcText != ''  ">ARC_TEXT = #{arcText},</if>
+            <if test="originType != null">ORIGIN_TYPE = #{originType},</if>
+            <if test="saveAddress != null">SAVE_ADDRESS = #{saveAddress},</if>
+            <if test="medelType != null">MEDEL_TYPE = #{medelType},</if>
+            <if test="medelCode != null">MEDEL_CODE = #{medelCode},</if>
+            <if test="filingTime != null  ">FILING_TIME = #{filingTime},</if>
+            <if test="expenseInvolve != null">EXPENSE_INVOLVE = #{expenseInvolve},</if>
+            <if test="arcBill != null">ARC_BILL = #{arcBill},</if>
+            <if test="arcFormat != null">ARC_FORMAT = #{arcFormat},</if>
+            <if test="originMode != null">ORIGIN_MODE = #{originMode},</if>
+            <if test="arcAbstract != null">ARC_ABSTRACT = #{arcAbstract},</if>
+            <if test="respDepaCode != null">RESP_DEPA_CODE = #{respDepaCode},</if>
+            <if test="respOpCode != null">RESP_OP_CODE = #{respOpCode},</if>
+            <if test="arcBillCode != null">ARC_BILL_CODE = #{arcBillCode},</if>
+            <if test="filingDepaCode != null">FILING_DEPA_CODE = #{filingDepaCode},</if>
+            <if test="arcBillDept != null">ARC_BILL_DEPT = #{arcBillDept},</if>
+            <if test="arcBillDeptCode != null">ARC_BILL_DEPT_CODE = #{arcBillDeptCode},</if>
+            <if test="conferIns != null">CONFER_INS = #{conferIns},</if>
+            <if test="receiveIns != null">RECEIVE_INS = #{receiveIns},</if>
+            <if test="photoNo != null">PHOTO_NO = #{photoNo},</if>
+            <if test="negativesNo != null">NEGATIVES_NO = #{negativesNo},</if>
+            <if test="photographer != null">PHOTOGRAPHER = #{photographer},</if>
+            <if test="indexMark != null">INDEX_MARK = #{indexMark},</if>
+            <if test="bill != null">BILL = #{bill},</if>
+            <if test="arcDesc != null">ARC_DESC = #{arcDesc},</if>
+            <if test="arcCopyright != null">ARC_COPYRIGHT = #{arcCopyright},</if>
+            <if test="arcLayout != null">ARC_LAYOUT = #{arcLayout},</if>
+            <if test="serviceType != null">SERVICE_TYPE = #{serviceType},</if>
+            <if test="keyWord != null">KEY_WORD = #{keyWord},</if>
+            <if test="receivingOpinion != null">RECEIVING_OPINION = #{receivingOpinion},</if>
+            <if test="boxOpCode != null">box_op_code = #{boxOpCode},</if>
+            <if test="boxOpName != null">box_op_name = #{boxOpName},</if>
+            <if test="boxOrgCode != null">box_org_code = #{boxOrgCode},</if>
+            <if test="boxOrgName != null">box_org_name = #{boxOrgName},</if>
+            <if test="boxId != null">box_id = #{boxId},</if>
+            <if test="updatePath != null">UPDATE_PATH = #{updatePath},</if>
+            <if test="viewPath != null">VIEW_PATH = #{viewPath},</if>
+            <if test="expense != null">EXPENSE = #{expense},</if>
+            <if test="reason != null">REASON = #{reason},</if>
+            <if test="isNoMedium != null">IS_NO_MEDIUM = #{isNoMedium},</if>
+            <if test="caption != null">CAPTION = #{caption},</if>
+            <if test="duration != null">DURATION = #{duration},</if>
+            <if test="businessStartTime != null  ">business_start_time = #{businessStartTime},</if>
+            <if test="businessEndTime != null  ">business_end_time = #{businessEndTime},</if>
+            <if test="receivingTime != null  ">RECEIVING_TIME = #{receivingTime},</if>
+            <if test="storageLocation != null">STORAGE_LOCATION = #{storageLocation},</if>
+            <if test="turnInTime != null  ">TURN_IN_TIME= #{turnInTime},</if>
+            <if test="receiveTime != null  ">RECEIVE_TIME = #{receiveTime},</if>
+            <if test="arcHasMoveBank != null  ">arc_has_move_bank = #{arcHasMoveBank},</if>
+            <if test="peopleName != null  ">people_name = #{peopleName},</if>
+            <if test="peopleCard != null  ">people_card = #{peopleCard},</if>
+            <if test="busiNo != null and busiNo != ''  ">busi_no = #{busiNo},</if>
+            <if test="counterpart != null and counterpart != ''  ">COUNTERPART = #{counterpart},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsBatchById" parameterType="String">
+        delete from ams_batch where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsBatchByIds" parameterType="String">
+        delete from ams_batch where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--查询档案接收预览-->
+    <select id="selectAmsBatchByIds" parameterType="String" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <!--档案批量接收-->
+    <update id="updateAmsBatchByIds" parameterType="String">
+        update ams_batch set STATUS = 3, RECEIVING_TIME = now()
+        where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <!--条件查询-->
+    <select id="selectAmsBatchListByOpts" parameterType="AmsBatch" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and CRT_TIME = #{crtTime}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME like concat(CONCAT('%', #{crtName}), '%')</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like concat(CONCAT('%', #{arcName}), '%')</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME like concat(CONCAT('%',
+                #{respOpName}), '%')
+            </if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE like concat(CONCAT('%', #{arcCode}), '%')</if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and ARC_CRE_TIME = #{arcCreTime}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS like concat(CONCAT('%', #{conferIns}),
+                '%')
+            </if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS like concat(CONCAT('%', #{receiveIns}),
+                '%')
+            </if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO like concat(CONCAT('%', #{photoNo}), '%')</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER like concat(CONCAT('%',
+                #{photographer}),
+                '%')
+            </if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION like concat(CONCAT('%', #{caption}), '%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and ARC_TRANSFER LIKE
+                concat(CONCAT('%',#{arcTransfer}),'%')
+            </if>
+        </where>
+    </select>
+    <!--根据用户code和状态查询移交申请列表-->
+    <select id="selectTransferApplyByCrtNoAndStatus" parameterType="AmsBatch" resultMap="AmsBatchDTOResult">
+        <include refid="selectAmsTransfer"/>
+        <where>
+            <if test="orgCode != null  and orgCode != '' ">and b.ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and b.ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and to_char(b.CRT_TIME, 'yyyy-mm-dd') = to_char(#{crtTime}, 'yyyy-mm-dd')</if>
+            <if test="crtNo != null  and crtNo != '' ">and b.CRT_NO = #{crtNo}</if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and b.total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="crtName != null  and crtName != '' ">and b.CRT_NAME like concat(concat('%', #{crtName},) '%')</if>
+            <if test="modName != null  and modName != '' ">and b.MOD_NAME = #{modName}</if>
+            <if test="arcName != null  and arcName != '' ">and b.ARC_NAME like concat(concat('%', #{arcName}), '%')</if>
+            <if test="respOpName != null  and respOpName != '' ">and b.RESP_OP_NAME like concat(concat('%',
+                #{respOpName}), '%')
+            </if>
+            <if test="arcCode != null  and arcCode != '' ">and b.ARC_CODE like concat(concat('%', #{arcCode}), '%')</if>
+            <if test="arcNum != null ">and b.ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and b.ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and b.ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and to_char(b.ARC_CRE_TIME, 'yyyy-mm-dd') =
+                to_char(#{arcCreTime}, 'yyyy-mm-dd')
+            </if>
+            <if test="valPeriod != null  and valPeriod != '' ">and b.VAL_PERIOD = #{valPeriod}</if>
+            <if test="practType != null  and practType != '' ">and b.PRACT_TYPE = #{practType}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and b.EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and b.ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and b.ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and b.ORIGIN_MODE = #{originMode}</if>
+            <if test="conferIns != null  and conferIns != '' ">and b.CONFER_INS like concat(concat('%', #{conferIns}),
+                '%')
+            </if>
+            <if test="receiveIns != null  and receiveIns != '' ">and b.RECEIVE_INS like concat(concat('%',
+                #{receiveIns}), '%')
+            </if>
+            <if test="photoNo != null  and photoNo != '' ">and b.PHOTO_NO like concat(concat('%', #{photoNo}), '%')</if>
+            <if test="photographer != null  and photographer != '' ">and
+                b.PHOTOGRAPHER like concat(concat('%',#{photographer},)'%')
+            </if>
+            <if test="bill != null  and bill != '' ">and b.BILL = #{bill}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and b.IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and b.CAPTION like concat(concat('%', #{caption}), '%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and
+                b.ARC_TRANSFER LIKE concat(concat('%',#{arcTransfer}),'%')
+            </if>
+            <if test="arcHasMoveBank != null  ">and b.arc_has_move_bank = #{arcHasMoveBank}</if>
+            and b.STATUS in (1,6)
+        </where>
+        ORDER BY b.CRT_TIME DESC
+    </select>
+    <!--查询我的移交申请列表-->
+    <select id="selectMyTransferApplyByCrtNoAndStatus" parameterType="AmsBatchVO" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and to_char(CRT_TIME, 'yyyy-mm-dd') = to_char(#{crtTime}, 'yyyy-mm-dd')</if>
+            <if test="crtTimeStart != null ">and to_char(CRT_TIME, 'yyyy-mm-dd') &gt;= to_char(#{crtTimeStart},
+                'yyyy-mm-dd')
+            </if>
+            <if test="crtTimeEnd != null ">and to_char(CRT_TIME, 'yyyy-mm-dd') &lt;= to_char(#{crtTimeEnd},
+                'yyyy-mm-dd')
+            </if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME like concat(concat('%', #{crtName}), '%')</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like concat(concat('%', #{arcName}), '%')</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME like concat(concat('%',
+                #{respOpName}), '%')
+            </if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE like concat(concat('%', #{arcCode}), '%')</if>
+            <if test="arcNum != null ">and ARC_NUM like concat(concat('%', #{arcNum}), '%')</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM like concat(concat('%', #{arcPageNum}), '%')</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') =
+                to_char(#{arcCreTime},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeStart != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{arcCreTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeEnd != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{arcCreTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS like concat(concat('%', #{conferIns}),
+                '%')
+            </if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS like concat(concat('%', #{receiveIns}),
+                '%')
+            </if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO like concat(CONCAT('%', #{photoNo}), '%')</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER like concat(CONCAT('%',
+                #{photographer}),
+                '%')
+            </if>
+            <if test="receivingTimeStart != null ">and to_char(RECEIVING_TIME, 'yyyy-mm-dd') &gt;=
+                to_char(#{receivingTimeStart}, 'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and to_char(RECEIVING_TIME, 'yyyy-mm-dd') &lt;=
+                to_char(#{receivingTimeEnd}, 'yyyy-mm-dd')
+            </if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION like concat(concat('%', #{caption}), '%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and
+                ARC_TRANSFER LIKE concat(concat('%',#{arcTransfer}),'%')
+            </if>
+            and STATUS in (2,3,4,5,6) and arc_has_move_bank='1'
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+
+    <!--查询整理组卷列表-->
+    <select id="selectArrangeListByReceiveNoAndStatus" parameterType="AmsBatchVO" resultMap="AmsBatchResult">
+        <include refid="selectAmsBatchVo"/>
+        <where>
+            <if test="orgCode != null  and orgCode != '' ">and ORG_CODE = #{orgCode}</if>
+            <if test="orgName != null  and orgName != '' ">and ORG_NAME = #{orgName}</if>
+            <if test="crtTime != null ">and to_char(CRT_TIME, 'yyyy-mm-dd') = to_char(#{crtTime}, 'yyyy-mm-dd')</if>
+            <!--            <if test="crtTimeY != null and crtTimeY != '' ">and YEAR(CRT_TIME) = #{crtTimeY}</if>-->
+            <if test="crtTimeY != null and crtTimeY != '' ">and to_number(to_char(CRT_TIME,'yyyy')) = #{crtTimeY}</if>
+            <if test="crtNo != null  and crtNo != '' ">and CRT_NO = #{crtNo}</if>
+            <if test="crtName != null  and crtName != '' ">and CRT_NAME like concat(concat('%', #{crtName}), '%')</if>
+            <if test="modName != null  and modName != '' ">and MOD_NAME = #{modName}</if>
+            <if test="arcName != null  and arcName != '' ">and ARC_NAME like concat(concat('%', #{arcName}), '%')</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME like concat(concat('%',
+                #{respOpName}), '%')
+            </if>
+            <if test="totalTransactions != null  and totalTransactions != '' ">and total_transactions =
+                #{totalTransactions}
+            </if>
+            <if test="receivingTimeStart != null ">and to_char(RECEIVE_TIME, 'yyyy-mm-dd') &gt;=
+                to_char(#{receivingTimeStart}, 'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and to_char(RECEIVE_TIME, 'yyyy-mm-dd') &lt;=
+                to_char(#{receivingTimeEnd}, 'yyyy-mm-dd')
+            </if>
+            <if test="arcCode != null  and arcCode != '' ">and ARC_CODE like concat(concat('%', #{arcCode}), '%')</if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="receiveNo != null  and receiveNo != '' ">and RECEIVE_NO = #{receiveNo}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and to_char(ARC_CRE_TIME, 'yyyy-mm-dd') = to_char(#{arcCreTime},
+                'yyyy-mm-dd')
+            </if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="arcBill != null  and arcBill != '' ">and ARC_BILL = #{arcBill}</if>
+            <if test="arcFormat != null  and arcFormat != '' ">and ARC_FORMAT = #{arcFormat}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="conferIns != null  and conferIns != '' ">and CONFER_INS like concat(concat('%', #{conferIns}),
+                '%')
+            </if>
+            <if test="receiveIns != null  and receiveIns != '' ">and RECEIVE_INS like concat(concat('%', #{receiveIns}),
+                '%')
+            </if>
+            <if test="photoNo != null  and photoNo != '' ">and PHOTO_NO like concat(concat('%', #{photoNo}), '%')</if>
+            <if test="photographer != null  and photographer != '' ">and PHOTOGRAPHER like concat(concat('%',
+                #{photographer}), '%')
+            </if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="isNoMedium != null  and isNoMedium != '' ">and IS_NO_MEDIUM = #{isNoMedium}</if>
+            <if test="caption != null  and caption != '' ">and CAPTION like concat(concat('%', #{caption}), '%')</if>
+            <if test="arcTransfer != null  and arcTransfer != '' ">and ARC_TRANSFER LIKE
+                concat(concat('%',#{arcTransfer}),'%')
+            </if>
+            <if test="arcHasMoveBank != null  and arcHasMoveBank != ''">and ARC_HAS_MOVE_BANK =
+                to_number(#{arcHasMoveBank})
+            </if>
+            and STATUS in (1,3,6)
+        </where>
+        ORDER BY CRT_TIME DESC
+    </select>
+</mapper>

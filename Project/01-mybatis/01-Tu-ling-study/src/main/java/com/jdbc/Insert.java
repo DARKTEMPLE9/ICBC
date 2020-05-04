@@ -15,21 +15,21 @@ public class Insert {
      */
 
     public static void main(String[] args) {
-        insert("mengxq","test-jdbc");
+        insert("mengxq", "test-jdbc");
     }
 
     private static void insert(String name, String msg) {
         String sql = "INSERT INTO jdbc ( name,msg ) VALUES (?,?)";
         Connection conn = DbUtil.open();
         try {
-            PreparedStatement pstm =(PreparedStatement) conn.prepareStatement(sql);
-            pstm.setString(1,name);
-            pstm.setString(2,msg);
+            PreparedStatement pstm = (PreparedStatement) conn.prepareStatement(sql);
+            pstm.setString(1, name);
+            pstm.setString(2, msg);
             pstm.executeUpdate();
             System.out.println("insert数据成功");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DbUtil.close(conn);
         }
     }

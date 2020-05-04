@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('详情')"/>
+</head>
+<body class="white-bg">
+<div id="printBtnDiv" style="margin-left: 20px;margin-top: 10px;">
+    <button id="printBtn" class="btn btn-info" onclick="doPrint()"><span class='glyphicon glyphicon-print'></span>&nbsp;打印
+    </button>
+</div>
+<div id="printInfoCont" class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div th:object="${gftEntryDtl}" class="ibox-content">
+                    <input id="pkEntryDtl" name="pkEntryDtl" th:field="*{pkEntryDtl}" type="hidden">
+
+                    <h3 style="text-align: center">转账凭证</h3>
+                    <img style="width: 100px" th:src="@{/js/baixin.jpg}" alt="">
+                    <span style="margin-left: 31%" th:text="*{tallyDt}"></span>
+                    <span style="margin-left: 30%">附件<span>&nbsp;</span>张</span>
+                    <div class="table-responsive">
+                        <table style="width: 99%; margin-left: 5px; table-layout: fixed;"
+                               class="table table-bordered table-striped">
+                            <thead>
+                            <!--<tr>-->
+                            <!--<th class="text-nowrap"></th>-->
+                            <!--<td rowspan="3">付款人</td>-->
+                            <!--<td colspan="3">名称</td>-->
+                            <!--<td colspan="5">中信百信银行股份有限公司</td>-->
+
+                            <!--<td rowspan="3">收款人</td>-->
+                            <!--<td colspan="3">名称</td>-->
+                            <!--<td colspan="12">中信百信银行</td>-->
+                            <!--</tr>-->
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td rowspan="3">付款人</td>
+                                <td colspan="3" style="width: 5%;">名称</td>
+                                <td colspan="6" style="width: 37%;">中关村银行股份有限公司</td>
+
+                                <td rowspan="3">收款人</td>
+                                <td colspan="3" style="width: 5%;">名称</td>
+                                <td colspan="13" style="width: 37%;">中关村银行</td>
+                            </tr>
+
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td colspan="3">款号</td>
+                                <td colspan="6" th:text="*{dealAcct}"></td>
+
+                                <td colspan="3">账号</td>
+                                <td colspan="13" th:text="*{dealAcct}"></td>
+                            </tr>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td colspan="3">开户行</td>
+                                <td colspan="2">中关村银行</td>
+                                <td colspan="1">行号</td>
+                                <td colspan="3">3220000000000002</td>
+
+                                <!--<td rowspan="3">收款人</td>-->
+                                <td colspan="3">开户行</td>
+                                <td colspan="4">平安银行</td>
+                                <td colspan="3">行号</td>
+                                <td colspan="6">300000000000000</td>
+
+                            </tr>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td colspan="6" rowspan="2">币种及金额(大写)</td>
+                                <td rowspan="2">人民币</td>
+                                <td colspan="7" rowspan="2" th:text="*{oriDebAmt}"></td>
+
+                                <td>百</td>
+                                <td>十</td>
+                                <td>亿</td>
+                                <td>千</td>
+                                <td>百</td>
+                                <td>十</td>
+                                <td>万</td>
+                                <td>千</td>
+                                <td>百</td>
+                                <td>十</td>
+                                <td>元</td>
+                                <td>角</td>
+                                <td>分</td>
+                            </tr>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>￥</td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>9</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>8</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td>摘要</td>
+                                <td colspan="26" th:text="*{entryCont}"></td>
+                            </tr>
+                            <tr>
+                                <!--<th class="text-nowrap"></th>-->
+                                <td rowspan="5">银行专用栏</td>
+                                <td colspan="26" rowspan="5"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <span style="margin-left: 10px">会计主管:</span>
+                        <span style="margin-left: 30%">复核: <span th:text="*{auditor}"></span></span>
+                        <span style="margin-left: 30%">记账: <span th:text="*{bookkeeper}"></span></span>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<th:block th:include="include :: footer"/>
+<script src="js/jquery.PrintArea.min.js" type="text/javascript" th:src="@{/js/jquery.PrintArea.min.js}"></script>
+<script src="js/jQuery.print.js" type="text/javascript" th:src="@{/js/jQuery.print.js}"></script>
+<script th:inline="javascript">
+
+    $(function () {
+        var a = [[${gftEntryDtl}]];
+        console.log(a)
+    });
+</script>
+<script type="text/javascript">
+    function doPrint() {
+        $("#printInfoCont").print({
+            globalStyles: true,//是否包含父文档的样式，默认为true
+            mediaPrint: false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+            stylesheet: null,//外部样式表的URL地址，默认为null
+            noPrintSelector: "printBtnDiv",//不想打印的元素的jQuery选择器，默认为".no-print"
+            iframe: true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+            append: null,//将内容添加到打印内容的后面
+            prepend: null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+            deferred: $.Deferred()
+        });
+        // $("#printArea").printArea();
+    }
+
+</script>
+</body>
+</html>

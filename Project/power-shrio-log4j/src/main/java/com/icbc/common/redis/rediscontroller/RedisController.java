@@ -18,7 +18,7 @@ public class RedisController {
     String prefix = "asd_" + "*";
 
 
-    @RequestMapping(value = "/setRedis",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/setRedis", method = {RequestMethod.GET, RequestMethod.POST})
     public void setRedis() {
         //redisTemplate.opsForSet().add("asd_fgh", 1231);
         redisTemplate.opsForSet().add("testredis", "qwe");

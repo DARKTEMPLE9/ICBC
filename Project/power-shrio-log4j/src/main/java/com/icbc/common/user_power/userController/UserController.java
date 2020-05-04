@@ -21,9 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/getUserPage",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/getUserPage", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public List<UserInfo> getUserPage(){
+    public List<UserInfo> getUserPage() {
         return userService.getUserPage();
     }
 }

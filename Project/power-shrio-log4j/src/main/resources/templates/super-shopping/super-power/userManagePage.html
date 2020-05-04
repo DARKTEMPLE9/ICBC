@@ -9,28 +9,28 @@
 <body>
 <div id="rrapp">
     <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="rowId" label="用户ID" width="180"> </el-table-column>
-        <el-table-column prop="userName" label="用户名称" width="180"> </el-table-column>
-        <el-table-column prop="userLoginNumber" label="用户账号" width="180"> </el-table-column>
-        <el-table-column prop="userPassword" label="用户密码" width="180"> </el-table-column>
-        <el-table-column prop="userStatus" label="用户状态" width="180"> </el-table-column>
-        <el-table-column prop="userPhone" label="用户联系方式" width="180"> </el-table-column>
-        <el-table-column prop="userDeptRowId" label="用户科室" width="180"> </el-table-column>
-        <el-table-column prop="userPositionRowId" label="用户职位" width="180"> </el-table-column>
-        <el-table-column prop="userAppRowId" label="关联应用RowId" width="180"> </el-table-column>
-        <el-table-column prop="createUser" label="创建人" width="180"> </el-table-column>
-        <el-table-column prop="createDate" label="创建日期" width="180"> </el-table-column>
-        <el-table-column prop="modifyUser" label="修改人" width="180"> </el-table-column>
-        <el-table-column prop="modifyDate" label="修改日期" width="180"> </el-table-column>
+        <el-table-column prop="rowId" label="用户ID" width="180"></el-table-column>
+        <el-table-column prop="userName" label="用户名称" width="180"></el-table-column>
+        <el-table-column prop="userLoginNumber" label="用户账号" width="180"></el-table-column>
+        <el-table-column prop="userPassword" label="用户密码" width="180"></el-table-column>
+        <el-table-column prop="userStatus" label="用户状态" width="180"></el-table-column>
+        <el-table-column prop="userPhone" label="用户联系方式" width="180"></el-table-column>
+        <el-table-column prop="userDeptRowId" label="用户科室" width="180"></el-table-column>
+        <el-table-column prop="userPositionRowId" label="用户职位" width="180"></el-table-column>
+        <el-table-column prop="userAppRowId" label="关联应用RowId" width="180"></el-table-column>
+        <el-table-column prop="createUser" label="创建人" width="180"></el-table-column>
+        <el-table-column prop="createDate" label="创建日期" width="180"></el-table-column>
+        <el-table-column prop="modifyUser" label="修改人" width="180"></el-table-column>
+        <el-table-column prop="modifyDate" label="修改日期" width="180"></el-table-column>
 
     </el-table>
 </div>
 <script type="text/javascript">
     var vum = new Vue({
         el: '#rrapp',
-        data:{
+        data: {
             return: {
-                tableData:[]
+                tableData: []
             }
 
 
@@ -39,7 +39,7 @@
             this.userTable();
         },
         methods: {
-            userTable(){
+            userTable() {
                 var _this = this;
                 $.ajax({
                     url: '/power/getUserPage',
@@ -51,10 +51,10 @@
                         console.info(data);
                         _this.tableData = data;
                     },
-                    error:function () {
+                    error: function () {
                         console.info("ajax请求失败，请核查原因");
                     }
-                    
+
                 });
             }
         }

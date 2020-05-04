@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('下载')"/>
+</head>
+<style>
+    .thisRemove {
+        cursor: pointer;
+    }
+
+    .file-input {
+        display: inline;
+    }
+
+    .hidden-xs {
+        font-size: 12px;
+    }
+
+    .btn-file {
+        margin: 0px 0px 5px;
+        padding: 3px 10px 5px 10px;
+    }
+
+    .glyphicon-folder-open {
+        font-size: x-small;
+    }
+
+    .mid-left {
+        /*width: 130px;*/
+        text-align: left;
+    }
+
+    .thisOnFileNum {
+        position: absolute;
+        background-color: yellowgreen;
+        padding: 3px 10px 3px 10px;
+        z-index: 888;
+        top: -5px;
+        left: 0px;
+        border-radius: 10px;
+    }
+</style>
+<body class="white-bg">
+<div class="ui-layout-center">
+    <div class="container-div">
+        <div class="row">
+            <div style="width: 100%; position: relative;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" style="height: calc(100vh - 30px);overflow: auto">
+                        <form class="form-horizontal m-t" method="post" id="form-amsRecord-amsRecord">
+                            <div style="border-bottom: 1px solid gray;margin-bottom: 5px;height: 25px;position: relative;">
+                                <span id="thisTitle"
+                                      style="margin-left: 10px;margin-top: -10px;font-weight:600;font-size:16px">文件详细</span>
+                                <div id="thisOnFileNum" class="thisOnFileNum" style="display: none">1</div>
+                                <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                                </div>
+                            </div>
+
+                            <div class="bs-bars pull-right">
+                                <div class="btn-group-sm" id="toolbar" role="group">
+                                    <a id="download" class="btn btn-success" onclick="downFiles()"
+                                       shiro:hasPermission="file:downloadFile">
+                                        <i class="fa fa-download"></i> 下载
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div>
+                                <div id="normalBox">
+                                    <ul id="rightBox">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer"/>
+
+<input id="pmsBatchId" name="pmsBatchId" th:value="${pmsBatchId}" type="hidden">
+<input id="batchId" name="batchId" th:value="${batchId}" type="hidden">
+<input id="modelId" name="modelId" th:value="${modelId}" type="hidden">
+<input id="listTile" name="listTile" th:value="${listTile}" type="hidden">
+<input id="nodeId" name="nodeId" th:value="${nodeId}" type="hidden">
+<input id="sysCode" name="sysCode" th:value="${sysCode}" type="hidden">
+<script th:inline="javascript">
+
+    $(function () {
+        var listTile = $("#listTile").val()
+        $("#thisTitle").text(listTile)
+        debugger;
+        var arr = [[${cmsFileImageVOList}]];
+        // download-下载列表 history-历史列表
+        var listType = [[${listType}]];
+        if (listType == 'download') {
+            downFileList(arr);
+        } else {
+            $("#download").hide();
+            historyFileList(arr);
+        }
+    });
+
+    // 拼接展示的文件列表
+    function downFileList(arr) {
+        arr.forEach(function (e) {
+            var billName = e.billName;
+            if (billName == null) {
+                billName = "未分类"
+            }
+            debugger;
+            var fileName = e.fileImageName;
+            var fileType = e.type;
+            var createTime = e.createTime.substring(0, 10) + '&nbsp;' + e.createTime.substring(11, 19);
+            // 文件类型转小写
+            fileType = fileType.toLowerCase();
+            if (fileType == "doc" || fileType == "docx") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "'  name='fileImageBox'  type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-word-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>")
+            } else if (fileType == "xls" || fileType == "xlsx") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-excel-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>");
+            } else if (fileType == "ppt" || fileType == "pptx" || fileType == "pdf") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-powerpoint-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>")
+            } else if (fileType == "txt") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-text-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                );
+            } else if (fileType == "jpg" || fileType == "png" || fileType == "tif" || fileType == "gif" || fileType == "bmp") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-photo-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (fileType == "rar" || fileType == "zip") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-zip-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (fileType == "mp3") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-sound-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            } else if (fileType == "mp4" || fileType == "avi" || fileType == "mpeg" || fileType == "rmvb") {
+                $("#rightBox").append(
+                    "<li style=\"border-bottom: 0.5px solid #CDCDC1;\"><input id='" + e.stringId + "' url='" + e.fileUrl + "' billId='" + e.billId + "' name='fileImageBox' type='checkbox' value='" + e.fileImageName + "' style='vertical-align:-15%'>" +
+                    "&nbsp;<i class=\"fa fa-file-video-o\"></i>&nbsp;<span>&nbsp;" + fileName + "</span>&nbsp;</input><span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                )
+            }
+        });
+    }
+
+    // 历史列表
+    function historyFileList(arr) {
+        if (arr != null && arr != undefined && arr.length > 0) {
+            arr.forEach(function (e) {
+                var billName = e.billName;
+                if (billName == null) {
+                    billName = "未分类"
+                }
+                var fileName = e.fileImageName;
+                var fileType = e.type;
+                var createTime = e.createTime.substring(0, 10) + '&nbsp;' + e.createTime.substring(11, 19);
+
+                if (fileType) {
+                    // 文件类型转小写
+                    fileType = fileType.toLowerCase();
+                }
+                if (fileType == "doc" || fileType == "docx") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-word-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "xls" || fileType == "xlsx") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-excel-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "ppt" || fileType == "pptx" || fileType == "pdf") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-powerpoint-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "txt") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-text-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "jpg" || fileType == "png" || fileType == "tif" || fileType == "gif" || fileType == "bmp") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-photo-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "rar" || fileType == "zip") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-zip-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "mp3") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-sound-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else if (fileType == "mp4" || fileType == "avi" || fileType == "mpeg" || fileType == "rmvb") {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-video-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                } else {
+                    $("#rightBox").append(
+                        "<li style=\"border-bottom: 0.5px solid #CDCDC1;\">&nbsp;" +
+                        "<i class=\"fa fa-file-o\"></i>&nbsp;</input><span id='" + e.id + "' url='" + e.fileUrl + "'>&nbsp;" + fileName + "</span>&nbsp;<span style=\"float: right;margin-left: 8px \">" + createTime + "</span><span class='mid-left' style=\"float: right;\">" + billName + "</span></li>"
+                    );
+                }
+            });
+        }
+    }
+
+    // 下载
+    function downFiles() {
+        // debugger;
+        // 获得选中的文件或影像
+        var fileImageNos = [];
+        $("input[name='fileImageBox']:checked").each(function () {
+            fileImageNos.push($(this).attr("id"));
+        });
+        // 为选择文件查看历史
+        if (fileImageNos.length < 1) {
+            $.modal.alertWarning("请选择需要下载的文件");
+            return;
+        }
+        var pmsBatchId = $("#pmsBatchId").val();
+        debugger;
+        $.modal.confirm("确定下载该文件吗?", function () {
+            if (fileImageNos.length > 1) {
+                window.location.href = ctx + "file/downloadAllFile?pmsBatchId=" + pmsBatchId + "&fileIds=" + fileImageNos.join(",");
+            } else {
+                // 下载单个文件
+                window.location.href = ctx + "file/downloadFile?fileId=" + fileImageNos[0];
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

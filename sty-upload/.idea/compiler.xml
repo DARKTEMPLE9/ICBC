@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ruoyi-generator" />
+        <module name="mall-demo" />
+        <module name="demo" />
+        <module name="ruoyi-admin" />
+        <module name="mall-mbg" />
+        <module name="mall-security" />
+        <module name="mall-admin" />
+        <module name="mall-portal" />
+        <module name="mall-common" />
+        <module name="ruoyi-quartz" />
+        <module name="mall-search" />
+        <module name="sty-global-exctption-handler" />
+        <module name="icbc" />
+        <module name="ruoyi-system" />
+        <module name="ruoyi-framework" />
+        <module name="ruoyi-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo" target="1.8" />
+      <module name="icbc" target="1.8" />
+      <module name="mall" target="1.8" />
+      <module name="mall-admin" target="1.8" />
+      <module name="mall-common" target="1.8" />
+      <module name="mall-demo" target="1.8" />
+      <module name="mall-mbg" target="1.8" />
+      <module name="mall-portal" target="1.8" />
+      <module name="mall-search" target="1.8" />
+      <module name="mall-security" target="1.8" />
+      <module name="ruoyi" target="1.8" />
+      <module name="ruoyi-admin" target="1.8" />
+      <module name="ruoyi-common" target="1.8" />
+      <module name="ruoyi-framework" target="1.8" />
+      <module name="ruoyi-generator" target="1.8" />
+      <module name="ruoyi-quartz" target="1.8" />
+      <module name="ruoyi-system" target="1.8" />
+      <module name="sty" target="1.8" />
+      <module name="sty-global-exctption-handler" target="1.8" />
+      <module name="sty-upload" target="1.8" />
+      <module name="syt-upload" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
+      <module name="icbc" options="-parameters" />
+      <module name="mall-admin" options="-parameters" />
+      <module name="mall-common" options="-parameters" />
+      <module name="mall-demo" options="-parameters" />
+      <module name="mall-mbg" options="-parameters" />
+      <module name="mall-portal" options="-parameters" />
+      <module name="mall-search" options="-parameters" />
+      <module name="mall-security" options="-parameters" />
+      <module name="sty" options="-parameters" />
+      <module name="sty-global-exctption-handler" options="-parameters" />
+      <module name="sty-upload" options="-parameters" />
+      <module name="syt-upload" options="-parameters" />
+    </option>
+  </component>
+</project>

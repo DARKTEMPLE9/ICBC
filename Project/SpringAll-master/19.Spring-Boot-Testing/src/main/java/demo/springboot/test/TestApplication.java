@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("demo.springboot.test.mapper")
 public class TestApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TestApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TestApplication.class, args);
+    }
 }

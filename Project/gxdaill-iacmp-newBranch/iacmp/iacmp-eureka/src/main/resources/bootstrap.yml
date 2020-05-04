@@ -1,0 +1,160 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: iacmp-eureka
+  profiles:
+    active: dev
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  server:  #配置属性，但由于 Eureka 自我保护模式以及心跳周期长的原因，经常会遇到 Eureka Server 不剔除已关停的节点的问题
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
+
+
+---
+spring:
+  profiles: dev
+
+eureka:
+  instance:
+    ip-address: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+---
+spring:
+  profiles: testC-AMS
+
+eureka:
+  instance:
+    ip-address: 10.4.92.35
+  client:
+    serviceUrl:
+      defaultZone: http://10.4.92.38:${server.port}/eureka/
+
+---
+spring:
+  profiles: testC-CMS
+
+eureka:
+  instance:
+    ip-address: 10.4.92.38
+  client:
+    serviceUrl:
+      defaultZone: http://10.4.92.35:${server.port}/eureka/
+
+---
+spring:
+  profiles: testD-AMS
+
+eureka:
+  instance:
+    ip-address: 172.20.124.195
+  client:
+    serviceUrl:
+      defaultZone: http://172.20.124.196:${server.port}/eureka/
+
+---
+spring:
+  profiles: testD-CMS
+
+eureka:
+  instance:
+    ip-address: 172.20.124.196
+  client:
+    serviceUrl:
+      defaultZone: http://172.20.124.195:${server.port}/eureka/
+---
+spring:
+  profiles: testA-AMS
+
+eureka:
+  instance:
+    ip-address: 10.4.92.196
+  client:
+    serviceUrl:
+      defaultZone: http://10.4.92.194:${server.port}/eureka/
+
+---
+spring:
+  profiles: testA-CMS
+
+eureka:
+  instance:
+    ip-address: 10.4.92.194
+  client:
+    serviceUrl:
+      defaultZone: http://10.4.92.196:${server.port}/eureka/
+
+---
+spring:
+  profiles: prodH-one
+
+eureka:
+  instance:
+    ip-address: 172.16.140.4
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.140.5:8761/eureka,http://172.16.140.6:8761/eureka
+
+---
+spring:
+  profiles: prodH-two
+
+eureka:
+  instance:
+    ip-address: 172.16.140.5
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.140.4:8761/eureka,http://172.16.140.6:8761/eureka
+---
+spring:
+  profiles: prodH-three
+
+eureka:
+  instance:
+    ip-address: 172.16.140.6
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.140.4:8761/eureka,http://172.16.140.5:8761/eureka
+
+---
+spring:
+  profiles: prodOA-one
+
+eureka:
+  instance:
+    ip-address: 172.18.60.7
+  client:
+    serviceUrl:
+      defaultZone: http://172.18.60.8:8761/eureka,http://172.18.60.9:8761/eureka
+
+---
+spring:
+  profiles: prodOA-two
+eureka:
+  instance:
+    ip-address: 172.18.60.8
+  client:
+    serviceUrl:
+      defaultZone: http://172.18.60.7:8761/eureka,http://172.18.60.9:8761/eureka
+
+---
+spring:
+  profiles: prodOA-three
+eureka:
+  instance:
+    ip-address: 172.18.60.9
+  client:
+    serviceUrl:
+      defaultZone: http://172.18.60.7:8761/eureka,http://172.18.60.8:8761/eureka
+
+

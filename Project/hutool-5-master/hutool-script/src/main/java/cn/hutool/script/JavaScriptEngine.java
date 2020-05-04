@@ -13,124 +13,125 @@ import javax.script.ScriptException;
 
 /**
  * Javascript引擎类
- * @author Looly
  *
+ * @author Looly
  */
-public class JavaScriptEngine extends FullSupportScriptEngine{
-	
-	public JavaScriptEngine() {
-		super(new ScriptEngineManager().getEngineByName("javascript"));
-	}
-	
-	/**
-	 * 引擎实例
-	 * @return 引擎实例
-	 */
-	public static JavaScriptEngine instance(){
-		return new JavaScriptEngine();
-	}
+public class JavaScriptEngine extends FullSupportScriptEngine {
 
-	//----------------------------------------------------------------------------------------------- Invocable
-	@Override
-	public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
-		return ((Invocable)engine).invokeMethod(thiz, name, args);
-	}
+    public JavaScriptEngine() {
+        super(new ScriptEngineManager().getEngineByName("javascript"));
+    }
 
-	@Override
-	public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
-		return ((Invocable)engine).invokeFunction(name, args);
-	}
+    /**
+     * 引擎实例
+     *
+     * @return 引擎实例
+     */
+    public static JavaScriptEngine instance() {
+        return new JavaScriptEngine();
+    }
 
-	@Override
-	public <T> T getInterface(Class<T> clasz) {
-		return ((Invocable)engine).getInterface(clasz);
-	}
+    //----------------------------------------------------------------------------------------------- Invocable
+    @Override
+    public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
+        return ((Invocable) engine).invokeMethod(thiz, name, args);
+    }
 
-	@Override
-	public <T> T getInterface(Object thiz, Class<T> clasz) {
-		return ((Invocable)engine).getInterface(thiz, clasz);
-	}
+    @Override
+    public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+        return ((Invocable) engine).invokeFunction(name, args);
+    }
 
-	//----------------------------------------------------------------------------------------------- Compilable
-	@Override
-	public CompiledScript compile(String script) throws ScriptException {
-		return ((Compilable)engine).compile(script);
-	}
+    @Override
+    public <T> T getInterface(Class<T> clasz) {
+        return ((Invocable) engine).getInterface(clasz);
+    }
 
-	@Override
-	public CompiledScript compile(Reader script) throws ScriptException {
-		return ((Compilable)engine).compile(script);
-	}
+    @Override
+    public <T> T getInterface(Object thiz, Class<T> clasz) {
+        return ((Invocable) engine).getInterface(thiz, clasz);
+    }
 
-	//----------------------------------------------------------------------------------------------- ScriptEngine
-	@Override
-	public Object eval(String script, ScriptContext context) throws ScriptException {
-		return engine.eval(script, context);
-	}
+    //----------------------------------------------------------------------------------------------- Compilable
+    @Override
+    public CompiledScript compile(String script) throws ScriptException {
+        return ((Compilable) engine).compile(script);
+    }
 
-	@Override
-	public Object eval(Reader reader, ScriptContext context) throws ScriptException {
-		return engine.eval(reader, context);
-	}
+    @Override
+    public CompiledScript compile(Reader script) throws ScriptException {
+        return ((Compilable) engine).compile(script);
+    }
 
-	@Override
-	public Object eval(String script) throws ScriptException {
-		return engine.eval(script);
-	}
+    //----------------------------------------------------------------------------------------------- ScriptEngine
+    @Override
+    public Object eval(String script, ScriptContext context) throws ScriptException {
+        return engine.eval(script, context);
+    }
 
-	@Override
-	public Object eval(Reader reader) throws ScriptException {
-		return engine.eval(reader);
-	}
+    @Override
+    public Object eval(Reader reader, ScriptContext context) throws ScriptException {
+        return engine.eval(reader, context);
+    }
 
-	@Override
-	public Object eval(String script, Bindings n) throws ScriptException {
-		return engine.eval(script, n);
-	}
+    @Override
+    public Object eval(String script) throws ScriptException {
+        return engine.eval(script);
+    }
 
-	@Override
-	public Object eval(Reader reader, Bindings n) throws ScriptException {
-		return engine.eval(reader, n);
-	}
+    @Override
+    public Object eval(Reader reader) throws ScriptException {
+        return engine.eval(reader);
+    }
 
-	@Override
-	public void put(String key, Object value) {
-		engine.put(key, value);
-	}
+    @Override
+    public Object eval(String script, Bindings n) throws ScriptException {
+        return engine.eval(script, n);
+    }
 
-	@Override
-	public Object get(String key) {
-		return engine.get(key);
-	}
+    @Override
+    public Object eval(Reader reader, Bindings n) throws ScriptException {
+        return engine.eval(reader, n);
+    }
 
-	@Override
-	public Bindings getBindings(int scope) {
-		return engine.getBindings(scope);
-	}
+    @Override
+    public void put(String key, Object value) {
+        engine.put(key, value);
+    }
 
-	@Override
-	public void setBindings(Bindings bindings, int scope) {
-		engine.setBindings(bindings, scope);
-	}
+    @Override
+    public Object get(String key) {
+        return engine.get(key);
+    }
 
-	@Override
-	public Bindings createBindings() {
-		return engine.createBindings();
-	}
+    @Override
+    public Bindings getBindings(int scope) {
+        return engine.getBindings(scope);
+    }
 
-	@Override
-	public ScriptContext getContext() {
-		return engine.getContext();
-	}
+    @Override
+    public void setBindings(Bindings bindings, int scope) {
+        engine.setBindings(bindings, scope);
+    }
 
-	@Override
-	public void setContext(ScriptContext context) {
-		engine.setContext(context);
-	}
+    @Override
+    public Bindings createBindings() {
+        return engine.createBindings();
+    }
 
-	@Override
-	public ScriptEngineFactory getFactory() {
-		return engine.getFactory();
-	}
+    @Override
+    public ScriptContext getContext() {
+        return engine.getContext();
+    }
+
+    @Override
+    public void setContext(ScriptContext context) {
+        engine.setContext(context);
+    }
+
+    @Override
+    public ScriptEngineFactory getFactory() {
+        return engine.getFactory();
+    }
 
 }

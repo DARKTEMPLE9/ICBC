@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改档案借阅历史')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsBorrowInfo-edit" th:object="${amsBorrowInfo}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案编号：</label>
+            <div class="col-sm-8">
+                <input id="arcNo" name="arcNo" th:field="*{arcNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案题名：</label>
+            <div class="col-sm-8">
+                <input id="arcName" name="arcName" th:field="*{arcName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属部门：</label>
+            <div class="col-sm-8">
+                <input id="opDepName" name="opDepName" th:field="*{opDepName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人：</label>
+            <div class="col-sm-8">
+                <input id="appOpName" name="appOpName" th:field="*{appOpName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅事由：</label>
+            <div class="col-sm-8">
+                <input id="appReason" name="appReason" th:field="*{appReason}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请时间：</label>
+            <div class="col-sm-8">
+                <input id="appTime" name="appTime" th:field="*{appTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅开始时间：</label>
+            <div class="col-sm-8">
+                <input id="borStaTime" name="borStaTime" th:field="*{borStaTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅结束日期：</label>
+            <div class="col-sm-8">
+                <input id="borEndTime" name="borEndTime" th:field="*{borEndTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实际归还日期：</label>
+            <div class="col-sm-8">
+                <input id="actReturnTime" name="actReturnTime" th:field="*{actReturnTime}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批信息ID：</label>
+            <div class="col-sm-8">
+                <input id="exaAppInfoId" name="exaAppInfoId" th:field="*{exaAppInfoId}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属部门编号：</label>
+            <div class="col-sm-8">
+                <input id="opDepNo" name="opDepNo" th:field="*{opDepNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案类型：</label>
+            <div class="col-sm-8">
+                <input id="arcType" name="arcType" th:field="*{arcType}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">利用效果：</label>
+            <div class="col-sm-8">
+                <input id="useEffect" name="useEffect" th:field="*{useEffect}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">实际归还说明：</label>
+            <div class="col-sm-8">
+                <input id="actReturnExp" name="actReturnExp" th:field="*{actReturnExp}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">利用目的：</label>
+            <div class="col-sm-8">
+                <input id="usePurpose" name="usePurpose" th:field="*{usePurpose}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案类型姓名：</label>
+            <div class="col-sm-8">
+                <input id="arcBillName" name="arcBillName" th:field="*{arcBillName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案类型编码：</label>
+            <div class="col-sm-8">
+                <input id="arcBillCode" name="arcBillCode" th:field="*{arcBillCode}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人编码：</label>
+            <div class="col-sm-8">
+                <input id="appOpCode" name="appOpCode" th:field="*{appOpCode}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅类型：</label>
+            <div class="col-sm-8">
+                <input id="borType" name="borType" th:field="*{borType}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">著入Id：</label>
+            <div class="col-sm-8">
+                <input id="batchId" name="batchId" th:field="*{batchId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">著入编号：</label>
+            <div class="col-sm-8">
+                <input id="batchNo" name="batchNo" th:field="*{batchNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请部门名称：</label>
+            <div class="col-sm-8">
+                <input id="appDepName" name="appDepName" th:field="*{appDepName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请部门编码：</label>
+            <div class="col-sm-8">
+                <input id="appDepCode" name="appDepCode" th:field="*{appDepCode}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅形式：</label>
+            <div class="col-sm-8">
+                <input id="borForm" name="borForm" th:field="*{borForm}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">复印份数：</label>
+            <div class="col-sm-8">
+                <input id="copyNum" name="copyNum" th:field="*{copyNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借出份数：</label>
+            <div class="col-sm-8">
+                <input id="loanNum" name="loanNum" th:field="*{loanNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">对应档案信息表主键：</label>
+            <div class="col-sm-8">
+                <input id="arcId" name="arcId" th:field="*{archiveId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案管理部门号：</label>
+            <div class="col-sm-8">
+                <input id="manaDepNo" name="manaDepNo" th:field="*{manaDepNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案管理部门名：</label>
+            <div class="col-sm-8">
+                <input id="manaDepName" name="manaDepName" th:field="*{manaDepName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否逾期（1：是；0：否；）：</label>
+            <div class="col-sm-8">
+                <input id="overdue" name="overdue" th:field="*{overdue}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归还操作时间：</label>
+            <div class="col-sm-8">
+                <input id="returnOpTime" name="returnOpTime" th:field="*{returnOpTime}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归还操作类型：</label>
+            <div class="col-sm-8">
+                <input id="returnOpType" name="returnOpType" th:field="*{returnOpType}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">原审批信息ID：</label>
+            <div class="col-sm-8">
+                <input id="oldExaAppInfoId" name="oldExaAppInfoId" th:field="*{oldExaAppInfoId}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人号：</label>
+            <div class="col-sm-8">
+                <input id="agentCode" name="agentCode" th:field="*{agentCode}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人名：</label>
+            <div class="col-sm-8">
+                <input id="agentName" name="agentName" th:field="*{agentName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅天数：</label>
+            <div class="col-sm-8">
+                <input id="borDays" name="borDays" th:field="*{borDays}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅附件：</label>
+            <div class="col-sm-8">
+                <input id="borAttachment" name="borAttachment" th:field="*{borAttachment}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归还附件：</label>
+            <div class="col-sm-8">
+                <input id="returnAttachment" name="returnAttachment" th:field="*{returnAttachment}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人部门代码：</label>
+            <div class="col-sm-8">
+                <input id="agentOrgCode" name="agentOrgCode" th:field="*{agentOrgCode}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理人机构名称：</label>
+            <div class="col-sm-8">
+                <input id="agentOrgName" name="agentOrgName" th:field="*{agentOrgName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注信息：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案状态：</label>
+            <div class="col-sm-8">
+                <input id="arcStatus" name="arcStatus" th:field="*{arcStatus}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归还档案路径：</label>
+            <div class="col-sm-8">
+                <input id="returnPath" name="returnPath" th:field="*{returnPath}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">二级类目code：</label>
+            <div class="col-sm-8">
+                <input id="arcBillDeptCode" name="arcBillDeptCode" th:field="*{arcBillDeptCode}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案二级类目name：</label>
+            <div class="col-sm-8">
+                <input id="arcBillDeptName" name="arcBillDeptName" th:field="*{arcBillDeptName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">责任者：</label>
+            <div class="col-sm-8">
+                <input id="respOpName" name="respOpName" th:field="*{respOpName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">文件编号：</label>
+            <div class="col-sm-8">
+                <input id="fileNo" name="fileNo" th:field="*{fileNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案密级：</label>
+            <div class="col-sm-8">
+                <input id="arcLevel" name="arcLevel" th:field="*{arcLevel}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">档案形成时间：</label>
+            <div class="col-sm-8">
+                <input id="arcCreTime" name="arcCreTime" th:field="*{arcCreTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">二级类目：</label>
+            <div class="col-sm-8">
+                <input id="childArcType" name="childArcType" th:field="*{childArcType}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">出库备注：</label>
+            <div class="col-sm-8">
+                <input id="outRemark" name="outRemark" th:field="*{outRemark}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">借阅档案形态名称：</label>
+            <div class="col-sm-8">
+                <input id="borTypel" name="borTypel" th:field="*{borTypel}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上传附件路径：</label>
+            <div class="col-sm-8">
+                <input id="path" name="path" th:field="*{path}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上传文件名：</label>
+            <div class="col-sm-8">
+                <input id="fileName" name="fileName" th:field="*{fileName}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "borrow/amsBorrowInfo";
+    $("#form-amsBorrowInfo-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsBorrowInfo-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

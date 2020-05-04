@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改档案参数')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsParam-edit" th:object="${amsParam}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数种类代码：</label>
+            <div class="col-sm-8">
+                <input id="paramSpeciesCode" placeholder="请输入20字以内" th:maxlength="20" name="paramSpeciesCode"
+                       th:field="*{paramSpeciesCode}" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数种类名称：</label>
+            <div class="col-sm-8">
+                <input id="paramSpeciesName" placeholder="请输入64字以内" th:maxlength="64" name="paramSpeciesName"
+                       th:field="*{paramSpeciesName}" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数代码：</label>
+            <div class="col-sm-8">
+                <input id="paramCode" placeholder="请输入小于10位的数字" oninput="value=value.replace(/[^\d]/g,'')"
+                       th:maxlength="10" name="paramCode" th:field="*{paramCode}" class="form-control" type="text"
+                       required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参数名称：</label>
+            <div class="col-sm-8">
+                <input id="paramName" placeholder="请输入64字以内" th:maxlength="64" name="paramName" th:field="*{paramName}"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" placeholder="请输入200字以内" th:maxlength="200" th:field="*{remark}"
+                       class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "param/amsParam";
+    $("#form-amsParam-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-amsParam-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

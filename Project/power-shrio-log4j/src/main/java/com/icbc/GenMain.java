@@ -17,7 +17,7 @@ public class GenMain {
     public static void main(String[] args) {
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
-         String genCfg = "/mbgConfiguration.xml";
+        String genCfg = "/mbgConfiguration.xml";
         File configFile = new File(GenMain.class.getResource(genCfg).getFile());
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = null;
@@ -44,5 +44,5 @@ public class GenMain {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-     }
+    }
 }

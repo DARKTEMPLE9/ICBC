@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class TreeNode {
 
-    private Integer id ;
+    private Integer id;
 
     private String name;
 

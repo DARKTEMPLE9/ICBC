@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.SmRoleMapper">
+
+    <resultMap type="SmRole" id="SmRoleResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="type" column="TYPE"/>
+        <result property="gRAD" column="GRAD"/>
+        <result property="htmlContent" column="HTML_CONTENT"/>
+    </resultMap>
+
+    <sql id="selectSmRoleVo">
+        select ID, CODE, NAME, STATUS, TYPE, GRAD, HTML_CONTENT from sm_role
+    </sql>
+
+    <select id="selectSmRoleList" parameterType="SmRole" resultMap="SmRoleResult">
+        <include refid="selectSmRoleVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="status != null ">and STATUS = #{status}</if>
+            <if test="type != null  and type != '' ">and TYPE = #{type}</if>
+            <if test="gRAD != null ">and GRAD = #{gRAD}</if>
+            <if test="htmlContent != null  and htmlContent != '' ">and HTML_CONTENT = #{htmlContent}</if>
+        </where>
+    </select>
+
+    <select id="selectSmRoleById" parameterType="String" resultMap="SmRoleResult">
+        <include refid="selectSmRoleVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertSmRole" parameterType="SmRole">
+        insert into sm_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="type != null  and type != ''  ">TYPE,</if>
+            <if test="gRAD != null  ">GRAD,</if>
+            <if test="htmlContent != null  and htmlContent != ''  ">HTML_CONTENT,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="gRAD != null  ">#{gRAD},</if>
+            <if test="htmlContent != null  and htmlContent != ''  ">#{htmlContent},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmRole" parameterType="SmRole">
+        update sm_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="type != null  and type != ''  ">TYPE = #{type},</if>
+            <if test="gRAD != null  ">GRAD = #{gRAD},</if>
+            <if test="htmlContent != null  and htmlContent != ''  ">HTML_CONTENT = #{htmlContent},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteSmRoleById" parameterType="String">
+        delete from sm_role where ID = #{id}
+    </delete>
+
+    <delete id="deleteSmRoleByIds" parameterType="String">
+        delete from sm_role where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

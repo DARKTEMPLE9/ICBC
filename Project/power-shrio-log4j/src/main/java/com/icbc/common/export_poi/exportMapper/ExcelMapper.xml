@@ -1,67 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.icbc.common.export_poi.exportMapper.ExcelMapper">
-  <resultMap id="Export_a_ResultMap" type="com.icbc.common.export_poi.entity.Export_a">
-    <result column="row_id" jdbcType="VARCHAR" property="row_id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="height" jdbcType="DOUBLE" property="height" />
-  </resultMap>
+    <resultMap id="Export_a_ResultMap" type="com.icbc.common.export_poi.entity.Export_a">
+        <result column="row_id" jdbcType="VARCHAR" property="row_id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="height" jdbcType="DOUBLE" property="height"/>
+    </resultMap>
 
-  <resultMap id="Export_a_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_1">
-    <result column="row_id" jdbcType="VARCHAR" property="row_id" />
-    <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="number" jdbcType="INTEGER" property="number" />
-  </resultMap>
+    <resultMap id="Export_a_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_1">
+        <result column="row_id" jdbcType="VARCHAR" property="row_id"/>
+        <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+    </resultMap>
 
-  <resultMap id="Export_a_1_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_1_1">
-    <result column="row_id" jdbcType="VARCHAR" property="row_id" />
-    <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id" />
-    <result column="export_a_1_row_id" jdbcType="VARCHAR" property="export_a_1_row_id" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="number" jdbcType="INTEGER" property="number" />
-  </resultMap>
+    <resultMap id="Export_a_1_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_1_1">
+        <result column="row_id" jdbcType="VARCHAR" property="row_id"/>
+        <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id"/>
+        <result column="export_a_1_row_id" jdbcType="VARCHAR" property="export_a_1_row_id"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+    </resultMap>
 
-  <resultMap id="Export_a_2_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_2">
-    <result column="row_id" jdbcType="VARCHAR" property="row_id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="height" jdbcType="DOUBLE" property="height" />
-    <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id" />
-  </resultMap>
+    <resultMap id="Export_a_2_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_2">
+        <result column="row_id" jdbcType="VARCHAR" property="row_id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="height" jdbcType="DOUBLE" property="height"/>
+        <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id"/>
+    </resultMap>
 
 
+    <resultMap id="Export_a_2_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_2_1">
+        <result column="row_id" jdbcType="VARCHAR" property="row_id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="height" jdbcType="DOUBLE" property="height"/>
+        <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id"/>
+        <result column="export_a_2_row_id" jdbcType="VARCHAR" property="export_a_2_row_id"/>
+    </resultMap>
 
-  <resultMap id="Export_a_2_1_ResultMap" type="com.icbc.common.export_poi.entity.Export_a_2_1">
-    <result column="row_id" jdbcType="VARCHAR" property="row_id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="height" jdbcType="DOUBLE" property="height" />
-    <result column="export_a_row_id" jdbcType="VARCHAR" property="export_a_row_id" />
-    <result column="export_a_2_row_id" jdbcType="VARCHAR" property="export_a_2_row_id" />
-  </resultMap>
+    <select id="queryExcel" resultMap="Export_a_ResultMap">
+        SELECT * FROM EXPORT_A
+    </select>
 
-  <select id="queryExcel" resultMap="Export_a_ResultMap">
-    SELECT * FROM EXPORT_A
-  </select>
+    <select id="queryExcelObject" resultType="map">
+        SELECT * FROM EXPORT_A
+    </select>
 
-  <select id="queryExcelObject" resultType="map">
-    SELECT * FROM EXPORT_A
-  </select>
+    <select id="queryExcel_a_1" parameterType="java.lang.String"
+            resultType="com.icbc.common.export_poi.entity.Export_a_1">
+        SELECT * FROM EXPORT_A_1 WHERE
+        <if test="row_id  != null and row_id  !=''">
+            EXPORT_A_ROW_ID = #{row_id}
+        </if>
+    </select>
 
-  <select id="queryExcel_a_1" parameterType="java.lang.String" resultType="com.icbc.common.export_poi.entity.Export_a_1">
-    SELECT * FROM EXPORT_A_1 WHERE
-    <if test="row_id  != null and row_id  !=''">
-      EXPORT_A_ROW_ID = #{row_id}
-    </if>
-  </select>
-
-  <select id="queryExcel_a_1_1" parameterType="java.lang.String" resultType="com.icbc.common.export_poi.entity.Export_a_1_1">
-    SELECT  * FROM EXPORT_A_1_1 where
-    <if test="row_id  != null and row_id  !=''">
-      EXPORT_A_1_ROW_ID = #{row_id}
-    </if>
-  </select>
+    <select id="queryExcel_a_1_1" parameterType="java.lang.String"
+            resultType="com.icbc.common.export_poi.entity.Export_a_1_1">
+        SELECT * FROM EXPORT_A_1_1 where
+        <if test="row_id  != null and row_id  !=''">
+            EXPORT_A_1_ROW_ID = #{row_id}
+        </if>
+    </select>
 
 </mapper>

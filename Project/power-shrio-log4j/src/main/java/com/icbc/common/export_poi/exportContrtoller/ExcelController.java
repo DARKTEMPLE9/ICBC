@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 /*
-*
-* 导出excel
-* */
+ *
+ * 导出excel
+ * */
 @RequestMapping("excel")
 @Controller
 public class ExcelController {
@@ -30,10 +30,8 @@ public class ExcelController {
     private ExcelService excelService;
 
 
-
-
-    @RequestMapping(value = "/excel" ,method = {RequestMethod.GET,RequestMethod.POST})
-    public void execl(HttpServletResponse response){
+    @RequestMapping(value = "/excel", method = {RequestMethod.GET, RequestMethod.POST})
+    public void execl(HttpServletResponse response) {
         excelService.excel();
     }
 
@@ -41,11 +39,11 @@ public class ExcelController {
     @GetMapping("/inworkTest")
     public void inworkTest() {
         List<Map<String, Object>> list = null;
-        Map<String,Object> map = new HashMap<>();
-        map.put("row_id","测试一");
-        map.put("name","测试一");
-        map.put("sex",1);
-        map.put("height","测试一");
+        Map<String, Object> map = new HashMap<>();
+        map.put("row_id", "测试一");
+        map.put("name", "测试一");
+        map.put("sex", 1);
+        map.put("height", "测试一");
         list.add(map);
 
         List<String> valList = new ArrayList<>();
@@ -58,7 +56,7 @@ public class ExcelController {
         for (String s : valList) {
             Object o = map.get(s);
             try {
-                setPropertyVal(s,export_a,o);
+                setPropertyVal(s, export_a, o);
             } catch (IntrospectionException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -72,11 +70,11 @@ public class ExcelController {
 
     public static void main(String[] args) {
         List<Map<String, Object>> list = new ArrayList<>();
-        Map<String,Object> map = new HashMap<>();
-        map.put("row_id","测试一");
-        map.put("name","测试一");
-        map.put("sex",1);
-        map.put("height","测试一");
+        Map<String, Object> map = new HashMap<>();
+        map.put("row_id", "测试一");
+        map.put("name", "测试一");
+        map.put("sex", 1);
+        map.put("height", "测试一");
         list.add(map);
 
         List<String> valList = new ArrayList<>();
@@ -89,7 +87,7 @@ public class ExcelController {
         for (String s : valList) {
             Object o = map.get(s);
             try {
-                setPropertyVal(s,export_a,o);
+                setPropertyVal(s, export_a, o);
             } catch (IntrospectionException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

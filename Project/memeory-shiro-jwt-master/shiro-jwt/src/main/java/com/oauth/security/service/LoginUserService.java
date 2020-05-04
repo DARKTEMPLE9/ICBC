@@ -8,6 +8,6 @@ import com.oauth.security.beans.entity.LoginUser;
  */
 public interface LoginUserService {
 
-  LoginUser findByUserName(String userName);
+    LoginUser findByUserName(String userName);
 
 }

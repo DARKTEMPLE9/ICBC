@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImAcsLogMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImAcsLog" id="ImAcsLogResult">
+        <result property="id" column="ID"/>
+        <result property="imBatchId" column="IM_BATCH_ID"/>
+        <result property="operatorId" column="OPERATOR_ID"/>
+        <result property="operatorOrgan" column="OPERATOR_ORGAN"/>
+        <result property="operateType" column="OPERATE_TYPE"/>
+        <result property="operateDate" column="OPERATE_DATE"/>
+        <result property="operateContext" column="OPERATE_CONTEXT"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="regbillglideno" column="REGBILLGLIDENO"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="acsId" column="ACS_ID"/>
+    </resultMap>
+
+    <sql id="selectImAcsLogVo">
+        select id, im_batch_id, operator_id, operator_organ, operate_type, operate_date, operate_context, system_flag,
+        regbillglideno, file_type, file_name, acs_id from im_acs_log
+    </sql>
+
+    <select id="selectImAcsLogList" parameterType="net.northking.iacmp.imp.domain.ImAcsLog"
+            resultMap="ImAcsLogResult">
+        <include refid="selectImAcsLogVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="imBatchId != null  and imBatchId != '' ">and IM_BATCH_ID = #{imBatchId}</if>
+            <if test="operatorId != null  and operatorId != '' ">and OPERATOR_ID = #{operatorId}</if>
+            <if test="operatorOrgan != null  and operatorOrgan != '' ">and OPERATOR_ORGAN = #{operatorOrgan}</if>
+            <if test="operateType != null  and operateType != '' ">and OPERATE_TYPE = #{operateType}</if>
+            <if test="operateDate != null ">and OPERATE_DATE = #{operateDate}</if>
+            <if test="operateContext != null  and operateContext != '' ">and OPERATE_CONTEXT = #{operateContext}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="fileName != null  and fileName != '' ">and FILE_NAME = #{fileName}</if>
+            <if test="acsId != null ">and ACS_ID = #{acsId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="selectAcsLogCount" resultType="Integer">
+        select count(1) from im_acs_log
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="imBatchId != null  and imBatchId != '' ">and IM_BATCH_ID = #{imBatchId}</if>
+            <if test="operatorId != null  and operatorId != '' ">and OPERATOR_ID = #{operatorId}</if>
+            <if test="operatorOrgan != null  and operatorOrgan != '' ">and OPERATOR_ORGAN = #{operatorOrgan}</if>
+            <if test="operateType != null  and operateType != '' ">and OPERATE_TYPE = #{operateType}</if>
+            <if test="operateDate != null ">and OPERATE_DATE = #{operateDate}</if>
+            <if test="operateContext != null  and operateContext != '' ">and OPERATE_CONTEXT = #{operateContext}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="fileName != null  and fileName != '' ">and FILE_NAME = #{fileName}</if>
+            <if test="acsId != null ">and ACS_ID = #{acsId}</if>
+        </where>
+    </select>
+
+    <select id="imAcsLogById" parameterType="String" resultType="Map">
+        <include refid="selectImAcsLogVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImAcsLog" parameterType="net.northking.iacmp.imp.domain.ImAcsLog">
+        insert into im_acs_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="imBatchId != null  and imBatchId != ''  ">IM_BATCH_ID,</if>
+            <if test="operatorId != null  and operatorId != ''  ">OPERATOR_ID,</if>
+            <if test="operatorOrgan != null  and operatorOrgan != ''  ">OPERATOR_ORGAN,</if>
+            <if test="operateType != null  and operateType != ''  ">OPERATE_TYPE,</if>
+            <if test="operateDate != null  ">OPERATE_DATE,</if>
+            <if test="operateContext != null  and operateContext != ''  ">OPERATE_CONTEXT,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO,</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE,</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME,</if>
+            <if test="acsId != null  ">ACS_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="imBatchId != null  and imBatchId != ''  ">#{imBatchId},</if>
+            <if test="operatorId != null  and operatorId != ''  ">#{operatorId},</if>
+            <if test="operatorOrgan != null  and operatorOrgan != ''  ">#{operatorOrgan},</if>
+            <if test="operateType != null  and operateType != ''  ">#{operateType},</if>
+            <if test="operateDate != null  ">#{operateDate},</if>
+            <if test="operateContext != null  and operateContext != ''  ">#{operateContext},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">#{regbillglideno},</if>
+            <if test="fileType != null  and fileType != ''  ">#{fileType},</if>
+            <if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+            <if test="acsId != null  ">#{acsId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImAcsLog" parameterType="net.northking.iacmp.imp.domain.ImAcsLog">
+        update im_acs_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imBatchId != null  and imBatchId != ''  ">IM_BATCH_ID = #{imBatchId},</if>
+            <if test="operatorId != null  and operatorId != ''  ">OPERATOR_ID = #{operatorId},</if>
+            <if test="operatorOrgan != null  and operatorOrgan != ''  ">OPERATOR_ORGAN = #{operatorOrgan},</if>
+            <if test="operateType != null  and operateType != ''  ">OPERATE_TYPE = #{operateType},</if>
+            <if test="operateDate != null  ">OPERATE_DATE = #{operateDate},</if>
+            <if test="operateContext != null  and operateContext != ''  ">OPERATE_CONTEXT = #{operateContext},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO = #{regbillglideno},</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE = #{fileType},</if>
+            <if test="fileName != null  and fileName != ''  ">FILE_NAME = #{fileName},</if>
+            <if test="acsId != null  ">ACS_ID = #{acsId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImAcsLogById" parameterType="String">
+        delete from im_acs_log where ID = #{id}
+    </delete>
+
+    <delete id="deleteImAcsLogByIds" parameterType="String">
+        delete from im_acs_log where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

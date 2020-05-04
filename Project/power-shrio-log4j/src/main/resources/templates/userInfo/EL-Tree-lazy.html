@@ -51,7 +51,7 @@
                 props: {
                     children: 'childList',
                     label: 'name',
-                    isLeaf:'leaf'
+                    isLeaf: 'leaf'
                 }
             }
         },
@@ -61,7 +61,7 @@
         },
         methods: {
 
-            famat1 (date) {
+            famat1(date) {
                 var y = date.getFullYear();
                 var m = date.getMonth() + 1;
                 m = m < 10 ? ('0' + m) : m;
@@ -70,36 +70,36 @@
                 var h = date.getHours();
                 var minute = date.getMinutes();
                 minute = minute < 10 ? ('0' + minute) : minute;
-                var second= date.getSeconds();
+                var second = date.getSeconds();
                 second = minute < 10 ? ('0' + second) : second;
-                return y + '-' + m + '-' + d+' '+h+':'+minute+':'+ second;
+                return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
             },
-    testDateInterval(){
-                var startDate = [new Date('2019-10-10'),new Date('2019-10-20'),new Date('2019-10-25')];
-                var endDate = [new Date('2019-10-15'),new Date('2019-10-20'),new Date('2019-10-29')];
+            testDateInterval() {
+                var startDate = [new Date('2019-10-10'), new Date('2019-10-20'), new Date('2019-10-25')];
+                var endDate = [new Date('2019-10-15'), new Date('2019-10-20'), new Date('2019-10-29')];
 
-                var minStartDate = new Date(Math.min.apply(null,startDate));
+                var minStartDate = new Date(Math.min.apply(null, startDate));
 
-                var maxEndDate = new Date(Math.max.apply(null,endDate));
+                var maxEndDate = new Date(Math.max.apply(null, endDate));
 
                 var sDate = '2019-10-16';
                 var eDate = '2019-10-30';
 
                 //alert(new Date(sDate).getTime());
                 //alert(minStartDate);
-               // alert(new Date(eDate).getTime());
+                // alert(new Date(eDate).getTime());
 
                 //alert(maxEndDate);
                 //alert(new Date(sDate) < minStartDate);
-               //alert(new Date(eDate) > maxEndDate);
+                //alert(new Date(eDate) > maxEndDate);
 
                 var code = 0;
-                for (var i = 0; i<= startDate.length;i++){
-                    if ((new Date(sDate).getTime()<=endDate[i].getTime() &&new Date(sDate).getTime()  >= startDate[i].getTime() ) || (new Date(eDate).getTime() >= startDate[i].getTime() && new Date(eDate).getTime() <= endDate[i].getTime())){
+                for (var i = 0; i <= startDate.length; i++) {
+                    if ((new Date(sDate).getTime() <= endDate[i].getTime() && new Date(sDate).getTime() >= startDate[i].getTime()) || (new Date(eDate).getTime() >= startDate[i].getTime() && new Date(eDate).getTime() <= endDate[i].getTime())) {
                         code = 1;
                         break;
                     }
-                    if(new Date(sDate).getTime() <= minStartDate.getTime() && new Date(eDate).getTime() >= maxEndDate.getTime()){
+                    if (new Date(sDate).getTime() <= minStartDate.getTime() && new Date(eDate).getTime() >= maxEndDate.getTime()) {
                         code = 1;
                         break;
                     }
@@ -109,20 +109,20 @@
                         break;
                     }*/
                 }
-                if(code === 1){
+                if (code === 1) {
                     alert('已经存在于时间区间中');
-                }else{
+                } else {
                     alert("不存在于时间区间");
                 }
 
             },
-            testJson(){
+            testJson() {
                 $.ajax({
-                    url:'/menu/getJson',
+                    url: '/menu/getJson',
                     type: 'post',
-                    async:'false',
-                    datatype:'JSON',
-                    success:function(data){
+                    async: 'false',
+                    datatype: 'JSON',
+                    success: function (data) {
                         /*for (var key in json) {
                             console.log(key);     //获取key值
                             console.log(json[key]); //获取对应的value值
@@ -156,7 +156,7 @@
                     setTimeout(() => {
                         const data = [{}];
                         $.ajax({
-                            url: '/menu/getTreeChild?id='+node.data.id,
+                            url: '/menu/getTreeChild?id=' + node.data.id,
                             type: 'post',
                             async: false,
                             data: {},
@@ -172,19 +172,19 @@
 
                 setTimeout(() => {
                     const data = [{}];
-                $.ajax({
-                    url: '/menu/getTreeChild?id='+node.data.id,
-                    type: 'post',
-                    async: false,
-                    data: {},
-                    datatype: "JSON",
-                    success: function (data) {
-                        //console.info(data);
-                        resolve(data);
-                    }
-                })
-                //resolve(data);
-            }, 500);
+                    $.ajax({
+                        url: '/menu/getTreeChild?id=' + node.data.id,
+                        type: 'post',
+                        async: false,
+                        data: {},
+                        datatype: "JSON",
+                        success: function (data) {
+                            //console.info(data);
+                            resolve(data);
+                        }
+                    })
+                    //resolve(data);
+                }, 500);
             }
         }
 

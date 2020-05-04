@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImHadoopVideoMapper">
+
+    <resultMap type="ImHadoopVideo" id="ImHadoopVideoResult">
+        <result property="id" column="ID"/>
+        <result property="videoName" column="VIDEO_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="videoBill" column="VIDEO_BILL"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="serialNo" column="SERIALNO"/>
+        <result property="videoPath" column="VIDEO_PATH"/>
+        <result property="videoSize" column="VIDEO_SIZE"/>
+        <result property="videoType" column="VIDEO_TYPE"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createUserName" column="CREATE_USER_NAME"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="videoSource" column="VIDEO_SOURCE"/>
+        <result property="sysFlagInt" column="sys_flag_int"/>
+        <result property="videoId" column="video_id"/>
+    </resultMap>
+
+    <sql id="selectImHadoopVideoVo">
+        select ID, VIDEO_NAME, STATUS, VIDEO_BILL, BATCH_ID, CREATE_TIME, SERIALNO, VIDEO_PATH, VIDEO_SIZE, VIDEO_TYPE,
+        REMARK, CREATE_USER, CREATE_USER_NAME, SYSTEM_FLAG, VIDEO_SOURCE, sys_flag_int, video_id from im_hadoop_video
+    </sql>
+
+    <select id="selectImHadoopVideoList" parameterType="ImHadoopVideo" resultMap="ImHadoopVideoResult">
+        <include refid="selectImHadoopVideoVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="videoName != null  and videoName != '' ">and VIDEO_NAME = #{videoName}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="videoBill != null  and videoBill != '' ">and VIDEO_BILL = #{videoBill}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="serialNo != null ">and SERIALNO = #{serialNo}</if>
+            <if test="videoPath != null  and videoPath != '' ">and VIDEO_PATH = #{videoPath}</if>
+            <if test="videoSize != null ">and VIDEO_SIZE = #{videoSize}</if>
+            <if test="videoType != null  and videoType != '' ">and VIDEO_TYPE = #{videoType}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null  and createUser != '' ">and CREATE_USER = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != '' ">and CREATE_USER_NAME = #{createUserName}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="videoSource != null  and videoSource != '' ">and VIDEO_SOURCE = #{videoSource}</if>
+            <if test="sysFlagInt != null ">and sys_flag_int = #{sysFlagInt}</if>
+            <if test="videoId != null ">and video_id = #{videoId}</if>
+        </where>
+    </select>
+
+    <select id="selectImHadoopVideoById" parameterType="String" resultMap="ImHadoopVideoResult">
+        <include refid="selectImHadoopVideoVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImHadoopVideo" parameterType="ImHadoopVideo">
+        insert into im_hadoop_video
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="videoName != null  and videoName != ''  ">VIDEO_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="videoBill != null  and videoBill != ''  ">VIDEO_BILL,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="serialNo != null  ">SERIALNO,</if>
+            <if test="videoPath != null  and videoPath != ''  ">VIDEO_PATH,</if>
+            <if test="videoSize != null  ">VIDEO_SIZE,</if>
+            <if test="videoType != null  and videoType != ''  ">VIDEO_TYPE,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER,</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="videoSource != null  and videoSource != ''  ">VIDEO_SOURCE,</if>
+            <if test="sysFlagInt != null  ">sys_flag_int,</if>
+            <if test="videoId != null  ">video_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="videoName != null  and videoName != ''  ">#{videoName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="videoBill != null  and videoBill != ''  ">#{videoBill},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="serialNo != null  ">#{serialNo},</if>
+            <if test="videoPath != null  and videoPath != ''  ">#{videoPath},</if>
+            <if test="videoSize != null  ">#{videoSize},</if>
+            <if test="videoType != null  and videoType != ''  ">#{videoType},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">#{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">#{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="videoSource != null  and videoSource != ''  ">#{videoSource},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="videoId != null  ">#{videoId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImHadoopVideo" parameterType="ImHadoopVideo">
+        update im_hadoop_video
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="videoName != null  and videoName != ''  ">VIDEO_NAME = #{videoName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="videoBill != null  and videoBill != ''  ">VIDEO_BILL = #{videoBill},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="serialNo != null  ">SERIALNO = #{serialNo},</if>
+            <if test="videoPath != null  and videoPath != ''  ">VIDEO_PATH = #{videoPath},</if>
+            <if test="videoSize != null  ">VIDEO_SIZE = #{videoSize},</if>
+            <if test="videoType != null  and videoType != ''  ">VIDEO_TYPE = #{videoType},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER = #{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME = #{createUserName},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="videoSource != null  and videoSource != ''  ">VIDEO_SOURCE = #{videoSource},</if>
+            <if test="sysFlagInt != null  ">sys_flag_int = #{sysFlagInt},</if>
+            <if test="videoId != null  ">video_id = #{videoId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImHadoopVideoById" parameterType="String">
+        delete from im_hadoop_video where ID = #{id}
+    </delete>
+
+    <delete id="deleteImHadoopVideoByIds" parameterType="String">
+        delete from im_hadoop_video where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

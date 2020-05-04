@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsUserBillTmpMapper">
+
+    <resultMap type="CmsUserBillTmp" id="CmsUserBillTmpResult">
+        <result property="userId" column="USER_ID"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="authType" column="AUTH_TYPE"/>
+        <result property="authStart" column="AUTH_START"/>
+        <result property="authEnd" column="AUTH_END"/>
+        <result property="id" column="ID"/>
+    </resultMap>
+
+    <sql id="selectCmsUserBillTmpVo">
+        select USER_ID, BILL_ID, AUTH_TYPE, AUTH_START, AUTH_END, ID from cms_user_bill_tmp
+    </sql>
+
+    <select id="selectCmsUserBillTmpList" parameterType="CmsUserBillTmp" resultMap="CmsUserBillTmpResult">
+        <include refid="selectCmsUserBillTmpVo"/>
+        <where>
+            <if test="userId != null ">and USER_ID = #{userId}</if>
+            <if test="billId != null ">and BILL_ID = #{billId}</if>
+            <if test="authType != null  and authType != '' ">and AUTH_TYPE = #{authType}</if>
+            <if test="authStart != null ">and AUTH_START = #{authStart}</if>
+            <if test="authEnd != null ">and AUTH_END = #{authEnd}</if>
+            <if test="id != null ">and ID = #{id}</if>
+        </where>
+    </select>
+
+    <select id="selectCmsUserBillTmpById" parameterType="Long" resultMap="CmsUserBillTmpResult">
+        <include refid="selectCmsUserBillTmpVo"/>
+        where USER_ID = #{userId}
+    </select>
+
+    <insert id="insertCmsUserBillTmp" parameterType="CmsUserBillTmp">
+        insert into cms_user_bill_tmp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null  ">USER_ID,</if>
+            <if test="billId != null  ">BILL_ID,</if>
+            <if test="authType != null  and authType != ''  ">AUTH_TYPE,</if>
+            <if test="authStart != null  ">AUTH_START,</if>
+            <if test="authEnd != null  ">AUTH_END,</if>
+            <if test="id != null  ">ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null  ">#{userId},</if>
+            <if test="billId != null  ">#{billId},</if>
+            <if test="authType != null  and authType != ''  ">#{authType},</if>
+            <if test="authStart != null  ">#{authStart},</if>
+            <if test="authEnd != null  ">#{authEnd},</if>
+            <if test="id != null  ">#{id},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsUserBillTmp" parameterType="CmsUserBillTmp">
+        update cms_user_bill_tmp
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billId != null  ">BILL_ID = #{billId},</if>
+            <if test="authType != null  and authType != ''  ">AUTH_TYPE = #{authType},</if>
+            <if test="authStart != null  ">AUTH_START = #{authStart},</if>
+            <if test="authEnd != null  ">AUTH_END = #{authEnd},</if>
+            <if test="id != null  ">ID = #{id},</if>
+        </trim>
+        where USER_ID = #{userId}
+    </update>
+
+    <delete id="deleteCmsUserBillTmpById" parameterType="Long">
+        delete from cms_user_bill_tmp where USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteCmsUserBillTmpByIds" parameterType="String">
+        delete from cms_user_bill_tmp where USER_ID in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+</mapper>

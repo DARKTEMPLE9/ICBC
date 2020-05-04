@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案著录列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            档案名称：<input type="text" name="arcName"/>
+                        </li>
+                        <li>
+                            档案类别：<input type="text" id="arcBill" name="arcBill"
+                                        onclick="selectArcBillTree();arcBill.blur();return false;" readonly="readonly"
+                                        placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <div class="select-time">
+                                <label>著录时间： </label>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="startTime" placeholder="" name="crtTimeStart"/>
+                                <span>-</span>
+                                <input type="text" style="width: 93px;" class="input-sm form-control"
+                                       id="endTime" placeholder="" name="crtTimeEnd"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            状态：
+                            <!--<select id=""  name="status" style="margin-left: 20px" th:with="type=${@dict.getType('archive_myAmsBatch_status')}" required>-->
+                            <!--<option selected="selected" value="" style="display:none;"></option>-->
+                            <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                            <!--</select>-->
+                            <!--（0-已删除;1-已著录;2-申请中;3-待入盒;4-待入库;5-已入库;6-退回）-->
+                            <select id="status" name="status" style="margin-left: 20px">
+                                <option value="" selected style="display: none"></option>
+                                <option value="1">已著录</option>
+                                <option value="2">申请中</option>
+                                <option value="3">待入盒</option>
+                                <option value="4">待入库</option>
+                                <option value="5">已入库</option>
+                                <option value="6">已退回</option>
+                            </select>
+                        </li>
+
+                    </ul>
+
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+
+    var removeFlag = [[${@permission.hasPermi('archCollection:amsRecord:remove')}]];
+    var editFlag = [[${@permission.hasPermi('archCollection:amsRecordEdit:view')}]];
+    var detailFlag = [[${@permission.hasPermi('archCollection:amsRecordDetail:detailFlag')}]];
+    var recordFlag = [[${@permission.hasPermi('archCollection:amsRecordDetail:recordFlag')}]];  //有扫描页后待修改
+    var scanFlag = [[${@permission.hasPermi('archCollection:amsScan:scanFlag')}]];              //有扫描页后待修改
+    var myAmsBatchStatus = [[${@dict.getType('archive_myAmsBatch_status')}]];
+    var prefix = ctx + "archCollection/amsRecord";
+    var archiveType = [[${@dict.getType('archive_type')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+    // 日期框js
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            var startDate = laydate.render({
+                elem: '#laydate-startTime',
+                max: $('#laydate-endTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+
+            var endDate = laydate.render({
+                elem: '#laydate-endTime',
+                min: $('#laydate-startTime').val(),
+                theme: 'molv',
+                trigger: 'click',
+                // done: function (value, date) {
+                //     // 开始时间小于结束时间
+                //     if (value !== '') {
+                //         startDate.config.max.year = date.year;
+                //         startDate.config.max.month = date.month - 1;
+                //         startDate.config.max.date = date.date;
+                //     } else {
+                //         startDate.config.max.year = '';
+                //         startDate.config.max.month = '';
+                //         startDate.config.max.date = '';
+                //     }
+                // }
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + "/myAmsBatchList",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "档案著录",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'arcName',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillDept',
+                    title: '部门档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'arcBill',
+                    title: '档案类别',
+                    sortable: true
+                },
+                {
+                    field: 'crtName',
+                    title: '创建人名称',
+                    sortable: true
+                },
+                {
+                    field: 'arcHasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.arcHasMoveBank);
+                    }
+                },
+                {
+                    field: 'crtTime',
+                    title: '著录时间',
+                    sortable: true
+                },
+                // 档案形态（10-电子形态;20-实物形态;）
+                {
+                    field: 'arcFormat',
+                    title: '档案形态',
+                    visible: true,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+
+                        return $.table.selectDictLabel(archiveType, item.arcFormat);
+                    }
+                },
+                // 档案类型编号
+                {
+                    field: 'arcBillCode',
+                    title: '档案类型编号',
+                    visible: true,
+                    sortable: true,
+                },
+                // （0-已删除;1-已著录;2-申请中;3-待入盒;4-待入库;5-已入库;6-退回）
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (item.status == 1) {
+                            detailFlag = ""
+                            recordFlag = ""
+                            scanFlag = ""
+                            editFlag = ""
+                            // removeFlag = "hidden"
+                            return $.table.selectDictLabel(myAmsBatchStatus, item.status);
+                        } else {
+                            detailFlag = ""
+                            recordFlag = ""
+                            scanFlag = "hidden"
+                            editFlag = "hidden"
+                            if (item.status == 6) {
+                                scanFlag = '';
+                                editFlag = '';
+                            }
+                            // removeFlag = "hidden"
+                            return $.table.selectDictLabel(myAmsBatchStatus, item.status);
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    width: "13%",
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        // 电子档案
+                        if (row.arcFormat != "20") {
+                            actions.push('<a title="查看影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+                            actions.push('<a title="扫描" class="btn btn-info btn-xs ' + scanFlag + '" href="javascript:void(0)" onclick="scanImage(\'' + row.batchNo + '\')"><i class="fa fa-camera"></i></a> ');
+                        }
+                        actions.push('<a title="详情" class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                        actions.push('<a title="修改" class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="editDetail(\'' + row.id + '\')"><i class="fa fa-edit"></i></a> ');
+
+                        //actions.push('<a title="删除" class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i></a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案著录管理详情", url);
+    }
+
+    // 编辑页
+    function editDetail(id) {
+        var url = prefix + "/edit/" + id;
+        $.modal.parentTab("档案著录编辑", url);
+    }
+
+    function showImage(id) {
+        createMenuItem(prefix + "/showImageAndFile/" + id + "/000", "查看影像");
+    }
+
+    function scanImage(id) {
+        createMenuItem(prefix + "/showImageAndFile/" + id + "/111", "扫描影像");
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#arcBill").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+</script>
+</body>
+</html>

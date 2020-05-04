@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('部门列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="dept-form">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            部门名称：<input type="text" name="deptName" id="deptName"
+                                        onclick="selectDeptTree('deptName');deptName.blur();" readonly="readonly"
+                                        placeholder="请选择部门"/>
+                        </li>
+                        <li>
+                            部门状态：<select id="status" name="status"
+                                         th:with="type=${@dict.getType('sys_normal_disable')}">
+                            <option value="">所有</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+                        <li>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formReset('dept-form')"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-success" onclick="$.operate.add(1000)" shiro:hasPermission="system:dept:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>-->
+            <!--<a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:dept:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <a class="btn btn-info" id="expandAllBtn">
+                <i class="fa fa-exchange"></i> 展开/折叠
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-tree-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var addFlag = [[${@permission.hasPermi('system:dept:add')}]];
+    var editFlag = [[${@permission.hasPermi('system:dept:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:dept:remove')}]];
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "system/dept"
+
+    function selectDeptTree(id) {
+        var url = ctx + 'archManage/archDestroy/deptTree';
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#treeName').val());
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#deptName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    $(function () {
+        var options = {
+            code: "deptId",
+            parentCode: "parentDeptId",
+            uniqueId: "deptId",
+            url: prefix + "/list",
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove/{id}",
+            modalName: "部门",
+            columns: [{
+                field: 'selectItem',
+                radio: true
+            },
+                {
+                    field: 'deptName',
+                    title: '部门名称',
+                    align: "left"
+                },
+                {
+                    field: 'orderNum',
+                    title: '排序',
+                    align: "left"
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: "left",
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(datas, item.status);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: "left",
+                    formatter: function (value, item, index) {
+                        if (value != null) {
+                            return value.substring(0, 10) + "&nbsp;" + value.substring(11, 19);
+                        }
+                    }
+                }]
+        };
+        $.treeTable.init(options);
+    });
+
+    //重置form
+    function formReset(formId) {
+        //清空
+        $("#deptName").val('');
+        $("#status").val('');
+        $.treeTable.search();
+    }
+</script>
+</body>
+</html>

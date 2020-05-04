@@ -8,7 +8,7 @@ spring:
           uri: xxx
           username: xxx
           password: xxx
-#          search-paths: '{application}'
+          #          search-paths: '{application}'
           clone-on-start: true
 
 server:

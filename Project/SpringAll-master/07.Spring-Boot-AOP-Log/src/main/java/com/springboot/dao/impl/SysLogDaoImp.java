@@ -12,18 +12,18 @@ import com.springboot.domain.SysLog;
 @Repository
 public class SysLogDaoImp implements SysLogDao {
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-	@Override
-	public void saveSysLog(SysLog syslog) {
-		StringBuffer sql = new StringBuffer("insert into sys_log ");
-		sql.append("(id,username,operation,time,method,params,ip,create_time) ");
-		sql.append("values(seq_sys_log.nextval,:username,:operation,:time,:method,");
-		sql.append(":params,:ip,:createTime)");
+    @Override
+    public void saveSysLog(SysLog syslog) {
+        StringBuffer sql = new StringBuffer("insert into sys_log ");
+        sql.append("(id,username,operation,time,method,params,ip,create_time) ");
+        sql.append("values(seq_sys_log.nextval,:username,:operation,:time,:method,");
+        sql.append(":params,:ip,:createTime)");
 
-		NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(this.jdbcTemplate.getDataSource());
-		npjt.update(sql.toString(), new BeanPropertySqlParameterSource(syslog));
-	}
+        NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(this.jdbcTemplate.getDataSource());
+        npjt.update(sql.toString(), new BeanPropertySqlParameterSource(syslog));
+    }
 
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.ImBillMapper">
+
+    <resultMap type="ImBill" id="ImBillResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="code" column="CODE"/>
+        <result property="sysId" column="SYS_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="billOrder" column="BILL_ORDER"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="isLostType" column="IS_LOST_TYPE"/>
+        <result property="isLeaf" column="IS_LEAF"/>
+        <result property="pRODUCT" column="PRODUCT"/>
+        <result property="billId" column="bill_id"/>
+    </resultMap>
+
+    <sql id="selectImBillVo">
+        select ID, NAME, CODE, SYS_ID, PARENT_ID, BILL_ORDER, SYS_CODE, IS_LOST_TYPE, IS_LEAF, PRODUCT, bill_id from
+        im_bill
+    </sql>
+
+    <select id="selectImBillList" parameterType="ImBill" resultMap="ImBillResult">
+        <include refid="selectImBillVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="sysId != null  and sysId != '' ">and SYS_ID = #{sysId}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="billOrder != null ">and BILL_ORDER = #{billOrder}</if>
+            <if test="sysCode != null  and sysCode != '' ">and SYS_CODE = #{sysCode}</if>
+            <if test="isLostType != null  and isLostType != '' ">and IS_LOST_TYPE = #{isLostType}</if>
+            <if test="isLeaf != null  and isLeaf != '' ">and IS_LEAF = #{isLeaf}</if>
+            <if test="pRODUCT != null  and pRODUCT != '' ">and PRODUCT = #{pRODUCT}</if>
+            <if test="billId != null ">and bill_id = #{billId}</if>
+        </where>
+    </select>
+
+    <select id="selectImBillById" parameterType="String" resultMap="ImBillResult">
+        <include refid="selectImBillVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImBill" parameterType="ImBill">
+        insert into im_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID,</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID,</if>
+            <if test="billOrder != null  ">BILL_ORDER,</if>
+            <if test="sysCode != null  and sysCode != ''  ">SYS_CODE,</if>
+            <if test="isLostType != null  and isLostType != ''  ">IS_LOST_TYPE,</if>
+            <if test="isLeaf != null  and isLeaf != ''  ">IS_LEAF,</if>
+            <if test="pRODUCT != null  and pRODUCT != ''  ">PRODUCT,</if>
+            <if test="billId != null  ">bill_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="sysId != null  and sysId != ''  ">#{sysId},</if>
+            <if test="parentId != null  and parentId != ''  ">#{parentId},</if>
+            <if test="billOrder != null  ">#{billOrder},</if>
+            <if test="sysCode != null  and sysCode != ''  ">#{sysCode},</if>
+            <if test="isLostType != null  and isLostType != ''  ">#{isLostType},</if>
+            <if test="isLeaf != null  and isLeaf != ''  ">#{isLeaf},</if>
+            <if test="pRODUCT != null  and pRODUCT != ''  ">#{pRODUCT},</if>
+            <if test="billId != null  ">#{billId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImBill" parameterType="ImBill">
+        update im_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="sysId != null  and sysId != ''  ">SYS_ID = #{sysId},</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID = #{parentId},</if>
+            <if test="billOrder != null  ">BILL_ORDER = #{billOrder},</if>
+            <if test="sysCode != null  and sysCode != ''  ">SYS_CODE = #{sysCode},</if>
+            <if test="isLostType != null  and isLostType != ''  ">IS_LOST_TYPE = #{isLostType},</if>
+            <if test="isLeaf != null  and isLeaf != ''  ">IS_LEAF = #{isLeaf},</if>
+            <if test="pRODUCT != null  and pRODUCT != ''  ">PRODUCT = #{pRODUCT},</if>
+            <if test="billId != null  ">bill_id = #{billId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImBillById" parameterType="String">
+        delete from im_bill where ID = #{id}
+    </delete>
+
+    <delete id="deleteImBillByIds" parameterType="String">
+        delete from im_bill where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.SmMenuMapper">
+
+    <resultMap type="SmMenu" id="SmMenuResult">
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="indexNo" column="INDEX_NO"/>
+        <result property="url" column="URL"/>
+        <result property="id" column="ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="path" column="PATH"/>
+        <result property="allUrls" column="ALL_URLS"/>
+    </resultMap>
+
+    <sql id="selectSmMenuVo">
+        select CODE, NAME, INDEX_NO, URL, ID, PARENT_ID, PATH, ALL_URLS from sm_menu
+    </sql>
+
+    <select id="selectSmMenuList" parameterType="SmMenu" resultMap="SmMenuResult">
+        <include refid="selectSmMenuVo"/>
+        <where>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="indexNo != null ">and INDEX_NO = #{indexNo}</if>
+            <if test="url != null  and url != '' ">and URL = #{url}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="path != null  and path != '' ">and PATH = #{path}</if>
+            <if test="allUrls != null  and allUrls != '' ">and ALL_URLS = #{allUrls}</if>
+        </where>
+    </select>
+
+    <select id="selectSmMenuById" parameterType="String" resultMap="SmMenuResult">
+        <include refid="selectSmMenuVo"/>
+        where CODE = #{code}
+    </select>
+
+    <insert id="insertSmMenu" parameterType="SmMenu">
+        insert into sm_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="indexNo != null  ">INDEX_NO,</if>
+            <if test="url != null  and url != ''  ">URL,</if>
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID,</if>
+            <if test="path != null  and path != ''  ">PATH,</if>
+            <if test="allUrls != null  and allUrls != ''  ">ALL_URLS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="indexNo != null  ">#{indexNo},</if>
+            <if test="url != null  and url != ''  ">#{url},</if>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="parentId != null  and parentId != ''  ">#{parentId},</if>
+            <if test="path != null  and path != ''  ">#{path},</if>
+            <if test="allUrls != null  and allUrls != ''  ">#{allUrls},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmMenu" parameterType="SmMenu">
+        update sm_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="indexNo != null  ">INDEX_NO = #{indexNo},</if>
+            <if test="url != null  and url != ''  ">URL = #{url},</if>
+            <if test="id != null  and id != ''  ">ID = #{id},</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID = #{parentId},</if>
+            <if test="path != null  and path != ''  ">PATH = #{path},</if>
+            <if test="allUrls != null  and allUrls != ''  ">ALL_URLS = #{allUrls},</if>
+        </trim>
+        where CODE = #{code}
+    </update>
+
+    <delete id="deleteSmMenuById" parameterType="String">
+        delete from sm_menu where CODE = #{code}
+    </delete>
+
+    <delete id="deleteSmMenuByIds" parameterType="String">
+        delete from sm_menu where CODE in
+        <foreach item="code" collection="array" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </delete>
+
+</mapper>

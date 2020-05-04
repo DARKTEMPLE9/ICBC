@@ -34,13 +34,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .loginProcessingUrl("/login") // 处理表单登录 URL
                 .successHandler(authenticationSucessHandler) // 处理登录成功
                 .failureHandler(authenticationFailureHandler) // 处理登录失败
-            .and()
+                .and()
                 .authorizeRequests() // 授权配置
                 .antMatchers("/code/sms").permitAll()
                 .anyRequest()  // 所有请求
                 .authenticated() // 都需要认证
-            .and()
+                .and()
                 .csrf().disable()
-            .apply(smsAuthenticationConfig);
+                .apply(smsAuthenticationConfig);
     }
 }

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.GftEntryDtlMapper">
+
+    <resultMap type="GftEntryDtl" id="GftEntryDtlResult">
+        <result property="pkEntryDtl" column="pk_entry_dtl"/>
+        <result property="tallyDt" column="tally_dt"/>
+        <result property="gftEntryDtlId" column="gft_entry_dtl_id"/>
+        <result property="dealNum" column="deal_num"/>
+        <result property="bookId" column="book_id"/>
+        <result property="voucherCate" column="voucher_cate"/>
+        <result property="voucherId" column="voucher_id"/>
+        <result property="dealAcct" column="deal_acct"/>
+        <result property="auditor" column="auditor"/>
+        <result property="preparer" column="preparer"/>
+        <result property="bookkeeper" column="bookkeeper"/>
+        <result property="acctsYear" column="accts_year"/>
+        <result property="acctsMonth" column="accts_month"/>
+        <result property="adjPeriod" column="adj_period"/>
+        <result property="auditDt" column="audit_dt"/>
+        <result property="prepareDt" column="prepare_dt"/>
+        <result property="addBillNum" column="add_bill_num"/>
+        <result property="prepareSys" column="prepare_sys"/>
+        <result property="entryId" column="entry_id"/>
+        <result property="entryCont" column="entry_cont"/>
+        <result property="subjId" column="subj_id"/>
+        <result property="asstOrg" column="asst_org"/>
+        <result property="asstSrcSys" column="asst_src_sys"/>
+        <result property="ccyId" column="ccy_id"/>
+        <result property="exRate" column="ex_rate"/>
+        <result property="amtDir" column="amt_dir"/>
+        <result property="oriDebAmt" column="ori_deb_amt"/>
+        <result property="oriCrdAmt" column="ori_crd_amt"/>
+        <result property="locDebAmt" column="loc_deb_amt"/>
+        <result property="locCrdAmt" column="loc_crd_amt"/>
+        <result property="isEyearTurn" column="is_eyear_turn"/>
+        <result property="isOff" column="is_off"/>
+        <result property="def1" column="def1"/>
+        <result property="def2" column="def2"/>
+        <result property="def3" column="def3"/>
+        <result property="def4" column="def4"/>
+        <result property="def5" column="def5"/>
+        <result property="def6" column="def6"/>
+        <result property="def7" column="def7"/>
+        <result property="def8" column="def8"/>
+        <result property="def9" column="def9"/>
+        <result property="def10" column="def10"/>
+        <result property="ts" column="ts"/>
+    </resultMap>
+
+    <sql id="selectGftEntryDtlVo">
+        select pk_entry_dtl, tally_dt, gft_entry_dtl_id, deal_num, book_id, voucher_cate, voucher_id, deal_acct,
+        auditor, preparer, bookkeeper, accts_year, accts_month, adj_period, audit_dt, prepare_dt, add_bill_num,
+        prepare_sys, entry_id, entry_cont, subj_id, asst_org, asst_src_sys, ccy_id, ex_rate, amt_dir, ori_deb_amt,
+        ori_crd_amt, loc_deb_amt, loc_crd_amt, is_eyear_turn, is_off, def1, def2, def3, def4, def5, def6, def7, def8,
+        def9, def10, ts from gft_entry_dtl
+    </sql>
+
+    <select id="selectGftEntryDtlList" parameterType="GftEntryDtl" resultMap="GftEntryDtlResult">
+        <include refid="selectGftEntryDtlVo"/>
+        <where>
+            <if test="pkEntryDtl != null  and pkEntryDtl != '' ">and pk_entry_dtl = #{pkEntryDtl}</if>
+            <if test="tallyDt != null  and tallyDt != '' ">and tally_dt = #{tallyDt}</if>
+            <if test="gftEntryDtlId != null  and gftEntryDtlId != '' ">and gft_entry_dtl_id = #{gftEntryDtlId}</if>
+            <if test="dealNum != null  and dealNum != '' ">and deal_num = #{dealNum}</if>
+            <if test="bookId != null  and bookId != '' ">and book_id = #{bookId}</if>
+            <if test="voucherCate != null  and voucherCate != '' ">and voucher_cate = #{voucherCate}</if>
+            <if test="voucherId != null  and voucherId != '' ">and voucher_id = #{voucherId}</if>
+            <if test="dealAcct != null  and dealAcct != '' ">and deal_acct = #{dealAcct}</if>
+            <if test="auditor != null  and auditor != '' ">and auditor = #{auditor}</if>
+            <if test="preparer != null  and preparer != '' ">and preparer = #{preparer}</if>
+            <if test="bookkeeper != null  and bookkeeper != '' ">and bookkeeper = #{bookkeeper}</if>
+            <if test="acctsYear != null  and acctsYear != '' ">and accts_year = #{acctsYear}</if>
+            <if test="acctsMonth != null  and acctsMonth != '' ">and accts_month = #{acctsMonth}</if>
+            <if test="adjPeriod != null  and adjPeriod != '' ">and adj_period = #{adjPeriod}</if>
+            <if test="auditDt != null  and auditDt != '' ">and audit_dt = #{auditDt}</if>
+            <if test="prepareDt != null  and prepareDt != '' ">and prepare_dt = #{prepareDt}</if>
+            <if test="addBillNum != null  and addBillNum != '' ">and add_bill_num = #{addBillNum}</if>
+            <if test="prepareSys != null  and prepareSys != '' ">and prepare_sys = #{prepareSys}</if>
+            <if test="entryId != null  and entryId != '' ">and entry_id = #{entryId}</if>
+            <if test="entryCont != null  and entryCont != '' ">and entry_cont = #{entryCont}</if>
+            <if test="subjId != null  and subjId != '' ">and subj_id = #{subjId}</if>
+            <if test="asstOrg != null  and asstOrg != '' ">and asst_org = #{asstOrg}</if>
+            <if test="asstSrcSys != null  and asstSrcSys != '' ">and asst_src_sys = #{asstSrcSys}</if>
+            <if test="ccyId != null  and ccyId != '' ">and ccy_id = #{ccyId}</if>
+            <if test="exRate != null ">and ex_rate = #{exRate}</if>
+            <if test="amtDir != null  and amtDir != '' ">and amt_dir = #{amtDir}</if>
+            <if test="oriDebAmt != null ">and ori_deb_amt = #{oriDebAmt}</if>
+            <if test="oriCrdAmt != null ">and ori_crd_amt = #{oriCrdAmt}</if>
+            <if test="locDebAmt != null ">and loc_deb_amt = #{locDebAmt}</if>
+            <if test="locCrdAmt != null ">and loc_crd_amt = #{locCrdAmt}</if>
+            <if test="isEyearTurn != null ">and is_eyear_turn = #{isEyearTurn}</if>
+            <if test="isOff != null ">and is_off = #{isOff}</if>
+            <if test="def1 != null  and def1 != '' ">and def1 = #{def1}</if>
+            <if test="def2 != null  and def2 != '' ">and def2 = #{def2}</if>
+            <if test="def3 != null  and def3 != '' ">and def3 = #{def3}</if>
+            <if test="def4 != null  and def4 != '' ">and def4 = #{def4}</if>
+            <if test="def5 != null  and def5 != '' ">and def5 = #{def5}</if>
+            <if test="def6 != null  and def6 != '' ">and def6 = #{def6}</if>
+            <if test="def7 != null  and def7 != '' ">and def7 = #{def7}</if>
+            <if test="def8 != null  and def8 != '' ">and def8 = #{def8}</if>
+            <if test="def9 != null  and def9 != '' ">and def9 = #{def9}</if>
+            <if test="def10 != null  and def10 != '' ">and def10 = #{def10}</if>
+            <if test="ts != null  and ts != '' ">and ts = #{ts}</if>
+        </where>
+    </select>
+
+    <select id="selectGftEntryDtlById" parameterType="String" resultMap="GftEntryDtlResult">
+        <include refid="selectGftEntryDtlVo"/>
+        where pk_entry_dtl = #{pkEntryDtl}
+    </select>
+
+    <insert id="insertGftEntryDtl" parameterType="GftEntryDtl">
+        insert into gft_entry_dtl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pkEntryDtl != null  and pkEntryDtl != ''  ">pk_entry_dtl,</if>
+            <if test="tallyDt != null  and tallyDt != ''  ">tally_dt,</if>
+            <if test="gftEntryDtlId != null  and gftEntryDtlId != ''  ">gft_entry_dtl_id,</if>
+            <if test="dealNum != null  and dealNum != ''  ">deal_num,</if>
+            <if test="bookId != null  and bookId != ''  ">book_id,</if>
+            <if test="voucherCate != null  and voucherCate != ''  ">voucher_cate,</if>
+            <if test="voucherId != null  and voucherId != ''  ">voucher_id,</if>
+            <if test="dealAcct != null  and dealAcct != ''  ">deal_acct,</if>
+            <if test="auditor != null  and auditor != ''  ">auditor,</if>
+            <if test="preparer != null  and preparer != ''  ">preparer,</if>
+            <if test="bookkeeper != null  and bookkeeper != ''  ">bookkeeper,</if>
+            <if test="acctsYear != null  and acctsYear != ''  ">accts_year,</if>
+            <if test="acctsMonth != null  and acctsMonth != ''  ">accts_month,</if>
+            <if test="adjPeriod != null  and adjPeriod != ''  ">adj_period,</if>
+            <if test="auditDt != null  and auditDt != ''  ">audit_dt,</if>
+            <if test="prepareDt != null  and prepareDt != ''  ">prepare_dt,</if>
+            <if test="addBillNum != null  and addBillNum != ''  ">add_bill_num,</if>
+            <if test="prepareSys != null  and prepareSys != ''  ">prepare_sys,</if>
+            <if test="entryId != null  and entryId != ''  ">entry_id,</if>
+            <if test="entryCont != null  and entryCont != ''  ">entry_cont,</if>
+            <if test="subjId != null  and subjId != ''  ">subj_id,</if>
+            <if test="asstOrg != null  and asstOrg != ''  ">asst_org,</if>
+            <if test="asstSrcSys != null  and asstSrcSys != ''  ">asst_src_sys,</if>
+            <if test="ccyId != null  and ccyId != ''  ">ccy_id,</if>
+            <if test="exRate != null  ">ex_rate,</if>
+            <if test="amtDir != null  and amtDir != ''  ">amt_dir,</if>
+            <if test="oriDebAmt != null  ">ori_deb_amt,</if>
+            <if test="oriCrdAmt != null  ">ori_crd_amt,</if>
+            <if test="locDebAmt != null  ">loc_deb_amt,</if>
+            <if test="locCrdAmt != null  ">loc_crd_amt,</if>
+            <if test="isEyearTurn != null  ">is_eyear_turn,</if>
+            <if test="isOff != null  ">is_off,</if>
+            <if test="def1 != null  and def1 != ''  ">def1,</if>
+            <if test="def2 != null  and def2 != ''  ">def2,</if>
+            <if test="def3 != null  and def3 != ''  ">def3,</if>
+            <if test="def4 != null  and def4 != ''  ">def4,</if>
+            <if test="def5 != null  and def5 != ''  ">def5,</if>
+            <if test="def6 != null  and def6 != ''  ">def6,</if>
+            <if test="def7 != null  and def7 != ''  ">def7,</if>
+            <if test="def8 != null  and def8 != ''  ">def8,</if>
+            <if test="def9 != null  and def9 != ''  ">def9,</if>
+            <if test="def10 != null  and def10 != ''  ">def10,</if>
+            <if test="ts != null  and ts != ''  ">ts,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pkEntryDtl != null  and pkEntryDtl != ''  ">#{pkEntryDtl},</if>
+            <if test="tallyDt != null  and tallyDt != ''  ">#{tallyDt},</if>
+            <if test="gftEntryDtlId != null  and gftEntryDtlId != ''  ">#{gftEntryDtlId},</if>
+            <if test="dealNum != null  and dealNum != ''  ">#{dealNum},</if>
+            <if test="bookId != null  and bookId != ''  ">#{bookId},</if>
+            <if test="voucherCate != null  and voucherCate != ''  ">#{voucherCate},</if>
+            <if test="voucherId != null  and voucherId != ''  ">#{voucherId},</if>
+            <if test="dealAcct != null  and dealAcct != ''  ">#{dealAcct},</if>
+            <if test="auditor != null  and auditor != ''  ">#{auditor},</if>
+            <if test="preparer != null  and preparer != ''  ">#{preparer},</if>
+            <if test="bookkeeper != null  and bookkeeper != ''  ">#{bookkeeper},</if>
+            <if test="acctsYear != null  and acctsYear != ''  ">#{acctsYear},</if>
+            <if test="acctsMonth != null  and acctsMonth != ''  ">#{acctsMonth},</if>
+            <if test="adjPeriod != null  and adjPeriod != ''  ">#{adjPeriod},</if>
+            <if test="auditDt != null  and auditDt != ''  ">#{auditDt},</if>
+            <if test="prepareDt != null  and prepareDt != ''  ">#{prepareDt},</if>
+            <if test="addBillNum != null  and addBillNum != ''  ">#{addBillNum},</if>
+            <if test="prepareSys != null  and prepareSys != ''  ">#{prepareSys},</if>
+            <if test="entryId != null  and entryId != ''  ">#{entryId},</if>
+            <if test="entryCont != null  and entryCont != ''  ">#{entryCont},</if>
+            <if test="subjId != null  and subjId != ''  ">#{subjId},</if>
+            <if test="asstOrg != null  and asstOrg != ''  ">#{asstOrg},</if>
+            <if test="asstSrcSys != null  and asstSrcSys != ''  ">#{asstSrcSys},</if>
+            <if test="ccyId != null  and ccyId != ''  ">#{ccyId},</if>
+            <if test="exRate != null  ">#{exRate},</if>
+            <if test="amtDir != null  and amtDir != ''  ">#{amtDir},</if>
+            <if test="oriDebAmt != null  ">#{oriDebAmt},</if>
+            <if test="oriCrdAmt != null  ">#{oriCrdAmt},</if>
+            <if test="locDebAmt != null  ">#{locDebAmt},</if>
+            <if test="locCrdAmt != null  ">#{locCrdAmt},</if>
+            <if test="isEyearTurn != null  ">#{isEyearTurn},</if>
+            <if test="isOff != null  ">#{isOff},</if>
+            <if test="def1 != null  and def1 != ''  ">#{def1},</if>
+            <if test="def2 != null  and def2 != ''  ">#{def2},</if>
+            <if test="def3 != null  and def3 != ''  ">#{def3},</if>
+            <if test="def4 != null  and def4 != ''  ">#{def4},</if>
+            <if test="def5 != null  and def5 != ''  ">#{def5},</if>
+            <if test="def6 != null  and def6 != ''  ">#{def6},</if>
+            <if test="def7 != null  and def7 != ''  ">#{def7},</if>
+            <if test="def8 != null  and def8 != ''  ">#{def8},</if>
+            <if test="def9 != null  and def9 != ''  ">#{def9},</if>
+            <if test="def10 != null  and def10 != ''  ">#{def10},</if>
+            <if test="ts != null  and ts != ''  ">#{ts},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGftEntryDtl" parameterType="GftEntryDtl">
+        update gft_entry_dtl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tallyDt != null  and tallyDt != ''  ">tally_dt = #{tallyDt},</if>
+            <if test="gftEntryDtlId != null  and gftEntryDtlId != ''  ">gft_entry_dtl_id = #{gftEntryDtlId},</if>
+            <if test="dealNum != null  and dealNum != ''  ">deal_num = #{dealNum},</if>
+            <if test="bookId != null  and bookId != ''  ">book_id = #{bookId},</if>
+            <if test="voucherCate != null  and voucherCate != ''  ">voucher_cate = #{voucherCate},</if>
+            <if test="voucherId != null  and voucherId != ''  ">voucher_id = #{voucherId},</if>
+            <if test="dealAcct != null  and dealAcct != ''  ">deal_acct = #{dealAcct},</if>
+            <if test="auditor != null  and auditor != ''  ">auditor = #{auditor},</if>
+            <if test="preparer != null  and preparer != ''  ">preparer = #{preparer},</if>
+            <if test="bookkeeper != null  and bookkeeper != ''  ">bookkeeper = #{bookkeeper},</if>
+            <if test="acctsYear != null  and acctsYear != ''  ">accts_year = #{acctsYear},</if>
+            <if test="acctsMonth != null  and acctsMonth != ''  ">accts_month = #{acctsMonth},</if>
+            <if test="adjPeriod != null  and adjPeriod != ''  ">adj_period = #{adjPeriod},</if>
+            <if test="auditDt != null  and auditDt != ''  ">audit_dt = #{auditDt},</if>
+            <if test="prepareDt != null  and prepareDt != ''  ">prepare_dt = #{prepareDt},</if>
+            <if test="addBillNum != null  and addBillNum != ''  ">add_bill_num = #{addBillNum},</if>
+            <if test="prepareSys != null  and prepareSys != ''  ">prepare_sys = #{prepareSys},</if>
+            <if test="entryId != null  and entryId != ''  ">entry_id = #{entryId},</if>
+            <if test="entryCont != null  and entryCont != ''  ">entry_cont = #{entryCont},</if>
+            <if test="subjId != null  and subjId != ''  ">subj_id = #{subjId},</if>
+            <if test="asstOrg != null  and asstOrg != ''  ">asst_org = #{asstOrg},</if>
+            <if test="asstSrcSys != null  and asstSrcSys != ''  ">asst_src_sys = #{asstSrcSys},</if>
+            <if test="ccyId != null  and ccyId != ''  ">ccy_id = #{ccyId},</if>
+            <if test="exRate != null  ">ex_rate = #{exRate},</if>
+            <if test="amtDir != null  and amtDir != ''  ">amt_dir = #{amtDir},</if>
+            <if test="oriDebAmt != null  ">ori_deb_amt = #{oriDebAmt},</if>
+            <if test="oriCrdAmt != null  ">ori_crd_amt = #{oriCrdAmt},</if>
+            <if test="locDebAmt != null  ">loc_deb_amt = #{locDebAmt},</if>
+            <if test="locCrdAmt != null  ">loc_crd_amt = #{locCrdAmt},</if>
+            <if test="isEyearTurn != null  ">is_eyear_turn = #{isEyearTurn},</if>
+            <if test="isOff != null  ">is_off = #{isOff},</if>
+            <if test="def1 != null  and def1 != ''  ">def1 = #{def1},</if>
+            <if test="def2 != null  and def2 != ''  ">def2 = #{def2},</if>
+            <if test="def3 != null  and def3 != ''  ">def3 = #{def3},</if>
+            <if test="def4 != null  and def4 != ''  ">def4 = #{def4},</if>
+            <if test="def5 != null  and def5 != ''  ">def5 = #{def5},</if>
+            <if test="def6 != null  and def6 != ''  ">def6 = #{def6},</if>
+            <if test="def7 != null  and def7 != ''  ">def7 = #{def7},</if>
+            <if test="def8 != null  and def8 != ''  ">def8 = #{def8},</if>
+            <if test="def9 != null  and def9 != ''  ">def9 = #{def9},</if>
+            <if test="def10 != null  and def10 != ''  ">def10 = #{def10},</if>
+            <if test="ts != null  and ts != ''  ">ts = #{ts},</if>
+        </trim>
+        where pk_entry_dtl = #{pkEntryDtl}
+    </update>
+
+    <delete id="deleteGftEntryDtlById" parameterType="String">
+        delete from gft_entry_dtl where pk_entry_dtl = #{pkEntryDtl}
+    </delete>
+
+    <delete id="deleteGftEntryDtlByIds" parameterType="String">
+        delete from gft_entry_dtl where pk_entry_dtl in
+        <foreach item="pkEntryDtl" collection="array" open="(" separator="," close=")">
+            #{pkEntryDtl}
+        </foreach>
+    </delete>
+
+</mapper>

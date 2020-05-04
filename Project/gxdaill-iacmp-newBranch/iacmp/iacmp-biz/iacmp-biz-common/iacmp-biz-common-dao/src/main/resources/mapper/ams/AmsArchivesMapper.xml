@@ -1,0 +1,2392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsArchivesMapper">
+
+    <resultMap type="AmsArchives" id="AmsArchivesResult">
+        <result property="id" column="ID"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="name" column="NAME"/>
+        <result property="opDepNo" column="OP_DEP_NO"/>
+        <result property="opDepName" column="OP_DEP_NAME"/>
+        <result property="manaDepNo" column="MANA_DEP_NO"/>
+        <result property="manaDepName" column="MANA_DEP_NAME"/>
+        <result property="depotNo" column="DEPOT_NO"/>
+        <result property="depotName" column="DEPOT_NAME"/>
+        <result property="depotType" column="DEPOT_TYPE"/>
+        <result property="cabintNo" column="CABINT_NO"/>
+        <result property="cabintName" column="CABINT_NAME"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="respDepaName" column="RESP_DEPA_NAME"/>
+        <result property="respOpName" column="RESP_OP_NAME"/>
+        <result property="arcNum" column="ARC_NUM"/>
+        <result property="arcPageNum" column="ARC_PAGE_NUM"/>
+        <result property="arcLevel" column="ARC_LEVEL"/>
+        <result property="arcCreTime" column="ARC_CRE_TIME"/>
+        <result property="filingTime" column="FILING_TIME"/>
+        <result property="filingDepa" column="FILING_DEPA"/>
+        <result property="adminNo" column="ADMIN_NO"/>
+        <result property="adminName" column="ADMIN_NAME"/>
+        <result property="depotOutNo" column="DEPOT_OUT_NO"/>
+        <result property="depotOutName" column="DEPOT_OUT_NAME"/>
+        <result property="borrowNo" column="BORROW_NO"/>
+        <result property="borrowName" column="BORROW_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="batchNo" column="BATCH_NO"/>
+        <result property="filingDepaName" column="FILING_DEPA_NAME"/>
+        <result property="depotId" column="DEPOT_ID"/>
+        <result property="cabintId" column="CABINT_ID"/>
+        <result property="arcBillName" column="ARC_BILL_NAME"/>
+        <result property="arcBillCode" column="ARC_BILL_CODE"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="originMode" column="ORIGIN_MODE"/>
+        <result property="expenseInvolve" column="EXPENSE_INVOLVE"/>
+        <result property="bill" column="BILL"/>
+        <result property="serviceType" column="SERVICE_TYPE"/>
+        <result property="carrier" column="CARRIER"/>
+        <result property="practType" column="PRACT_TYPE"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="viewPath" column="VIEW_PATH"/>
+        <result property="persistTime" column="PERSIST_TIME"/>
+        <result property="persistPeriod" column="PERSIST_PERIOD"/>
+        <result property="period" column="PERIOD"/>
+        <result property="boxCode" column="box_code"/>
+        <result property="boxName" column="box_name"/>
+        <result property="boxNum" column="box_num"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="storageLocation" column="STORAGE_LOCATION"/>
+        <result property="turnInTime" column="TURN_IN_TIME"/>
+        <result property="receiveTime" column="RECEIVE_TIME"/>
+        <result property="arcBillDept" column="ARC_BILL_DEPT"/>
+        <result property="arcBillDeptCode" column="ARC_BILL_DEPT_CODE"/>
+        <result property="arcId" column="ARC_ID"/>
+    </resultMap>
+
+    <resultMap type="AmsArchivesDTO" id="AmsArchivesResultDto">
+        <id property="id" column="ID"/>
+        <result property="id" column="ID"/>
+        <result property="arcNo" column="ARC_NO"/>
+        <result property="name" column="NAME"/>
+        <result property="opDepNo" column="OP_DEP_NO"/>
+        <result property="opDepName" column="OP_DEP_NAME"/>
+        <result property="manaDepNo" column="MANA_DEP_NO"/>
+        <result property="manaDepName" column="MANA_DEP_NAME"/>
+        <result property="depotNo" column="DEPOT_NO"/>
+        <result property="depotName" column="DEPOT_NAME"/>
+        <result property="depotType" column="DEPOT_TYPE"/>
+        <result property="cabintNo" column="CABINT_NO"/>
+        <result property="cabintName" column="CABINT_NAME"/>
+        <result property="arcType" column="ARC_TYPE"/>
+        <result property="respDepaName" column="RESP_DEPA_NAME"/>
+        <result property="respOpName" column="RESP_OP_NAME"/>
+        <result property="arcNum" column="ARC_NUM"/>
+        <result property="arcPageNum" column="ARC_PAGE_NUM"/>
+        <result property="arcLevel" column="ARC_LEVEL"/>
+        <result property="arcCreTime" column="ARC_CRE_TIME"/>
+        <result property="filingTime" column="FILING_TIME"/>
+        <result property="filingDepa" column="FILING_DEPA"/>
+        <result property="filingDeptName" column="FILING_DEPT_NAME"/>
+        <result property="adminNo" column="ADMIN_NO"/>
+        <result property="adminName" column="ADMIN_NAME"/>
+        <result property="depotOutNo" column="DEPOT_OUT_NO"/>
+        <result property="depotOutName" column="DEPOT_OUT_NAME"/>
+        <result property="borrowNo" column="BORROW_NO"/>
+        <result property="borrowName" column="BORROW_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="batchNo" column="BATCH_NO"/>
+        <result property="filingDepaName" column="FILING_DEPA_NAME"/>
+        <result property="depotId" column="DEPOT_ID"/>
+        <result property="cabintId" column="CABINT_ID"/>
+        <result property="arcBillName" column="ARC_BILL_NAME"/>
+        <result property="arcBillCode" column="ARC_BILL_CODE"/>
+        <result property="valPeriod" column="VAL_PERIOD"/>
+        <result property="originMode" column="ORIGIN_MODE"/>
+        <result property="expenseInvolve" column="EXPENSE_INVOLVE"/>
+        <result property="bill" column="BILL"/>
+        <result property="serviceType" column="SERVICE_TYPE"/>
+        <result property="carrier" column="CARRIER"/>
+        <result property="practType" column="PRACT_TYPE"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="viewPath" column="VIEW_PATH"/>
+        <result property="persistTime" column="PERSIST_TIME"/>
+        <result property="persistPeriod" column="PERSIST_PERIOD"/>
+        <result property="period" column="PERIOD"/>
+        <result property="boxCode" column="box_code"/>
+        <result property="boxName" column="box_name"/>
+        <result property="boxNum" column="box_num"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="storageLocation" column="STORAGE_LOCATION"/>
+        <result property="turnInTime" column="TURN_IN_TIME"/>
+        <result property="receiveTime" column="RECEIVE_TIME"/>
+        <result property="arcBillDept" column="ARC_BILL_DEPT"/>
+        <result property="arcBillDeptCode" column="ARC_BILL_DEPT_CODE"/>
+        <result property="showIamge" column="showIamge"/>
+        <result property="hasMoveBank" column="has_move_bank"/>
+        <collection property="amsBorrowInfo" column="BATCH_ID" javaType="java.util.List"
+                    ofType="net.northking.iacmp.common.bean.domain.ams.AmsBorrowInfo" select="getBorrowList">
+            <id property="id" column="ID"></id>
+            <result property="status" column="STATUS"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="amsBorrowInfo" type="net.northking.iacmp.common.bean.domain.ams.AmsBorrowInfo">
+        <result property="id" column="ID"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+    <sql id="selectAmsArchivesVo">
+        select ID, ARC_NO, NAME, OP_DEP_NO, OP_DEP_NAME, MANA_DEP_NO, MANA_DEP_NAME, DEPOT_NO, DEPOT_NAME, DEPOT_TYPE,
+        CABINT_NO, CABINT_NAME, ARC_TYPE, RESP_DEPA_NAME, RESP_OP_NAME, ARC_NUM, ARC_PAGE_NUM, ARC_LEVEL, ARC_CRE_TIME,
+        FILING_TIME, FILING_DEPA, ADMIN_NO, ADMIN_NAME, DEPOT_OUT_NO, DEPOT_OUT_NAME, BORROW_NO, BORROW_NAME, STATUS,
+        BATCH_ID, BATCH_NO, FILING_DEPA_NAME, DEPOT_ID, CABINT_ID, ARC_BILL_NAME, ARC_BILL_CODE, VAL_PERIOD,
+        ORIGIN_MODE, EXPENSE_INVOLVE, BILL, SERVICE_TYPE, CARRIER, PRACT_TYPE, FILE_PATH, VIEW_PATH, PERSIST_TIME,
+        PERSIST_PERIOD, PERIOD, box_code, box_name, box_num, FILE_NO, STORAGE_LOCATION, TURN_IN_TIME, RECEIVE_TIME,
+        ARC_BILL_DEPT, ARC_BILL_DEPT_CODE from ams_archives
+    </sql>
+    <sql id="selectAmsDesHis">
+        select a.ID, a.ARC_NO, a.NAME, a.OP_DEP_NO, a.OP_DEP_NAME, a.MANA_DEP_NO, a.MANA_DEP_NAME, a.DEPOT_NO,
+        a.DEPOT_NAME, a.DEPOT_TYPE, a.CABINT_NO, a.CABINT_NAME, a.ARC_TYPE, a.RESP_DEPA_NAME, a.RESP_OP_NAME, a.ARC_NUM,
+        a.ARC_PAGE_NUM, a.ARC_LEVEL, a.ARC_CRE_TIME, a.FILING_TIME, a.FILING_DEPA, a.ADMIN_NO, a.ADMIN_NAME,
+        a.DEPOT_OUT_NO, a.DEPOT_OUT_NAME, a.BORROW_NO, a.BORROW_NAME, a.STATUS, a.BATCH_ID, a.BATCH_NO,
+        a.FILING_DEPA_NAME, a.DEPOT_ID, a.CABINT_ID, a.ARC_BILL_NAME, a.ARC_BILL_CODE, a.VAL_PERIOD, a.ORIGIN_MODE,
+        a.EXPENSE_INVOLVE, a.BILL, a.SERVICE_TYPE, a.CARRIER, a.PRACT_TYPE, a.FILE_PATH, a.VIEW_PATH, a.PERSIST_TIME,
+        a.PERSIST_PERIOD, a.PERIOD, a.box_code, a.box_name, a.box_num, a.FILE_NO, a.STORAGE_LOCATION, a.TURN_IN_TIME,
+        a.RECEIVE_TIME, a.ARC_BILL_DEPT, a.ARC_BILL_DEPT_CODE, b.arc_has_move_bank has_move_bank from ams_archives a
+        LEFT JOIN ams_batch b
+        ON a.ARC_NO=b.ARC_NO
+    </sql>
+
+    <sql id="selectAmsArchivesDto">
+        SELECT a.ID ID, a.ARC_NO ARC_NO, a.NAME NAME, a.OP_DEP_NO OP_DEP_NO, a.OP_DEP_NAME OP_DEP_NAME, a.MANA_DEP_NO
+        MANA_DEP_NO, a.MANA_DEP_NAME MANA_DEP_NAME, a.DEPOT_NO DEPOT_NO, a.DEPOT_NAME DEPOT_NAME, a.DEPOT_TYPE
+        DEPOT_TYPE, a.CABINT_NO CABINT_NO, a.CABINT_NAME CABINT_NAME, a.ARC_TYPE ARC_TYPE, a.RESP_DEPA_NAME
+        RESP_DEPA_NAME, a.RESP_OP_NAME RESP_OP_NAME, a.ARC_NUM ARC_NUM, a.ARC_PAGE_NUM ARC_PAGE_NUM, a.ARC_LEVEL
+        ARC_LEVEL, a.ARC_CRE_TIME ARC_CRE_TIME, a.FILING_TIME FILING_TIME, a.FILING_DEPA FILING_DEPA, a.ADMIN_NO
+        ADMIN_NO, a.ADMIN_NAME ADMIN_NAME, a.DEPOT_OUT_NO DEPOT_OUT_NO, a.DEPOT_OUT_NAME DEPOT_OUT_NAME,a.BORROW_NO
+        BORROW_NO, a.BORROW_NAME BORROW_NAME, a.STATUS STATUS, a.BATCH_ID BATCH_ID, a.BATCH_NO BATCH_NO, a.DEPOT_ID
+        DEPOT_ID, a.CABINT_ID CABINT_ID, a.ARC_BILL_NAME ARC_BILL_NAME, a.ARC_BILL_CODE ARC_BILL_CODE, a.VAL_PERIOD
+        VAL_PERIOD, a.ORIGIN_MODE ORIGIN_MODE, a.EXPENSE_INVOLVE EXPENSE_INVOLVE, a.BILL BILL, a.SERVICE_TYPE
+        SERVICE_TYPE, a.CARRIER CARRIER, a.PRACT_TYPE PRACT_TYPE, a.FILE_PATH FILE_PATH, a.VIEW_PATH VIEW_PATH,
+        a.PERSIST_TIME PERSIST_TIME, a.PERSIST_PERIOD PERSIST_PERIOD, a.PERIOD PERIOD, a.box_code box_code, a.box_name
+        box_name, a.box_num box_num, a.FILE_NO FILE_NO, a.STORAGE_LOCATION STORAGE_LOCATION, a.TURN_IN_TIME
+        TURN_IN_TIME, a.RECEIVE_TIME RECEIVE_TIME, a.ARC_BILL_DEPT ARC_BILL_DEPT, a.ARC_BILL_DEPT_CODE
+        ARC_BILL_DEPT_CODE,batch.arc_has_move_bank has_move_bank, dept_name as filing_depa_name FROM ams_archives a
+        left join sys_dept
+        on dept_id = filing_Depa
+        left join ams_batch batch
+        on a.ARC_NO = batch.ARC_NO
+
+    </sql>
+
+    <!--    测试-->
+    <select id="getBorrowList" resultType="net.northking.iacmp.common.bean.domain.ams.AmsBorrowInfo">
+        select b.ID,b.STATUS from ams_borrow_info b where b.BATCH_ID=#{BATCH_ID}
+    </select>
+
+    <select id="selectAmsArchivesList" parameterType="AmsArchivesVO" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="arcNo != null  and arcNo != '' ">and ARC_NO LIKE CONCAT('%',CONCAT(#{arcNo},'%'))</if>
+            <if test="name != null  and name != '' ">and NAME LIKE CONCAT('%',CONCAT(#{name},'%'))</if>
+            <if test="opDepNo != null  and opDepNo != '' ">and OP_DEP_NO = #{opDepNo}</if>
+            <if test="opDepName != null  and opDepName != '' ">and OP_DEP_NAME = #{opDepName}</if>
+            <if test="manaDepNo != null  and manaDepNo != '' ">and MANA_DEP_NO = #{manaDepNo}</if>
+            <if test="manaDepName != null  and manaDepName != '' ">and MANA_DEP_NAME = #{manaDepName}</if>
+            <if test="depotNo != null  and depotNo != '' ">and DEPOT_NO = #{depotNo}</if>
+            <if test="depotName != null  and depotName != '' ">and DEPOT_NAME = #{depotName}</if>
+            <if test="depotType != null  and depotType != '' ">and DEPOT_TYPE = #{depotType}</if>
+            <if test="cabintNo != null  and cabintNo != '' ">and CABINT_NO = #{cabintNo}</if>
+            <if test="cabintName != null  and cabintName != '' ">and CABINT_NAME = #{cabintName}</if>
+            <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+            <if test="respDepaName != null  and respDepaName != '' ">and RESP_DEPA_NAME = #{respDepaName}</if>
+            <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME LIKE
+                CONCAT('%',CONCAT(#{respOpName},'%'))
+            </if>
+            <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') =
+                to_char(#{arcCreTime},'yyyy-mm-dd')
+            </if>
+            <if test="filingTime != null ">and to_char(FILING_TIME,'yyyy-mm-dd') = to_char(#{filingTime},'yyyy-mm-dd')
+            </if>
+            <if test="filingDepa != null  and filingDepa != '' ">and FILING_DEPA = #{filingDepa}</if>
+            <if test="adminNo != null  and adminNo != '' ">and ADMIN_NO = #{adminNo}</if>
+            <if test="adminName != null  and adminName != '' ">and ADMIN_NAME = #{adminName}</if>
+            <if test="depotOutNo != null  and depotOutNo != '' ">and DEPOT_OUT_NO = #{depotOutNo}</if>
+            <if test="depotOutName != null  and depotOutName != '' ">and DEPOT_OUT_NAME = #{depotOutName}</if>
+            <if test="borrowNo != null  and borrowNo != '' ">and BORROW_NO = #{borrowNo}</if>
+            <if test="borrowName != null  and borrowName != '' ">and BORROW_NAME = #{borrowName}</if>
+            <if test="status != null  and status != '' ">and a.STATUS = #{status}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="batchNo != null  and batchNo != '' ">and BATCH_NO = #{batchNo}</if>
+            <if test="filingDepaName != null  and filingDepaName != '' ">and FILING_DEPA_NAME = #{filingDepaName}</if>
+            <if test="depotId != null  and depotId != '' ">and DEPOT_ID = #{depotId}</if>
+            <if test="cabintId != null  and cabintId != '' ">and CABINT_ID = #{cabintId}</if>
+            <if test="arcBillName != null  and arcBillName != '' ">and ARC_BILL_NAME = #{arcBillName}</if>
+            <if test="arcBillCode != null  and arcBillCode != '' ">and ARC_BILL_CODE = #{arcBillCode}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+            <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+            <if test="serviceType != null  and serviceType != '' ">and SERVICE_TYPE = #{serviceType}</if>
+            <if test="carrier != null  and carrier != '' ">and CARRIER = #{carrier}</if>
+            <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+            <if test="filePath != null  and filePath != '' ">and FILE_PATH = #{filePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="persistTime != null ">and to_char(PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{persistTime,'yyyy-mm-dd')
+            </if>
+            <if test="persistPeriod != null  and persistPeriod != '' ">and PERSIST_PERIOD = #{persistPeriod}</if>
+            <if test="period != null  and period != '' ">and PERIOD = #{period}</if>
+            <if test="boxCode != null  and boxCode != '' ">and box_code = #{boxCode}</if>
+            <if test="boxName != null  and boxName != '' ">and box_name = #{boxName}</if>
+            <if test="boxNum != null ">and box_num = #{boxNum}</if>
+            <if test="fileNo != null  and fileNo != '' ">and FILE_NO LIKE CONCAT('%',CONCAT(#{fileNo},'%'))</if>
+            <if test="storageLocation != null  and storageLocation != '' ">and STORAGE_LOCATION = #{storageLocation}
+            </if>
+            <if test="turnInTime != null ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="receiveTime != null ">and to_char(RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{receiveTime,'yyyy-mm-dd')
+            </if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT LIKE
+                CONCAT('%',CONCAT(#{arcBillDept},'%'))
+            </if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+            </if>
+            <if test="filingTimeStart != null ">and to_char(FILING_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{filingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="filingTimeEnd != null ">and to_char(FILING_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{filingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeStart != null ">and to_char(RECEIVE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and to_char(RECEIVE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeStart != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{arcCreTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeEnd != null ">and to_char(ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(arcCreTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY ARC_CRE_TIME DESC
+    </select>
+    <!--查询历史列表-->
+    <select id="selectArchDestroyHisList" resultMap="AmsArchivesResultDto">
+        <include refid="selectAmsDesHis"/>
+        <where>
+            <if test="archivesVO.id != null  and archivesVO.id != '' ">and a.ID = #{archivesVO.id}</if>
+            <if test="archivesVO.arcNo != null  and archivesVO.arcNo != '' ">and a.ARC_NO LIKE
+                CONCAT('%',CONCAT(#{archivesVO.arcNo},'%'))
+            </if>
+            <if test="archivesVO.name != null  and archivesVO.name != '' ">and a.NAME LIKE
+                CONCAT('%',CONCAT(#{archivesVO.name},'%'))
+            </if>
+            <if test="deptList.size()>0">
+                and a.OP_DEP_NO IN
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="archivesVO.opDepName != null  and archivesVO.opDepName != '' ">and a.OP_DEP_NAME =
+                #{archivesVO.opDepName}
+            </if>
+            <if test="archivesVO.manaDepNo != null  and archivesVO.manaDepNo != '' ">and a.MANA_DEP_NO =
+                #{archivesVO.manaDepNo}
+            </if>
+            <if test="archivesVO.manaDepName != null  and archivesVO.manaDepName != '' ">and a.MANA_DEP_NAME =
+                #{archivesVO.manaDepName}
+            </if>
+            <if test="archivesVO.depotNo != null  and archivesVO.depotNo != '' ">and a.DEPOT_NO =
+                #{archivesVO.depotNo}
+            </if>
+            <if test="archivesVO.depotName != null  and archivesVO.depotName != '' ">and a.DEPOT_NAME =
+                #{archivesVO.depotName}
+            </if>
+            <if test="archivesVO.depotType != null  and archivesVO.depotType != '' ">and a.DEPOT_TYPE =
+                #{archivesVO.depotType}
+            </if>
+            <if test="archivesVO.cabintNo != null  and archivesVO.cabintNo != '' ">and a.CABINT_NO =
+                #{archivesVO.cabintNo}
+            </if>
+            <if test="archivesVO.cabintName != null  and archivesVO.cabintName != '' ">and a.CABINT_NAME =
+                #{archivesVO.cabintName}
+            </if>
+            <if test="archivesVO.arcType != null  and archivesVO.arcType != '' ">and a.ARC_TYPE =
+                #{archivesVO.arcType}
+            </if>
+            <if test="archivesVO.respDepaName != null  and archivesVO.respDepaName != '' ">and a.RESP_DEPA_NAME =
+                #{archivesVO.respDepaName}
+            </if>
+            <if test="archivesVO.respOpName != null  and archivesVO.respOpName != '' ">and a.RESP_OP_NAME LIKE
+                CONCAT(CONCAT('%',#{archivesVO.respOpName}),'%')
+            </if>
+            <if test="archivesVO.arcNum != null ">and a.ARC_NUM = #{archivesVO.arcNum}</if>
+            <if test="archivesVO.arcPageNum != null ">and a.ARC_PAGE_NUM = #{archivesVO.arcPageNum}</if>
+            <if test="archivesVO.arcLevel != null  and archivesVO.arcLevel != '' ">and a.ARC_LEVEL =
+                #{archivesVO.arcLevel}
+            </if>
+            <if test="archivesVO.arcCreTime != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') =
+                to_char(#{archivesVO.arcCreTime},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.filingTime != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') =
+                to_char(#{archivesVO.filingTime},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.filingDepa != null  and archivesVO.filingDepa != '' ">and a.FILING_DEPA =
+                #{archivesVO.filingDepa}
+            </if>
+            <if test="archivesVO.adminNo != null  and archivesVO.adminNo != '' ">and a.ADMIN_NO =
+                #{archivesVO.adminNo}
+            </if>
+            <if test="archivesVO.adminName != null  and archivesVO.adminName != '' ">and a.ADMIN_NAME =
+                #{archivesVO.adminName}
+            </if>
+            <if test="archivesVO.depotOutNo != null  and archivesVO.depotOutNo != '' ">and a.DEPOT_OUT_NO =
+                #{archivesVO.depotOutNo}
+            </if>
+            <if test="archivesVO.depotOutName != null  and archivesVO.depotOutName != '' ">and a.DEPOT_OUT_NAME =
+                #{archivesVO.depotOutName}
+            </if>
+            <if test="archivesVO.borrowNo != null  and archivesVO.borrowNo != '' ">and a.BORROW_NO =
+                #{archivesVO.borrowNo}
+            </if>
+            <if test="archivesVO.borrowName != null  and archivesVO.borrowName != '' ">and a.BORROW_NAME =
+                #{archivesVO.borrowName}
+            </if>
+            <if test="archivesVO.batchId != null  and archivesVO.batchId != '' ">and a.BATCH_ID =
+                #{archivesVO.batchId}
+            </if>
+            <if test="archivesVO.batchNo != null  and archivesVO.batchNo != '' ">and a.BATCH_NO =
+                #{archivesVO.batchNo}
+            </if>
+            <if test="archivesVO.filingDepaName != null  and archivesVO.filingDepaName != '' ">and a.FILING_DEPA_NAME =
+                #{archivesVO.filingDepaName}
+            </if>
+            <if test="archivesVO.depotId != null  and archivesVO.depotId != '' ">and a.DEPOT_ID =
+                #{archivesVO.depotId}
+            </if>
+            <if test="archivesVO.cabintId != null  and archivesVO.cabintId != '' ">and a.CABINT_ID =
+                #{archivesVO.cabintId}
+            </if>
+            <if test="archivesVO.arcBillName != null  and archivesVO.arcBillName != '' ">and a.ARC_BILL_NAME =
+                #{archivesVO.arcBillName}
+            </if>
+            <if test="archivesVO.arcBillCode != null  and archivesVO.arcBillCode != '' ">and a.ARC_BILL_CODE =
+                #{archivesVO.arcBillCode}
+            </if>
+            <if test="archivesVO.valPeriod != null  and archivesVO.valPeriod != '' ">and a.VAL_PERIOD =
+                #{archivesVO.valPeriod}
+            </if>
+            <if test="archivesVO.originMode != null  and archivesVO.originMode != '' ">and a.ORIGIN_MODE =
+                #{archivesVO.originMode}
+            </if>
+            <if test="archivesVO.expenseInvolve != null  and archivesVO.expenseInvolve != '' ">and a.EXPENSE_INVOLVE =
+                #{archivesVO.expenseInvolve}
+            </if>
+            <if test="archivesVO.bill != null  and archivesVO.bill != '' ">and a.BILL = #{archivesVO.bill}</if>
+            <if test="archivesVO.serviceType != null  and archivesVO.serviceType != '' ">and a.SERVICE_TYPE =
+                #{archivesVO.serviceType}
+            </if>
+            <if test="archivesVO.carrier != null  and archivesVO.carrier != '' ">and a.CARRIER = #{archivesVO.carrier}
+            </if>
+            <if test="archivesVO.practType != null  and archivesVO.practType != '' ">and a.PRACT_TYPE =
+                #{archivesVO.practType}
+            </if>
+            <if test="archivesVO.filePath != null  and archivesVO.filePath != '' ">and a.FILE_PATH =
+                #{archivesVO.filePath}
+            </if>
+            <if test="archivesVO.viewPath != null  and archivesVO.viewPath != '' ">and a.VIEW_PATH =
+                #{archivesVO.viewPath}
+            </if>
+            <if test="archivesVO.persistTime != null ">and to_char(a.PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{archivesVO.persistTime},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.persistPeriod != null  and archivesVO.persistPeriod != '' ">and a.PERSIST_PERIOD =
+                #{archivesVO.persistPeriod}
+            </if>
+            <if test="archivesVO.period != null  and archivesVO.period != '' ">and a.PERIOD = #{archivesVO.period}</if>
+            <if test="archivesVO.boxCode != null  and archivesVO.boxCode != '' ">and a.box_code =
+                #{archivesVO.boxCode}
+            </if>
+            <if test="archivesVO.boxName != null  and archivesVO.boxName != '' ">and a.box_name =
+                #{archivesVO.boxName}
+            </if>
+            <if test="archivesVO.boxNum != null ">and a.box_num = #{archivesVO.boxNum}</if>
+            <if test="archivesVO.fileNo != null  and archivesVO.fileNo != '' ">and a.FILE_NO LIKE
+                CONCAT('%',CONCAT(#{archivesVO.fileNo},'%'))
+            </if>
+            <if test="archivesVO.storageLocation != null  and archivesVO.storageLocation != '' ">and a.STORAGE_LOCATION
+                = #{archivesVO.storageLocation}
+            </if>
+            <if test="archivesVO.turnInTime != null ">and to_char(a.TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{archivesVO.turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.receiveTime != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{archivesVO.receiveTime},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.arcBillDept != null  and archivesVO.arcBillDept != '' ">and a.ARC_BILL_DEPT LIKE
+                CONCAT(CONCAT('%',#{archivesVO.arcBillDept}),'%')
+            </if>
+            <if test="archivesVO.arcBillDeptCode != null  and archivesVO.arcBillDeptCode != '' ">and
+                a.ARC_BILL_DEPT_CODE = #{archivesVO.arcBillDeptCode}
+            </if>
+            <if test="archivesVO.filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') >=
+                to_char(#{archivesVO.filingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{archivesVO.filingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.receivingTimeStart != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') >=
+                to_char(#{archivesVO.receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.receivingTimeEnd != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{archivesVO.receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') >=
+                to_char(#{archivesVO.arcCreTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{archivesVO.arcCreTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="archivesVO.hasMoveBank != null ">and b.arc_has_move_bank=#{archivesVO.hasMoveBank}</if>
+            and a.STATUS IN ('8','10')
+        </where>
+        ORDER BY a.ARC_CRE_TIME DESC
+    </select>
+
+    <select id="selectAmsArchivesListAll" parameterType="AmsArchivesVO" resultMap="AmsArchivesResultDto">
+        <include refid="selectAmsArchivesDto"/>
+        <where>
+            <if test="id != null  and id != '' ">and a.ID = #{id}</if>
+            <if test="arcNo != null  and arcNo != '' ">and a.ARC_NO LIKE CONCAT('%',CONCAT(#{arcNo},'%'))</if>
+            <if test="name != null  and name != '' ">and a.NAME LIKE CONCAT('%',CONCAT(#{name},'%'))</if>
+            <if test="opDepNo != null  and opDepNo != '' ">and a.OP_DEP_NO = #{opDepNo}</if>
+            <if test="opDepName != null  and opDepName != '' ">and a.OP_DEP_NAME = #{opDepName}</if>
+            <if test="manaDepNo != null  and manaDepNo != '' ">and a.MANA_DEP_NO = #{manaDepNo}</if>
+            <if test="manaDepName != null  and manaDepName != '' ">and a.MANA_DEP_NAME = #{manaDepName}</if>
+            <if test="depotNo != null  and depotNo != '' ">and a.DEPOT_NO = #{depotNo}</if>
+            <if test="depotName != null  and depotName != '' ">and a.DEPOT_NAME = #{depotName}</if>
+            <if test="depotType != null  and depotType != '' ">and a.DEPOT_TYPE = #{depotType}</if>
+            <if test="cabintNo != null  and cabintNo != '' ">and a.CABINT_NO = #{cabintNo}</if>
+            <if test="cabintName != null  and cabintName != '' ">and a.CABINT_NAME = #{cabintName}</if>
+            <if test="arcType != null  and arcType != '' ">and a.ARC_TYPE = #{arcType}</if>
+            <if test="respDepaName != null  and respDepaName != '' ">and a.RESP_DEPA_NAME = #{respDepaName}</if>
+            <if test="respOpName != null  and respOpName != '' ">and a.RESP_OP_NAME LIKE
+                CONCAT('%',CONCAT(#{respOpName},'%'))
+            </if>
+            <if test="arcNum != null and arcNum !='' ">and a.ARC_NUM = #{arcNum}</if>
+            <if test="arcPageNum != null and arcPageNum != '' ">and a.ARC_PAGE_NUM = #{arcPageNum}</if>
+            <if test="arcLevel != null  and arcLevel != '' ">and a.ARC_LEVEL = #{arcLevel}</if>
+            <if test="arcCreTime != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') =
+                to_char(#{arcCreTime},'yyyy-mm-dd')
+            </if>
+            <if test="filingTime != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') =
+                to_char(#{filingTime},'yyyy-mm-dd')
+            </if>
+            <if test="filingDepa != null  and filingDepa != '' ">and a.FILING_DEPA = #{filingDepa}</if>
+            <if test="adminNo != null  and adminNo != '' ">and a.ADMIN_NO = #{adminNo}</if>
+            <if test="adminName != null  and adminName != '' ">and a.ADMIN_NAME = #{adminName}</if>
+            <if test="depotOutNo != null  and depotOutNo != '' ">and a.DEPOT_OUT_NO = #{depotOutNo}</if>
+            <if test="depotOutName != null  and depotOutName != '' ">and a.DEPOT_OUT_NAME = #{depotOutName}</if>
+            <if test="borrowNo != null  and borrowNo != '' ">and a.BORROW_NO = #{borrowNo}</if>
+            <if test="borrowName != null  and borrowName != '' ">and a.BORROW_NAME = #{borrowName}</if>
+            <if test="status != null  and status != '' ">and a.STATUS = #{status}</if>
+            <if test="status ==null  or status == '' ">and a.STATUS IN ('2','5','7')</if>
+
+            <if test="batchId != null  and batchId != '' ">and a.BATCH_ID = #{batchId}</if>
+            <if test="batchNo != null  and batchNo != '' ">and a.BATCH_NO = #{batchNo}</if>
+            <if test="filingDepaName != null  and filingDepaName != '' ">and a.FILING_DEPA_NAME = #{filingDepaName}</if>
+            <if test="depotId != null  and depotId != '' ">and a.DEPOT_ID = #{depotId}</if>
+            <if test="cabintId != null  and cabintId != '' ">and a.CABINT_ID = #{cabintId}</if>
+            <if test="arcBillName != null  and arcBillName != '' ">and a.ARC_BILL_NAME = #{arcBillName}</if>
+            <if test="arcBillCode != null  and arcBillCode != '' ">and a.ARC_BILL_CODE =#{arcBillCode}</if>
+            <if test="valPeriod != null  and valPeriod != '' ">and a.VAL_PERIOD = #{valPeriod}</if>
+            <if test="originMode != null  and originMode != '' ">and a.ORIGIN_MODE = #{originMode}</if>
+            <if test="expenseInvolve != null  and expenseInvolve != '' ">and a.EXPENSE_INVOLVE = #{expenseInvolve}</if>
+            <if test="bill != null  and bill != '' ">and a.BILL = #{bill}</if>
+            <if test="serviceType != null  and serviceType != '' ">and a.SERVICE_TYPE = #{serviceType}</if>
+            <if test="carrier != null  and carrier != '' ">and a.CARRIER = #{carrier}</if>
+            <if test="practType != null  and practType != '' ">and a.PRACT_TYPE = #{practType}</if>
+            <if test="filePath != null  and filePath != '' ">and a.FILE_PATH = #{filePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and a.VIEW_PATH = #{viewPath}</if>
+            <if test="persistTime != null ">and to_char(a.PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{persistTime},'yyyy-mm-dd')
+            </if>
+            <if test="persistPeriod != null  and persistPeriod != '' ">and a.PERSIST_PERIOD = #{persistPeriod}</if>
+            <if test="period != null  and period != '' ">and a.PERIOD = #{period}</if>
+            <if test="boxCode != null  and boxCode != '' ">and a.box_code = #{boxCode}</if>
+            <if test="boxName != null  and boxName != '' ">and a.box_name = #{boxName}</if>
+            <if test="boxNum != null and boxNum != '' ">and a.box_num = #{boxNum}</if>
+            <if test="fileNo != null  and fileNo != '' ">and a.FILE_NO LIKE CONCAT('%',CONCAT(#{fileNo},'%'))</if>
+            <if test="storageLocation != null  and storageLocation != '' ">and a.STORAGE_LOCATION = #{storageLocation}
+            </if>
+            <if test="turnInTime != null ">and to_char(a.TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="receiveTime != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{receiveTime},'yyyy-mm-dd')
+            </if>
+            <if test="arcBillDept != null  and arcBillDept != '' ">and a.ARC_BILL_DEPT LIKE
+                CONCAT('%',CONCAT(#{arcBillDept},'%'))
+            </if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != '' ">and a.ARC_BILL_DEPT_CODE = #{arcBillDeptCode}
+            </if>
+            <if test="filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{filingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{filingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeStart != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="receivingTimeEnd != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{arcCreTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{arcCreTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY ARC_CRE_TIME DESC
+    </select>
+
+    <select id="selectAmsArchivesListAllForAdmin" resultMap="AmsArchivesResultDto">
+        <include refid="selectAmsArchivesDto"/>
+        <where>
+            <if test="amsArchives.id != null  and amsArchives.id != '' ">and a.ID = #{amsArchives.id}</if>
+            <if test="amsArchives.arcNo != null  and amsArchives.arcNo != '' ">and a.ARC_NO LIKE
+                CONCAT('%',CONCAT(#{amsArchives.arcNo},'%'))
+            </if>
+            <if test="amsArchives.name != null  and amsArchives.name != '' ">and a.NAME LIKE
+                CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+            </if>
+            <if test="amsArchives.opDepNaddo != null  and amsArchives.opDepNo != '' ">and a.OP_DEP_NO =
+                #{amsArchives.opDepNo}
+            </if>
+            <if test="amsArchives.manaDepNo != null  and amsArchives.manaDepNo != '' ">and a.MANA_DEP_NO =
+                #{amsArchives.manaDepNo}
+            </if>
+            <if test="amsArchives.manaDepName != null  and amsArchives.manaDepName != '' ">and a.MANA_DEP_NAME =
+                #{amsArchives.manaDepName}
+            </if>
+            <if test="amsArchives.depotNo != null  and amsArchives.depotNo != '' ">and a.DEPOT_NO =
+                #{amsArchives.depotNo}
+            </if>
+            <if test="amsArchives.depotName != null  and amsArchives.depotName != '' ">and a.DEPOT_NAME =
+                #{amsArchives.depotName}
+            </if>
+            <if test="amsArchives.depotType != null  and amsArchives.depotType != '' ">and a.DEPOT_TYPE =
+                #{amsArchives.depotType}
+            </if>
+            <if test="amsArchives.cabintNo != null  and amsArchives.cabintNo != '' ">and a.CABINT_NO =
+                #{amsArchives.cabintNo}
+            </if>
+            <if test="amsArchives.cabintName != null  and amsArchives.cabintName != '' ">and a.CABINT_NAME =
+                #{amsArchives.cabintName}
+            </if>
+            <if test="amsArchives.arcType != null  and amsArchives.arcType != '' ">and a.ARC_TYPE =
+                #{amsArchives.arcType}
+            </if>
+            <if test="amsArchives.respDepaName != null  and amsArchives.respDepaName != '' ">and a.RESP_DEPA_NAME =
+                #{amsArchives.respDepaName}
+            </if>
+            <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and a.RESP_OP_NAME LIKE
+                CONCAT(CONCAT('%',#{amsArchives.respOpName}),'%')
+            </if>
+            <if test="amsArchives.arcNum != null and amsArchives.arcNum !='' ">and a.ARC_NUM = #{amsArchives.arcNum}
+            </if>
+            <if test="amsArchives.arcPageNum != null and amsArchives.arcPageNum != '' ">and a.ARC_PAGE_NUM =
+                #{amsArchives.arcPageNum}
+            </if>
+            <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and a.ARC_LEVEL =
+                #{amsArchives.arcLevel}
+            </if>
+            <if test="amsArchives.arcCreTime != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchives.arcCreTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.filingTime != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchives.filingTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.filingDepa != null  and amsArchives.filingDepa != '' ">and a.FILING_DEPA =
+                #{amsArchives.filingDepa}
+            </if>
+            <if test="amsArchives.adminNo != null  and amsArchives.adminNo != '' ">and a.ADMIN_NO =
+                #{amsArchives.adminNo}
+            </if>
+            <if test="amsArchives.adminName != null  and amsArchives.adminName != '' ">and a.ADMIN_NAME =
+                #{amsArchives.adminName}
+            </if>
+            <if test="amsArchives.depotOutNo != null  and amsArchives.depotOutNo != '' ">and a.DEPOT_OUT_NO =
+                #{amsArchives.depotOutNo}
+            </if>
+            <if test="amsArchives.depotOutName != null  and amsArchives.depotOutName != '' ">and a.DEPOT_OUT_NAME =
+                #{amsArchives.depotOutName}
+            </if>
+            <if test="amsArchives.borrowNo != null  and amsArchives.borrowNo != '' ">and a.BORROW_NO =
+                #{amsArchives.borrowNo}
+            </if>
+            <if test="amsArchives.borrowName != null  and amsArchives.borrowName != '' ">and a.BORROW_NAME =
+                #{amsArchives.borrowName}
+            </if>
+            <if test="amsArchives.status != null  and amsArchives.status != '' ">and a.STATUS = #{amsArchives.status}
+            </if>
+            <if test="amsArchives.status ==null  or amsArchives.status == '' ">and a.STATUS IN ('2','5','7')</if>
+
+            <if test="amsArchives.batchId != null  and amsArchives.batchId != '' ">and a.BATCH_ID =
+                #{amsArchives.batchId}
+            </if>
+            <if test="amsArchives.batchNo != null  and amsArchives.batchNo != '' ">and a.BATCH_NO =
+                #{amsArchives.batchNo}
+            </if>
+            <if test="amsArchives.filingDepaName != null  and amsArchives.filingDepaName != '' ">and a.FILING_DEPA_NAME
+                = #{amsArchives.filingDepaName}
+            </if>
+            <if test="amsArchives.depotId != null  and amsArchives.depotId != '' ">and a.DEPOT_ID =
+                #{amsArchives.depotId}
+            </if>
+            <if test="amsArchives.cabintId != null  and amsArchives.cabintId != '' ">and a.CABINT_ID =
+                #{amsArchives.cabintId}
+            </if>
+            <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (a.ARC_BILL_CODE IN
+                <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                    #{treeCode}
+                </foreach>
+                or a.ARC_BILL_CODE=#{amsArchives.arcBillCode})
+            </if>
+            <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and a.VAL_PERIOD =
+                #{amsArchives.valPeriod}
+            </if>
+            <if test="amsArchives.originMode != null  and amsArchives.originMode != '' ">and a.ORIGIN_MODE =
+                #{amsArchives.originMode}
+            </if>
+            <if test="amsArchives.expenseInvolve != null  and amsArchives.expenseInvolve != '' ">and a.EXPENSE_INVOLVE =
+                #{amsArchives.expenseInvolve}
+            </if>
+            <if test="amsArchives.bill != null  and amsArchives.bill != '' ">and a.BILL = #{amsArchives.bill}</if>
+            <if test="amsArchives.serviceType != null  and amsArchives.serviceType != '' ">and a.SERVICE_TYPE =
+                #{amsArchives.serviceType}
+            </if>
+            <if test="amsArchives.carrier != null  and amsArchives.carrier != '' ">and a.CARRIER =
+                #{amsArchives.carrier}
+            </if>
+            <if test="amsArchives.practType != null  and amsArchives.practType != '' ">and a.PRACT_TYPE =
+                #{amsArchives.practType}
+            </if>
+            <if test="amsArchives.filePath != null  and amsArchives.filePath != '' ">and a.FILE_PATH =
+                #{amsArchives.filePath}
+            </if>
+            <if test="amsArchives.viewPath != null  and amsArchives.viewPath != '' ">and a.VIEW_PATH =
+                #{amsArchives.viewPath}
+            </if>
+            <if test="persistTime != null ">and to_char(PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{persistTime,'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.persistPeriod != null  and amsArchives.persistPeriod != '' ">and a.PERSIST_PERIOD =
+                #{amsArchives.persistPeriod}
+            </if>
+            <if test="amsArchives.period != null  and amsArchives.period != '' ">and a.PERIOD = #{amsArchives.period}
+            </if>
+            <if test="amsArchives.boxCode != null  and amsArchives.boxCode != '' ">and a.box_code =
+                #{amsArchives.boxCode}
+            </if>
+            <if test="amsArchives.boxName != null  and amsArchives.boxName != '' ">and a.box_name =
+                #{amsArchives.boxName}
+            </if>
+            <if test="amsArchives.boxNum != null and amsArchives.boxNum != '' ">and a.box_num = #{amsArchives.boxNum}
+            </if>
+            <if test="amsArchives.fileNo != null  and amsArchives.fileNo != '' ">and a.FILE_NO LIKE
+                CONCAT(CONCAT('%',#{amsArchives.fileNo}),'%')
+            </if>
+            <if test="amsArchives.storageLocation != null  and amsArchives.storageLocation != '' ">and
+                a.STORAGE_LOCATION = #{amsArchives.storageLocation}
+            </if>
+            <if test="amsArchives.turnInTime != null ">and to_char(a.TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchives.turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.receiveTime != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchives.receiveTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and a.ARC_BILL_DEPT LIKE
+                CONCAT('%',CONCAT(#{arcBillDept},'%'))
+            </if>
+            <if test="amsArchives.arcBillDeptCode != null  and amsArchives.arcBillDeptCode != '' ">and
+                a.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillDeptCode}
+            </if>
+            <if test="amsArchives.filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{amsArchives.filingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{amsArchives.filingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.receivingTimeStart != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{amsArchives.receivingTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.receivingTimeEnd != null ">and to_char(a.RECEIVE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{amsArchives.receivingTimeEnd},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &gt;=
+                to_char(#{amsArchives.arcCreTimeStart},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchives.arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+                to_char(#{amsArchives.arcCreTimeEnd},'yyyy-mm-dd')
+            </if>
+        </where>
+        ORDER BY a.ARC_CRE_TIME DESC
+    </select>
+
+    <select id="selectAmsArchivesById" parameterType="String" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectAmsArchivesByBatchId" parameterType="String" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        where BATCH_ID = #{batchId}
+    </select>
+
+    <select id="selectAmsArchivesByboxId" parameterType="String" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        where box_code = #{iD}
+    </select>
+
+    <insert id="insertAmsArchives" parameterType="AmsArchives">
+        insert into ams_archives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">OP_DEP_NO,</if>
+            <if test="opDepName != null  and opDepName != ''  ">OP_DEP_NAME,</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">MANA_DEP_NO,</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">MANA_DEP_NAME,</if>
+            <if test="depotNo != null  and depotNo != ''  ">DEPOT_NO,</if>
+            <if test="depotName != null  and depotName != ''  ">DEPOT_NAME,</if>
+            <if test="depotType != null  and depotType != ''  ">DEPOT_TYPE,</if>
+            <if test="cabintNo != null  and cabintNo != ''  ">CABINT_NO,</if>
+            <if test="cabintName != null  and cabintName != ''  ">CABINT_NAME,</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE,</if>
+            <if test="respDepaName != null  and respDepaName != ''  ">RESP_DEPA_NAME,</if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME,</if>
+            <if test="arcNum != null  ">ARC_NUM,</if>
+            <if test="arcPageNum != null  ">ARC_PAGE_NUM,</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">ARC_LEVEL,</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME,</if>
+            <if test="filingTime != null  ">FILING_TIME,</if>
+            <if test="filingDepa != null  and filingDepa != ''  ">FILING_DEPA,</if>
+            <if test="adminNo != null  and adminNo != ''  ">ADMIN_NO,</if>
+            <if test="adminName != null  and adminName != ''  ">ADMIN_NAME,</if>
+            <if test="depotOutNo != null  and depotOutNo != ''  ">DEPOT_OUT_NO,</if>
+            <if test="depotOutName != null  and depotOutName != ''  ">DEPOT_OUT_NAME,</if>
+            <if test="borrowNo != null  and borrowNo != ''  ">BORROW_NO,</if>
+            <if test="borrowName != null  and borrowName != ''  ">BORROW_NAME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO,</if>
+            <if test="filingDepaName != null  and filingDepaName != ''  ">FILING_DEPA_NAME,</if>
+            <if test="depotId != null  and depotId != ''  ">DEPOT_ID,</if>
+            <if test="cabintId != null  and cabintId != ''  ">CABINT_ID,</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">ARC_BILL_NAME,</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">ARC_BILL_CODE,</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">VAL_PERIOD,</if>
+            <if test="originMode != null  and originMode != ''  ">ORIGIN_MODE,</if>
+            <if test="expenseInvolve != null  and expenseInvolve != ''  ">EXPENSE_INVOLVE,</if>
+            <if test="bill != null  and bill != ''  ">BILL,</if>
+            <if test="serviceType != null  and serviceType != ''  ">SERVICE_TYPE,</if>
+            <if test="carrier != null  and carrier != ''  ">CARRIER,</if>
+            <if test="practType != null  and practType != ''  ">PRACT_TYPE,</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH,</if>
+            <if test="viewPath != null  and viewPath != ''  ">VIEW_PATH,</if>
+            <if test="persistTime != null  ">PERSIST_TIME,</if>
+            <if test="persistPeriod != null  and persistPeriod != ''  ">PERSIST_PERIOD,</if>
+            <if test="period != null  and period != ''  ">PERIOD,</if>
+            <if test="boxCode != null  and boxCode != ''  ">box_code,</if>
+            <if test="boxName != null  and boxName != ''  ">box_name,</if>
+            <if test="boxNum != null  ">box_num,</if>
+            <if test="fileNo != null  and fileNo != ''  ">FILE_NO,</if>
+            <if test="storageLocation != null  and storageLocation != ''  ">STORAGE_LOCATION,</if>
+            <if test="turnInTime != null  ">TURN_IN_TIME,</if>
+            <if test="receiveTime != null  ">RECEIVE_TIME,</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">ARC_BILL_DEPT,</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">ARC_BILL_DEPT_CODE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="arcNo != null  and arcNo != ''  ">#{arcNo},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">#{opDepNo},</if>
+            <if test="opDepName != null  and opDepName != ''  ">#{opDepName},</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">#{manaDepNo},</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">#{manaDepName},</if>
+            <if test="depotNo != null  and depotNo != ''  ">#{depotNo},</if>
+            <if test="depotName != null  and depotName != ''  ">#{depotName},</if>
+            <if test="depotType != null  and depotType != ''  ">#{depotType},</if>
+            <if test="cabintNo != null  and cabintNo != ''  ">#{cabintNo},</if>
+            <if test="cabintName != null  and cabintName != ''  ">#{cabintName},</if>
+            <if test="arcType != null  and arcType != ''  ">#{arcType},</if>
+            <if test="respDepaName != null  and respDepaName != ''  ">#{respDepaName},</if>
+            <if test="respOpName != null  and respOpName != ''  ">#{respOpName},</if>
+            <if test="arcNum != null  ">#{arcNum},</if>
+            <if test="arcPageNum != null  ">#{arcPageNum},</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">#{arcLevel},</if>
+            <if test="arcCreTime != null  ">#{arcCreTime},</if>
+            <if test="filingTime != null  ">#{filingTime},</if>
+            <if test="filingDepa != null  and filingDepa != ''  ">#{filingDepa},</if>
+            <if test="adminNo != null  and adminNo != ''  ">#{adminNo},</if>
+            <if test="adminName != null  and adminName != ''  ">#{adminName},</if>
+            <if test="depotOutNo != null  and depotOutNo != ''  ">#{depotOutNo},</if>
+            <if test="depotOutName != null  and depotOutName != ''  ">#{depotOutName},</if>
+            <if test="borrowNo != null  and borrowNo != ''  ">#{borrowNo},</if>
+            <if test="borrowName != null  and borrowName != ''  ">#{borrowName},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="batchNo != null  and batchNo != ''  ">#{batchNo},</if>
+            <if test="filingDepaName != null  and filingDepaName != ''  ">#{filingDepaName},</if>
+            <if test="depotId != null  and depotId != ''  ">#{depotId},</if>
+            <if test="cabintId != null  and cabintId != ''  ">#{cabintId},</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">#{arcBillName},</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">#{arcBillCode},</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">#{valPeriod},</if>
+            <if test="originMode != null  and originMode != ''  ">#{originMode},</if>
+            <if test="expenseInvolve != null  and expenseInvolve != ''  ">#{expenseInvolve},</if>
+            <if test="bill != null  and bill != ''  ">#{bill},</if>
+            <if test="serviceType != null  and serviceType != ''  ">#{serviceType},</if>
+            <if test="carrier != null  and carrier != ''  ">#{carrier},</if>
+            <if test="practType != null  and practType != ''  ">#{practType},</if>
+            <if test="filePath != null  and filePath != ''  ">#{filePath},</if>
+            <if test="viewPath != null  and viewPath != ''  ">#{viewPath},</if>
+            <if test="persistTime != null  ">#{persistTime},</if>
+            <if test="persistPeriod != null  and persistPeriod != ''  ">#{persistPeriod},</if>
+            <if test="period != null  and period != ''  ">#{period},</if>
+            <if test="boxCode != null  and boxCode != ''  ">#{boxCode},</if>
+            <if test="boxName != null  and boxName != ''  ">#{boxName},</if>
+            <if test="boxNum != null  ">#{boxNum},</if>
+            <if test="fileNo != null  and fileNo != ''  ">#{fileNo},</if>
+            <if test="storageLocation != null  and storageLocation != ''  ">#{storageLocation},</if>
+            <if test="turnInTime != null  ">#{turnInTime},</if>
+            <if test="receiveTime != null  ">#{receiveTime},</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">#{arcBillDept},</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">#{arcBillDeptCode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsArchives" parameterType="AmsArchives">
+        update ams_archives
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arcNo != null  and arcNo != ''  ">ARC_NO = #{arcNo},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="opDepNo != null  and opDepNo != ''  ">OP_DEP_NO = #{opDepNo},</if>
+            <if test="opDepName != null  and opDepName != ''  ">OP_DEP_NAME = #{opDepName},</if>
+            <if test="manaDepNo != null  and manaDepNo != ''  ">MANA_DEP_NO = #{manaDepNo},</if>
+            <if test="manaDepName != null  and manaDepName != ''  ">MANA_DEP_NAME = #{manaDepName},</if>
+            <if test="depotNo != null  and depotNo != ''  ">DEPOT_NO = #{depotNo},</if>
+            <if test="depotName != null  and depotName != ''  ">DEPOT_NAME = #{depotName},</if>
+            <if test="depotType != null  and depotType != ''  ">DEPOT_TYPE = #{depotType},</if>
+            <if test="cabintNo != null  and cabintNo != ''  ">CABINT_NO = #{cabintNo},</if>
+            <if test="cabintName != null  and cabintName != ''  ">CABINT_NAME = #{cabintName},</if>
+            <if test="arcType != null  and arcType != ''  ">ARC_TYPE = #{arcType},</if>
+            <if test="respDepaName != null  and respDepaName != ''  ">RESP_DEPA_NAME = #{respDepaName},</if>
+            <if test="respOpName != null  and respOpName != ''  ">RESP_OP_NAME = #{respOpName},</if>
+            <if test="arcNum != null  ">ARC_NUM = #{arcNum},</if>
+            <if test="arcPageNum != null  ">ARC_PAGE_NUM = #{arcPageNum},</if>
+            <if test="arcLevel != null  and arcLevel != ''  ">ARC_LEVEL = #{arcLevel},</if>
+            <if test="arcCreTime != null  ">ARC_CRE_TIME = #{arcCreTime},</if>
+            <if test="filingTime != null  ">FILING_TIME = #{filingTime},</if>
+            <if test="filingDepa != null  and filingDepa != ''  ">FILING_DEPA = #{filingDepa},</if>
+            <if test="adminNo != null  and adminNo != ''  ">ADMIN_NO = #{adminNo},</if>
+            <if test="adminName != null  and adminName != ''  ">ADMIN_NAME = #{adminName},</if>
+            <if test="depotOutNo != null  and depotOutNo != ''  ">DEPOT_OUT_NO = #{depotOutNo},</if>
+            <if test="depotOutName != null  and depotOutName != ''  ">DEPOT_OUT_NAME = #{depotOutName},</if>
+            <if test="borrowNo != null  and borrowNo != ''  ">BORROW_NO = #{borrowNo},</if>
+            <if test="borrowName != null  and borrowName != ''  ">BORROW_NAME = #{borrowName},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="batchNo != null  and batchNo != ''  ">BATCH_NO = #{batchNo},</if>
+            <if test="filingDepaName != null  and filingDepaName != ''  ">FILING_DEPA_NAME = #{filingDepaName},</if>
+            <if test="depotId != null  and depotId != ''  ">DEPOT_ID = #{depotId},</if>
+            <if test="cabintId != null  and cabintId != ''  ">CABINT_ID = #{cabintId},</if>
+            <if test="arcBillName != null  and arcBillName != ''  ">ARC_BILL_NAME = #{arcBillName},</if>
+            <if test="arcBillCode != null  and arcBillCode != ''  ">ARC_BILL_CODE = #{arcBillCode},</if>
+            <if test="valPeriod != null  and valPeriod != ''  ">VAL_PERIOD = #{valPeriod},</if>
+            <if test="originMode != null  and originMode != ''  ">ORIGIN_MODE = #{originMode},</if>
+            <if test="expenseInvolve != null  and expenseInvolve != ''  ">EXPENSE_INVOLVE = #{expenseInvolve},</if>
+            <if test="bill != null  and bill != ''  ">BILL = #{bill},</if>
+            <if test="serviceType != null  and serviceType != ''  ">SERVICE_TYPE = #{serviceType},</if>
+            <if test="carrier != null  and carrier != ''  ">CARRIER = #{carrier},</if>
+            <if test="practType != null  and practType != ''  ">PRACT_TYPE = #{practType},</if>
+            <if test="filePath != null  and filePath != ''  ">FILE_PATH = #{filePath},</if>
+            <if test="viewPath != null  and viewPath != ''  ">VIEW_PATH = #{viewPath},</if>
+            <if test="persistTime != null  ">PERSIST_TIME = #{persistTime},</if>
+            <if test="persistPeriod != null  and persistPeriod != ''  ">PERSIST_PERIOD = #{persistPeriod},</if>
+            <if test="period != null  and period != ''  ">PERIOD = #{period},</if>
+            <if test="boxCode != null  and boxCode != ''  ">box_code = #{boxCode},</if>
+            <if test="boxName != null  and boxName != ''  ">box_name = #{boxName},</if>
+            <if test="boxNum != null  ">box_num = #{boxNum},</if>
+            <if test="fileNo != null  and fileNo != ''  ">FILE_NO = #{fileNo},</if>
+            <if test="storageLocation != null  and storageLocation != ''  ">STORAGE_LOCATION = #{storageLocation},</if>
+            <if test="turnInTime != null  ">TURN_IN_TIME = #{turnInTime},</if>
+            <if test="receiveTime != null  ">RECEIVE_TIME = #{receiveTime},</if>
+            <if test="arcBillDept != null  and arcBillDept != ''  ">ARC_BILL_DEPT = #{arcBillDept},</if>
+            <if test="arcBillDeptCode != null  and arcBillDeptCode != ''  ">ARC_BILL_DEPT_CODE = #{arcBillDeptCode},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsArchivesById" parameterType="String">
+        delete from ams_archives where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsArchivesByIds" parameterType="String">
+        delete from ams_archives where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <!--  查询要打印的销毁列表  -->
+    <select id="selectPrintDestoryList" parameterType="String" resultMap="AmsArchivesResult">
+        ( select NAME,ARC_NO,OP_DEP_NAME,ARC_BILL_NAME,VAL_PERIOD,FILING_TIME,
+        (
+        CASE
+        WHEN DATE_ADD(
+        DATE_ADD(
+        FILING_TIME,
+        INTERVAL VAL_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE
+        THEN
+        1
+        ELSE
+        2
+        END
+        ) AS BILL
+        from ams_archives
+        where ID in
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+        AND PERIOD != '1')
+        UNION ALL
+        (
+        select NAME,ARC_NO,OP_DEP_NAME,ARC_BILL_NAME,VAL_PERIOD,FILING_TIME,
+        (
+        CASE
+        WHEN DATE_ADD(
+        DATE_ADD(
+        PERSIST_TIME,
+        INTERVAL PERSIST_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE
+        THEN
+        1
+        ELSE
+        2
+        END
+        ) AS BILL
+        from ams_archives
+        where ID in
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+        AND PERIOD = '1'
+        )
+    </select>
+    <!--查询全部档案销毁列表-->
+    <select id="selectArchDestroyList" resultMap="AmsArchivesResultDto">
+        select * from (SELECT
+        a.ID,
+        a. NAME,
+        a.ARC_NO,
+        a.OP_DEP_NAME,
+        a.ARC_BILL_NAME,
+        a.ARC_TYPE,
+        a.VAL_PERIOD,
+        a.FILING_TIME,
+        a. STATUS,
+        a. ARC_CRE_TIME,
+        a.ARC_PAGE_NUM,
+        a.ARC_NUM,
+        a.FILING_DEPA_NAME,
+        a.BATCH_ID,
+        a.CARRIER,
+        a.EXPENSE_INVOLVE,
+        b.arc_has_move_bank has_move_bank,
+        ( CASE WHEN a.FILING_TIME &lt;= ADD_MONTHS ( SYSDATE - 1, - 12 * a.VAL_PERIOD ) THEN 1 ELSE 2 END ) AS BILL
+        FROM
+        ams_archives a
+        LEFT JOIN ams_batch b
+        ON a.ARC_NO=b.ARC_NO
+        WHERE
+        a.PERIOD != '1'
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and a.NAME LIKE
+            concat(concat('%',#{amsArchives.name}),'%')
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != '' ">and a.ARC_BILL_NAME LIKE
+            concat(concat('%',#{amsArchives.arcBillName}),'%')
+        </if>
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and a.RESP_OP_NAME LIKE
+            concat(concat('%',#{amsArchives.respOpName}),'%')
+        </if>
+        <if test="amsArchives.arcNo != null  and amsArchives.arcNo != '' ">and a.ARC_NO LIKE
+            concat(concat('%',#{amsArchives.arcNo}),'%')
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and a.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and a.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="deptList.size()>0">
+            and a.OP_DEP_NO IN
+            <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != '' ">and a.OP_DEP_NAME LIKE
+            concat(concat('%',#{amsArchives.opDepName}),'%')
+        </if>
+        <if test="amsArchives.expenseInvolve != null  and amsArchives.expenseInvolve != '' ">and a.EXPENSE_INVOLVE =
+            #{amsArchives.expenseInvolve}
+        </if>
+        <if test="amsArchives.arcPageNum != null  and amsArchives.arcPageNum != '' ">and a.ARC_PAGE_NUM LIKE
+            concat(concat('%',#{amsArchives.arcPageNum}),'%')
+        </if>
+        <if test="amsArchives.arcNum != null  and amsArchives.arcNum != '' ">and a.ARC_NUM LIKE
+            concat(concat('%',#{amsArchives.arcNum}),'%')
+        </if>
+        <if test="amsArchives.arcType != null  and amsArchives.arcType != '' ">and a.ARC_TYPE = #{amsArchives.arcType}
+        </if>
+        <if test="amsArchives.filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{amsArchives.filingTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.filingTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{amsArchives.arcCreTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.arcCreTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingDepaName != null  and amsArchives.filingDepaName != '' ">and a.FILING_DEPA_NAME LIKE
+            concat(concat('%',#{amsArchives.filingDepaName}),'%')
+        </if>
+        <if test="amsArchives.hasMoveBank != null  and amsArchives.hasMoveBank != '' ">and b.arc_has_move_bank
+            =#{amsArchives.hasMoveBank}
+        </if>
+
+        AND a. STATUS = '9'
+        ORDER BY
+        a.FILING_TIME DESC,
+        a.OP_DEP_NO DESC,
+        a.ARC_BILL_CODE DESC)
+        UNION ALL
+        select * from (SELECT
+        a.ID,
+        a. NAME,
+        a.ARC_NO,
+        a.OP_DEP_NAME,
+        a.ARC_BILL_NAME,
+        a.ARC_TYPE,
+        a.VAL_PERIOD,
+        a.FILING_TIME,
+        a. STATUS,
+        a. ARC_CRE_TIME,
+        a.ARC_PAGE_NUM,
+        a.ARC_NUM,
+        a.FILING_DEPA_NAME,
+        a.BATCH_ID,
+        a.CARRIER,
+        a.EXPENSE_INVOLVE,
+        b.arc_has_move_bank has_move_bank,
+        ( CASE WHEN a.FILING_TIME &lt;= ADD_MONTHS ( SYSDATE - 1, - 12 * a.VAL_PERIOD ) THEN 1 ELSE 2 END ) AS BILL
+        FROM
+        ams_archives a
+        LEFT JOIN ams_batch b
+        ON a.ARC_NO=b.ARC_NO
+        WHERE
+        a.FILING_TIME &lt;= ADD_MONTHS ( SYSDATE - 1, - 12 * a.VAL_PERIOD )
+        AND a.PERIOD != '1'
+        AND a.VAL_PERIOD != '99'
+        AND a. STATUS NOT IN ('8','9','10')
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and a.NAME LIKE
+            concat(concat('%',#{amsArchives.name}),'%')
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != '' ">and a.ARC_BILL_NAME LIKE
+            concat(concat('%',#{amsArchives.arcBillName}),'%')
+        </if>
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and a.RESP_OP_NAME LIKE
+            concat(concat('%',#{amsArchives.respOpName}),'%')
+        </if>
+        <if test="amsArchives.arcNo != null  and amsArchives.arcNo != '' ">and a.ARC_NO LIKE
+            concat(concat('%',#{amsArchives.arcNo}),'%')
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and a.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and a.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="deptList.size()>0">
+            and a.OP_DEP_NO IN
+            <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != '' ">and a.OP_DEP_NAME LIKE
+            concat(concat('%',#{amsArchives.opDepName}),'%')
+        </if>
+        <if test="amsArchives.expenseInvolve != null  and amsArchives.expenseInvolve != '' ">and a.EXPENSE_INVOLVE =
+            #{amsArchives.expenseInvolve}
+        </if>
+        <if test="amsArchives.arcPageNum != null  and amsArchives.arcPageNum != '' ">and a.ARC_PAGE_NUM LIKE
+            concat(concat('%',#{amsArchives.arcPageNum}),'%')
+        </if>
+        <if test="amsArchives.arcNum != null  and amsArchives.arcNum != '' ">and a.ARC_NUM LIKE
+            concat(concat('%',#{amsArchives.arcNum}),'%')
+        </if>
+        <if test="amsArchives.arcType != null  and amsArchives.arcType != '' ">and a.ARC_TYPE = #{amsArchives.arcType}
+        </if>
+        <if test="amsArchives.filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') >=
+            to_char(#{amsArchives.filingTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.filingTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') >=
+            to_char(#{amsArchives.arcCreTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.arcCreTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingDepaName != null  and amsArchives.filingDepaName != '' ">and a.FILING_DEPA_NAME LIKE
+            concat(concat('%',#{amsArchives.filingDepaName}),'%')
+        </if>
+        <if test="amsArchives.hasMoveBank != null  and amsArchives.hasMoveBank != '' ">and b.arc_has_move_bank
+            =#{amsArchives.hasMoveBank}
+        </if>
+
+        ORDER BY
+        a.FILING_TIME DESC,
+        a.OP_DEP_NO DESC,
+        a.ARC_BILL_CODE DESC)
+        UNION ALL
+        select * from (SELECT
+        a.ID,
+        a. NAME,
+        a.ARC_NO,
+        a.OP_DEP_NAME,
+        a.ARC_BILL_NAME,
+        a.ARC_TYPE,
+        a.VAL_PERIOD,
+        a.FILING_TIME,
+        a. STATUS,
+        a. ARC_CRE_TIME,
+        a.ARC_PAGE_NUM,
+        a.ARC_NUM,
+        a.FILING_DEPA_NAME,
+        a.BATCH_ID,
+        a.CARRIER,
+        a.EXPENSE_INVOLVE,
+        b.arc_has_move_bank has_move_bank,
+        ( CASE WHEN a.FILING_TIME &lt;= ADD_MONTHS ( SYSDATE - 1, - 12 * a.VAL_PERIOD ) THEN 1 ELSE 2 END ) AS BILL
+        FROM
+        ams_archives a
+        LEFT JOIN ams_batch b
+        ON a.ARC_NO=b.ARC_NO
+        WHERE
+        a.FILING_TIME &lt;= ADD_MONTHS ( SYSDATE - 1, - 12 * a.VAL_PERIOD )
+        AND a.PERIOD = '1'
+        AND a.STATUS != '10'
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and a.NAME LIKE
+            concat(concat('%',#{amsArchives.name}),'%')
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != '' ">and a.ARC_BILL_NAME LIKE
+            concat(concat('%',#{amsArchives.arcBillName}),'%')
+        </if>
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and a.RESP_OP_NAME LIKE
+            concat(concat('%',#{amsArchives.respOpName}),'%')
+        </if>
+        <if test="amsArchives.arcNo != null  and amsArchives.arcNo != '' ">and a.ARC_NO LIKE
+            concat(concat('%',#{amsArchives.arcNo}),'%')
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and a.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and a.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="deptList.size()>0">
+            and a.OP_DEP_NO IN
+            <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                #{deptId}
+            </foreach>
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != '' ">and a.OP_DEP_NAME LIKE
+            concat(concat('%',#{amsArchives.opDepName}),'%')
+        </if>
+        <if test="amsArchives.expenseInvolve != null  and amsArchives.expenseInvolve != '' ">and a.EXPENSE_INVOLVE =
+            #{amsArchives.expenseInvolve}
+        </if>
+        <if test="amsArchives.arcPageNum != null  and amsArchives.arcPageNum != '' ">and a.ARC_PAGE_NUM LIKE
+            concat(concat('%',#{amsArchives.arcPageNum}),'%')
+        </if>
+        <if test="amsArchives.arcNum != null  and amsArchives.arcNum != '' ">and a.ARC_NUM LIKE
+            concat(concat('%',#{amsArchives.arcNum}),'%')
+        </if>
+        <if test="amsArchives.arcType != null  and amsArchives.arcType != '' ">and a.ARC_TYPE = #{amsArchives.arcType}
+        </if>
+        <if test="amsArchives.filingTimeStart != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') >=
+            to_char(#{amsArchives.filingTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingTimeEnd != null ">and to_char(a.FILING_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.filingTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeStart != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') >=
+            to_char(#{amsArchives.arcCreTimeStart},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.arcCreTimeEnd != null ">and to_char(a.ARC_CRE_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{amsArchives.arcCreTimeEnd},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchives.filingDepaName != null  and amsArchives.filingDepaName != '' ">and a.FILING_DEPA_NAME LIKE
+            concat(concat('%',#{amsArchives.filingDepaName}),'%')
+        </if>
+        <if test="amsArchives.hasMoveBank != null  and amsArchives.hasMoveBank != '' ">and b.arc_has_move_bank
+            =#{amsArchives.hasMoveBank}
+        </if>
+
+        ORDER BY
+        a.FILING_TIME DESC,
+        a.OP_DEP_NO DESC,
+        a.ARC_BILL_CODE DESC)
+    </select>
+
+    <!--查询待销毁档案-->
+    <select id="selectArchDestroyListND" resultMap="AmsArchivesResult">
+        SELECT
+        a.ID,
+        a. NAME,
+        a.ARC_NO,
+        a.OP_DEP_NAME,
+        a.ARC_BILL_NAME,
+        a.ARC_TYPE,
+        a.VAL_PERIOD,
+        a.FILING_TIME,
+        a. STATUS,
+        (
+        CASE
+        WHEN DATE_ADD(
+        DATE_ADD(
+        FILING_TIME,
+        INTERVAL VAL_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE THEN
+        1
+        ELSE
+        2
+        END
+        ) AS BILL
+        FROM
+        ams_archives a
+        WHERE
+        a.PERIOD != '1'
+        AND a. STATUS = '9'
+        ORDER BY
+        a.FILING_TIME DESC,
+        a.OP_DEP_NO DESC,
+        a.ARC_BILL_CODE DESC
+    </select>
+
+    <!--查询已过期档案-->
+    <select id="selectArchDestroyListAL" resultMap="AmsArchivesResult">
+        (
+        SELECT
+        a.ID,
+        a. NAME,
+        a.ARC_NO,
+        a.OP_DEP_NAME,
+        a.ARC_BILL_NAME,
+        a.ARC_TYPE,
+        a.VAL_PERIOD,
+        a.FILING_TIME,
+        a. STATUS,
+        (
+        CASE
+        WHEN DATE_ADD(
+        DATE_ADD(
+        FILING_TIME,
+        INTERVAL VAL_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE THEN
+        1
+        ELSE
+        2
+        END
+        ) AS BILL
+        FROM
+        ams_archives a
+        WHERE
+        (
+        DATE_ADD(
+        DATE_ADD(
+        a.FILING_TIME,
+        INTERVAL a.VAL_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE
+        )
+        AND a.PERIOD != '1'
+        AND a.VAL_PERIOD != '99'
+        AND a. STATUS != '10'
+        ORDER BY
+        a.FILING_TIME DESC,
+        a.OP_DEP_NO DESC,
+        a.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        (
+        SELECT
+        b.ID,
+        b. NAME,
+        b.ARC_NO,
+        b.OP_DEP_NAME,
+        b.ARC_BILL_NAME,
+        b.ARC_TYPE,
+        b.VAL_PERIOD,
+        b.FILING_TIME,
+        b. STATUS,
+        (
+        CASE
+        WHEN DATE_ADD(
+        DATE_ADD(
+        b.PERSIST_TIME,
+        INTERVAL b.PERSIST_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE THEN
+        1
+        ELSE
+        2
+        END
+        ) AS BILL
+        FROM
+        ams_archives b
+        WHERE
+        DATE_ADD(
+        DATE_ADD(
+        b.PERSIST_TIME,
+        INTERVAL b.PERSIST_PERIOD YEAR
+        ),
+        INTERVAL +1 DAY
+        ) &lt;= SYSDATE
+        AND b.PERIOD = '1'
+        ORDER BY
+        b.FILING_TIME DESC,
+        b.OP_DEP_NO DESC,
+        b.ARC_BILL_CODE DESC
+        )
+
+    </select>
+
+    <!--批量销毁档案-->
+    <update id="updateAmsArchivesByIds" parameterType="java.util.List">
+        update ams_archives a
+        SET a.STATUS = '10'
+        where a.ID IN
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+        and a.ARC_TYPE='10' and a.CARRIER='03'
+    </update>
+
+    <update id="updateAmsBatchByIds" parameterType="java.util.List">
+        update ams_batch a set a.status = '10' where a.arc_no =
+        (select arc_no from ams_archives where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+        and ARC_TYPE='10' and CARRIER='03'
+        )
+    </update>
+    <!--    批量销毁实体档案（废弃）-->
+    <update id="updateEntityAmsArchivesByIds" parameterType="java.util.List">
+        update ams_archives a
+        SET a.STATUS = '8'
+        where a.ID IN
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+        and (a.ARC_TYPE='20' OR (a.ARC_TYPE='10' and a.CARRIER!='03'))
+    </update>
+
+    <update id="updateEntityAmsBatchByIds" parameterType="java.util.List">
+        update ams_batch b
+        SET b.STATUS='8'
+        where b.arc_no =
+        (select arc_no from ams_archives where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+        and (ARC_TYPE='20' OR (ARC_TYPE='10' and CARRIER!='03'))
+        )
+    </update>
+
+    <select id="selectAmsArchivesByIds" parameterType="String" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        where ID in
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+    </select>
+
+
+    <!--  查询收藏的档案信息  -->
+    <select id="selectAmsArchivesByFavorite" resultMap="AmsArchivesResultDto">
+        <include refid="selectAmsArchivesDto"/>
+        where a.ID in
+        <foreach item="iD" collection="iDs" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and a.NAME like
+            concat(concat('%',#{amsArchives.name}),'%')
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and a.ARC_BILL_CODE =
+            #{amsArchives.arcBillCode}
+        </if>
+        <if test="amsArchives.fileNo != null  and amsArchives.fileNo != '' ">and a.FILE_NO like
+            concat(concat('%',#{amsArchives.fileNo}),'%')
+        </if>
+        <if test="amsArchives.arcType != null  and amsArchives.arcType != '' ">and a.ARC_TYPE = #{amsArchives.arcType}
+        </if>
+        <if test="amsArchives.opDepNo != null  and amsArchives.opDepNo != '' ">and a.OP_DEP_NO = #{amsArchives.opDepNo}
+        </if>
+        <if test="amsArchives.status != null  and amsArchives.status != '' ">and a.STATUS = #{amsArchives.status}</if>
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and a.RESP_OP_NAME =
+            #{amsArchives.respOpName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and a.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+    </select>
+    <!--档案检索查询控制new-->
+    <select id="selectAmsArchivesListNew" resultMap="AmsArchivesResultDto">
+        SELECT * FROM ( SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        CASE
+        WHEN b.BOR_TYPE='10' AND to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &gt;= to_char(CURRENT_DATE, 'yyyy-mm-dd
+        00:00:00')
+        THEN 1
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &lt; to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 0
+        ELSE 0
+        END AS showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        AND b.APP_OP_NAME = #{amsArchives.respOpName}
+        AND b.STATUS =2
+        WHERE 1=1
+        AND ah.OP_DEP_NO &lt;&gt; #{deptId}
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            concat('%',concat(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            concat('%',concat(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND ah.ARC_LEVEL='04'
+        AND batch.arc_has_move_bank = '0'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM ( SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        CASE
+        WHEN b.BOR_TYPE='10' AND to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &gt;= to_char(CURRENT_DATE, 'yyyy-mm-dd
+        00:00:00')
+        THEN 1
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &lt; to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 0
+        ELSE 0
+        END AS showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        AND b.APP_OP_NAME = #{amsArchives.respOpName}
+        AND b.STATUS =2
+        WHERE 1=1
+        AND ah.OP_DEP_NO &lt;&gt; #{deptId}
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+        concat('%',concat(#{amsArchives.name},'%')) /if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND (ah.ARC_LEVEL='04' OR ah.RESP_OP_NAME = #{amsArchives.respOpName})
+        AND batch.arc_has_move_bank = '1'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM ( SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        1 showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        WHERE ah.OP_DEP_NO = #{deptId}
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and ah.RESP_OP_NAME =
+            #{amsArchives.respOpName}
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM( SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        CASE
+        WHEN b.BOR_TYPE='10' AND to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &gt;= to_char(CURRENT_DATE, 'yyyy-mm-dd
+        00:00:00')
+        THEN 1
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &lt; to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 0
+        ELSE 0
+        END AS showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        AND b.APP_OP_NAME = #{amsArchives.respOpName}
+        AND b.STATUS =2
+        WHERE ah.OP_DEP_NO = #{deptId}
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and ah.RESP_OP_NAME =
+            #{amsArchives.respOpName}
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND ah.RESP_OP_NAME = #{loginName}
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM ( SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        CASE
+        WHEN b.BOR_TYPE='10' AND to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &gt;= to_char(CURRENT_DATE, 'yyyy-mm-dd
+        00:00:00')
+        THEN 1
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &lt; to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 0
+        ELSE 0
+        END AS showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        AND b.APP_OP_NAME = #{amsArchives.respOpName}
+        AND b.STATUS =2
+        WHERE ah.OP_DEP_NO = #{deptId}
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.respOpName != null  and amsArchives.respOpName != '' ">and ah.RESP_OP_NAME &lt;&gt;
+            #{amsArchives.respOpName}
+        </if>
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE = #{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND ah.RESP_OP_NAME &lt;&gt; #{loginName}
+        AND ah.ARC_LEVEL='04'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+    </select>
+    <!--档案检索查询控制-->
+    <select id="selectAmsArchivesBydeptId" resultMap="AmsArchivesResultDto">
+        SELECT * FROM (
+        SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        1 showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        WHERE
+        ah.OP_DEP_NO in
+        <foreach collection="deptId" item="deptId" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_CODE=#{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND batch.arc_has_move_bank = '0'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM (
+        SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        1 showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        WHERE
+        ah.OP_DEP_NO in
+        <foreach collection="deptId" item="deptId" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+        and (ah.ARC_LEVEL='04' OR ah.RESP_OP_NAME = #{amsArchives.respOpName})
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT(CONCAT('%',#{amsArchives.arcBillDept}),'%')
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_CODE = #{amsArchives.arcBillCode})
+        </if>
+
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND batch.arc_has_move_bank = '1'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+        UNION ALL
+        SELECT * FROM (
+        SELECT
+        ah.*,b.STATUS borStatus,batch.arc_has_move_bank has_move_bank,
+        CASE
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &gt;= to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 1
+        WHEN to_char(b.BOR_END_TIME, 'yyyy-mm-dd 00:00:00') &lt; to_char(CURRENT_DATE, 'yyyy-mm-dd 00:00:00')
+        THEN 0
+        ELSE 0
+        END AS showIamge
+        FROM
+        ams_archives ah
+        LEFT JOIN ams_batch batch
+        ON batch.ARC_NO = ah.ARC_NO
+        LEFT JOIN sys_role_dept rd
+        ON rd.dept_id = ah.OP_DEP_NO
+        LEFT JOIN sys_user_role ur
+        ON ur.role_id = rd.role_id
+        LEFT JOIN ams_borrow_info b
+        ON ah.BATCH_ID = b.BATCH_ID
+        AND b.APP_OP_NAME = #{amsArchives.respOpName}
+        AND b.STATUS =2
+        WHERE 1=1
+        AND ah.OP_DEP_NO not in
+        <foreach collection="deptId" item="deptId" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+        and ah.STATUS IN ('2','5','7')
+        <if test="amsArchives.arcLevel != null  and amsArchives.arcLevel != '' ">and ah.ARC_LEVEL =
+            #{amsArchives.arcLevel}
+        </if>
+        <if test="amsArchives.name != null  and amsArchives.name != '' ">and ah.NAME LIKE
+            CONCAT('%',CONCAT(#{amsArchives.name},'%'))
+        </if>
+        <if test="amsArchives.opDepName != null  and amsArchives.opDepName != ''  ">and ah.OP_DEP_NAME =
+            #{amsArchives.opDepName}
+        </if>
+        <if test="amsArchives.arcBillName != null  and amsArchives.arcBillName != ''  ">and ah.ARC_BILL_NAME =
+            #{amsArchives.arcBillName}
+        </if>
+        <if test="amsArchives.valPeriod != null  and amsArchives.valPeriod != '' ">and ah.VAL_PERIOD =
+            #{amsArchives.valPeriod}
+        </if>
+        <if test="amsArchives.arcBillDept != null  and amsArchives.arcBillDept != '' ">and ah.ARC_BILL_DEPT LIKE
+            CONCAT('%',CONCAT(#{amsArchives.arcBillDept},'%'))
+        </if>
+        <if test="amsArchives.arcBillCode != null  and amsArchives.arcBillCode != '' ">and (ah.ARC_BILL_CODE IN
+            <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+                #{treeCode}
+            </foreach>
+            or ah.ARC_BILL_DEPT_CODE=#{amsArchives.arcBillCode})
+        </if>
+        AND ah.ARC_BILL_DEPT_CODE NOT IN (SELECT sm.ARC_BILL_DEPT_CODE FROM sm_secret sm )
+        AND ah.ARC_LEVEL='04'
+        ORDER BY
+        ah.FILING_TIME DESC,
+        ah.OP_DEP_NO DESC,
+        ah.ARC_BILL_CODE DESC
+        )
+    </select>
+
+    <!--查询可移库档案 status='5' 已入库-->
+    <select id="selectMatterArc" parameterType="AmsArchives" resultMap="AmsArchivesResult">
+        <include refid="selectAmsArchivesVo"/>
+        where status='5'
+
+        <if test="id != null  and id != '' ">and ID = #{id}</if>
+        <if test="arcNo != null  and arcNo != '' ">and ARC_NO = #{arcNo}</if>
+        <if test="name != null  and name != '' ">and NAME = #{name}</if>
+        <if test="opDepNo != null  and opDepNo != '' ">and OP_DEP_NO = #{opDepNo}</if>
+        <if test="opDepName != null  and opDepName != '' ">and OP_DEP_NAME = #{opDepName}</if>
+        <if test="manaDepNo != null  and manaDepNo != '' ">and MANA_DEP_NO = #{manaDepNo}</if>
+        <if test="manaDepName != null  and manaDepName != '' ">and MANA_DEP_NAME = #{manaDepName}</if>
+        <if test="depotNo != null  and depotNo != '' ">and DEPOT_NO = #{depotNo}</if>
+        <if test="depotName != null  and depotName != '' ">and DEPOT_NAME = #{depotName}</if>
+        <if test="depotType != null  and depotType != '' ">and DEPOT_TYPE = #{depotType}</if>
+        <if test="cabintNo != null  and cabintNo != '' ">and CABINT_NO = #{cabintNo}</if>
+        <if test="cabintName != null  and cabintName != '' ">and CABINT_NAME = #{cabintName}</if>
+        <if test="arcType != null  and arcType != '' ">and ARC_TYPE = #{arcType}</if>
+        <if test="respDepaName != null  and respDepaName != '' ">and RESP_DEPA_NAME = #{respDepaName}</if>
+        <if test="respOpName != null  and respOpName != '' ">and RESP_OP_NAME = #{respOpName}</if>
+        <if test="arcNum != null ">and ARC_NUM = #{arcNum}</if>
+        <if test="arcPageNum != null ">and ARC_PAGE_NUM = #{arcPageNum}</if>
+        <if test="arcLevel != null  and arcLevel != '' ">and ARC_LEVEL = #{arcLevel}</if>
+        <if test="arcCreTime != null ">and ARC_CRE_TIME = #{arcCreTime}</if>
+        <if test="filingTime != null ">and FILING_TIME = #{filingTime}</if>
+        <if test="filingDepa != null  and filingDepa != '' ">and FILING_DEPA = #{filingDepa}</if>
+        <if test="adminNo != null  and adminNo != '' ">and ADMIN_NO = #{adminNo}</if>
+        <if test="adminName != null  and adminName != '' ">and ADMIN_NAME = #{adminName}</if>
+        <if test="depotOutNo != null  and depotOutNo != '' ">and DEPOT_OUT_NO = #{depotOutNo}</if>
+        <if test="depotOutName != null  and depotOutName != '' ">and DEPOT_OUT_NAME = #{depotOutName}</if>
+        <if test="borrowNo != null  and borrowNo != '' ">and BORROW_NO = #{borrowNo}</if>
+        <if test="borrowName != null  and borrowName != '' ">and BORROW_NAME = #{borrowName}</if>
+        <if test="status != null  and status != '' ">and a.STATUS = #{status}</if>
+        <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+        <if test="batchNo != null  and batchNo != '' ">and BATCH_NO = #{batchNo}</if>
+        <if test="filingDepaName != null  and filingDepaName != '' ">and FILING_DEPA_NAME = #{filingDepaName}</if>
+        <if test="depotId != null  and depotId != '' ">and DEPOT_ID = #{depotId}</if>
+        <if test="cabintId != null  and cabintId != '' ">and CABINT_ID = #{cabintId}</if>
+        <if test="arcBillName != null  and arcBillName != '' ">and ARC_BILL_NAME = #{arcBillName}</if>
+
+        <choose>
+            <when test="arcBillCode !=null and arcBillCode != ''">
+                <if test="arcBillCode == 'B100' or arcBillCode == 'C100'">
+                    and ARC_BILL_CODE like concat(concat('%', #{arcBillCode}), '%')
+                </if>
+            </when>
+            <otherwise>
+                and (ARC_BILL_CODE = 'B100' OR ARC_BILL_CODE = 'C100')
+            </otherwise>
+        </choose>
+
+        <if test="arcBillCode == 'B100' or arcBillCode == 'C100'">
+            and ARC_BILL_DEPT_CODE like concat(concat('%', #{arcBillDeptCode}), '%')
+        </if>
+
+        <if test="valPeriod != null  and valPeriod != '' ">and VAL_PERIOD = #{valPeriod}</if>
+        <if test="originMode != null  and originMode != '' ">and ORIGIN_MODE = #{originMode}</if>
+        <if test="expenseInvolve != null  and expenseInvolve != '' ">and EXPENSE_INVOLVE = #{expenseInvolve}</if>
+        <if test="bill != null  and bill != '' ">and BILL = #{bill}</if>
+        <if test="serviceType != null  and serviceType != '' ">and SERVICE_TYPE = #{serviceType}</if>
+        <if test="carrier != null  and carrier != '' ">and CARRIER = #{carrier}</if>
+        <if test="practType != null  and practType != '' ">and PRACT_TYPE = #{practType}</if>
+        <if test="filePath != null  and filePath != '' ">and FILE_PATH = #{filePath}</if>
+        <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+        <if test="persistTime != null ">and to_char(PERSIST_TIME,'yyyy-mm-dd') = to_char(#{persistTime},'yyyy-mm-dd')
+        </if>
+        <if test="persistPeriod != null  and persistPeriod != '' ">and PERSIST_PERIOD = #{persistPeriod}</if>
+        <if test="period != null  and period != '' ">and PERIOD = #{period}</if>
+        <if test="boxCode != null  and boxCode != '' ">and box_code = #{boxCode}</if>
+        <if test="boxName != null  and boxName != '' ">and box_name = #{boxName}</if>
+        <if test="boxNum != null ">and box_num = #{boxNum}</if>
+        <if test="fileNo != null  and fileNo != '' ">and FILE_NO = #{fileNo}</if>
+        <if test="storageLocation != null  and storageLocation != '' ">and STORAGE_LOCATION = #{storageLocation}</if>
+        <if test="amsArchivesVO.turnInTime != null ">and to_char(t.TURN_IN_TIME,'yyyy-mm-dd') =
+            to_char(#{amsArchivesVO.turnInTime},'yyyy-mm-dd')
+        </if>
+        <if test="amsArchivesVO.receiveTime != null ">and to_char(t.RECEIVE_TIME,'yyyy-mm-dd') =
+            to_char(#{amsArchivesVO.receiveTime},'yyyy-mm-dd')
+        </if>
+        <if test="arcBillDept != null  and arcBillDept != '' ">and ARC_BILL_DEPT = #{arcBillDept}</if>
+
+    </select>
+
+    <!--查询实物类型档案 实物档案(12100)/声像档案(11100) -->
+    <select id="selectArchByMatterType" parameterType="AmsArchivesVO" resultMap="AmsArchivesResultDto">
+        select t.* from(
+        select * from(
+        SELECT a.ID, a.ARC_NO, a.NAME, a.OP_DEP_NO, a.OP_DEP_NAME, a.MANA_DEP_NO, a.MANA_DEP_NAME, a.DEPOT_NO,
+        a.DEPOT_NAME, a.DEPOT_TYPE, a.CABINT_NO, a.CABINT_NAME, a.ARC_TYPE, a.RESP_DEPA_NAME, a.RESP_OP_NAME, a.ARC_NUM,
+        a.ARC_PAGE_NUM, a.ARC_LEVEL, a.ARC_CRE_TIME, a.FILING_TIME, a.FILING_DEPA, a.ADMIN_NO, a.ADMIN_NAME,
+        a.DEPOT_OUT_NO, a.DEPOT_OUT_NAME,a.BORROW_NO, a.BORROW_NAME, a.STATUS, a.BATCH_ID, a.BATCH_NO,
+        a.FILING_DEPA_NAME, a.DEPOT_ID, a.CABINT_ID, a.ARC_BILL_NAME, a.ARC_BILL_CODE, a.VAL_PERIOD, a.ORIGIN_MODE,
+        a.EXPENSE_INVOLVE, a.BILL, a.SERVICE_TYPE, a.CARRIER, a.PRACT_TYPE, a.FILE_PATH, a.VIEW_PATH, a.PERSIST_TIME,
+        a.PERSIST_PERIOD, a.PERIOD, a.box_code, a.box_name, a.box_num, a.FILE_NO, a.STORAGE_LOCATION, a.TURN_IN_TIME,
+        a.RECEIVE_TIME, a.ARC_BILL_DEPT, a.ARC_BILL_DEPT_CODE,b.STATUS borStatus ,batch.arc_has_move_bank has_move_bank
+        FROM ams_archives a
+        left join sys_dept
+        on dept_id = filing_Depa
+        left join ams_borrow_info b
+        on a.BATCH_ID = b.BATCH_ID
+        left join ams_batch batch
+        on a.ARC_NO = batch.ARC_NO
+        ) o
+        where o.CARRIER != '03'
+        and o.status = '5'
+        and o.ARC_BILL_CODE in ('12100','11100')
+        ) t
+        <where>
+            <if test="amsArchivesVO.id != null  and amsArchivesVO.id != '' ">and t.ID = #{amsArchivesVO.id}</if>
+            <if test="amsArchivesVO.arcNo != null  and amsArchivesVO.arcNo != '' ">and t.ARC_NO LIKEC
+                CONCAT(CONCAT('%',#{amsArchivesVO.arcNo}),'%')
+            </if>
+            <if test="amsArchivesVO.name != null  and amsArchivesVO.name != '' ">and t.NAME LIKE
+                CONCAT(CONCAT('%',#{amsArchivesVO.name}),'%')
+            </if>
+            <if test="amsArchivesVO.opDepNo != null  and amsArchivesVO.opDepNo != '' ">and t.OP_DEP_NO = #{opDepNo}</if>
+            <if test="amsArchivesVO.opDepName != null  and amsArchivesVO.opDepName != '' ">and t.OP_DEP_NAME =
+                #{amsArchivesVO.opDepName}
+            </if>
+            <if test="amsArchivesVO.manaDepNo != null  and amsArchivesVO.manaDepNo != '' ">and t.MANA_DEP_NO =
+                #{amsArchivesVO.manaDepNo}
+            </if>
+            <if test="amsArchivesVO.manaDepName != null  and amsArchivesVO.manaDepName != '' ">and t.MANA_DEP_NAME =
+                #{amsArchivesVO.manaDepName}
+            </if>
+            <if test="amsArchivesVO.depotNo != null  and amsArchivesVO.depotNo != '' ">and t.DEPOT_NO =
+                #{amsArchivesVO.depotNo}
+            </if>
+            <if test="amsArchivesVO.depotName != null  and amsArchivesVO.depotName != '' ">and t.DEPOT_NAME =
+                #{amsArchivesVO.depotName}
+            </if>
+            <if test="amsArchivesVO.depotType != null  and amsArchivesVO.depotType != '' ">and t.DEPOT_TYPE =
+                #{amsArchivesVO.depotType}
+            </if>
+            <if test="amsArchivesVO.cabintNo != null  and amsArchivesVO.cabintNo != '' ">and t.CABINT_NO =
+                #{amsArchivesVO.cabintNo}
+            </if>
+            <if test="amsArchivesVO.cabintName != null  and amsArchivesVO.cabintName != '' ">and t.CABINT_NAME =
+                #{amsArchivesVO.cabintName}
+            </if>
+            <if test="amsArchivesVO.arcType != null  and amsArchivesVO.arcType != '' ">and t.ARC_TYPE =
+                #{amsArchivesVO.arcType}
+            </if>
+            <if test="amsArchivesVO.respDepaName != null  and amsArchivesVO.respDepaName != '' ">and t.RESP_DEPA_NAME =
+                #{amsArchivesVO.respDepaName}
+            </if>
+            <if test="amsArchivesVO.respOpName != null  and amsArchivesVO.respOpName != '' ">and t.RESP_OP_NAME LIKE
+                CONCAT(CONCAT('%',#{amsArchivesVO.respOpName}),'%')
+            </if>
+            <if test="amsArchivesVO.arcNum != null ">and t.ARC_NUM = #{amsArchivesVO.arcNum}</if>
+            <if test="amsArchivesVO.arcPageNum != null ">and t.ARC_PAGE_NUM = #{amsArchivesVO.arcPageNum}</if>
+            <if test="amsArchivesVO.arcLevel != null  and amsArchivesVO.arcLevel != '' ">and t.ARC_LEVEL =
+                #{amsArchivesVO.arcLevel}
+            </if>
+            <if test="amsArchivesVO.arcCreTime != null ">and t.ARC_CRE_TIME = #{amsArchivesVO.arcCreTime}</if>
+            <if test="amsArchivesVO.filingTime != null ">and t.FILING_TIME = #{amsArchivesVO.filingTime}</if>
+            <if test="amsArchivesVO.filingDepa != null  and amsArchivesVO.filingDepa != '' ">and t.FILING_DEPA =
+                #{amsArchivesVO.filingDepa}
+            </if>
+            <if test="amsArchivesVO.adminNo != null  and amsArchivesVO.adminNo != '' ">and t.ADMIN_NO =
+                #{amsArchivesVO.adminNo}
+            </if>
+            <if test="amsArchivesVO.adminName != null  and amsArchivesVO.adminName != '' ">and t.ADMIN_NAME =
+                #{amsArchivesVO.adminName}
+            </if>
+            <if test="amsArchivesVO.depotOutNo != null  and amsArchivesVO.depotOutNo != '' ">and t.DEPOT_OUT_NO =
+                #{amsArchivesVO.depotOutNo}
+            </if>
+            <if test="amsArchivesVO.depotOutName != null  and amsArchivesVO.depotOutName != '' ">and t.DEPOT_OUT_NAME =
+                #{amsArchivesVO.depotOutName}
+            </if>
+            <if test="amsArchivesVO.borrowNo != null  and amsArchivesVO.borrowNo != '' ">and t.BORROW_NO =
+                #{amsArchivesVO.borrowNo}
+            </if>
+            <if test="amsArchivesVO.borrowName != null  and amsArchivesVO.borrowName != '' ">and t.BORROW_NAME =
+                #{amsArchivesVO.borrowName}
+            </if>
+            <if test="amsArchivesVO.batchId != null  and amsArchivesVO.batchId != '' ">and t.BATCH_ID =
+                #{amsArchivesVO.batchId}
+            </if>
+            <if test="amsArchivesVO.batchNo != null  and amsArchivesVO.batchNo != '' ">and t.BATCH_NO =
+                #{amsArchivesVO.batchNo}
+            </if>
+            <if test="amsArchivesVO.filingDepaName != null  and amsArchivesVO.filingDepaName != '' ">and
+                t.FILING_DEPA_NAME = #{amsArchivesVO.filingDepaName}
+            </if>
+            <if test="amsArchivesVO.depotId != null  and amsArchivesVO.depotId != '' ">and t.DEPOT_ID =
+                #{amsArchivesVO.depotId}
+            </if>
+            <if test="amsArchivesVO.cabintId != null  and amsArchivesVO.cabintId != '' ">and t.CABINT_ID =
+                #{amsArchivesVO.cabintId}
+            </if>
+            <if test="amsArchivesVO.arcBillName != null  and amsArchivesVO.arcBillName != '' ">and t.ARC_BILL_NAME =
+                #{amsArchivesVO.arcBillName}
+            </if>
+            <if test="amsArchivesVO.arcBillCode != null  and amsArchivesVO.arcBillCode != '' ">and t.ARC_BILL_CODE =
+                #{amsArchivesVO.arcBillCode}
+            </if>
+            <if test="amsArchivesVO.valPeriod != null  and amsArchivesVO.valPeriod != '' ">and t.VAL_PERIOD =
+                #{amsArchivesVO.valPeriod}
+            </if>
+            <if test="amsArchivesVO.originMode != null  and amsArchivesVO.originMode != '' ">and t.ORIGIN_MODE =
+                #{amsArchivesVO.originMode}
+            </if>
+            <if test="amsArchivesVO.expenseInvolve != null  and amsArchivesVO.expenseInvolve != '' ">and
+                t.EXPENSE_INVOLVE = #{amsArchivesVO.expenseInvolve}
+            </if>
+            <if test="amsArchivesVO.bill != null  and amsArchivesVO.bill != '' ">and t.BILL = #{amsArchivesVO.bill}</if>
+            <if test="amsArchivesVO.serviceType != null  and amsArchivesVO.serviceType != '' ">and t.SERVICE_TYPE =
+                #{amsArchivesVO.serviceType}
+            </if>
+            <if test="amsArchivesVO.practType != null  and amsArchivesVO.practType != '' ">and t.PRACT_TYPE =
+                #{amsArchivesVO.practType}
+            </if>
+            <if test="amsArchivesVO.filePath != null  and amsArchivesVO.filePath != '' ">and t.FILE_PATH =
+                #{amsArchivesVO.filePath}
+            </if>
+            <if test="amsArchivesVO.viewPath != null  and amsArchivesVO.viewPath != '' ">and t.VIEW_PATH =
+                #{amsArchivesVO.viewPath}
+            </if>
+            <if test="persistTime != null ">and to_char(PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{persistTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.persistPeriod != null  and amsArchivesVO.persistPeriod != '' ">and t.PERSIST_PERIOD
+                = #{amsArchivesVO.persistPeriod}
+            </if>
+            <if test="amsArchivesVO.period != null  and amsArchivesVO.period != '' ">and t.PERIOD =
+                #{amsArchivesVO.period}
+            </if>
+            <if test="amsArchivesVO.boxCode != null  and amsArchivesVO.boxCode != '' ">and t.box_code =
+                #{amsArchivesVO.boxCode}
+            </if>
+            <if test="amsArchivesVO.boxName != null  and amsArchivesVO.boxName != '' ">and t.box_name =
+                #{amsArchivesVO.boxName}
+            </if>
+            <if test="amsArchivesVO.boxNum != null ">and t.box_num = #{amsArchivesVO.boxNum}</if>
+            <if test="amsArchivesVO.fileNo != null  and amsArchivesVO.fileNo != '' ">and t.FILE_NO LIKE
+                CONCAT(CONCAT('%',#{amsArchivesVO.fileNo}),'%')
+            </if>
+            <if test="amsArchivesVO.storageLocation != null  and amsArchivesVO.storageLocation != '' ">and
+                t.STORAGE_LOCATION = #{amsArchivesVO.storageLocation}
+            </if>
+            <if test="amsArchivesVO.turnInTime != null ">and to_char(t.TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchivesVO.turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.receiveTime != null ">and to_char(t.RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchivesVO.receiveTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.arcBillDept != null  and amsArchivesVO.arcBillDept != '' ">and t.ARC_BILL_DEPT LIKE
+                CONCAT(CONCAT('%',#{amsArchivesVO.arcBillDept}),'%')
+            </if>
+            <if test="amsArchivesVO.arcBillDeptCode != null  and amsArchivesVO.arcBillDeptCode != '' ">and
+                t.ARC_BILL_DEPT_CODE = #{amsArchivesVO.arcBillDeptCode}
+            </if>
+            <if test="amsArchivesVO.carrier != null  and amsArchivesVO.carrier != '' ">and t.CARRIER =
+                #{amsArchivesVO.carrier}
+            </if>
+            <if test="amsArchivesVO.hasMoveBank != null  and amsArchivesVO.hasMoveBank != '' ">and t.has_move_bank =
+                #{amsArchivesVO.hasMoveBank}
+            </if>
+        </where>
+        ORDER BY t.ARC_CRE_TIME DESC
+    </select>
+
+    <select id="selectArchByMatter" resultMap="AmsArchivesResultDto">
+        select t.* from(
+        select * from(
+        SELECT a.ID, a.ARC_NO, a.NAME, a.OP_DEP_NO, a.OP_DEP_NAME, a.MANA_DEP_NO, a.MANA_DEP_NAME, a.DEPOT_NO,
+        a.DEPOT_NAME, a.DEPOT_TYPE, a.CABINT_NO, a.CABINT_NAME, a.ARC_TYPE, a.RESP_DEPA_NAME, a.RESP_OP_NAME, a.ARC_NUM,
+        a.ARC_PAGE_NUM, a.ARC_LEVEL, a.ARC_CRE_TIME, a.FILING_TIME, a.FILING_DEPA, a.ADMIN_NO, a.ADMIN_NAME,
+        a.DEPOT_OUT_NO, a.DEPOT_OUT_NAME,a.BORROW_NO, a.BORROW_NAME, a.STATUS, a.BATCH_ID, a.BATCH_NO,
+        a.FILING_DEPA_NAME, a.DEPOT_ID, a.CABINT_ID, a.ARC_BILL_NAME, a.ARC_BILL_CODE, a.VAL_PERIOD, a.ORIGIN_MODE,
+        a.EXPENSE_INVOLVE, a.BILL, a.SERVICE_TYPE, a.CARRIER, a.PRACT_TYPE, a.FILE_PATH, a.VIEW_PATH, a.PERSIST_TIME,
+        a.PERSIST_PERIOD, a.PERIOD, a.box_code, a.box_name, a.box_num, a.FILE_NO, a.STORAGE_LOCATION, a.TURN_IN_TIME,
+        a.RECEIVE_TIME, a.ARC_BILL_DEPT, a.ARC_BILL_DEPT_CODE,b.STATUS borStatus ,batch.arc_has_move_bank has_move_bank
+        FROM ams_archives a
+        left join sys_dept
+        on dept_id = filing_Depa
+        left join ams_borrow_info b
+        on a.BATCH_ID = b.BATCH_ID
+        left join ams_batch batch
+        on a.ARC_NO = batch.ARC_NO
+        ) o
+        where o.CARRIER != '03'
+        and o.status = '5'
+        and o.ARC_BILL_CODE in ('12100','11100')
+        ) t
+        <where>
+            <if test="amsArchivesVO.id != null  and amsArchivesVO.id != '' ">and t.ID = #{amsArchivesVO.id}</if>
+            <if test="amsArchivesVO.arcNo != null  and amsArchivesVO.arcNo != '' ">and t.ARC_NO LIKE
+                CONCAT('%',#{amsArchivesVO.arcNo},'%')
+            </if>
+            <if test="amsArchivesVO.name != null  and amsArchivesVO.name != '' ">and t.NAME LIKE
+                CONCAT('%',#{amsArchivesVO.name},'%')
+            </if>
+            <if test="deptList.size()>0">
+                and t.OP_DEP_NO in
+                <foreach item="deptId" collection="deptList" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+            <if test="amsArchivesVO.opDepName != null  and amsArchivesVO.opDepName != '' ">and t.OP_DEP_NAME =
+                #{amsArchivesVO.opDepName}
+            </if>
+            <if test="amsArchivesVO.manaDepNo != null  and amsArchivesVO.manaDepNo != '' ">and t.MANA_DEP_NO =
+                #{amsArchivesVO.manaDepNo}
+            </if>
+            <if test="amsArchivesVO.manaDepName != null  and amsArchivesVO.manaDepName != '' ">and t.MANA_DEP_NAME =
+                #{amsArchivesVO.manaDepName}
+            </if>
+            <if test="amsArchivesVO.depotNo != null  and amsArchivesVO.depotNo != '' ">and t.DEPOT_NO =
+                #{amsArchivesVO.depotNo}
+            </if>
+            <if test="amsArchivesVO.depotName != null  and amsArchivesVO.depotName != '' ">and t.DEPOT_NAME =
+                #{amsArchivesVO.depotName}
+            </if>
+            <if test="amsArchivesVO.depotType != null  and amsArchivesVO.depotType != '' ">and t.DEPOT_TYPE =
+                #{amsArchivesVO.depotType}
+            </if>
+            <if test="amsArchivesVO.cabintNo != null  and amsArchivesVO.cabintNo != '' ">and t.CABINT_NO =
+                #{amsArchivesVO.cabintNo}
+            </if>
+            <if test="amsArchivesVO.cabintName != null  and amsArchivesVO.cabintName != '' ">and t.CABINT_NAME =
+                #{amsArchivesVO.cabintName}
+            </if>
+            <if test="amsArchivesVO.arcType != null  and amsArchivesVO.arcType != '' ">and t.ARC_TYPE =
+                #{amsArchivesVO.arcType}
+            </if>
+            <if test="amsArchivesVO.respDepaName != null  and amsArchivesVO.respDepaName != '' ">and t.RESP_DEPA_NAME =
+                #{amsArchivesVO.respDepaName}
+            </if>
+            <if test="amsArchivesVO.respOpName != null  and amsArchivesVO.respOpName != '' ">and t.RESP_OP_NAME LIKE
+                concat(concat('%',#{amsArchivesVO.respOpName}),'%')
+            </if>
+            <if test="amsArchivesVO.arcNum != null ">and t.ARC_NUM = #{amsArchivesVO.arcNum}</if>
+            <if test="amsArchivesVO.arcPageNum != null ">and t.ARC_PAGE_NUM = #{amsArchivesVO.arcPageNum}</if>
+            <if test="amsArchivesVO.arcLevel != null  and amsArchivesVO.arcLevel != '' ">and t.ARC_LEVEL =
+                #{amsArchivesVO.arcLevel}
+            </if>
+            <if test="amsArchivesVO.arcCreTime != null ">and t.ARC_CRE_TIME = #{amsArchivesVO.arcCreTime}</if>
+            <if test="amsArchivesVO.filingTime != null ">and t.FILING_TIME = #{amsArchivesVO.filingTime}</if>
+            <if test="amsArchivesVO.filingDepa != null  and amsArchivesVO.filingDepa != '' ">and t.FILING_DEPA =
+                #{amsArchivesVO.filingDepa}
+            </if>
+            <if test="amsArchivesVO.adminNo != null  and amsArchivesVO.adminNo != '' ">and t.ADMIN_NO =
+                #{amsArchivesVO.adminNo}
+            </if>
+            <if test="amsArchivesVO.adminName != null  and amsArchivesVO.adminName != '' ">and t.ADMIN_NAME =
+                #{amsArchivesVO.adminName}
+            </if>
+            <if test="amsArchivesVO.depotOutNo != null  and amsArchivesVO.depotOutNo != '' ">and t.DEPOT_OUT_NO =
+                #{amsArchivesVO.depotOutNo}
+            </if>
+            <if test="amsArchivesVO.depotOutName != null  and amsArchivesVO.depotOutName != '' ">and t.DEPOT_OUT_NAME =
+                #{amsArchivesVO.depotOutName}
+            </if>
+            <if test="amsArchivesVO.borrowNo != null  and amsArchivesVO.borrowNo != '' ">and t.BORROW_NO =
+                #{amsArchivesVO.borrowNo}
+            </if>
+            <if test="amsArchivesVO.borrowName != null  and amsArchivesVO.borrowName != '' ">and t.BORROW_NAME =
+                #{amsArchivesVO.borrowName}
+            </if>
+            <if test="amsArchivesVO.batchId != null  and amsArchivesVO.batchId != '' ">and t.BATCH_ID =
+                #{amsArchivesVO.batchId}
+            </if>
+            <if test="amsArchivesVO.batchNo != null  and amsArchivesVO.batchNo != '' ">and t.BATCH_NO =
+                #{amsArchivesVO.batchNo}
+            </if>
+            <if test="amsArchivesVO.filingDepaName != null  and amsArchivesVO.filingDepaName != '' ">and
+                t.FILING_DEPA_NAME = #{amsArchivesVO.filingDepaName}
+            </if>
+            <if test="amsArchivesVO.depotId != null  and amsArchivesVO.depotId != '' ">and t.DEPOT_ID =
+                #{amsArchivesVO.depotId}
+            </if>
+            <if test="amsArchivesVO.cabintId != null  and amsArchivesVO.cabintId != '' ">and t.CABINT_ID =
+                #{amsArchivesVO.cabintId}
+            </if>
+            <if test="amsArchivesVO.arcBillName != null  and amsArchivesVO.arcBillName != '' ">and t.ARC_BILL_NAME =
+                #{amsArchivesVO.arcBillName}
+            </if>
+            <if test="amsArchivesVO.arcBillCode != null  and amsArchivesVO.arcBillCode != '' ">and t.ARC_BILL_CODE =
+                #{amsArchivesVO.arcBillCode}
+            </if>
+            <if test="amsArchivesVO.valPeriod != null  and amsArchivesVO.valPeriod != '' ">and t.VAL_PERIOD =
+                #{amsArchivesVO.valPeriod}
+            </if>
+            <if test="amsArchivesVO.originMode != null  and amsArchivesVO.originMode != '' ">and t.ORIGIN_MODE =
+                #{amsArchivesVO.originMode}
+            </if>
+            <if test="amsArchivesVO.expenseInvolve != null  and amsArchivesVO.expenseInvolve != '' ">and
+                t.EXPENSE_INVOLVE = #{amsArchivesVO.expenseInvolve}
+            </if>
+            <if test="amsArchivesVO.bill != null  and amsArchivesVO.bill != '' ">and t.BILL = #{amsArchivesVO.bill}</if>
+            <if test="amsArchivesVO.serviceType != null  and amsArchivesVO.serviceType != '' ">and t.SERVICE_TYPE =
+                #{amsArchivesVO.serviceType}
+            </if>
+            <if test="amsArchivesVO.practType != null  and amsArchivesVO.practType != '' ">and t.PRACT_TYPE =
+                #{amsArchivesVO.practType}
+            </if>
+            <if test="amsArchivesVO.filePath != null  and amsArchivesVO.filePath != '' ">and t.FILE_PATH =
+                #{amsArchivesVO.filePath}
+            </if>
+            <if test="amsArchivesVO.viewPath != null  and amsArchivesVO.viewPath != '' ">and t.VIEW_PATH =
+                #{amsArchivesVO.viewPath}
+            </if>
+            <if test="persistTime != null ">and to_char(PERSIST_TIME,'yyyy-mm-dd') =
+                to_char(#{persistTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.persistPeriod != null  and amsArchivesVO.persistPeriod != '' ">and t.PERSIST_PERIOD
+                = #{amsArchivesVO.persistPeriod}
+            </if>
+            <if test="amsArchivesVO.period != null  and amsArchivesVO.period != '' ">and t.PERIOD =
+                #{amsArchivesVO.period}
+            </if>
+            <if test="amsArchivesVO.boxCode != null  and amsArchivesVO.boxCode != '' ">and t.box_code =
+                #{amsArchivesVO.boxCode}
+            </if>
+            <if test="amsArchivesVO.boxName != null  and amsArchivesVO.boxName != '' ">and t.box_name =
+                #{amsArchivesVO.boxName}
+            </if>
+            <if test="amsArchivesVO.boxNum != null ">and t.box_num = #{amsArchivesVO.boxNum}</if>
+            <if test="amsArchivesVO.fileNo != null  and amsArchivesVO.fileNo != '' ">and t.FILE_NO LIKE
+                concat(concat('%',#{amsArchivesVO.fileNo}),'%')
+            </if>
+            <if test="amsArchivesVO.storageLocation != null  and amsArchivesVO.storageLocation != '' ">and
+                t.STORAGE_LOCATION = #{amsArchivesVO.storageLocation}
+            </if>
+            <if test="amsArchivesVO.turnInTime != null ">and to_char(t.TURN_IN_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchivesVO.turnInTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.receiveTime != null ">and to_char(t.RECEIVE_TIME,'yyyy-mm-dd') =
+                to_char(#{amsArchivesVO.receiveTime},'yyyy-mm-dd')
+            </if>
+            <if test="amsArchivesVO.arcBillDept != null  and amsArchivesVO.arcBillDept != '' ">and t.ARC_BILL_DEPT LIKE
+                concat(concat('%',#{amsArchivesVO.arcBillDept}),'%')
+            </if>
+            <if test="amsArchivesVO.arcBillDeptCode != null  and amsArchivesVO.arcBillDeptCode != '' ">and
+                t.ARC_BILL_DEPT_CODE = #{amsArchivesVO.arcBillDeptCode}
+            </if>
+            <if test="amsArchivesVO.carrier != null  and amsArchivesVO.carrier != '' ">and t.CARRIER =
+                #{amsArchivesVO.carrier}
+            </if>
+            <if test="amsArchivesVO.hasMoveBank != null  and amsArchivesVO.hasMoveBank != '' ">and t.has_move_bank =
+                #{amsArchivesVO.hasMoveBank}
+            </if>
+        </where>
+        ORDER BY t.ARC_CRE_TIME DESC
+    </select>
+
+</mapper>

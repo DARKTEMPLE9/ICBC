@@ -1002,10 +1002,10 @@
                 }
 
                 return elements.join(' ')
-                // Optimizations: remove spaces around commands & before `-`
-                //
-                // We could also remove leading zeros for `0.5`-like values,
-                // but their count is too small to spend time for.
+                    // Optimizations: remove spaces around commands & before `-`
+                    //
+                    // We could also remove leading zeros for `0.5`-like values,
+                    // but their count is too small to spend time for.
                     .replace(/ ?([achlmqrstvz]) ?/gi, '$1')
                     .replace(/ \-/g, '-')
                     // workaround for FontForge SVG importing bug

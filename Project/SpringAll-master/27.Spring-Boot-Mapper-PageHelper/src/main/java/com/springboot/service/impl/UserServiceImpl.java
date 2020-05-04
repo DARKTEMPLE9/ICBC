@@ -6,7 +6,7 @@ import com.springboot.bean.User;
 import com.springboot.service.UserService;
 
 @Repository("userService")
-public class UserServiceImpl extends BaseService<User> implements UserService{
+public class UserServiceImpl extends BaseService<User> implements UserService {
 
-	
+
 }

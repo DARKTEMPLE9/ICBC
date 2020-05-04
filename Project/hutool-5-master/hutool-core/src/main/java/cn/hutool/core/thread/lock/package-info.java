@@ -1,7 +1,6 @@
 /**
  * 锁的实现
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.core.thread.lock;

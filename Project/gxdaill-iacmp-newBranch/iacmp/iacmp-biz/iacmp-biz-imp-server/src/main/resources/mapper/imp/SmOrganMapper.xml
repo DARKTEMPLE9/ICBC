@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.SmOrganMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.SmOrgan" id="SmOrganResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="path" column="PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="modifier" column="MODIFIER"/>
+        <result property="creator" column="CREATOR"/>
+        <result property="ssoOrgCode" column="SSO_ORG_CODE"/>
+        <result property="organId" column="ORGAN_ID"/>
+    </resultMap>
+
+    <sql id="selectSmOrganVo">
+        select ID, CODE, NAME, PARENT_ID, PATH, STATUS, MODIFIER, CREATOR, SSO_ORG_CODE, ORGAN_ID from sm_organ
+    </sql>
+
+    <select id="selectSmOrganList" resultMap="SmOrganResult">
+        <include refid="selectSmOrganVo"/>
+        <!--<where>-->
+        <!--<if test="id != null  and id != '' ">and ID = #{id}</if>-->
+        <!--<if test="code != null  and code != '' ">and CODE = #{code}</if>-->
+        <!--<if test="name != null  and name != '' ">and NAME = #{name}</if>-->
+        <!--<if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>-->
+        <!--<if test="path != null  and path != '' ">and PATH = #{path}</if>-->
+        <!--<if test="status != null ">and STATUS = #{status}</if>-->
+        <!--<if test="modifier != null  and modifier != '' ">and MODIFIER = #{modifier}</if>-->
+        <!--<if test="creator != null  and creator != '' ">and CREATOR = #{creator}</if>-->
+        <!--<if test="ssoOrgCode != null  and ssoOrgCode != '' ">and SSO_ORG_CODE = #{ssoOrgCode}</if>-->
+        <!--<if test="organId != null ">and ORGAN_ID = #{organId}</if>-->
+        <!--</where>-->
+    </select>
+
+    <select id="count" resultType="integer">
+        select count(1) from sm_organ
+    </select>
+
+    <select id="selectSmOrganById" parameterType="String" resultMap="SmOrganResult">
+        <include refid="selectSmOrganVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="findByOrganCode" parameterType="String" resultMap="SmOrganResult">
+        <include refid="selectSmOrganVo"/>
+        where code = #{code}
+    </select>
+
+    <insert id="insertSmOrgan" parameterType="net.northking.iacmp.imp.domain.SmOrgan">
+        insert into sm_organ
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID,</if>
+            <if test="path != null  and path != ''  ">PATH,</if>
+            <if test="status != null  ">STATUS,</if>
+            <if test="modifier != null  and modifier != ''  ">MODIFIER,</if>
+            <if test="creator != null  and creator != ''  ">CREATOR,</if>
+            <if test="ssoOrgCode != null  and ssoOrgCode != ''  ">SSO_ORG_CODE,</if>
+            <if test="organId != null  ">ORGAN_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="parentId != null  and parentId != ''  ">#{parentId},</if>
+            <if test="path != null  and path != ''  ">#{path},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="modifier != null  and modifier != ''  ">#{modifier},</if>
+            <if test="creator != null  and creator != ''  ">#{creator},</if>
+            <if test="ssoOrgCode != null  and ssoOrgCode != ''  ">#{ssoOrgCode},</if>
+            <if test="organId != null  ">#{organId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmOrgan" parameterType="net.northking.iacmp.imp.domain.SmOrgan">
+        update sm_organ
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID = #{parentId},</if>
+            <if test="path != null  and path != ''  ">PATH = #{path},</if>
+            <if test="status != null  ">STATUS = #{status},</if>
+            <if test="modifier != null  and modifier != ''  ">MODIFIER = #{modifier},</if>
+            <if test="creator != null  and creator != ''  ">CREATOR = #{creator},</if>
+            <if test="ssoOrgCode != null  and ssoOrgCode != ''  ">SSO_ORG_CODE = #{ssoOrgCode},</if>
+            <if test="organId != null  ">ORGAN_ID = #{organId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteSmOrganById" parameterType="String">
+        delete from sm_organ where ID = #{id}
+    </delete>
+
+    <delete id="deleteSmOrganByIds" parameterType="String">
+        delete from sm_organ where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

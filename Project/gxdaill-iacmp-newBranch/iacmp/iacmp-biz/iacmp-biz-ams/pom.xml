@@ -1,0 +1,276 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.northking.iacmp</groupId>
+        <artifactId>iacmp-biz</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>iacmp-biz-ams</artifactId>
+    <name>iacmp ams biz module</name>
+    <description>IACMP Archive Management System</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--${spring.cloud.client.ipAddress}不生效-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+        </dependency>
+
+        <!--配置中心 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <!--启用链路追踪服务 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        <!--整合熔断 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign.form</groupId>
+            <artifactId>feign-form-spring</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+        <!-- SpringBoot集成thymeleaf模板 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+
+        <!-- spring-boot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 表示依赖不会传递 -->
+        </dependency>
+
+        <!-- swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+
+        <!--防止进入swagger页面报类型转换错误，排除2.9.2中的引用，手动增加1.5.21版本 -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
+        <!-- swagger2-UI -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-system</artifactId>
+        </dependency>
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-ams-server</artifactId>
+        </dependency>
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-framework</artifactId>
+        </dependency>
+        <!--工作流模块-->
+        <!--<dependency>-->
+        <!--<groupId>net.northking.iacmp</groupId>-->
+        <!--<artifactId>iacmp-biz-activiti</artifactId>-->
+        <!--</dependency>-->
+        <!-- 定时任务 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-quartz</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+
+        <!-- 代码生成 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-generator</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-common-bean</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!--	邮箱是否可达验证	-->
+        <dependency>
+            <groupId>dnsjava</groupId>
+            <artifactId>dnsjava</artifactId>
+            <version>${dnsjava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>${hive.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.aggregate</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-http-chunk</artifactId>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-core</artifactId>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash;springboot支持包，里面包括了自动配置类 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-spring-boot-starter</artifactId>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash;jodconverter 本地支持包 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-local</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--本地jar包-->
+        <dependency>
+            <groupId>DBstep</groupId>
+            <artifactId>DBstep</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/DBstep.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>ojdbc6</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/ojdbc6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>httpFileTransClient</groupId>
+            <artifactId>httpFileTransClient</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/httpFileTransClient.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+                <!--不加这个就会报错，对于多配置文件的这种，必须设成true-->
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                    <fork>true</fork>
+                    <!-- 如果没有该配置，devtools不会生效 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>src\main\resources\lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <!-- <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <warName>${artifactId}</warName>
+                </configuration>
+            </plugin> -->
+        </plugins>
+    </build>
+</project>

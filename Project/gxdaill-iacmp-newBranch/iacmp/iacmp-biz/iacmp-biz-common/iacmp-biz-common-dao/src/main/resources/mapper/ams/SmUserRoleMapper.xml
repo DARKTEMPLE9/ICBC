@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.SmUserRoleMapper">
+
+    <resultMap type="SmUserRole" id="SmUserRoleResult">
+        <result property="userId" column="USER_ID"/>
+        <result property="id" column="ID"/>
+        <result property="roleId" column="ROLE_ID"/>
+        <result property="userRoleId" column="user_role_id"/>
+    </resultMap>
+
+    <sql id="selectSmUserRoleVo">
+        select USER_ID, ID, ROLE_ID, user_role_id from sm_user_role
+    </sql>
+
+    <select id="selectSmUserRoleList" parameterType="SmUserRole" resultMap="SmUserRoleResult">
+        <include refid="selectSmUserRoleVo"/>
+        <where>
+            <if test="userId != null  and userId != '' ">and USER_ID = #{userId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="roleId != null  and roleId != '' ">and ROLE_ID = #{roleId}</if>
+            <if test="userRoleId != null ">and user_role_id = #{userRoleId}</if>
+        </where>
+    </select>
+
+    <select id="selectSmUserRoleById" parameterType="String" resultMap="SmUserRoleResult">
+        <include refid="selectSmUserRoleVo"/>
+        where USER_ID = #{userId}
+    </select>
+
+    <insert id="insertSmUserRole" parameterType="SmUserRole">
+        insert into sm_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null  and userId != ''  ">USER_ID,</if>
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="roleId != null  and roleId != ''  ">ROLE_ID,</if>
+            <if test="userRoleId != null  ">user_role_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null  and userId != ''  ">#{userId},</if>
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="roleId != null  and roleId != ''  ">#{roleId},</if>
+            <if test="userRoleId != null  ">#{userRoleId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmUserRole" parameterType="SmUserRole">
+        update sm_user_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID = #{id},</if>
+            <if test="roleId != null  and roleId != ''  ">ROLE_ID = #{roleId},</if>
+            <if test="userRoleId != null  ">user_role_id = #{userRoleId},</if>
+        </trim>
+        where USER_ID = #{userId}
+    </update>
+
+    <delete id="deleteSmUserRoleById" parameterType="String">
+        delete from sm_user_role where USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteSmUserRoleByIds" parameterType="String">
+        delete from sm_user_role where USER_ID in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+</mapper>

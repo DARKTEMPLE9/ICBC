@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .select-list label {
+        width: 73px;
+    }
+
+    .fixed-table-toolbar .columns label {
+        width: max-content;
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('档案登记列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <input type="hidden" name="roleId" id="roleId" th:value="${roleId}"/>
+                        <li>
+                            <label>档案名称：</label>
+                            <input type="text" name="name" id="name"/>
+                        </li>
+                        <li>
+                            <label> 密级：</label>
+                            <select id="arcLevel" name="arcLevel">
+                                <option selected="selected" value="">全部</option>
+                                <option value="01">绝密</option>
+                                <option value="02">机密</option>
+                                <option value="03">秘密</option>
+                                <option value="04">内部</option>
+                            </select>
+                        <li>
+                            <label>保留期限：</label>
+                            <select id="valPeriod" name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option selected="selected" value="">全部</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>档案类型：</label>
+                            <input type="hidden" id="arcBillCode" name="arcBillCode"/>
+                            <input type="text" id="arcBillName" name="arcBillName"
+                                   onclick="selectArcBillTree();arcBillName.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                        </li>
+                        <li>
+                            <label>所属部门：</label>
+                            <input type="hidden" id="opDepNo" name="opDepNo"/>
+                            <input type="text" id="opDepName" name="opDepName"
+                                   onclick="selectDeptTree();opDepName.blur();" readonly="readonly" placeholder="请选择部门"
+                                   style="cursor: pointer"/>
+                        </li>
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="pageSearch()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" id="myReSet" onclick="pageReset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="addcollection()"
+               shiro:hasPermission="amsArcReportcontroller:amsArchives:add">
+                <i class="fa fa-plus"></i> 添加收藏
+            </a>
+            <a class="btn btn-success " onclick="applyBorrow()"
+               shiro:hasPermission="amsArcReportcontroller:amsArchives:view">
+                <i class="fa fa-edit"></i> 申请利用
+            </a>
+            <!--				<a class="btn btn-warning" onclick="exportExcel()" shiro:hasPermission="amsArcReportcontroller:amsArchives:export">-->
+            <a class="btn btn-warning" onclick="exportExcel()">
+
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+            <a id="systemUpload" class="btn btn-warning" style="display: none" onclick="downZip()">
+                <i class="glyphicon glyphicon-export"></i> 制度发文一键下载
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    //var editFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:edit')}]];
+    //var removeFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:remove')}]];
+    var scanFlag = [[${@permission.hasPermi('archCollection:amsScan:scanFlag')}]];
+    var detailFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:detail')}]];
+    var batchdetailFlag = [[${@permission.hasPermi('amsArcReportController:amsArchives:detail')}]];
+    var recordFlag = [[${@permission.hasPermi('archCollection:amsRecordDetail:view')}]];
+    var prefix = ctx + "amsArcReportcontroller/amsArchives";
+    var period = [[${@dict.getType('archive_period')}]];
+    var myTransApplyStatus = [[${@dict.getType('archive_status')}]];
+    var arcLevel = [[${@dict.getType('arcLevel')}]];
+    var arcFormat = [[${@dict.getType('archive_format')}]];
+    var carrier = [[${@dict.getType('carrier')}]];
+    var depotType = [[${@dict.getType('depot_type')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            batchdetailUrl: prefix + "/batchdetail/{id}",
+            modalName: "档案登记",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+
+                {
+                    field: 'opDepName',
+                    title: '所属部门',
+                    sortable: true
+                },
+                {
+                    field: 'opDepNo',
+                    title: '所属部门编号',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'manaDepName',
+                    title: '档案管理部门名',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    field: 'depotNo',
+                    title: '库房编号',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'depotName',
+                    title: '库房名称',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'depotType',
+                    title: '库房类型',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(depotType, item.depotType);
+                    }
+                },
+                {
+                    field: 'cabintNo',
+                    title: '库柜编号',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'cabintName',
+                    title: '库柜名称',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'respDepaName',
+                    title: '责任部门',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcPageNum',
+                    title: '页数',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcLevel',
+                    title: '密级',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(arcLevel, item.arcLevel);
+                    }
+                },
+
+                {
+                    field: 'filingTime',
+                    title: '归档日期',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'adminName',
+                    title: '档案管理员名',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'status',
+                    title: '档案状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(myTransApplyStatus
+                            , item.status);
+                    }
+                },
+                {
+                    field: 'carrier',
+                    title: '载体形式',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(carrier
+                            , item.carrier);
+                    }
+                },
+
+                {
+                    field: 'filingDepaName',
+                    title: '归档部门',
+                    visible: false,
+                    sortable: true
+                },
+
+                {
+                    field: 'arcBillName',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'arcBillDept',
+                    title: '二级类目',
+                    sortable: true
+                },
+
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(period, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'boxName',
+                    title: '档案盒名称',
+                    visible: false,
+                    sortable: true
+                },
+                {
+                    field: 'arcType',
+                    title: '档案形态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(arcFormat, item.arcType);
+                    }
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var roleId = $("#roleId").val();
+                        var userName = [[${userName}]];
+                        if (row.showIamge && row.arcType == '10') {
+                            actions.push('<a title="详情" class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                            actions.push('<a title="著录详情" class="btn btn-success btn-xs ' + batchdetailFlag + '" href="javascript:void(0)" onclick="batchdetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                            actions.push('<a title="档案影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+
+                            // if(roleId=='3' || roleId=='2'){
+                            // 	if(row.status=='2'){
+                            // 		actions.push('<a title="档案影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+                            // 	}else {
+                            // 		if(userName==row.respOpName){
+                            // 			actions.push('<a title="档案影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+                            // 		}
+                            // 	}
+                            // }else if(roleId=='14'){
+                            // 	actions.push('<a title="档案影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+                            // }else if(roleId=='4'){
+                            // 	actions.push('<a title="档案影像" class="btn btn-info btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="showImage(\'' + row.batchNo + '\')"><i class="fa fa-file"></i></a> ');
+                            // 	//对未利用的档案可以进行编辑
+                            // 	if(row.status=='5'){
+                            // 		actions.push('<a title="编辑" class="btn btn-success btn-xs" href="javascript:void(0)" onclick="edit(\'' + row.batchId + '\')"><i class="fa fa-edit"></i></a> ');
+                            // 	}
+                            // }
+                            if (roleId == '4') {
+                                // 对未利用的档案可以进行编辑
+                                if (row.status == '5') {
+                                    actions.push('<a title="编辑" class="btn btn-success btn-xs" href="javascript:void(0)" onclick="edit(\'' + row.batchId + '\')"><i class="fa fa-edit"></i></a> ');
+                                }
+                            }
+                            if (row.opDepNo == '1015' && roleId == '4') {//合规部，行档案管理员
+                                actions.push('<a title="档案补录" class="btn btn-success btn-xs ' + recordFlag + '" href="javascript:void(0)" onclick="scanImage(\'' + row.batchNo + '\')"><i class="fa fa-upload"></i></a> ');
+                            }
+                        } else {
+                            actions.push('<a title="详情" class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                            actions.push('<a title="著录详情" class="btn btn-success btn-xs ' + batchdetailFlag + '" href="javascript:void(0)" onclick="batchdetail(\'' + row.id + '\')"><i class="fa fa-search"></i></a> ');
+                            if (roleId == '4') {
+                                //对未利用的档案可以进行编辑
+                                if (row.status == '5') {
+                                    actions.push('<a title="编辑" class="btn btn-success btn-xs" href="javascript:void(0)" onclick="edit(\'' + row.batchId + '\')"><i class="fa fa-edit"></i></a> ');
+                                }
+                            }
+                        }
+
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+
+    // 当前页面的搜索按钮方法
+    function pageSearch(formId, data) {
+        var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+        var params = $.btTable.bootstrapTable('getOptions');
+        params.queryParams = function (params) {
+            var search = $.common.formToJSON(currentId);
+            if ($.common.isNotEmpty(data)) {
+                $.each(data, function (key) {
+                    search[key] = data[key];
+                });
+            }
+            search.pageSize = params.limit;
+            search.pageNum = params.offset / params.limit + 1;
+            search.searchValue = params.search;
+            search.orderByColumn = params.sort;
+            search.isAsc = params.order;
+            return search;
+        }
+        if ($("#arcBillName").val() == "制度发文" && $("#opDepName").val() == "法律合规部") {
+            $("#systemUpload").show()
+        } else {
+            $("#systemUpload").hide()
+        }
+        $.btTable.bootstrapTable('refresh', params);
+    }
+
+    function pageReset(formId) {
+        var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+        $("#" + currentId)[0].reset();
+        $("#arcBillCode").val("")
+        $("#opDepNo").val("")
+        $("#systemUpload").hide()
+        $.btTable.bootstrapTable('refresh');
+    }
+
+    // 制度发文一键下载方法
+    function downZip() {
+        var arcName = $("#name").val();
+        var arcLevel = $("#arcLevel").val();
+        var valPeriod = $("#valPeriod").val();
+        var arcBillCode = $("#arcBillCode").val();
+        var opDepNo = $("#opDepNo").val();
+        window.location.href = prefix + "/downZip?arcName=" + arcName + "&arcLevel=" + arcLevel
+            + "&valPeriod=" + valPeriod + "&arcBillCode=" + arcBillCode + "&opDepNo=" + opDepNo;
+    }
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("档案登记详情", url);
+    }
+
+    // 添加收藏信息
+    function addcollection() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        if (rows.length == 0) {
+            $.modal.alertWarning("请选择一条记录");
+            return;
+        }
+        $.modal.confirm("确认要收藏选中的" + rows.length + "条数据吗?", function () {
+            var url = prefix + "/addcollection";
+            var data = {"ids": rows.join()};
+            $.operate.submit(url, "post", "json", data);
+        });
+    }
+
+    //申请利用按钮
+    function applyBorrow(id) {
+        var row = $("#bootstrap-table").bootstrapTable('getSelections')
+        if (row.length == 0) {
+            $.modal.alertWarning("请选择一条记录");
+            return;
+        } else if (row.length > 1) {
+            $.modal.alertWarning("一次只能申请一条记录");
+            return;
+        } else {
+            var status = row[0].status;
+            var arcType = row[0].arcType;
+            if (status == "2" && arcType == "20") {
+                $.modal.alertWarning("该实体档案他人正在申请借阅中，请勿重复操作!");
+                return false;
+            }
+            if (status == "7" && arcType == "20") {
+                $.modal.alertWarning("该档案不在库，无法借阅!");
+                return false;
+            }
+            if ($.common.isEmpty(id) && $.table._option.type == table_type.bootstrapTreeTable) {
+                var row = $.bttTable.bootstrapTreeTable('getSelections')[0];
+                if ($.common.isEmpty(row)) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                var url = $.table._option.updateUrl.replace("{id}", row[$.table._option.uniqueId]);
+                $.modal.open("申请利用", url);
+            } else {
+                var url = "/404.html";
+                if ($.common.isNotEmpty(id)) {
+                    url = $.table._option.updateUrl.replace("{id}", id);
+                } else {
+                    var id = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+                    if (id.length == 0) {
+                        $.modal.alertWarning("请至少选择一条记录");
+                        return;
+                    }
+                    url = $.table._option.updateUrl.replace("{id}", id);
+                }
+                $.modal.open("申请利用", url);
+            }
+        }
+
+    }
+
+    function batchdetail(id, width, height) {
+        var url = "/404.html";
+        if ($.common.isNotEmpty(id)) {
+            url = $.table._option.batchdetailUrl.replace("{id}", id);
+        } else {
+            var id = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+            if (id.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            url = $.table._option.batchdetailUrl.replace("{id}", id);
+        }
+        // var options = {
+        //     title: "档案著录详细",
+        //     width: width,
+        //     height: height,
+        //     url: url,
+        //     skin: 'layui-layer-gray',
+        //     btn: ['关闭'],
+        //     yes: function (index, layero) {
+        //         layer.close(index);
+        //     }
+        // };
+        // $.modal.openOptions(options);
+        $.modal.openTab("档案著录详情", url);
+    }
+
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("审批详情", url);
+    }
+
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#arcBillCode").val(body.find('#treeId').val());
+        $("#arcBillName").val(body.find('#treeName').val());
+        layer.close(index);
+        //查询该档案类型的二级类目
+    }
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#opDepNo").val(body.find('#treeId').val());
+        $("#opDepName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    //查看影像
+    function showImage(id) {
+        createMenuItem(ctx + "archCollection/amsRecord/showImageAndFile/" + id + "/000", "查看影像");
+    }
+
+    //档案补扫
+    function scanImage(id) {
+        createMenuItem(ctx + "archCollection/amsRecord/showImageAndFile/" + id + "/111", "扫描影像");
+    }
+
+    function exportExcel() {
+        var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var data = rows.join();
+        if (rows.length == 0) {
+            $.modal.confirm("确定导出全部数据吗？", function () {
+                var amsArchives = $("#formId").serializeArray();
+                var exportUrl = prefix + "/exportAll";
+                $.modal.loading("正在导出数据，请稍后...");
+                $.post(exportUrl, amsArchives, function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                    } else if (result.code == web_status.WARNING) {
+                        $.modal.alertWarning(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                    $.modal.closeLoading();
+                });
+            });
+        } else {
+            $.modal.confirm("确定导出数据吗？", function () {
+                // var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+                var exportUrl = prefix + "/exportById?ids=" + data;
+                $.modal.loading("正在导出数据，请稍后...");
+                $.post(exportUrl, data, function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                    } else if (result.code == web_status.WARNING) {
+                        $.modal.alertWarning(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                    $.modal.closeLoading();
+                });
+            });
+        }
+    }
+
+    // 编辑页
+    function edit(id) {
+        var url = prefix + "/editBatch/" + id;
+        $.modal.parentTab("档案著录编辑", url);
+    }
+
+</script>
+</body>
+</html>

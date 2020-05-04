@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('监控视图')"/>
+</head>
+<style>
+    .container {
+        height: 100%;
+    }
+
+    .box {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .box img {
+        display: block;
+    }
+
+    h2 {
+        font-weight: 600;
+    }
+</style>
+<body class="gray-bg">
+<div class="container">
+    <div class="box">
+        <img src="../../pdf/web/images/404.gif" style="width:150px" alt="">
+        <h2 class="text-center mt50">Opppps~页面建设中,敬请期待。。。</h2>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>

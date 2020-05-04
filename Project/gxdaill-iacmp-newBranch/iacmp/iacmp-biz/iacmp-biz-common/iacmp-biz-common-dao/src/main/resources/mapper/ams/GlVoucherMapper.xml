@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.GlVoucherMapper">
+
+    <resultMap type="GlVoucherVO" id="GlVoucherResult">
+        <result property="pkVoucher" column="pk_voucher"/>
+        <result property="approver" column="approver"/>
+        <result property="billmaker" column="billmaker"/>
+        <result property="checkeddate" column="checkeddate"/>
+        <result property="num" column="num"/>
+        <result property="offervoucher" column="offervoucher"/>
+        <result property="period" column="period"/>
+        <result property="pkAccountingbook" column="pk_accountingbook"/>
+        <result property="pkCasher" column="pk_casher"/>
+        <result property="pkVouchertype" column="pk_vouchertype"/>
+        <result property="prepareddate" column="prepareddate"/>
+        <result property="signdate" column="signdate"/>
+        <result property="totaldebit" column="totaldebit"/>
+        <result property="yearv" column="yearv"/>
+        <!-- GlDetail -->
+        <result property="pkDetail" column="pk_detail"/>
+        <result property="assid" column="assid"/>
+        <result property="bankaccount" column="bankaccount"/>
+        <result property="contrastflag" column="contrastflag"/>
+        <result property="creditamount" column="creditamount"/>
+        <result property="creditquantity" column="creditquantity"/>
+        <result property="debitamount" column="debitamount"/>
+        <result property="debitquantity" column="debitquantity"/>
+        <result property="detailindex" column="detailindex"/>
+        <result property="direction" column="direction"/>
+        <result property="discardflagv" column="discardflagv"/>
+        <result property="dr" column="dr"/>
+        <result property="oppositesubj" column="oppositesubj"/>
+        <result property="pkCurrtype" column="pk_currtype"/>
+        <result property="pkManagerv" column="pk_managerv"/>
+        <result property="pkOrg" column="pk_org"/>
+        <result property="pkUnit" column="pk_unit"/>
+        <result property="pkUnitV" column="pk_unit_v"/>
+        <result property="voucherkindv" column="voucherkindv"/>
+    </resultMap>
+
+    <sql id="selectGlVoucherVo">
+        select voucher.pk_voucher, approver, billmaker, checkeddate, num, offervoucher, period, pk_accountingbook,
+        pk_casher, pk_vouchertype, prepareddate, signdate, totaldebit, yearv,
+        pk_detail, assid, bankaccount, contrastflag, creditamount, creditquantity, debitamount, debitquantity,
+        detailindex, direction, discardflagv, dr, oppositesubj, pk_currtype, pk_managerv, pk_org, pk_unit, pk_unit_v,
+        voucherkindv
+        from gl_voucher voucher
+        LEFT JOIN gl_detail detail on voucher.pk_voucher = detail.pk_voucher
+    </sql>
+
+    <select id="selectGlVoucherList" parameterType="GlVoucherVO" resultMap="GlVoucherResult">
+        <include refid="selectGlVoucherVo"/>
+        <where>
+            <if test="pkVoucher != null  and pkVoucher != '' ">and voucher.pk_voucher = #{pkVoucher}</if>
+            <if test="approver != null  and approver != '' ">and approver = #{approver}</if>
+            <if test="billmaker != null  and billmaker != '' ">and billmaker = #{billmaker}</if>
+            <if test="checkeddate != null  and checkeddate != '' ">and checkeddate = #{checkeddate}</if>
+            <if test="num != null ">and num = #{num}</if>
+            <if test="offervoucher != null  and offervoucher != '' ">and offervoucher = #{offervoucher}</if>
+            <if test="period != null  and period != '' ">and period = #{period}</if>
+            <if test="pkAccountingbook != null  and pkAccountingbook != '' ">and pk_accountingbook =
+                #{pkAccountingbook}
+            </if>
+            <if test="pkCasher != null  and pkCasher != '' ">and pk_casher = #{pkCasher}</if>
+            <if test="pkVouchertype != null  and pkVouchertype != '' ">and pk_vouchertype = #{pkVouchertype}</if>
+            <if test="prepareddate != null  and prepareddate != '' ">and prepareddate = #{prepareddate}</if>
+            <if test="signdate != null  and signdate != '' ">and signdate = #{signdate}</if>
+            <if test="totaldebit != null ">and totaldebit = #{totaldebit}</if>
+            <if test="yearv != null  and yearv != '' ">and yearv = #{yearv}</if>
+            <!-- GlDetail -->
+            <if test="pkDetail != null  and pkDetail != '' ">and pk_detail = #{pkDetail}</if>
+            <if test="assid != null  and assid != '' ">and assid = #{assid}</if>
+            <if test="bankaccount != null  and bankaccount != '' ">and bankaccount = #{bankaccount}</if>
+            <if test="contrastflag != null ">and contrastflag = #{contrastflag}</if>
+            <if test="creditamount != null ">and creditamount = #{creditamount}</if>
+            <if test="creditquantity != null ">and creditquantity = #{creditquantity}</if>
+            <if test="debitamount != null ">and debitamount = #{debitamount}</if>
+            <if test="debitquantity != null ">and debitquantity = #{debitquantity}</if>
+            <if test="detailindex != null ">and detailindex = #{detailindex}</if>
+            <if test="direction != null  and direction != '' ">and direction = #{direction}</if>
+            <if test="discardflagv != null  and discardflagv != '' ">and discardflagv = #{discardflagv}</if>
+            <if test="dr != null ">and dr = #{dr}</if>
+            <if test="oppositesubj != null  and oppositesubj != '' ">and oppositesubj = #{oppositesubj}</if>
+            <if test="pkCurrtype != null  and pkCurrtype != '' ">and pk_currtype = #{pkCurrtype}</if>
+            <if test="pkManagerv != null  and pkManagerv != '' ">and pk_managerv = #{pkManagerv}</if>
+            <if test="pkOrg != null  and pkOrg != '' ">and pk_org = #{pkOrg}</if>
+            <if test="pkUnit != null  and pkUnit != '' ">and pk_unit = #{pkUnit}</if>
+            <if test="pkUnitV != null  and pkUnitV != '' ">and pk_unit_v = #{pkUnitV}</if>
+            <if test="voucherkindv != null ">and voucherkindv = #{voucherkindv}</if>
+        </where>
+    </select>
+
+    <select id="selectGlVoucherById" parameterType="String" resultMap="GlVoucherResult">
+        <include refid="selectGlVoucherVo"/>
+        where voucher.pk_voucher = #{pkVoucher}
+    </select>
+
+    <insert id="insertGlVoucher" parameterType="GlVoucher">
+        insert into gl_voucher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pkVoucher != null  and pkVoucher != ''  ">pk_voucher,</if>
+            <if test="approver != null  and approver != ''  ">approver,</if>
+            <if test="billmaker != null  and billmaker != ''  ">billmaker,</if>
+            <if test="checkeddate != null  and checkeddate != ''  ">checkeddate,</if>
+            <if test="num != null  ">num,</if>
+            <if test="offervoucher != null  and offervoucher != ''  ">offervoucher,</if>
+            <if test="period != null  and period != ''  ">period,</if>
+            <if test="pkAccountingbook != null  and pkAccountingbook != ''  ">pk_accountingbook,</if>
+            <if test="pkCasher != null  and pkCasher != ''  ">pk_casher,</if>
+            <if test="pkVouchertype != null  and pkVouchertype != ''  ">pk_vouchertype,</if>
+            <if test="prepareddate != null  and prepareddate != ''  ">prepareddate,</if>
+            <if test="signdate != null  and signdate != ''  ">signdate,</if>
+            <if test="totaldebit != null  ">totaldebit,</if>
+            <if test="yearv != null  and yearv != ''  ">yearv,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pkVoucher != null  and pkVoucher != ''  ">#{pkVoucher},</if>
+            <if test="approver != null  and approver != ''  ">#{approver},</if>
+            <if test="billmaker != null  and billmaker != ''  ">#{billmaker},</if>
+            <if test="checkeddate != null  and checkeddate != ''  ">#{checkeddate},</if>
+            <if test="num != null  ">#{num},</if>
+            <if test="offervoucher != null  and offervoucher != ''  ">#{offervoucher},</if>
+            <if test="period != null  and period != ''  ">#{period},</if>
+            <if test="pkAccountingbook != null  and pkAccountingbook != ''  ">#{pkAccountingbook},</if>
+            <if test="pkCasher != null  and pkCasher != ''  ">#{pkCasher},</if>
+            <if test="pkVouchertype != null  and pkVouchertype != ''  ">#{pkVouchertype},</if>
+            <if test="prepareddate != null  and prepareddate != ''  ">#{prepareddate},</if>
+            <if test="signdate != null  and signdate != ''  ">#{signdate},</if>
+            <if test="totaldebit != null  ">#{totaldebit},</if>
+            <if test="yearv != null  and yearv != ''  ">#{yearv},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGlVoucher" parameterType="GlVoucher">
+        update gl_voucher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="approver != null  and approver != ''  ">approver = #{approver},</if>
+            <if test="billmaker != null  and billmaker != ''  ">billmaker = #{billmaker},</if>
+            <if test="checkeddate != null  and checkeddate != ''  ">checkeddate = #{checkeddate},</if>
+            <if test="num != null  ">num = #{num},</if>
+            <if test="offervoucher != null  and offervoucher != ''  ">offervoucher = #{offervoucher},</if>
+            <if test="period != null  and period != ''  ">period = #{period},</if>
+            <if test="pkAccountingbook != null  and pkAccountingbook != ''  ">pk_accountingbook = #{pkAccountingbook},
+            </if>
+            <if test="pkCasher != null  and pkCasher != ''  ">pk_casher = #{pkCasher},</if>
+            <if test="pkVouchertype != null  and pkVouchertype != ''  ">pk_vouchertype = #{pkVouchertype},</if>
+            <if test="prepareddate != null  and prepareddate != ''  ">prepareddate = #{prepareddate},</if>
+            <if test="signdate != null  and signdate != ''  ">signdate = #{signdate},</if>
+            <if test="totaldebit != null  ">totaldebit = #{totaldebit},</if>
+            <if test="yearv != null  and yearv != ''  ">yearv = #{yearv},</if>
+        </trim>
+        where pk_voucher = #{pkVoucher}
+    </update>
+
+    <delete id="deleteGlVoucherById" parameterType="String">
+        delete from gl_voucher where pk_voucher = #{pkVoucher}
+    </delete>
+
+    <delete id="deleteGlVoucherByIds" parameterType="String">
+        delete from gl_voucher where pk_voucher in
+        <foreach item="pkVoucher" collection="array" open="(" separator="," close=")">
+            #{pkVoucher}
+        </foreach>
+    </delete>
+
+</mapper>

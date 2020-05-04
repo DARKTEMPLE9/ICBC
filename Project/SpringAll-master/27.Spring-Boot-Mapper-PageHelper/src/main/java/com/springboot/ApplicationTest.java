@@ -20,21 +20,21 @@ import tk.mybatis.mapper.entity.Example;
 @SpringBootTest(classes = Application.class)
 public class ApplicationTest {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Test
-	public void test() throws Exception {
+    @Test
+    public void test() throws Exception {
 
-		// User user = new User();
-		// user.setId(userService.getSequence("seq_user"));
-		// user.setUsername("scott");
-		// user.setPasswd("ac089b11709f9b9e9980e7c497268dfa");
-		// user.setCreateTime(new Date());
-		// user.setStatus("0");
-		// this.userService.save(user);
+        // User user = new User();
+        // user.setId(userService.getSequence("seq_user"));
+        // user.setUsername("scott");
+        // user.setPasswd("ac089b11709f9b9e9980e7c497268dfa");
+        // user.setCreateTime(new Date());
+        // user.setStatus("0");
+        // this.userService.save(user);
 
-		
+
 //		Example example = new Example(User.class);
 //		example.createCriteria().andCondition("username like '%i%'");
 //		example.setOrderByClause("id desc");
@@ -56,12 +56,12 @@ public class ApplicationTest {
 //		user.setId(4l);
 //		this.userService.delete(user);
 
-		PageHelper.startPage(2, 2);
-		List<User> list = userService.selectAll();
-		PageInfo<User> pageInfo = new PageInfo<User>(list);
-		List<User> result = pageInfo.getList();
-		for (User u : result) {
-			System.out.println(u.getUsername());
-		}
-	}
+        PageHelper.startPage(2, 2);
+        List<User> list = userService.selectAll();
+        PageInfo<User> pageInfo = new PageInfo<User>(list);
+        List<User> result = pageInfo.getList();
+        for (User u : result) {
+            System.out.println(u.getUsername());
+        }
+    }
 }

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsUserRoleMapper">
+
+    <resultMap type="CmsUserRole" id="CmsUserRoleResult">
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="id" column="id"/>
+    </resultMap>
+    <resultMap type="SysUser" id="SysUserResult">
+        <id property="userId" column="user_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="userName" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="phonenumber" column="phonenumber"/>
+        <result property="sex" column="sex"/>
+        <result property="avatar" column="avatar"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginDate" column="login_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectCmsUserRoleVo">
+        select user_id, role_id, id from cms_user_role
+    </sql>
+
+    <select id="selectCmsUserRoleList" parameterType="CmsUserRole" resultMap="CmsUserRoleResult">
+        <include refid="selectCmsUserRoleVo"/>
+        <where>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="roleId != null ">and role_id = #{roleId}</if>
+            <if test="id != null ">and id = #{id}</if>
+        </where>
+    </select>
+
+    <select id="selectCmsUserRoleById" parameterType="Long" resultMap="CmsUserRoleResult">
+        <include refid="selectCmsUserRoleVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertCmsUserRole" parameterType="CmsUserRole">
+        insert into cms_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null  ">user_id,</if>
+            <if test="roleId != null  ">role_id,</if>
+            <if test="id != null  ">id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null  ">#{userId},</if>
+            <if test="roleId != null  ">#{roleId},</if>
+            <if test="id != null  ">#{id},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsUserRole" parameterType="CmsUserRole">
+        update cms_user_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null  ">role_id = #{roleId},</if>
+            <if test="id != null  ">id = #{id},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteCmsUserRoleById" parameterType="Long">
+        delete from cms_user_role where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteCmsUserRoleByIds" parameterType="String">
+        delete from cms_user_role where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.avatar, u.phonenumber, u.status,
+        u.create_time
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        left join cms_user_role ur on u.user_id = ur.user_id
+        left join cms_role r on r.id = ur.role_id
+        where u.del_flag = '0' and (r.id != #{roleId} or r.id IS NULL)
+        and u.user_id not in (select u.user_id from sys_user u inner join cms_user_role ur on u.user_id = ur.user_id and
+        ur.role_id = #{roleId})
+        <if test="loginName != null and loginName != ''">
+            AND u.login_name like concat('%', #{loginName}, '%')
+        </if>
+        <if test="phonenumber != null and phonenumber != ''">
+            AND u.phonenumber like concat('%', #{phonenumber}, '%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+    <select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.avatar, u.phonenumber, u.status,
+        u.create_time
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        left join cms_user_role ur on u.user_id = ur.user_id
+        left join cms_role r on r.id = ur.role_id
+        where u.del_flag = '0' and r.id = #{roleId}
+        <if test="loginName != null and loginName != ''">
+            AND u.login_name like concat('%', #{loginName}, '%')
+        </if>
+        <if test="phonenumber != null and phonenumber != ''">
+            AND u.phonenumber like concat('%', #{phonenumber}, '%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+    <insert id="batchUserRole">
+        insert into cms_user_role(user_id, role_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.userId},#{item.roleId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRoleInfo" parameterType="CmsUserRole">
+        delete from cms_user_role where user_id=#{userId} and role_id=#{roleId}
+    </delete>
+
+    <delete id="deleteUserRoleInfos">
+        delete from cms_user_role where role_id=#{roleId} and user_id in
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+
+    <select id="countUserRoleByRoleId" resultType="Integer">
+        select count(1) from cms_user_role where role_id=#{roleId}
+    </select>
+
+
+    <resultMap type="CmsRole" id="CmsRoleResult">
+        <result property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleKey" column="role_key"/>
+        <result property="roleSort" column="role_sort"/>
+        <result property="dataScope" column="data_scope"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <select id="selectDataRoleByUserId" resultMap="CmsRoleResult">
+        SELECT cr.ID ,cr.data_scope, cr.role_name,cr.role_key
+        FROM cms_user_role cur,cms_role cr WHERE cur.ROLE_ID = cr.ID AND cur.user_id = #{userId}
+    </select>
+
+    <select id="selectDataRoleIdsByUserId" resultType="java.lang.Long">
+        SELECT DISTINCT(role_id) FROM cms_user_role WHERE user_id = #{userId}
+    </select>
+
+    <delete id="deleteUserRoles">
+        delete from cms_user_role where role_id=#{roleId} and user_id in
+        <foreach collection="sysUserRoles" item="sysUserRole" open="(" separator="," close=")">
+            #{sysUserRole.userId}
+        </foreach>
+    </delete>
+</mapper>

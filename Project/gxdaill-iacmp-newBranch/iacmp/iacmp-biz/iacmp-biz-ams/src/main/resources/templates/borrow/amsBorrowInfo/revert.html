@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('档案归还')"/>
+
+    <style>
+        .form-group input {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class='container paneEditAll allDiv' id="revertContainer">
+    <div class='row panelEditCenter'>
+
+        <form class="form-horizontal" id="form-amsBorrowInfo-revert" th:object="${amsBorrowInfo}"
+              style="margin-top: 20px">
+            <input type="hidden" id="id" name="id" class='submitInput form-control' th:value="${id}">
+            <input type="hidden" id="arcNo" th:field="*{arcNo}">
+            <input type="hidden" id="appOpCode" class='submitInput form-control'>
+            <input type="hidden" id="appDepCode"
+                   class='submitInput form-control'> <input type="hidden"
+                                                            id="arcBillCode" class='submitInput form-control'> <input
+                type="hidden" id="batchId" name="batchId" th:value="${amsBorrowInfo.batchId}"
+                class='submitInput form-control'>
+            <input type="hidden" id="opDepNo" class='submitInput form-control'>
+            <input type="hidden" id="batchNo" class='submitInput form-control'>
+            <input type="hidden" id="arcId" name="archiveId" class='submitInput form-control'
+                   th:value="${amsBorrowInfo.archiveId}">
+            <fieldset style="width: 100%; ">
+                <h4 class="form-header h4">档案信息</h4>
+                <!--<div class="form-group col-sm-6">-->
+                <!--<label class="col-sm-4 labelCss newLable">档号:</label>-->
+                <!--<div class="col-sm-8 newInputDiv">-->
+                <!--<input class='submitInput form-control ' type="text"-->
+                <!--readonly='readonly' maxlength='255' id="arcNo" th:field="*{arcNo}"-->
+                <!--placeholder="" value="">-->
+                <!--</div>-->
+                <!--</div>-->
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">档案名称:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text"
+                               readonly='readonly' maxlength='255' id="arcName" th:field="*{arcName}"
+                               placeholder="" value="">
+                    </div>
+
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">档案类型:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcBillName}"
+                               readonly='readonly' maxlength='255' id="arcBillName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">档案形态:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <!--<input class='submitInput form-control ' type="text" th:field="*{arcType}"-->
+                        <!--readonly='readonly' maxlength='255' id="arcType"-->
+                        <!--placeholder="" value="">-->
+
+                        <input th:if="*{arcType} == '10'" class="form-control" type="text" value="电子档案"
+                               readonly="readonly">
+                        <input th:if="*{arcType} == '20'" class="form-control" type="text" value="实物档案"
+                               readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">所属部门:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{opDepName}"
+                               readonly='readonly' maxlength='255' id="opDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%; ">
+                <h4 class="form-header h4">申请利用信息</h4>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">申请人:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control' type="text" th:field="*{appOpName}"
+                               readonly='readonly' maxlength='255' id="appOpName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">申请部门:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{appDepName}"
+                               readonly='readonly' maxlength='255' id="appDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">利用形式:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <!--<input class='submitInput form-control ' type="text" th:field="*{borType}"-->
+                        <!--readonly='readonly' maxlength='255' id="borType"-->
+                        <!--placeholder="" value="">-->
+
+                        <input th:if="*{borType} == '10'" class="form-control" type="text" value="申请在线查阅"
+                               readonly="readonly">
+                        <input th:if="*{borType} == '20'" class="form-control" type="text" value="申请实体利用"
+                               readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font class='JBFNotNull'>★</font>利用目的：</label>
+                    <div class="col-sm-8  pad-sm newInputDiv">
+                        <input class='submitInput form-control' type="text" th:field="*{usePurpose}"
+                               readonly='readonly' maxlength='255' id="usePurpose"
+                               placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font class='JBFNotNull'>★</font>利用开始日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control' dataType='date'
+                               readonly='readonly' type="text" name="borStaTime"
+                               th:value="${#dates.format(amsBorrowInfo.borStaTime,'yyyy-MM-dd')}">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font class='JBFNotNull'>★</font>归还日期:</label>
+                    <div class="col-sm-8 newInputDiv">
+                        <input class='submitInput form-control ' dataType='date'
+                               readonly='readonly' type="text" name="borEndTime"
+                               th:value="${#dates.format(amsBorrowInfo.borEndTime,'yyyy-MM-dd')}">
+                    </div>
+                </div>
+                <!--<div class="form-group col-sm-6">-->
+                <!--<label class="col-sm-4 labelCss newLable"><font class='JBFNotNull'>★</font>利用形式：</label>-->
+                <!--<div class="col-sm-8 pad-sm newInputDiv">-->
+                <!--<input class='submitInput form-control ' type="text" th:field="*{borForm}"-->
+                <!--readonly='readonly' maxlength='255' id="borForm"-->
+                <!--placeholder="" value="">-->
+                <!--</div>-->
+                <!--</div>-->
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font
+                            class='JBFNotNull'>★</font>利用事由:</label>
+                    <div class="col-sm-8 newInputDiv">
+							<textarea rows="5" cols="" class='submitInput form-control' th:field="*{appReason}"
+                                      notNull='true' type="" dataType='text' readonly='readonly'
+                                      maxlength='200' id="appReason"></textarea>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">复印份数：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{copyNum}"
+                               readonly='readonly' maxlength='11' id="copyNum" placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable">借出份数：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <input class='submitInput form-control ' type="text" th:field="*{loanNum}"
+                               style="width: 100%;margin-left:0.5%" readonly='readonly' maxlength='11' id="loanNum"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="width: 100%; ">
+                <h4 class="form-header h4">归还信息</h4>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font
+                            class='JBFNotNull'>★</font>归还操作：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <select class=' submitInput form-control '
+                                id="returnOpType" name="returnOpType">
+                            <option value='5' selected="selected">已入库</option>
+                            <option value='9'>待废弃</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable" style="width: -0.8%;"><font
+                            class='JBFNotNull'>★</font>是否逾期：</label>
+                    <div class="col-sm-8 pad-sm newInputDiv">
+                        <select class=' submitInput form-control '
+                                id="overdue" name="overdue">
+                            <option value='0' selected="selected">否</option>
+                            <option value='1'>是</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 newLable">
+                        <font class='JBFNotNull'>★</font>实际归还日期 :</label>
+                    <!--id="actReturnTime"-->
+                    <div class="col-sm-8 pad-sm newInputDiv select-time">
+                        <input notNull='true' class="form-control"
+                               id="singleTime" name="actReturnTime" type="text" dataType='date'
+                               th:value="${#dates.format(actReturnTime,'yyyy-MM-dd')}" required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 labelCss newLable"><font
+                            class='JBFNotNull'>★</font>备注信息:</label>
+                    <div class="col-sm-8 newInputDiv">
+							<textarea rows="5" cols="" class='submitInput form-control'
+                                      notNull='true' type="" dataType='text' th:field="*{remark}"
+                                      placeholder="请输入200字以内"
+                                      maxlength='200' id="remark" name="remark"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <li id="i_select_video0"></li>
+                    </div>
+                    <div class="col-sm-11 newInputDiv" style="margin-left:8.1%">
+                        <!--<textarea rows="5" cols="" class='submitInput form-control'-->
+                        <!--notNull='true' type="" dataType='text' readonly='readonly'-->
+                        <!---->
+                        <!--maxlength='200' id="fileName" name="fileName"></textarea>-->
+                        <input type="hidden" id="path" class='submitInput form-control'>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6 buttonsbar"
+                         style="float: right; margin-top: 7px;">
+                        <button type='button' class='btn btn-primary' onclick="submitHandler()">确认</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<!-- 上传附件 -->
+<div id="tzsc">
+    <div id="i_select_files1"></div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+
+    var path = $("#path").val();
+    var fileName = $("#fileName").val();
+    var prefix = ctx + "borrow/amsBorrowInfo";
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/revertArc", $('#form-amsBorrowInfo-revert').serialize());
+        }
+    }
+
+</script>
+
+</body>
+</html>

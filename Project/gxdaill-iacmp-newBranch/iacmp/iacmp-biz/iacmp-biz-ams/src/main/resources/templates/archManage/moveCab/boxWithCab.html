@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('移库')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="btn-group-sm" id="move" role="group">
+        <a class="btn btn-success" onclick="moveCab()" shiro:hasPermission="archManage:moveCab:moveCab">
+            <i class="fa fa-plus"></i> 移库
+        </a>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-batch-move" th:object="${amsBox}">
+            <input id="id" name="id" th:field="*{id}" type="hidden">
+            <input id="cabId" name="" type="hidden">
+            <input id="oldCabId" th:value="*{cabId}" type="hidden"/>
+            <!--<input id="cabName" name="cabName" type="hidden">-->
+            <input id="cabCode" name="cabCode" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">盒号：</label>
+                <div class="col-sm-8">
+                    <input id="code" name="code" th:field="*{code}" class="form-control" type="text"
+                           readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">盒名称：</label>
+                <div class="col-sm-8">
+                    <input id="name" name="name" th:field="*{name}" class="form-control" type="text"
+                           readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属年份：</label>
+                <div class="col-sm-8">
+                    <input id="boxYear" name="boxYear" th:field="*{boxYear}" class="form-control" type="text"
+                           readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属库房：</label>
+                <div class="col-sm-8">
+                    <input id="depName" name="depName" th:field="*{depName}" class="form-control" type="text"
+                           readonly="readonly">
+                    <input id="depId" name="depId" th:field="*{depId}" type="hidden"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属库柜：</label>
+                <!--<div class="col-sm-8">-->
+                <!--<input id="depName" name="depName" th:field="*{depName}" class="form-control" type="text" readonly="readonly">-->
+                <!--</div>-->
+                <div class="col-sm-8">
+                    <!--<select id="cabList" class="form-control col-sm-6" onchange="selectCabinet()" required>-->
+                    <!--</select>-->
+                    <input type="text" class="form-control col-sm-6" id="cabName" name="cabName"
+                           onclick="selectCabinet('cabName');cabName.blur();return false;" placeholder="请选择库柜"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('archManage:myTransApply:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:myTransApply:remove')}]];
+    var prefix = ctx + "archManage/moveCab";
+
+    // function getDepName() {
+    //     var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
+    //         return row[$.table._option.columns[3].field];
+    //     });
+    //     if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+    //         rows = rows.concat(selectionIds);
+    //     }
+    //     return $.common.uniqueFn(rows);
+    // }
+    //
+    // function getCabName() {
+    //     var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
+    //         return row[$.table._option.columns[2].field];
+    //     });
+    //     if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+    //         rows = rows.concat(selectionIds);
+    //     }
+    //     return $.common.uniqueFn(rows);
+    // }
+    //
+    // function getCabId() {
+    //     var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
+    //         return row[$.table._option.columns[1].field];
+    //     });
+    //     if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+    //         rows = rows.concat(selectionIds);
+    //     }
+    //     return $.common.uniqueFn(rows);
+    // }
+
+    function selectCabinet(id) {
+        var depId = $("#depId").val();
+        var options = {
+            title: '选择库柜',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: prefix + "/selectCabinet/" + depId,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                var newCabId = body.find('#thisRowId').val();
+                var oldCabId = $('#oldCabId').val();
+                if (newCabId == oldCabId) {
+                    $.modal.alertWarning("所选库柜并未改变,请选择其他库柜");
+                    return;
+                }
+                $('#' + id).val(body.find('#thisRowName').val());
+                $('#cabId').val(body.find('#thisRowId').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function moveCab() {
+        var cabName = $("#cabName").val();
+        // var depName = getDepName();
+        var cabId = $("#cabId").val();
+        if ($.common.isEmpty(cabId)) {
+            $.modal.alertWarning("请先确认选择要移动的库");
+            return;
+        }
+
+        // if($('#depName').val()==depName &&  $('#cabName').val()==cabName){
+        //     $.modal.alertWarning("所选库并未改变,请选择其他库");
+        //     return;
+        // }
+
+        // $.operate.save(prefix + "/moveToCab?cabId="+cabId,$('#form-batch-move').serialize());
+        var url = prefix + "/moveToCab?cabId=" + cabId;
+        var data = $('#form-batch-move').serialize();
+        var config = {
+            url: url,
+            type: "post",
+            dataType: "json",
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+                $.modal.disable();
+            },
+            success: function (result) {
+                console.log(" result’s code=" + result.code);
+                if (result.code == "0") {
+                    $.modal.msgSuccess("档案移库成功");
+                }
+
+                setTimeout(function () {
+                    $.modal.closeTab();
+                }, 1000);
+            }
+        };
+        $.ajax(config)
+
+
+    }
+
+</script>
+</body>
+</html>

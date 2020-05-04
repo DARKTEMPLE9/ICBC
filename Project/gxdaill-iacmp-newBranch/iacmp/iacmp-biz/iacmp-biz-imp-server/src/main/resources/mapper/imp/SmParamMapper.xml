@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.SmParamMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.SmParam" id="SmParamResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="value" column="VALUE"/>
+        <result property="code" column="CODE"/>
+        <result property="paramId" column="PARAM_ID"/>
+    </resultMap>
+
+    <sql id="selectSmParamVo">
+        select ID, NAME, VALUE, CODE, PARAM_ID from sm_param
+    </sql>
+
+    <select id="selectSmParamList" parameterType="net.northking.iacmp.imp.domain.SmParam" resultMap="SmParamResult">
+        <include refid="selectSmParamVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="value != null  and value != '' ">and VALUE = #{value}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="paramId != null ">and PARAM_ID = #{paramId}</if>
+        </where>
+    </select>
+
+    <select id="listAll" resultMap="SmParamResult">
+        <include refid="selectSmParamVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="value != null  and value != '' ">and VALUE = #{value}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="paramId != null ">and PARAM_ID = #{paramId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(1) from sm_param
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="value != null  and value != '' ">and VALUE = #{value}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="paramId != null ">and PARAM_ID = #{paramId}</if>
+        </where>
+    </select>
+
+    <select id="selectSmParamById" parameterType="String" resultMap="SmParamResult">
+        <include refid="selectSmParamVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="queryById" resultType="Map">
+        select id, name, value, code, param_id from sm_param
+        where id = #{id}
+    </select>
+
+    <insert id="insertSmParam" parameterType="net.northking.iacmp.imp.domain.SmParam">
+        insert into sm_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="value != null  and value != ''  ">VALUE,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="paramId != null  ">PARAM_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="value != null  and value != ''  ">#{value},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="paramId != null  ">#{paramId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmParam">
+        update sm_param
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="value != null  and value != ''  ">VALUE = #{value},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="paramId != null  ">PARAM_ID = #{paramId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="String">
+        delete from sm_param where ID = #{id}
+    </delete>
+
+    <delete id="deleteSmParamByIds" parameterType="String">
+        delete from sm_param where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

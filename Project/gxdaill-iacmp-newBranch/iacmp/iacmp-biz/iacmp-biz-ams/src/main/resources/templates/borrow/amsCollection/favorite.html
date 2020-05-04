@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('个人收藏')"/>
+</head>
+<style>
+    .select-list label {
+        width: 80px;
+    }
+
+    .select-list li {
+        box-sizing: border-box;
+        height: 30px;
+        overflow: hidden;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="favForm">
+                <input name="deptId" type="hidden" id="treeId"/>
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            <label for="name">档案名称：</label>
+                            <input id="name" type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            <label for="arcBillName">档案类型：</label>
+                            <input type="text" id="arcBillName" name="arcBillName"
+                                   onclick="selectArcBillTree();arcBillName.blur();return false;" readonly="readonly"
+                                   placeholder="请选择档案类型" style="cursor: pointer"/>
+                            <input type='hidden' id="arcBillCode" name="arcBillCode" placeholder="" value="">
+                            <!--<input type='hidden' class='submitInput form-control'-->
+                            <!--type="text" id="arcBillDeptCode" placeholder="" value="">-->
+                        </li>
+
+                        <li>
+                            <label for="fileNo">文件编号：</label>
+                            <input type="text" id="fileNo" name="fileNo"/>
+                        </li>
+
+                        <li>
+                            <label for="arcType">在线查阅:</label>
+                            <select class='selectpicker'
+                                    id="arcType" name="arcType" placeholder="">
+                                <option value='' selected='selected'>全部</option>
+                                <option value='10'>是</option>
+                                <option value='20'>否</option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label for="opDepName">所属部门：</label>
+                            <input type="text" id="opDepName" name="opDepName"
+                                   onclick="selectDeptTree();opDepName.blur();" readonly="readonly" placeholder="请选择部门"
+                                   style="cursor: pointer"/>
+                            <input type='hidden' id="opDepNo" name="opDepNo">
+
+                        </li>
+
+                        <li>
+                            <label for="arcStatus">档案状态：</label>
+                            <select id="arcStatus" name="arcStatus" th:with="type=${@dict.getType('archive_status')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label for="">责任者：</label>
+                            <input type="text" id="respOpName" name="respOpName"
+                                   onclick="selectUser('respOpName');respOpName.blur();return false;"
+                                   placeholder="请选择责任者" readonly/>
+                        </li>
+
+                        <li>
+                            <label for="">保管期限：</label>
+                            <select name="valPeriod" th:with="type=${@dict.getType('archive_period')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formReset('favForm')"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="borrow:amsCollection:remove">
+                <i class="fa fa-remove"></i> 移除
+            </a>
+
+        </div>
+        <input type="hidden" th:value="${path}" id="path"/>
+        <input type="hidden" th:value="${userCode}" id="userCode"/>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('iacmp:amsCollection:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('iacmp:amsCollection:remove')}]];
+    var archiveStatus = [[${@dict.getType('archive_status')}]];
+    var prefix = ctx + "borrow/amsCollection";
+    var archivePeriod = [[${@dict.getType('archive_period')}]];
+    var hasMoveBank = [[${@dict.getType('hasMoveBank')}]];
+    //请求路径参数
+    var path = $("#path").val();
+    var _url = "/list";
+    if (path == "fav") {
+        var userCode = $("#userCode").val();
+        _url = "/list/" + userCode;
+    }
+
+    $(function () {
+        var options = {
+            url: prefix + _url,
+            removeUrl: prefix + "/remove",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "个人收藏",
+            // showExport: true,
+            columns: [{
+                checkbox: true
+                // radio: true
+            },
+                {
+                    field: 'id',
+                    title: '档案ID',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '档案名称',
+                    sortable: true
+                },
+                {
+                    field: 'respOpName',
+                    title: '责任者',
+                    sortable: true
+                },
+                {
+                    field: 'fileNo',
+                    title: '文件编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'arcBillName',
+                    title: '档案类型',
+                    sortable: true
+                },
+                {
+                    field: 'arcCreTime',
+                    title: '形成日期',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '档案状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(archiveStatus, item.status);
+                    }
+                },
+                {
+                    field: 'opDepName',
+                    title: '所属部门',
+                    sortable: true
+                },
+                {
+                    field: 'filingDepaName',
+                    title: '归档单位',
+                    sortable: true
+                },
+                {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        console.log(item)
+                        return $.table.selectDictLabel(archivePeriod, item.valPeriod);
+                    }
+                },
+                {
+                    field: 'arcType',
+                    title: '能否在线查阅',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (row.arcType == 20) {
+                            return "否";
+                        } else {
+                            return "是";
+                        }
+                    }
+                },
+                {
+                    field: 'hasMoveBank',
+                    title: '是否移交行档室',
+                    sortable: true,
+                    visible: false,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(hasMoveBank, item.hasMoveBank);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs " href="javascript:void(0)" onclick="openDetail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    // 详情页
+    function openDetail(id) {
+        var url = prefix + "/detail/" + id;
+        $.modal.openTab("个人收藏详情", url);
+    }
+
+    function selectArcBillTree() {
+        var url = prefix + "/arcBillTree";
+        var options = {
+            title: '选择档案类型',
+            width: "380",
+            url: url,
+            callBack: doSubmitArcBill
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmitArcBill(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#arcBillCode").val(body.find('#treeId').val());
+        $("#arcBillName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function selectDeptTree() {
+        var url = prefix + "/deptTree";
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#opDepNo").val(body.find('#treeId').val());
+        $("#opDepName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    /* 选择责任者 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    //重置form
+    function formReset(formId) {
+        var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+        $("#" + currentId)[0].reset();
+        //清空
+        $("#opDepNo").val('');
+        $("#arcBillCode").val('');
+        $.btTable.bootstrapTable('refresh');
+    }
+</script>
+</body>
+</html>

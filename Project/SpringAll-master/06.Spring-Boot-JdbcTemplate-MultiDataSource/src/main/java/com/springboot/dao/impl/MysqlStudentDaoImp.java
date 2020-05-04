@@ -11,15 +11,15 @@ import org.springframework.stereotype.Repository;
 import com.springboot.dao.MysqlStudentDao;
 
 @Repository
-public class MysqlStudentDaoImp implements MysqlStudentDao{
-	
-	@Autowired
-	@Qualifier("mysqlJdbcTemplate")
-	private JdbcTemplate jdbcTemplate;
+public class MysqlStudentDaoImp implements MysqlStudentDao {
 
-	@Override
-	public List<Map<String, Object>> getAllStudents() {
-		return this.jdbcTemplate.queryForList("select * from student");
-	}
+    @Autowired
+    @Qualifier("mysqlJdbcTemplate")
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<Map<String, Object>> getAllStudents() {
+        return this.jdbcTemplate.queryForList("select * from student");
+    }
 
 }

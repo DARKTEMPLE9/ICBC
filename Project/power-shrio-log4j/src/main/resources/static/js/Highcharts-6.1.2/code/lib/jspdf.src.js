@@ -8609,7 +8609,7 @@ Q\n";
                 }
 
                 if (decode === this.decode.FLATE_DECODE) dp = '/Predictor 15 /Colors ' + colors + ' /BitsPerComponent ' + bpc + ' /Columns ' + img.width; else
-                //remove 'Predictor' as it applies to the type of png filter applied to its IDAT - we only apply with compression
+                    //remove 'Predictor' as it applies to the type of png filter applied to its IDAT - we only apply with compression
                     dp = '/Colors ' + colors + ' /BitsPerComponent ' + bpc + ' /Columns ' + img.width;
 
                 if (this.isArrayBuffer(imageData) || this.isArrayBufferView(imageData)) imageData = this.arrayBufferToBinaryString(imageData);
@@ -9433,7 +9433,7 @@ Q\n";
                 if (w && h) {
                     scale = [w / svgw, h / svgh];
                 }
-                // if only one is set, that value is set as max and SVG
+                    // if only one is set, that value is set as max and SVG
                 // is scaled proportionately.
                 else if (w) {
                     scale = [w / svgw, w / svgw];
@@ -9689,8 +9689,7 @@ Q\n";
                 for (var i = 0, len = blobParts.length; i < len; i++) {
                     if (Uint8Array && blobParts[i] instanceof Uint8Array) {
                         builder.append(blobParts[i].buffer);
-                    }
-                    else {
+                    } else {
                         builder.append(blobParts[i]);
                     }
                 }
@@ -12688,7 +12687,7 @@ Q\n";
             }), b("promise/polyfill").polyfill()
         }();
 
-        if (typeof(Object.create) !== "function" || typeof(document.createElement("canvas").getContext) !== "function") {
+        if (typeof (Object.create) !== "function" || typeof (document.createElement("canvas").getContext) !== "function") {
             window.html2canvas = function () {
                 return Promise.reject("No canvas support");
             };
@@ -13235,14 +13234,14 @@ Q\n";
                 window.html2canvas.start = Date.now();
             }
 
-            options.async = typeof(options.async) === "undefined" ? true : options.async;
-            options.allowTaint = typeof(options.allowTaint) === "undefined" ? false : options.allowTaint;
-            options.removeContainer = typeof(options.removeContainer) === "undefined" ? true : options.removeContainer;
-            options.javascriptEnabled = typeof(options.javascriptEnabled) === "undefined" ? false : options.javascriptEnabled;
-            options.imageTimeout = typeof(options.imageTimeout) === "undefined" ? 10000 : options.imageTimeout;
+            options.async = typeof (options.async) === "undefined" ? true : options.async;
+            options.allowTaint = typeof (options.allowTaint) === "undefined" ? false : options.allowTaint;
+            options.removeContainer = typeof (options.removeContainer) === "undefined" ? true : options.removeContainer;
+            options.javascriptEnabled = typeof (options.javascriptEnabled) === "undefined" ? false : options.javascriptEnabled;
+            options.imageTimeout = typeof (options.imageTimeout) === "undefined" ? 10000 : options.imageTimeout;
 
-            if (typeof(nodeList) === "string") {
-                if (typeof(options.proxy) !== "string") {
+            if (typeof (nodeList) === "string") {
+                if (typeof (options.proxy) !== "string") {
                     return Promise.reject("Proxy must be used when rendering url");
                 }
                 return loadUrlDocument(absoluteUrl(nodeList), options.proxy, document, window.innerWidth, window.innerHeight, options).then(function (container) {
@@ -13253,7 +13252,7 @@ Q\n";
             var node = ((nodeList === undefined) ? [document.documentElement] : ((nodeList.length) ? nodeList : [nodeList]))[0];
             node.setAttribute(html2canvasNodeAttribute, "true");
             return renderDocument(node.ownerDocument, options, node.ownerDocument.defaultView.innerWidth, node.ownerDocument.defaultView.innerHeight).then(function (canvas) {
-                if (typeof(options.onrendered) === "function") {
+                if (typeof (options.onrendered) === "function") {
                     log("options.onrendered is deprecated, html2canvas returns a Promise containing the canvas");
                     options.onrendered(canvas);
                 }
@@ -13271,7 +13270,7 @@ Q\n";
                 document.querySelector(selector).removeAttribute(html2canvasNodeAttribute);
                 var clonedWindow = container.contentWindow;
                 var node = clonedWindow.document.querySelector(selector);
-                var oncloneHandler = (typeof(options.onclone) === "function") ? Promise.resolve(options.onclone(clonedWindow.document)) : Promise.resolve(true);
+                var oncloneHandler = (typeof (options.onclone) === "function") ? Promise.resolve(options.onclone(clonedWindow.document)) : Promise.resolve(true);
                 return oncloneHandler.then(function () {
                     return renderWindow(node, container, options, windowWidth, windowHeight);
                 });
@@ -13675,7 +13674,7 @@ Q\n";
                 newImage.args.forEach(function (image) {
                     if (!this.imageExists(images, image)) {
                         images.splice(0, 0, callback.call(this, newImage));
-                        log('Added image #' + (images.length), typeof(image) === "string" ? image.substring(0, 100) : image);
+                        log('Added image #' + (images.length), typeof (image) === "string" ? image.substring(0, 100) : image);
                     }
                 }, this);
             };
@@ -14299,7 +14298,7 @@ Q\n";
                     if (!options.async) {
                         this.renderQueue.forEach(this.paint, this);
                         resolve();
-                    } else if (typeof(options.async) === "function") {
+                    } else if (typeof (options.async) === "function") {
                         options.async.call(this, this.renderQueue, resolve);
                     } else if (this.renderQueue.length > 0) {
                         this.renderIndex = 0;
@@ -14474,7 +14473,7 @@ Q\n";
                     if (this.support.rangeBounds && !container.parent.hasTransform()) {
                         var offset = textList.slice(0, index).join("").length;
                         return this.getRangeBounds(container.node, offset, text.length);
-                    } else if (container.node && typeof(container.node.data) === "string") {
+                    } else if (container.node && typeof (container.node.data) === "string") {
                         var replacementNode = container.node.splitText(text.length);
                         var bounds = this.getWrapperBounds(container.node, container.parent.hasTransform());
                         container.node = replacementNode;
@@ -15526,7 +15525,7 @@ Q\n";
         };
 
         Support.prototype.testCORS = function () {
-            return typeof((new Image()).crossOrigin) !== "undefined";
+            return typeof ((new Image()).crossOrigin) !== "undefined";
         };
 
         Support.prototype.testSVG = function () {
@@ -15589,7 +15588,7 @@ Q\n";
         };
 
         SVGContainer.prototype.decode64 = function (str) {
-            return (typeof(window.atob) === "function") ? window.atob(str) : decode64(str);
+            return (typeof (window.atob) === "function") ? window.atob(str) : decode64(str);
         };
 
         /*

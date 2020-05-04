@@ -29,8 +29,8 @@ public class TurnPageUtils {
     }
 
     /*
-    * 循环翻页查询，翻页查询的结果由ITurnPageHandler处理
-    * */
+     * 循环翻页查询，翻页查询的结果由ITurnPageHandler处理
+     * */
     public static <E> void queryPage(int startRow, int fetchNum, ISelect iSelect, ITurnPageHandler<E> turnPageHandler) {
         PageInfo<E> page = PageHelper.offsetPage(startRow, fetchNum).doSelectPageInfo(iSelect);
         turnPageHandler.doHandler(page.getList());

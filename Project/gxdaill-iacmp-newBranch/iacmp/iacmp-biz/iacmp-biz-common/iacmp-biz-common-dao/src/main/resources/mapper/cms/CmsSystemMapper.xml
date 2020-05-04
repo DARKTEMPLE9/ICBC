@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.cms.CmsSystemMapper">
+
+    <resultMap type="CmsSystem" id="CmsSystemResult">
+        <result property="id" column="ID"/>
+        <result property="sysCode" column="SYS_CODE"/>
+        <result property="sysName" column="SYS_NAME"/>
+        <result property="authentInfo" column="AUTHENT_INFO"/>
+        <result property="remark" column="REMARK"/>
+        <result property="sysIp" column="SYS_IP"/>
+        <result property="createBy" column="CREATE_BY"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateBy" column="UPDATE_BY"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="status" column="STATUS"/>
+        <result property="useAdapter" column="USE_ADAPTER"/>
+        <result property="arcInfo" column="ARC_INFO"/>
+    </resultMap>
+
+    <sql id="selectCmsSystemVo">
+        select ID, SYS_CODE, SYS_NAME, AUTHENT_INFO, REMARK, SYS_IP, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME,
+        STATUS, USE_ADAPTER,ARC_INFO from cms_system
+    </sql>
+
+    <select id="selectCmsSystemList" parameterType="CmsSystem" resultMap="CmsSystemResult">
+        <include refid="selectCmsSystemVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="sysCode != null  and sysCode != '' ">and SYS_CODE like concat('%',#{sysCode},'%')</if>
+            <if test="sysName != null  and sysName != '' ">and SYS_NAME like concat('%',#{sysName},'%')</if>
+            <if test="authentInfo != null  and authentInfo != '' ">and AUTHENT_INFO like
+                concat('%',#{authentInfo},'%')
+            </if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="sysIp != null  and sysIp != '' ">and SYS_IP = #{sysIp}</if>
+            <if test="createBy != null  and createBy != '' ">and CREATE_BY = #{createBy}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != '' ">and UPDATE_BY = #{updateBy}</if>
+            <if test="updateTime != null ">and UPDATE_TIME = #{updateTime}</if>
+            <if test="status != null  and status != '' ">and STATUS like concat('%',#{status},'%')</if>
+            <if test="useAdapter != null  and useAdapter != '' ">and USE_ADAPTER = #{useAdapter}</if>
+        </where>
+    </select>
+    <!--通过系统编码查找系统信息-->
+    <select id="checkSystemKeyUnique" parameterType="String" resultMap="CmsSystemResult">
+        <include refid="selectCmsSystemVo"/>
+        where sys_code = #{sysCode}
+    </select>
+    <select id="selectCmsSystemById" parameterType="Long" resultMap="CmsSystemResult">
+        <include refid="selectCmsSystemVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertCmsSystem" parameterType="CmsSystem" useGeneratedKeys="true" keyProperty="id">
+        insert into cms_system
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sysCode != null  and sysCode != ''  ">SYS_CODE,</if>
+            <if test="sysName != null  and sysName != ''  ">SYS_NAME,</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">AUTHENT_INFO,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="sysIp != null  and sysIp != ''  ">SYS_IP,</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY,</if>
+            <if test="updateTime != null  ">UPDATE_TIME,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="useAdapter != null  and useAdapter != ''  ">USE_ADAPTER,</if>
+            <if test="arcInfo != null  and arcInfo != ''  ">ARC_INFO,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sysCode != null  and sysCode != ''  ">#{sysCode},</if>
+            <if test="sysName != null  and sysName != ''  ">#{sysName},</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">#{authentInfo},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="sysIp != null  and sysIp != ''  ">#{sysIp},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="useAdapter != null  and useAdapter != ''  ">#{useAdapter},</if>
+            <if test="arcInfo != null  and arcInfo != ''  ">#{arcInfo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCmsSystem" parameterType="CmsSystem">
+        update cms_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sysCode != null  and sysCode != ''  ">SYS_CODE = #{sysCode},</if>
+            <if test="sysName != null  and sysName != ''  ">SYS_NAME = #{sysName},</if>
+            <if test="authentInfo != null  and authentInfo != ''  ">AUTHENT_INFO = #{authentInfo},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="sysIp != null  and sysIp != ''  ">SYS_IP = #{sysIp},</if>
+            <if test="createBy != null  and createBy != ''  ">CREATE_BY = #{createBy},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">UPDATE_BY = #{updateBy},</if>
+            <if test="updateTime != null  ">UPDATE_TIME = #{updateTime},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="useAdapter != null  and useAdapter != ''  ">USE_ADAPTER = #{useAdapter},</if>
+            <if test="arcInfo != null  and arcInfo != ''  ">ARC_INFO = #{arcInfo},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteCmsSystemById" parameterType="Long">
+        delete from cms_system where ID = #{id}
+    </delete>
+
+    <delete id="deleteCmsSystemByIds" parameterType="String">
+        delete from cms_system where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据系统来源查询接入系统-->
+    <select id="selectCmsSystemByCode" parameterType="String" resultMap="CmsSystemResult">
+        <include refid="selectCmsSystemVo"/>
+        where SYS_CODE = #{sysCode}
+    </select>
+
+</mapper>

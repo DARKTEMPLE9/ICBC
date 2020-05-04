@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500</title>
+    <th:block th:include="include :: header('500')"/>
+</head>
+<body class="gray-bg">
+
+<div class="container">
+    <h2 class="text-center" style="margin-top: 30px">系统繁忙，请稍后重试</h2>
+    <div class="box" style="margin-top: 80px">
+        <img th:src="@{/img/error.gif}" style="width:100%" alt="">
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsBillMapper">
+
+    <resultMap type="AmsBill" id="AmsBillResult">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="code" column="CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="addPath" column="ADD_PATH"/>
+        <result property="updatePath" column="UPDATE_PATH"/>
+        <result property="viewPath" column="VIEW_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="mould" column="MOULD"/>
+        <result property="mouldStr" column="mould_str"/>
+        <result property="billId" column="BILL_ID"/>
+    </resultMap>
+
+    <sql id="selectAmsBillVo">
+        select ID, NAME, CODE, PARENT_ID, ADD_PATH, UPDATE_PATH, VIEW_PATH, STATUS, MOULD,mould_str from ams_bill
+    </sql>
+
+    <select id="selectAmsBillList" parameterType="AmsBill" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME like concat('%',concat( #{name}, '%'))</if>
+            <if test="code != null  and code != '' ">and CODE like concat('%', concat(#{code}), '%'))</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="addPath != null  and addPath != '' ">and ADD_PATH = #{addPath}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="mould != null  and mould != '' ">and MOULD = #{mould}</if>
+        </where>
+    </select>
+
+    <select id="selectAmsBillListOneLevel" parameterType="AmsBill" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        <where>
+            PARENT_ID = 0
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="addPath != null  and addPath != '' ">and ADD_PATH = #{addPath}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="mould != null  and mould != '' ">and MOULD = #{mould}</if>
+        </where>
+
+    </select>
+    <!--查询实物类型树-->
+    <select id="selectAmsBillMatterType" parameterType="AmsBill" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        <where>
+            PARENT_ID in('11100','12100')
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="addPath != null  and addPath != '' ">and ADD_PATH = #{addPath}</if>
+            <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+            <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+            <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+            <if test="mould != null  and mould != '' ">and MOULD = #{mould}</if>
+        </where>
+
+    </select>
+
+    <select id="selectAmsBillById" parameterType="String" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectAmsBillALL" parameterType="AmsBill" resultMap="AmsBillResult">
+        select ID, NAME, CODE, PARENT_ID, ADD_PATH, UPDATE_PATH, VIEW_PATH, STATUS, MOULD
+        from ams_bill
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+            <if test="mould != null  and mould != '' ">and MOULD = #{mould}</if>
+        </where>
+    </select>
+
+    <select id="getChildBill" parameterType="AmsBill" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        where PARENT_ID = #{id}
+    </select>
+    <!--    select name, code from sm_organ-->
+
+    <select id="queryOrganNameAndCode" resultType="Map">
+        select dept_id,dept_name from sys_dept
+    </select>
+    <resultMap id="nameCodeResult" type="java.util.HashMap">
+        <result property="key" column="NAME"/>
+        <result property="value" column="CODE"/>
+    </resultMap>
+
+    <select id="queryArcBillAndCode" resultMap="nameCodeResult">
+        select NAME, CODE from ams_bill where PARENT_ID= '0'
+    </select>
+
+    <select id="queryArcBillDept" resultMap="nameCodeResult">
+        select NAME,CODE from ams_bill where PARENT_ID=#{parentId}
+    </select>
+
+    <select id="treeDataSecondLevel" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        where PARENT_ID=#{parentId}
+    </select>
+
+    <select id="queryNumberArcByOneOrgan" resultType="Map">
+        select OP_DEP_NO,count(*) as number from ams_archives where STATUS IN ('2','5','7','9') and OP_DEP_NO in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and (ARC_BILL_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        or ARC_BILL_DEPT_CODE=#{arcBillCode})
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') between
+            to_char(#{fillingTimeGt},'yyyy-mm-dd') and
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        group by OP_DEP_NO
+    </select>
+
+    <select id="queryNumberArcBySecondOrgan" resultType="Map">
+        select OP_DEP_NO,count(*) as number from ams_archives where STATUS IN ('2','5','7','9') and OP_DEP_NO in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and ARC_BILL_DEPT_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') between
+            to_char(#{fillingTimeGt},'yyyy-mm-dd') and
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(FILING_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        group by OP_DEP_NO
+    </select>
+
+    <select id="queryNumberArcByOneOrganTrans" resultType="Map">
+        select ORG_CODE, count(*) as number from ams_batch where ORG_CODE in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and (ARC_BILL_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        or ARC_BILL_DEPT_CODE = #{arcBillCode})
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') between
+            to_char(#{fillingTimeGt},'yyyy-mm-dd') and
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        AND STATUS >= 3 AND STATUS &lt;=5
+        group by ORG_CODE
+    </select>
+
+    <select id="queryNumberArcBySecondOrganTrans" resultType="Map">
+        select ORG_CODE,count(*) as number from ams_batch where ORG_CODE in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and ARC_BILL_DEPT_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') between
+            to_char(#{fillingTimeGt},'yyyy-mm-dd') and
+            #{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(TURN_IN_TIME,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        AND STATUS >= 3 AND STATUS &lt;=5
+        group by ORG_CODE
+    </select>
+
+    <select id="queryBorTypeByOneOrgan" resultType="Map">
+        select OP_DEP_NO,BOR_FORM,count(*) from ams_borrow_info where OP_DEP_NO in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and STATUS IN ("2","3","4")
+        and (ARC_BILL_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        or ARC_BILL_DEPT_CODE=#{arcBillCode})
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') between to_char(#{fillingTimeGt,'yyyy-mm-dd') and
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        group by BOR_FORM,OP_DEP_NO
+    </select>
+
+    <select id="queryBorTypeBySecondOrgan" resultType="Map">
+        select OP_DEP_NO,BOR_FORM, count(*) from ams_borrow_info where OP_DEP_NO in
+        <foreach item="orgCode" collection="orgCodeList" open="(" separator="," close=")">
+            #{orgCode}
+        </foreach>
+        and STATUS IN ("2","3","4")
+        and ARC_BILL_DEPT_CODE in
+        <foreach item="treeCode" collection="treeList" open="(" separator="," close=")">
+            #{treeCode}
+        </foreach>
+        <if test="fillingTimeGt != ''  and fillingTimeLt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') between
+            to_char(#{fillingTimeGt},'yyyy-mm-dd') and
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeGt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') &gt;=
+            to_char(#{fillingTimeGt},'yyyy-mm-dd')
+        </if>
+        <if test="fillingTimeLt != '' ">and to_char(BOR_STA_Time,'yyyy-mm-dd') &lt;=
+            to_char(#{fillingTimeLt},'yyyy-mm-dd')
+        </if>
+        group by BOR_FORM,OP_DEP_NO
+    </select>
+
+    <insert id="insertAmsBill" parameterType="AmsBill">
+        insert into ams_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID,</if>
+            <if test="addPath != null  and addPath != ''  ">ADD_PATH,</if>
+            <if test="updatePath != null  and updatePath != ''  ">UPDATE_PATH,</if>
+            <if test="viewPath != null  and viewPath != ''  ">VIEW_PATH,</if>
+            <if test="status != null  and status != ''  ">STATUS,</if>
+            <if test="mould != null  and mould != ''  ">MOULD,</if>
+            <if test="mouldStr != null  and mouldStr != ''  ">mould_str,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="parentId != null  and parentId != ''  ">#{parentId},</if>
+            <if test="addPath != null  and addPath != ''  ">#{addPath},</if>
+            <if test="updatePath != null  and updatePath != ''  ">#{updatePath},</if>
+            <if test="viewPath != null  and viewPath != ''  ">#{viewPath},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="mould != null  and mould != ''  ">#{mould},</if>
+            <if test="mouldStr != null  and mouldStr != ''  ">#{mouldStr},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsBill" parameterType="AmsBill">
+        update ams_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="parentId != null  and parentId != ''  ">PARENT_ID = #{parentId},</if>
+            <if test="addPath != null  and addPath != ''  ">ADD_PATH = #{addPath},</if>
+            <if test="updatePath != null  and updatePath != ''  ">UPDATE_PATH = #{updatePath},</if>
+            <if test="viewPath != null  and viewPath != ''  ">VIEW_PATH = #{viewPath},</if>
+            <if test="status != null  and status != ''  ">STATUS = #{status},</if>
+            <if test="mould != null  and mould != ''  ">MOULD = #{mould},</if>
+            <if test="mouldStr != null  and mouldStr != ''  ">mould_str = #{mouldStr},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsBillById" parameterType="String">
+        delete from ams_bill where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsBillByIds" parameterType="String">
+        delete from ams_bill where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryForName" parameterType="String" resultType="String">
+        select NAME from ams_bill where CODE = #{code}
+    </select>
+
+    <select id="queryArcBillParent" parameterType="AmsBill" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        where ( PARENT_ID is null or PARENT_ID = '' or PARENT_ID = null or PARENT_ID = 0)
+        <if test="id != null  and id != '' ">and ID = #{id}</if>
+        <if test="name != null  and name != '' ">and NAME like concat('%', concat(#{name}, '%'))</if>
+        <if test="code != null  and code != '' ">and CODE like concat('%', concat(#{code}, '%'))</if>
+        <if test="parentId != null  and parentId != '' ">and PARENT_ID = #{parentId}</if>
+        <if test="addPath != null  and addPath != '' ">and ADD_PATH = #{addPath}</if>
+        <if test="updatePath != null  and updatePath != '' ">and UPDATE_PATH = #{updatePath}</if>
+        <if test="viewPath != null  and viewPath != '' ">and VIEW_PATH = #{viewPath}</if>
+        <if test="status != null  and status != '' ">and STATUS = #{status}</if>
+        <if test="mould != null  and mould != '' ">and MOULD = #{mould}</if>
+    </select>
+
+    <select id="selectAmsBillLikeById" parameterType="String" resultMap="AmsBillResult">
+        <include refid="selectAmsBillVo"/>
+        where ( PARENT_ID is null or PARENT_ID= '' or PARENT_ID = 'null' or PARENT_ID = 0) and id like
+        concat('%',concat(#{billId}, '%'))
+    </select>
+
+    <select id="selectMaxId" resultType="String">
+        select MAX(id) id from ams_bill
+    </select>
+
+
+    <select id="countByDept" parameterType="String" resultType="Map">
+        select OP_DEP_NAME,OP_DEP_NO,count(*) from ams_archives where STATUS IN ('2','5','7','9') AND
+        to_char(FILING_TIME,'yy')=to_char(SYSDATE,'yy')
+        GROUP BY OP_DEP_NAME,OP_DEP_NO
+    </select>
+
+    <select id="countByArcType" parameterType="String" resultType="Map">
+        select ARC_BILL_CODE,count(*) num from ams_archives where STATUS IN ('2','5','7','9') AND
+        to_char(FILING_TIME,'yy')=to_char(CURRENT_DATE,'yy') GROUP BY ARC_BILL_CODE
+    </select>
+    <select id="selectNoLeafSecondLevel" parameterType="String" resultType="java.lang.String">
+        SELECT PARENT_ID FROM ams_bill WHERE PARENT_ID IN(SELECT CODE FROM ams_bill WHERE PARENT_ID=#{parentId} ) GROUP
+        BY PARENT_ID
+    </select>
+
+
+    <!--   查询目录下全部子目录   oracle版 -->
+    <select id="selectAllSonArcBillCode" parameterType="String" resultType="java.lang.String">
+        SELECT CODE FROM ams_bill START WITH parent_id = #{parentId} CONNECT BY PRIOR id = parent_id
+    </select>
+
+
+    <!--   查询目录下全部子目录   mysql版 -->
+    <!--
+        <select id="selectAllSonArcBillCode" parameterType="String" resultType="java.lang.String">
+                SELECT t3.CODE FROM (
+                  SELECT t1.CODE,
+                  IF(FIND_IN_SET(t1.PARENT_ID, @pids) > 0, @pids := concat(@pids, ',', t1.CODE), 0) AS ischild
+                  FROM (
+                       SELECT t.CODE,t.PARENT_ID FROM ams_bill t  ORDER BY t.PARENT_ID, t.CODE
+                      ) t1,
+                      (SELECT @pids := #{parentId}) t2
+                 ) t3 WHERE ischild != 0
+        </select>
+    -->
+</mapper>

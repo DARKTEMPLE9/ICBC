@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class WebConfig {
-	@Bean
-	public ObjectMapper getObjectMapper() {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		return mapper;
-	}
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        return mapper;
+    }
 }

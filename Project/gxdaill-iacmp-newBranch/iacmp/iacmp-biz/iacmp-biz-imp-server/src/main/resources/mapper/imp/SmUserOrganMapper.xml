@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.SmUserOrganMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.SmUserOrgan" id="SmUserOrganResult">
+        <result property="id" column="ID"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="organCode" column="ORGAN_CODE"/>
+        <result property="stateDate" column="STATEDATE"/>
+        <result property="endDate" column="ENDDATE"/>
+        <result property="userOrganId" column="USER_ORGAN_ID"/>
+    </resultMap>
+
+    <sql id="selectSmUserOrganVo">
+        select ID, USER_CODE, ORGAN_CODE, STATEDATE, ENDDATE, USER_ORGAN_ID from sm_user_organ
+    </sql>
+
+    <select id="selectSmUserOrganList" parameterType="net.northking.iacmp.imp.domain.SmUserOrgan"
+            resultMap="SmUserOrganResult">
+        <include refid="selectSmUserOrganVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="userCode != null  and userCode != '' ">and USER_CODE = #{userCode}</if>
+            <if test="organCode != null  and organCode != '' ">and ORGAN_CODE = #{organCode}</if>
+            <if test="stateDate != null ">and STATEDATE = #{stateDate}</if>
+            <if test="endDate != null ">and ENDDATE = #{endDate}</if>
+            <if test="userOrganId != null ">and USER_ORGAN_ID = #{userOrganId}</if>
+        </where>
+    </select>
+
+    <select id="selectSmUserOrganById" parameterType="String" resultMap="SmUserOrganResult">
+        <include refid="selectSmUserOrganVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertSmUserOrgan" parameterType="net.northking.iacmp.imp.domain.SmUserOrgan">
+        insert into sm_user_organ
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE,</if>
+            <if test="organCode != null  and organCode != ''  ">ORGAN_CODE,</if>
+            <if test="stateDate != null  ">STATEDATE,</if>
+            <if test="endDate != null  ">ENDDATE,</if>
+            <if test="userOrganId != null  ">USER_ORGAN_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="organCode != null  and organCode != ''  ">#{organCode},</if>
+            <if test="stateDate != null  ">#{stateDate},</if>
+            <if test="endDate != null  ">#{endDate},</if>
+            <if test="userOrganId != null  ">#{userOrganId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmUserOrgan" parameterType="net.northking.iacmp.imp.domain.SmUserOrgan">
+        update sm_user_organ
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userCode != null  and userCode != ''  ">USER_CODE = #{userCode},</if>
+            <if test="organCode != null  and organCode != ''  ">ORGAN_CODE = #{organCode},</if>
+            <if test="stateDate != null  ">STATEDATE = #{stateDate},</if>
+            <if test="endDate != null  ">ENDDATE = #{endDate},</if>
+            <if test="userOrganId != null  ">USER_ORGAN_ID = #{userOrganId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteSmUserOrganById" parameterType="String">
+        delete from sm_user_organ where ID = #{id}
+    </delete>
+
+    <delete id="deleteSmUserOrganByIds" parameterType="String">
+        delete from sm_user_organ where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

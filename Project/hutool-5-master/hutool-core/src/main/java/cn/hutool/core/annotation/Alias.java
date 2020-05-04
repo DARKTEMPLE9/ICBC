@@ -17,10 +17,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Alias {
 
-	/**
-	 * 别名值，即使用此注解要替换成的别名名称
-	 *
-	 * @return 别名值
-	 */
-	String value();
+    /**
+     * 别名值，即使用此注解要替换成的别名名称
+     *
+     * @return 别名值
+     */
+    String value();
 }

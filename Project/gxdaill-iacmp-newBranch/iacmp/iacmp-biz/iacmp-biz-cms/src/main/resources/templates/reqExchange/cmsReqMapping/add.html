@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增接入系统参数映射')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-cmsReqMapping-add">
+        <div class="form-group">
+            <!--<label class="col-xs-2 control-label">角色：</label>
+            <div class="col-xs-10">
+                <label th:each="role:${roles}" class="check-box">
+                    <input name="role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}"
+                           th:disabled="${role.status == '1'}">
+                </label>
+            </div>-->
+            <label class="col-sm-3 control-label">接入系统：</label>
+            <div class="col-sm-8">
+                <select name="sysCode" class="form-control m-b">
+                    <option th:each="system:${systems}" th:text="${system.sysName}"
+                            th:value="${system.sysCode}" th:disabled="${system.status == '1'}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">本地字段路径：</label>
+            <div class="col-sm-8">
+                <input id="localPath" name="localPath" class="form-control"
+                       type="text" placeholder="格式为aaa:bbb，50字以内" th:maxlength="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">接入参数路径：</label>
+            <div class="col-sm-8">
+                <input id="remotePath" name="remotePath" class="form-control"
+                       type="text" placeholder="格式为aaa:bbb，255字以内" th:maxlength="255">
+            </div>
+        </div><!--
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">流程名称：</label>
+				<div class="col-sm-8">
+					<input id="processName" name="processName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">流程参数名：</label>
+				<div class="col-sm-8">
+					<input id="proParamName" name="proParamName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">流程参数值：</label>
+				<div class="col-sm-8">
+					<input id="proParamValue" name="proParamValue" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节点名称：</label>
+				<div class="col-sm-8">
+					<input id="nodeName" name="nodeName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节点参数名：</label>
+				<div class="col-sm-8">
+					<input id="nodeParamName" name="nodeParamName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节点参数值：</label>
+				<div class="col-sm-8">
+					<input id="nodeParamValue" name="nodeParamValue" class="form-control" type="text">
+				</div>
+			</div>-->
+        <!--<div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <label class="toggle-switch switch-solid">
+                    <input type="checkbox" id="status" checked>
+                    <span></span>
+                </label>
+                <input id="status" name="status" class="form-control" type="text">
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text" placeholder="请输入255字以内"
+                       th:maxlength="255">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "cms/cmsReqMapping";
+
+    $("#form-cmsReqMapping-add").validate({
+        onkeyup: false,
+        rules: {
+            localPath: {
+                required: true
+            },
+            remotePath: {
+                required: true
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $("#form-cmsReqMapping-add").serialize());
+        }
+    }
+</script>
+</body>
+</html>

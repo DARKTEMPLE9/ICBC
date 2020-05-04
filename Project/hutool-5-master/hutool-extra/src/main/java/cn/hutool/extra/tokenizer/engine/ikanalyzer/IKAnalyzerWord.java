@@ -6,41 +6,40 @@ import cn.hutool.extra.tokenizer.Word;
 
 /**
  * IKAnalyzer分词中的一个单词包装
- * 
- * @author looly
  *
+ * @author looly
  */
 public class IKAnalyzerWord implements Word {
-	private static final long serialVersionUID = 1L;
-	
-	private Lexeme word;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 构造
-	 * 
-	 * @param word {@link Lexeme}
-	 */
-	public IKAnalyzerWord(Lexeme word) {
-		this.word = word;
-	}
+    private Lexeme word;
 
-	@Override
-	public String getText() {
-		return word.getLexemeText();
-	}
-	
-	@Override
-	public int getStartOffset() {
-		return word.getBeginPosition();
-	}
-	
-	@Override
-	public int getEndOffset() {
-		return word.getEndPosition();
-	}
+    /**
+     * 构造
+     *
+     * @param word {@link Lexeme}
+     */
+    public IKAnalyzerWord(Lexeme word) {
+        this.word = word;
+    }
 
-	@Override
-	public String toString() {
-		return getText();
-	}
+    @Override
+    public String getText() {
+        return word.getLexemeText();
+    }
+
+    @Override
+    public int getStartOffset() {
+        return word.getBeginPosition();
+    }
+
+    @Override
+    public int getEndOffset() {
+        return word.getEndPosition();
+    }
+
+    @Override
+    public String toString() {
+        return getText();
+    }
 }

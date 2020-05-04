@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('整理组卷')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="createBox()" shiro:hasPermission="archManage:arrange:add">
+                <i class="fa fa-plus"></i> 创建档案盒
+            </a>
+            <a class="btn btn-success" onclick="submitHandler()">
+                <i class="fa fa-plus"></i> 确认
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('archManage:arrange:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('archManage:arrange:remove')}]];
+    var prefix = ctx + "archManage/arrange";
+    var arcBillDept = [[${arcBillDept}]]
+    var valPeriod = [[${valPeriod}]]
+    var crtTime = [[${crtTime}]]
+    var ids = [[${ids}]]
+    $(function () {
+        var options = {
+            url: prefix + "/boxes?arcBillDept=" + arcBillDept + "&valPeriod=" + valPeriod + "&crtTime=" + crtTime,
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "盒",
+            showExport: true,
+            //ajaxParams:{"arcBillDept":arcBillDept,"valPeriod":valPeriod,"crtTime":crtTime},
+            columns: [{
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '档案盒编号',
+                    sortable: true
+                },
+                {
+                    field: 'orgName',
+                    title: '所属部门',
+                    visible: false
+                },
+                {
+                    field: 'arcType',
+                    title: '一级类目',
+                    sortable: true
+                }, {
+                    field: 'childType',
+                    title: '二级类目',
+                    sortable: true
+                },
+                {
+                    field: 'childTypeCode',
+                    title: '二级类目代码',
+                    visible: false
+                }, {
+                    field: 'boxYear',
+                    title: '所属年份',
+                    sortable: true
+                }, {
+                    field: 'valPeriod',
+                    title: '保管期限',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (item.valPeriod == '10') {
+                            return '<span class="label label-info">10年</span>';
+                        } else if (item.valPeriod == '30') {
+                            return '<span class="label label-info">30年</span>';
+                        } else if (item.valPeriod == '99') {
+                            return '<span class="label label-info">永久</span>';
+                        }
+                    }
+                }, {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        if (item.status == '00') {
+                            return '<span class="label label-info">未使用</span>';
+                        } else if (item.status == '10') {
+                            return '<span class="label label-info">已使用</span>';
+                        } else if (item.status == '20') {
+                            return '<span class="label label-info">已满</span>';
+                        }
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function getChildTypeCode() {
+        var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
+            return row[$.table._option.columns[5].field];
+        });
+        if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+            rows = rows.concat(selectionIds);
+        }
+        return $.common.uniqueFn(rows);
+    }
+
+    function submitHandler() {
+        var boxId = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+        var arcLevel = [[${arcLevel}]];
+
+        // var arcLevelV = [[${@dict.getType('arcLevel')}]];
+        // console.log(arcLevelV)
+        // console.log(boxId)
+        if (boxId.length == 0) {
+            $.modal.alertWarning("请至少选择一条记录");
+            return;
+        } else {
+            $.ajax({
+                type: "post",
+                url: prefix + "/getArchivesByBoxId?boxId=" + boxId,
+                success: function (result) {
+                    if (result.code != null) {
+                        if (!(arcLevel == result.msg) & result.msg != "0") {
+                            var hint;
+                            if ("01" == result.msg) {
+                                hint = "绝密";
+                            } else if ("02" == result.msg) {
+                                hint = "机密";
+                            } else if ("03" == result.msg) {
+                                hint = "秘密";
+                            } else if ("04" == result.msg) {
+                                hint = "内部";
+                            }
+                            $.modal.confirm("该档案盒内档案密级为:" + hint + " 不同密级不能放在一个盒内", $.modal.closeAll())
+                        }
+                    }
+                }
+            });
+        }
+
+        $.modal.open("确认", prefix + "/jumpToAffirm?boxId=" + boxId + "&ids=" + ids);
+    }
+
+    function createBox() {
+        $.modal.open("创建档案盒", prefix + "/add?ids=" + ids);
+    }
+</script>
+</body>
+</html>

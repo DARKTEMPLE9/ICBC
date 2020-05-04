@@ -53,36 +53,36 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling()
                 .accessDeniedHandler(authenticationAccessDeniedHandler)
-            .and()
+                .and()
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加验证码校验过滤器
-            .addFilterBefore(smsCodeFilter,UsernamePasswordAuthenticationFilter.class) // 添加短信验证码校验过滤器
+                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加短信验证码校验过滤器
                 .formLogin() // 表单登录
-                    // http.httpBasic() // HTTP Basic
-                    .loginPage("/authentication/require") // 登录跳转 URL
-                    .loginProcessingUrl("/login") // 处理表单登录 URL
-                    .successHandler(authenticationSucessHandler) // 处理登录成功
-                    .failureHandler(authenticationFailureHandler) // 处理登录失败
+                // http.httpBasic() // HTTP Basic
+                .loginPage("/authentication/require") // 登录跳转 URL
+                .loginProcessingUrl("/login") // 处理表单登录 URL
+                .successHandler(authenticationSucessHandler) // 处理登录成功
+                .failureHandler(authenticationFailureHandler) // 处理登录失败
                 .and()
-                    .authorizeRequests() // 授权配置
-                    .antMatchers("/authentication/require",
-                            "/login.html", "/code/image","/code/sms","/session/invalid", "/signout/success").permitAll() // 无需认证的请求路径
-                    .anyRequest()  // 所有请求
-                    .authenticated() // 都需要认证
+                .authorizeRequests() // 授权配置
+                .antMatchers("/authentication/require",
+                        "/login.html", "/code/image", "/code/sms", "/session/invalid", "/signout/success").permitAll() // 无需认证的请求路径
+                .anyRequest()  // 所有请求
+                .authenticated() // 都需要认证
                 .and()
-                    .sessionManagement() // 添加 Session管理器
-                    .invalidSessionUrl("/session/invalid") // Session失效后跳转到这个链接
-                    .maximumSessions(1)
-                    .maxSessionsPreventsLogin(true)
-                    .expiredSessionStrategy(sessionExpiredStrategy)
+                .sessionManagement() // 添加 Session管理器
+                .invalidSessionUrl("/session/invalid") // Session失效后跳转到这个链接
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .expiredSessionStrategy(sessionExpiredStrategy)
                 .and()
                 .and()
-                    .logout()
-                    .logoutUrl("/signout")
-                    // .logoutSuccessUrl("/signout/success")
-                    .logoutSuccessHandler(logOutSuccessHandler)
-                    .deleteCookies("JSESSIONID")
+                .logout()
+                .logoutUrl("/signout")
+                // .logoutSuccessUrl("/signout/success")
+                .logoutSuccessHandler(logOutSuccessHandler)
+                .deleteCookies("JSESSIONID")
                 .and()
-                    .csrf().disable()
+                .csrf().disable()
                 .apply(smsAuthenticationConfig); // 将短信验证码认证配置加到 Spring Security 中
     }
 }

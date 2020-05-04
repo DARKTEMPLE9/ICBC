@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImUserMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImUser" id="ImUserResult">
+        <result property="id" column="ID"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="idCard" column="ID_CARD"/>
+        <result property="cardType" column="CARD_TYPE"/>
+        <result property="biz1" column="BIZ1"/>
+        <result property="biz2" column="BIZ2"/>
+    </resultMap>
+
+    <sql id="selectImUserVo">
+        select ID, USER_CODE, USER_NAME, ID_CARD, CARD_TYPE, BIZ1, BIZ2 from im_user
+    </sql>
+
+    <select id="selectImUserByBusino" parameterType="String" resultMap="ImUserResult">
+        select u.ID, u.USER_CODE, u.USER_NAME, u.ID_CARD, u.CARD_TYPE, u.BIZ1, u.BIZ2 from im_user u
+        left join im_customer_busino c on u.user_code = c.user_code where c.busino = #{busino}
+    </select>
+
+    <select id="selectImUserList" parameterType="net.northking.iacmp.imp.domain.ImUser" resultMap="ImUserResult">
+        <include refid="selectImUserVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="userCode != null  and userCode != '' ">and USER_CODE = #{userCode}</if>
+            <if test="userName != null  and userName != '' ">and USER_NAME = #{userName}</if>
+            <if test="idCard != null  and idCard != '' ">and ID_CARD = #{idCard}</if>
+            <if test="cardType != null  and cardType != '' ">and CARD_TYPE = #{cardType}</if>
+            <if test="biz1 != null  and biz1 != '' ">and BIZ1 = #{biz1}</if>
+            <if test="biz2 != null  and biz2 != '' ">and BIZ2 = #{biz2}</if>
+        </where>
+    </select>
+
+    <select id="selectImUserById" parameterType="Long" resultMap="ImUserResult">
+        <include refid="selectImUserVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImUser" parameterType="net.northking.iacmp.imp.domain.ImUser" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into im_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE,</if>
+            <if test="userName != null  and userName != ''  ">USER_NAME,</if>
+            <if test="idCard != null  and idCard != ''  ">ID_CARD,</if>
+            <if test="cardType != null  and cardType != ''  ">CARD_TYPE,</if>
+            <if test="biz1 != null  and biz1 != ''  ">BIZ1,</if>
+            <if test="biz2 != null  and biz2 != ''  ">BIZ2,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="userName != null  and userName != ''  ">#{userName},</if>
+            <if test="idCard != null  and idCard != ''  ">#{idCard},</if>
+            <if test="cardType != null  and cardType != ''  ">#{cardType},</if>
+            <if test="biz1 != null  and biz1 != ''  ">#{biz1},</if>
+            <if test="biz2 != null  and biz2 != ''  ">#{biz2},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImUser" parameterType="net.northking.iacmp.imp.domain.ImUser">
+        update im_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userCode != null  and userCode != ''  ">USER_CODE = #{userCode},</if>
+            <if test="userName != null  and userName != ''  ">USER_NAME = #{userName},</if>
+            <if test="idCard != null  and idCard != ''  ">ID_CARD = #{idCard},</if>
+            <if test="cardType != null  and cardType != ''  ">CARD_TYPE = #{cardType},</if>
+            <if test="biz1 != null  and biz1 != ''  ">BIZ1 = #{biz1},</if>
+            <if test="biz2 != null  and biz2 != ''  ">BIZ2 = #{biz2},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImUserById" parameterType="Long">
+        delete from im_user where ID = #{id}
+    </delete>
+
+    <delete id="deleteImUserByIds" parameterType="String">
+        delete from im_user where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('库柜列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            库柜编码：<input type="text" name="code"/>
+                        </li>
+
+                        <li>
+                            库柜名称：<input type="text" name="name"/>
+                        </li>
+
+                        <li>
+                            <div>
+                                库柜状态：<select name="status" th:with="type=${@dict.getType('cabinet_status')}" required>
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                            </div>
+                        </li>
+
+                        <!--<li>-->
+                        <!--库房名称：<input type="text" name="depId"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            库房名称：<input type="text" name="depName"/>
+                        </li>
+
+                        <li>
+                            库房编码：<input type="text" name="depCode"/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--库房类型：<input type="text" name="depType"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--责任人：<input type="text" name="dutyMan"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--档案类型：<input type="text" name="arcType"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div>
+                                库房状态：<select name="depStatus" th:with="type=${@dict.getType('depot_status')}" required>
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="param:amsCabinet:add">
+                <i class="fa fa-plus"></i> 新增库柜
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="param:amsCabinet:edit">
+                <i class="fa fa-edit"></i> 修改库柜
+            </a>
+            <a class="btn btn-info single disabled" onclick="$.operate.detail()"
+               shiro:hasPermission="param:amsCabinet:detail">
+                <i class="fa fa-search"></i> 查看
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="param:amsCabinet:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="iacmp:amsCabinet:export">-->
+            <!--<i class="glyphicon glyphicon-export"></i> 导出-->
+            <!--</a>-->
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('param:amsCabinet:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('param:amsCabinet:remove')}]];
+    var depotStatus = [[${@dict.getType('depot_status')}]];
+    var cabinetStatus = [[${@dict.getType('cabinet_status')}]];
+    var depType = [[${@dict.getType('depot_type')}]];
+    var prefix = ctx + "param/amsCabinet";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "库柜",
+            showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'code',
+                    title: '库柜编码',
+                    sortable: true
+                },
+                {
+                    field: 'name',
+                    title: '库柜名称',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: '库柜状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(cabinetStatus, item.status);
+                    }
+                },
+                {
+                    field: 'dutyMan',
+                    title: '库柜责任人',
+                    sortable: true
+                },
+                {
+                    field: 'depId',
+                    title: '库房ID',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'depCode',
+                    title: '所属库房编码',
+                    sortable: true
+                },
+                {
+                    field: 'depName',
+                    title: '所属库房名称',
+                    sortable: true
+                },
+                {
+                    field: 'depType',
+                    title: '库房类型',
+                    visible: false,
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(depType, item.depType);
+                    }
+                },
+                // {
+                // 	field : 'arcType',
+                // 	title : '档案类型',
+                // 	sortable: true
+                // },
+                {
+                    field: 'depStatus',
+                    title: '库房状态',
+                    sortable: true,
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(depotStatus, item.depStatus);
+                    }
+                },
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //     	var actions = [];
+                //     	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                // 		return actions.join('');
+                //     }
+                // }
+            ]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

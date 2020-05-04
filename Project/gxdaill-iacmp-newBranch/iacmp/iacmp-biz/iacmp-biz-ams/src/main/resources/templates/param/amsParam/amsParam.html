@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案参数列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul class="clearfix">
+                        <li>
+                            参数种类代码：<input type="text" name="paramSpeciesCode"/>
+                        </li>
+
+                        <li>
+                            参数种类名称：<input type="text" name="paramSpeciesName"/>
+                        </li>
+
+                        <li>
+                            参数代码：<input type="text" name="paramCode"/>
+                        </li>
+
+                        <li>
+                            参数名称：<input style="margin-left: 24px" type="text" name="paramName"/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--备注：<input type="text" name="remark"/>-->
+                        <!--</li>-->
+
+                    </ul>
+                    <div class="mt10">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="param:amsParam:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="param:amsParam:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="param:amsParam:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-info single disabled" onclick="$.operate.detail()">
+                <i class="fa fa-search"></i> 查看
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('param:amsParam:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('param:amsParam:remove')}]];
+    var prefix = ctx + "param/amsParam";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            detailUrl: prefix + "/view/{id}",
+            // exportUrl: prefix + "/export",
+            modalName: "档案参数",
+            showExport: true,
+            columns: [{
+                // checkbox: true
+                radio: true
+            },
+                {
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'paramSpeciesCode',
+                    title: '参数种类代码',
+                    sortable: true
+                },
+                {
+                    field: 'paramSpeciesName',
+                    title: '参数种类名称',
+                    sortable: true
+                },
+                {
+                    field: 'paramCode',
+                    title: '参数代码',
+                    sortable: true
+                },
+                {
+                    field: 'paramName',
+                    title: '参数名称',
+                    sortable: true
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    sortable: true
+                }
+            ]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

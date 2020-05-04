@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<style>
+    .step-text {
+        cursor: pointer;
+    }
+
+    .steps {
+        position: relative;
+        padding: 20px 0 25px 0px;
+    }
+
+    .step,
+    .step-line {
+        float: left;
+    }
+
+    .step {
+        display: block;
+        width: 23px;
+        height: 23px;
+        border-radius: 50%;
+        line-height: 17px;
+        text-align: center;
+        font-size: 15px;
+        border: 2px solid #cdcdcd;
+        background: #cdcdcd;
+        font: 16px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif;
+    }
+
+    .step-line {
+        /*width: 23%;*/
+        position: relative;
+        top: 9px;
+        height: 3px;
+        background-color: #cdcdcd;
+    }
+
+    .step-text {
+        /*margin-left: -1px;*/
+        padding: 11px 0;
+        line-height: 21px;
+        color: #fff;
+    }
+
+    .step-circle {
+        margin: 4px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #bfcbd9;
+    }
+
+    .step-main {
+        font: 12px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif;
+        padding: 3px 0;
+        display: block;
+        width: 80px;
+        text-align: center;
+        position: relative;
+        left: -34px;
+        color: #313131;
+    }
+
+    .steps > .step-completed {
+        background: #3c8dbc;
+        border-color: #3c8dbc;
+    }
+
+    .steps > .step-special {
+        background: red;
+        border-color: red;
+    }
+
+    .step-completed > .step-circle {
+        background-color: #2f318e;
+    }
+
+    .step-completed.step-line {
+        background-color: #3c8dbc;
+    }
+
+    .fa-check {
+        color: limegreen;
+
+    }
+
+    .fa-close {
+        color: red;
+
+    }
+</style>
+<head>
+    <th:block th:include="include :: header('用户列表')"/>
+    <th:block th:include="include :: layout-latest-css"/>
+    <th:block th:include="include :: ztree-css"/>
+    <th:block th:include="include :: select2-css"/>
+</head>
+<body class="gray-bg">
+<div class="ui-layout-west">
+    <div class="main-content">
+        <div class="box box-main">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa icon-grid"></i>
+                </div>
+                <div class="box-tools pull-right">
+                    <!--<a type="button" class="btn btn-box-tool menuItem" href="#" onclick="amsBill()" title="管理档案类型"><i-->
+                    <!--class="fa fa-edit"></i></a>-->
+                    <button type="button" class="btn btn-box-tool" id="btnCollapse" title="折叠" style="display:none;"><i
+                            class="fa fa-chevron-up"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnExpand" title="展开"><i
+                            class="fa fa-chevron-down"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新档案类型"><i
+                            class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+            <div class="ui-layout-content">
+                <div id="tree" class="ztree"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui-layout-center">
+    <input type="text" hidden id="hiddenInput">
+    <!--设置隐藏域，存储当前完成状态-->
+    <input type="text" hidden id="completionStatus">
+    <div class="container-div">
+        <div class="row">
+            <div id="bottomDiv" style="width: 100%; position: relative;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" style="height: calc(100vh - 30px);overflow: auto">
+                        <div class="container-div">
+                            <div class="row">
+                                <div class="col-sm-12 search-collapse" style="position: relative">
+                                    <form id="menu-form">
+                                        <div class="select-list">
+                                            <font size="3" style="border-bottom: 1px solid black">&nbsp;<span
+                                                    style="font-size: 13px" color="#676a6c"
+                                                    id="thisTitle1"></span>&nbsp;</font>
+                                            <div id="steps" class="steps">
+
+                                            </div>
+                                            <div style="height: 23px;">
+                                                <h3 style="margin-left: 40px;margin-top: -10px"></h3>
+                                                <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                                                </div>
+                                            </div>
+                                            <div style="position: absolute;width: 45px;height: 45px;border-radius: 45px;background-color: lightskyblue;top: 1px;right: 1px;text-align: center;line-height: 45px">
+                                                <span id="leftCom"></span>/<span id="rightCom"></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="btn-group-sm" id="toolbar" role="group">
+                                    <a id="downloadAll" class="btn btn-success multiple" onclick="downloadAll()">
+                                        <i class="fa fa-download"></i> 下载全部
+                                    </a>
+                                </div>
+                                <!--上传按钮-->
+                                <div style="display: none">
+                                    <input id="fileInput" type="file" multiple>
+                                </div>
+                                <div class="col-sm-12 select-table table-striped">
+                                    <table id="bootstrap-tree-table"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--定义弹出层，为了图片和音视频的预览-->
+<div class="ibox-content">
+    <button id="videoButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4"
+            style="display: none">基本动画
+    </button>
+    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn">
+                <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>-->
+                <!--</button>-->
+                <!--</div>-->
+
+                <!--D:\work1122\iacmp-parent\iacmp-biz\iacmp-biz-ams\src\main\resources\static\img\dsfghgdhfdjggkhj.tif-->
+                <div id="showContent" class="modal-bod">
+                    <video controls id="media" autoplay style="width: 90%;height: 90%;object-fit: fill;display: none">
+                        <source id="v1" src="">
+                    </video>
+                    <img id="photos" style="height: 90%;width: 90%;display: none" src="" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="closeVideo()">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<!-- 文件上传 -->
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<input id="pmsBatchId" name="pmsBatchId" th:value="${pmsBatchId}" type="hidden">
+<input id="pmsBatchIds" name="pmsBatchIds" th:value="${pmsBatchIds}" type="hidden">
+<input id="modelId" name="modelId" th:value="${modelId}" type="hidden">
+<input id="pmsNodeId" name="pmsNodeId" th:value="${pmsNodeId}" type="hidden">
+<input id="firstProject" name="firstProject" th:value="${firstProject}" type="hidden">
+<input id="projectName" name="projectName" th:value="${projectName}" type="hidden">
+<input id="projectManager" name="projectManager" th:value="${firstProjectManager}" type="hidden">
+<input id="productManager" name="productManager" th:value="${firstProductManager}" type="hidden">
+<input id="billId" name="billId" value="" type="hidden">
+<script th:inline="javascript">
+    // 允许最大上传文件
+    var maxUploadSize = [[${maxUploadSize}]];
+    $(function () {
+        $(".showContent").height($(window).height() - 300);
+        $(".showContent").width(800)
+    })
+    // 定义一个全局变量，当前按钮的监控数
+    var buttonMonitorNum = "";
+    // 定义全局变量，步骤条节点点击事件的节点球id
+    var coutNum = "";
+    // 全局变量，存储详情页面的id
+    var detailPageId = "";
+    $(function () {
+        var arrTitle = [[${firstProject}]];
+        var secondReg = /^dept_\d{4}$/;
+        var thirdReg = /^dept_\d{4}_\d+_\d+(,?\d+)*$/;
+        var titleNum = 0;
+        var leftCom = 0;
+        var rightCom = 0;
+        arrTitle.forEach(function (e) {
+            if (secondReg.test(e.pId)) {
+                if (e.actualFileNum < e.fileNum) {
+                }
+                var titleStatus = ""
+                if (e.status == 0) {
+                    titleStatus = "未启动";
+                    $("#completionStatus").val(0)
+                } else if (e.status == 1) {
+                    titleStatus = "已废弃";
+                    $("#completionStatus").val(1)
+                } else if (e.status == 2) {
+                    titleStatus = "已结项";
+                    $("#completionStatus").val(2);
+                } else if (e.status == 3) {
+                    titleStatus = "实施中";
+                    $("#completionStatus").val(3)
+                }
+                $("#thisTitle1").text(e.name + "—" + titleStatus);
+            }
+            if (thirdReg.test(e.pId) && e.name != '未分类') {
+                // debugger
+                leftCom = leftCom + e.actualFileNum;
+                rightCom = rightCom + e.fileNum;
+                titleNum += 1;
+                var stepMainId = "main" + e.id.split("_")[e.id.split("_").length - 1];
+                $("#steps").append("<div id='lineLeft" + titleNum + "' class=\"step-line step-completed\"></div>\n" +
+                    "<div id='content" + titleNum + "' class=\"step step-completed\">\n" +
+                    "<div class=\"step-text\" id=" + JSON.stringify(e.id).replace(/,/g, "_") + " onclick='treeClick(" + JSON.stringify(e.id) + ")'></div>\n" +
+                    "<div class=\"step-main\" id='" + stepMainId + "' > " + e.name + "(" + e.actualFileNum + "/" + e.fileNum + ")" + " </div>\n" +
+                    "</div>\n" +
+                    "<div id='lineRight" + titleNum + "' class=\"step-line step-completed\"></div>")
+                if (e.fileNum > e.actualFileNum) {
+                    $("#lineLeft" + titleNum).removeClass("step-completed")
+                    $("#lineLeft" + titleNum).addClass("step-special")
+
+                    $("#content" + titleNum).removeClass("step-completed")
+                    $("#content" + titleNum).addClass("step-special")
+
+                    $("#lineRight" + titleNum).removeClass("step-completed")
+                    $("#lineRight" + titleNum).addClass("step-special")
+                }
+            }
+        })
+        //已废弃状态项目隐藏下载全部按钮
+        if ($("#completionStatus").val() == 1) {
+            $("#downloadAll").hide();
+        }
+        // 去掉左右的线
+        $("#lineLeft1").remove()
+        $("#lineRight" + titleNum).remove()
+
+        // 根据数量设置线的宽度
+        var content = $("#menu-form").width() - 20 * titleNum - 50;
+        content = content / 1.5;
+        titleNum = titleNum - 1;
+        w = content / titleNum / 2; //通过容器的宽度除以个数来计算每个的宽度
+        $(".step-line").width(w);
+
+        // 给右上方总体进度赋值
+        $("#leftCom").text(leftCom);
+        $("#rightCom").text(rightCom)
+
+    })
+    $(function () {
+        var panehHidden = false;
+        if ($(this).width() < 769) {
+            panehHidden = true;
+        }
+        $('body').layout({initClosed: panehHidden, west__size: 300});
+        //初始化左侧结构树
+        queryCmsBillTree();
+    });
+
+    var uploadBillIds = [[${uploadBillIds}]];
+    // console.log(uploadBillIds);
+    // 加载右侧菜单列表
+    var detailFlag = [[${@permission.hasPermi('pms:pmsBatch:detail')}]];
+    var uploadFlag = [[${@permission.hasPermi('file:upload')}]];
+    var downloadFlag = [[${@permission.hasPermi('file:downloadFile')}]];
+    var selectFileFlag = [[${@permission.hasPermi('file:select:file')}]];
+    var previewFlag = [[${@permission.hasPermi('file:preview')}]];
+    var updateBillFlag = [[${@permission.hasPermi('file:updateBill')}]];
+    var removeFlag = [[${@permission.hasPermi('file:delete')}]];
+    var historyFlag = [[${@permission.hasPermi('file:delete')}]];
+    // 当前登录角色
+    var currentRole = [[${currentRole}]];
+    var projectManagerRole = [[${projectManagerRole}]];
+    var projectManager = $("#projectManager").val();
+    var productManager = $("#productManager").val();
+
+    var prefix = ctx + "pms/pmsBatch";
+    var billOptions = {
+        code: "id",
+        parentCode: "parentId",
+        uniqueId: "id",
+        expandAll: true,
+        expandFirst: false,
+        url: prefix + "/voList?pmsBatchId=" + $("#pmsBatchId").val() + "&modelId=" + $("#modelId").val(),
+        detailUrl: prefix + "/fileDetail/{id}",
+        modalName: "文件",
+        columns: [{
+            field: 'selectItem',
+            radio: false
+        },
+            {
+                title: '菜单名称',
+                field: 'billName',
+                // width: '20%',
+                formatter: function (value, row, index) {
+                    if ($.common.isEmpty(row.icon)) {
+                        return row.billName;
+                    } else {
+                        return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.billName + '</span>';
+                    }
+                }
+            },
+            {
+                field: 'actualFileNum',
+                title: '是否上传',
+                width: '15%',
+                align: "left",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    if (row.leaf == "0" && row.billCode != 'noClassify') {
+                        if (row.actualFileNum != undefined && row.monitorNum != undefined && row.actualFileNum > 0
+                            && row.monitorNum > 0 && row.actualFileNum >= row.monitorNum) {
+                            actions.push('<a class="' + detailFlag + '" href="javascript:void(0)"><i class="fa fa-check" style="font-size: 1.4em"></i></a> ');
+                        } else {
+                            actions.push('<a class="' + detailFlag + '" href="javascript:void(0)"><i class="fa fa-close"  style="font-size: 1.4em"></i></a> ');
+                        }
+                    }
+                    return actions.join('');
+                }
+            },
+            {
+                title: '操作',
+                width: '35%',
+                align: "left",
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    // 查询文件夹
+                    if (row.display != '2' && row.leaf != '0' && row.isFile != '1' && row.trgNode != '1') {
+                        actions.push('<a class="btn btn-success btn-xs ' + selectFileFlag + '" href="javascript:void(0)" onclick="fileDetail(\'' + $("#pmsBatchId").val() + '_' + $("#modelId").val() + '_' + row.id + '_' + row.billName + '\')"><i class="fa fa-edit"></i>查看文件夹</a> ');
+                    }
+                    var menus = row.menus;
+                    if (menus != undefined && menus.length > 0) {
+                        for (var i = 0; i < menus.length; i++) {
+                            if (menus[i].perms.indexOf("file:upload") > -1 && row.isFile == undefined) {
+                                // 上传
+                                if (uploadBillIds.indexOf(row.id) != -1 && row.leaf == "0" && row.status != '0') {
+                                    if ($("#completionStatus").val() == 2 && currentRole == "admin") {
+                                        // 已结项但有管理员角色
+                                        actions.push('<a class="btn btn-warning btn-xs completionStatus ' + uploadFlag + '" href="javascript:void(0)" id="' + row.id + '" monitorNum="' + row.actualFileNum + '"  onclick="batchUpload(\'' + row.id + '\')"><i class="fa fa-upload"></i>上传</a> ');
+                                    } else if ($("#completionStatus").val() != 2) {
+                                        // 未结项
+                                        actions.push('<a class="btn btn-warning btn-xs completionStatus ' + uploadFlag + '" href="javascript:void(0)" id="' + row.id + '" monitorNum="' + row.actualFileNum + '"  onclick="batchUpload(\'' + row.id + '\')"><i class="fa fa-upload"></i>上传</a> ');
+                                    }
+                                }
+                            } else if (menus[i].perms.indexOf("file:downloadFile") > -1 && row.isFile == undefined && row.billCode != 'noClassify') {
+                                // 下载
+                                actions.push('<a class="btn btn-success btn-xs download ' + downloadFlag + '" href="javascript:void(0)"  onclick="downFile(\'' + row.id + "_" + $("#pmsBatchId").val() + '\')"><i  class="fa fa-download"></i>下载</a> ');
+                            } else if (menus[i].perms.indexOf("file:preview") > -1) {
+                                // 预览
+                                if (row.isFile == '1') {
+                                    actions.push('<a class="btn btn-primary btn-xs ' + previewFlag + '" href="javascript:void(0)" onclick="previewFile(\'' + row.id + '\',\'' + row.stringId + '\',\'' + row.fileImageType + '\',\'' + row.serverUrl + '\')"><i class="fa fa-search"></i>预览</a> ');
+                                } else if (row.display == '1' && row.leaf == '0' && (row.isFile == undefined || row.isFile == '0')) {
+                                    actions.push('<a class="btn btn-primary btn-xs ' + previewFlag + '" href="javascript:void(0)" onclick="previewFile(\'' + row.id + '\',\'' + row.stringId + '\',\'' + row.fileImageType + '\',\'' + row.serverUrl + '\')"><i class="fa fa-search"></i>预览</a> ');
+                                }
+                            } else if (menus[i].perms.indexOf("file:updateBill") > -1 && row.isFile == '1') {
+                                if (row.status != '0') {
+                                    // 更改分类
+                                    actions.push('<a class="btn btn-success btn-xs ' + updateBillFlag + '" href="javascript:void(0)" onclick="updateBill(\'' + row.stringId + '\',\'' + row.fileImageBillId + '\',\'' + row.fileImageName + '\')"><i class="fa fa-edit"></i>更改分类</a> ');
+                                }
+                            } else if (menus[i].perms.indexOf("file:delete") > -1 && row.isFile == '1') {
+                                // 删除
+                                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="fileRemove(\'' + row.stringId + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                            } else if (menus[i].perms.indexOf("file:history") > -1 && row.isFile == '1') {
+                                // 历史
+                                actions.push('<a class="btn btn-success btn-xs ' + historyFlag + '" href="javascript:void(0)" onclick="fileHistory(\'' + row.fileImageBillId + "_" + $("#pmsBatchId").val() + '\',\'' + row.fileImageName + '\')"><i class="fa fa-history"></i>历史</a> ');
+                            }
+                        }
+                    }
+                    // 详情
+                    if ((row.display == '1' && row.leaf == "0") || row.billCode == "noClassify") {
+                        actions.push('<a class="btn btn-success btn-xs ' + selectFileFlag + '" href="javascript:void(0)" id="' + row.id + '" accfile="' + $("#pmsBatchId").val() + '_' + $("#modelId").val() + '_' + row.id + '_' + row.billName + '" onclick="fileDetail(\'' + $("#pmsBatchId").val() + '_' + $("#modelId").val() + '_' + row.id + '_' + row.billName + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                    }
+
+                    return actions.join('');
+                }
+            }]
+    };
+    $.treeTable.init(billOptions);
+
+    // 上传按钮
+    function batchUpload(billId) {
+        // 给实际数赋值monitorNum
+        buttonMonitorNum = parseInt($("#" + billId).attr("monitorNum"));
+        $("#billId").val(billId);
+        $("#fileInput").click();
+    }
+
+    // 文件上传
+    $(document).ready(function () {
+        $(function () {
+            $(".hidden-xs").text("文件上传")
+        })
+        var prefix = ctx + "file";
+
+        $("#fileInput").fileinput({
+            // 上传文件路径
+            uploadUrl: prefix + "/upload",
+            //是否为异步上传
+            uploadAsync: true,
+            upload: function () {
+                var formData = new FormData();
+                for (var i = 0, len = $('#fileInput')[0].files.length; i < len; i++) {
+                    if ($('#fileInput')[0].files[i].size > maxUploadSize * 1024) {
+                        $.modal.alertError($('#fileInput')[0].files[i].name + "大于" + maxUploadSize / 1024 + "M无法上传");
+                        $.modal.closeLoading();
+                        formData = null;
+                        return;
+                    } else {
+                        formData.append('files', $('#fileInput')[0].files[i]);
+                    }
+                }
+                formData.append("nodeId", $("#pmsBatchId").val() + "_0_" + $("#billId").val());
+                var uploadId = $("#billId").val()
+                $.modal.loading("上传中，请稍后...");
+                $.ajax({
+                    url: prefix + "/pms/pmsBatch/getUploadParams",
+                    type: 'post',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function (result) {
+                        var maxError = result.maxError;
+                        // 上传的文件超出了20M
+                        if (maxError != undefined && maxError != "") {
+                            $.modal.alertError(maxError);
+                            $.modal.closeLoading();
+                            return;
+                        }
+                        if (result.jsonParam != null && result.jsonParam != undefined) {
+                            formData.append("json", JSON.stringify(result.jsonParam));
+                            $.ajax({
+                                url: prefix + "/upload",
+                                type: 'post',
+                                cache: false,
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.totalResultCode == 0) {
+                                        $.modal.alertSuccess("上传成功");
+                                        $.modal.closeLoading();
+
+                                        if ($("#" + uploadId).parent().prev().find(".fa").attr("class") == "fa fa-check") {
+                                            buttonMonitorNum = 1;
+                                        }
+                                        // 当前行的实际是0，给是否上传变对号，进度条加一，右侧圆球加一
+                                        if (buttonMonitorNum == 0) {
+                                            // 刷新左侧树
+                                            queryCmsBillTree();
+
+                                            $("#" + uploadId).parent().prev().find(".fa").removeClass("fa-close").addClass("fa-check")
+                                            // 获取到当前是第几个进度球
+                                            var progressNum = parseInt($("#" + uploadId).parent().parent().attr("id").split("_")[2]) + 1;
+
+                                            var contentId = "content" + progressNum;
+                                            // 若点击进度球，则加一
+                                            if ($("#hiddenInput").val()) {
+                                                contentId = coutNum;
+                                                progressNum = coutNum.slice(7);
+                                            }
+                                            var left = parseInt($("#" + contentId).find(".step-main").text().split("(")[1].split("/")[0]);
+                                            var right = parseInt($("#" + contentId).find(".step-main").text().split("(")[1].split("/")[1].split(")")[0]);
+
+                                            if (left < right) {
+                                                left += 1;
+                                            }
+                                            // 给进度条赋值
+                                            var oldTitle = $("#" + contentId).find(".step-main").text().split("(")[0];
+
+                                            $("#" + contentId).find(".step-main").text(oldTitle + "(" + left + "/" + right + ")")
+                                            // 进度相等时，颜色变为蓝色
+                                            if (left == right) {
+                                                $("#lineLeft" + progressNum).addClass("step-completed")
+                                                $("#lineLeft" + progressNum).removeClass("step-special")
+
+                                                $("#content" + progressNum).addClass("step-completed")
+                                                $("#content" + progressNum).removeClass("step-special")
+
+                                                $("#lineRight" + progressNum).addClass("step-completed")
+                                                $("#lineRight" + progressNum).removeClass("step-special")
+                                            }
+
+                                            // 给右上角圆球赋值
+                                            var circleNum = parseInt($("#leftCom").text())
+                                            $("#leftCom").text(circleNum + 1);
+
+                                            $.treeTable.refresh();
+                                        }
+
+                                    } else {
+                                        $.modal.alertError("上传失败，文件格式不对或大小超限，请刷新重试");
+                                        $.modal.closeLoading();
+                                    }
+                                },
+                                error: function (result) {
+                                    $.modal.alertError("上传失败，请刷新重试");
+                                    $.modal.closeLoading();
+                                }
+                            });
+                        }
+                    },
+                    error: function (result) {
+                        $.modal.closeLoading()
+                        $.operate.successCallback(result)
+                    }
+                });
+            },
+        });
+
+        // 自定义startWith方法
+        String.prototype.startWith = function (str) {
+            var reg = new RegExp("^" + str);
+            return reg.test(this);
+        }
+
+        // 选择文件的回调函数
+        $("#fileInput").on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        })
+        $("#fileInput").on("fileuploaded", function (event, data) {
+            if (data.response) {
+                // alert('处理成功');
+            }
+        })
+    });
+
+    // 父页面定义响应式方法，用于子页面上传，下载的调用
+    function fatResponse(e) {
+        // 获取到刚才点击的详情页的id
+        var accfile = $("a[accfile='" + detailPageId + "']").attr("id");
+        if (accfile == "" || accfile == undefined || accfile == null) {
+            return;
+        }
+        // 获取到当前是第几个进度球
+        var progressNum = parseInt($("#" + accfile).parent().parent().attr("id").split("_")[2]) + 1;
+        var contentId = "content" + progressNum;
+        // 若点击进度球，则加一
+        if ($("#hiddenInput").val()) {
+            contentId = coutNum;
+            progressNum = coutNum.slice(7);
+        }
+
+        var left = parseInt($("#" + contentId).find(".step-main").text().split("(")[1].split("/")[0]);
+        var right = parseInt($("#" + contentId).find(".step-main").text().split("(")[1].split("/")[1].split(")")[0]);
+
+        var oldTitle = $("#" + contentId).find(".step-main").text().split("(")[0];
+
+        if (e == "check") {
+            $("#" + accfile).parent().prev().find(".fa").removeClass("fa-close").addClass("fa-check");
+
+            left += 1;
+            // 给进度条赋值
+            $("#" + contentId).find(".step-main").text(oldTitle + "(" + left + "/" + right + ")")
+            // 进度相等时，颜色变为蓝色
+            if (left == right) {
+                $("#lineLeft" + progressNum).addClass("step-completed")
+                $("#lineLeft" + progressNum).removeClass("step-special")
+                $("#content" + progressNum).addClass("step-completed")
+                $("#content" + progressNum).removeClass("step-special")
+                $("#lineRight" + progressNum).addClass("step-completed")
+                $("#lineRight" + progressNum).removeClass("step-special")
+            }
+
+            // 给右上角圆球赋值
+            var circleNum = parseInt($("#leftCom").text())
+            $("#leftCom").text(circleNum + 1)
+
+        } else if (e == "close") {
+            $("#" + accfile).parent().prev().find(".fa").removeClass("fa-check").addClass("fa-close");
+
+            left -= 1;
+            // 给进度条赋值
+            $("#" + contentId).find(".step-main").text(oldTitle + "(" + left + "/" + right + ")")
+            // 进度不相等时，颜色变为红色
+            if (left != right) {
+                $("#lineLeft" + progressNum).removeClass("step-completed")
+                $("#lineLeft" + progressNum).addClass("step-special")
+                $("#content" + progressNum).removeClass("step-completed")
+                $("#content" + progressNum).addClass("step-special")
+                $("#lineRight" + progressNum).removeClass("step-completed")
+                $("#lineRight" + progressNum).addClass("step-special")
+            }
+
+            // 给右上角圆球赋值
+            var circleNum = parseInt($("#leftCom").text())
+            $("#leftCom").text(circleNum - 1)
+        }
+        // 刷新左侧树
+        queryCmsBillTree();
+    }
+
+    // 查询部门结构树树
+    function queryCmsBillTree() {
+        // 初始化树
+        var url = ctx + "pms/pmsBatch/initTree?ids=" + $("#pmsBatchIds").val();
+        var options = {
+            url: url,
+            expandLevel: 1,
+            onClick: zOnClick
+        };
+        $.tree.init(options);
+
+        // 树节点点击事件
+        var flag = true;
+
+        function zOnClick(event, treeId, treeNode) {
+            // 赋值为空
+            $("#hiddenInput").val("")
+            // alert("fileNum=" + treeNode.fileNum + "---actualFileNum=" + treeNode.actualFileNum);
+            // 点击的是部门节点
+            var firstReg = /^dept_\d{4}$/;
+            if (firstReg.test(treeNode.id)) {
+                if (flag == true) {
+                    for (i = 0; i < treeNode.children.length; i++) {
+                        var thisId = treeNode.children[i].tId + "_a";
+                        // 判断追加完成未完成
+                        // console.log(e.actualFileNum +"--"+e.fileNum)
+
+                        // if (treeNode.children[i].actualFileNum < treeNode.children[i].fileNum) {
+                        //     $("#" + thisId).append("<span class='completion' style='color: red'>(未完成)</span>");
+                        //         }
+                        // else {
+                        //     $("#" + thisId).append("<span class='completion' style='color: green'>(已完成)</span>");
+                        //     }
+                        if (i == treeNode.children.length - 1) {
+                            flag = false
+                        }
+                    }
+                }
+            }
+            // 点击的是项目节点
+            var reg = /^dept_\d{4}_\d+_\d+(,?\d+)*$/;
+            if (reg.test(treeNode.id)) {
+                projectManager = treeNode.projectManager;
+                var projectStatus = ""
+                if (treeNode.status == 0) {
+                    projectStatus = "未启动"
+                    $("#completionStatus").val(0)
+                } else if (treeNode.status == 1) {
+                    projectStatus = "已废弃"
+                    $("#completionStatus").val(1)
+                } else if (treeNode.status == 2) {
+                    projectStatus = "已结项"
+                    $("#completionStatus").val(2)
+                } else if (treeNode.status == 3) {
+                    projectStatus = "实施中"
+                    $("#completionStatus").val(3)
+                }
+                // 点击置换右侧树类上侧显示名称
+                $("#thisTitle1").text(treeNode.name + "—" + projectStatus);
+
+                // 动态拼接右侧树类上侧步骤条
+                var num = 0;
+                var leftCom = 0;
+                var rightCom = 0
+                $("#steps").empty();
+                treeNode.children.forEach(function (e) {
+                    leftCom = leftCom + e.actualFileNum;
+                    rightCom = rightCom + e.fileNum;
+                    if (e.name != "未分类") {
+                        num += 1;
+                        var stepMainId = "main" + e.id.split("_")[e.id.split("_").length - 1];
+                        $("#steps").append("<div id='lineLeft" + num + "' class=\"step-line step-completed\"></div>\n" +
+                            "<div id='content" + num + "' class=\"step step-completed\">\n" +
+                            "<div class=\"step-text\" id=" + JSON.stringify(e.id).replace(/,/g, "_") + " onclick='treeClick(" + JSON.stringify(e.id) + ")'></div>\n" +
+                            "<div class=\"step-main\" id='" + stepMainId + "' >" + e.name + "(" + e.actualFileNum + "/" + e.fileNum + ")" + "</div>\n" +
+                            "</div>\n" +
+                            "<div id='lineRight" + num + "' class=\"step-line step-completed\"></div>")
+                        if (e.fileNum > e.actualFileNum) {
+                            $("#lineLeft" + num).removeClass("step-completed")
+                            $("#lineLeft" + num).addClass("step-special")
+
+                            $("#content" + num).removeClass("step-completed")
+                            $("#content" + num).addClass("step-special")
+
+                            $("#lineRight" + num).removeClass("step-completed")
+                            $("#lineRight" + num).addClass("step-special")
+                        }
+                    }
+                })
+
+                // 去掉左右的线
+                $("#lineLeft1").remove()
+                $("#lineRight" + num).remove()
+                // 根据数量设置线的宽度
+                var content = $("#menu-form").width() - 20 * num - 50;
+                num = num - 1;
+                w = content / num / 2; //通过容器的宽度除以个数来计算每个的宽度
+
+                $(".step-line").width(w);
+
+                //给右上方总体进度赋值
+                $("#leftCom").text(leftCom);
+                $("#rightCom").text(rightCom)
+            }
+
+            // 点击左侧项目节点，展示右侧相关数据
+            var billIdReg = /^dept_\d{4}_\d+_\d+(,?\d+)*$/;
+            // console.log(treeNode.id);
+            if (billIdReg.test(treeNode.id)) {
+                $("#pmsBatchId").val(treeNode.id.split("_")[2]);
+                $("#modelId").val(treeNode.id.split("_")[3]);
+                $(".tool-right").hide();
+                billOptions.url = prefix + "/voList?pmsBatchId=" + treeNode.id.split("_")[2] + "&modelId=" + treeNode.id.split("_")[3];
+                $.treeTable.init(billOptions);
+            }
+        }
+    }
+
+    // 展开树目录
+    $('#btnExpand').click(function () {
+        $._tree.expandAll(true);
+        $(this).hide();
+        $('#btnCollapse').show();
+    });
+    // 折叠树目录
+    $('#btnCollapse').click(function () {
+        $._tree.expandAll(false);
+        $(this).hide();
+        $('#btnExpand').show();
+    });
+    // 刷新目录树
+    $('#btnRefresh').click(function () {
+        queryCmsBillTree();
+    });
+
+    /* 档案类型管理TODO */
+    function amsBill() {
+        // var url = ctx + "system/dept";
+        // $.modal.openTab("档案类型管理", url);
+    }
+
+    // 步骤条节点点击事件
+    function treeClick(a) {
+        var contId = a.replace(/,/g, "_");
+        coutNum = $("#" + contId).parent().attr("id")
+
+        // 给隐藏域赋值
+        $("#hiddenInput").val(a)
+        $(".tool-right").hide();
+        var pmsId = $("#pmsBatchId").val();
+        var modelId = $("#modelId").val();
+        var billId = a.split("_")[4];
+        billOptions.url = prefix + "/voList?pmsBatchId=" + pmsId + "&modelId=" + modelId + "&billId=" + billId + "&billFlag=true";
+        $.treeTable.init(billOptions);
+    }
+
+    // 下载当前项目下的所有文件
+    function downloadAll() {
+        var pmsBatchId = $("#pmsBatchId").val();
+        var options = {
+            title: "文件下载",
+            url: prefix + "/downloadAll/" + pmsBatchId,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 下载
+    function downFile(id) {
+        var options = {
+            title: "文件下载",
+            url: prefix + "/toDownload/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 历史
+    function fileHistory(id, fileName) {
+        var options = {
+            title: "文件历史",
+            url: prefix + "/toHistory/" + id + "/" + fileName,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 删除
+    function fileRemove(fileId) {
+        $.modal.confirm("确定删除文件吗?", function () {
+            $.ajax({
+                type: "post",
+                url: prefix + "/fileRemove",
+                data: {
+                    fileId: fileId
+                },
+                success: function (result) {
+                    if (result.code != null && result.code == 0) {
+                        $.modal.alertSuccess("删除成功!");
+                        // $.treeTable.refresh();
+                        location.reload();
+                        // 刷新文件列表
+                    }
+                },
+                error: function (error) {
+                    $.modal.alertWarning("删除失败!");
+                }
+            });
+        });
+    }
+
+    // 更改分类
+    function updateBill(fileId, billId, name) {
+        var billIds = [];
+        var fileImageNames = [];
+        billIds.push(billId);
+        fileImageNames.push(name);
+        var pairBillIds = [[${pairBillIds}]];
+        var url = prefix + "/billSelect?pmsBatchId=" + $("#pmsBatchId").val() + "&billId=" + billId + "&fileImageNames=" + encodeURI(fileImageNames.join(",")) + "&billIds=" + billIds.join(",");
+        var options = {
+            title: '选择分类',
+            width: "420",
+            url: url,
+            yes: function (index, layero) {
+                // debugger;
+                var body = layer.getChildFrame('body', index);
+                var catalogId = body.find('#treeId').val();
+                if (catalogId == '' || catalogId == undefined) {
+                    $.modal.alertError("请选择分类");
+                    return;
+                }
+                // 目标分类
+                var targetBillId = catalogId.split("_")[4];
+                var trg = "";
+                var dateReg = /(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
+                if (pairBillIds.indexOf(targetBillId) > -1) {
+                    layer.prompt({
+                        title: '此分类为按日期成对展示，请输入日期',
+                        value: "\" type=\"text\" class=\"form-control\" placeholder=\"yyyy-MM-dd\"",
+                    }, function (text, index) {
+                        trg = text;
+                        // 取消
+                        if (trg == undefined) {
+                            return;
+                        } else {
+                            if (!dateReg.test(trg)) {
+                                $.modal.alertError("输入格式有误，请重新输入，如：2019-12-18");
+                                return;
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: prefix + "/choiceBill",
+                                data: {
+                                    pmsBatchId: $("#pmsBatchId").val(),
+                                    billIds: billIds.join(","),
+                                    fileImageNames: fileImageNames.join(","),
+                                    targetBillId: targetBillId,
+                                    trg: trg
+                                },
+                                success: function (result) {
+                                    $.treeTable.refresh();
+                                },
+                                error: function () {
+                                    $.modal.alert("更新失败!");
+                                },
+                            });
+                        }
+                        layer.close(index);
+                    });
+                } else {
+                    $.ajax({
+                        type: "post",
+                        url: prefix + "/choiceBill",
+                        data: {
+                            pmsBatchId: $("#pmsBatchId").val(),
+                            billIds: billIds.join(","),
+                            fileImageNames: fileImageNames.join(","),
+                            targetBillId: targetBillId,
+                            trg: trg
+                        },
+                        success: function (result) {
+                            $.treeTable.refresh();
+                        },
+                        error: function () {
+                            $.modal.alert("更新失败!");
+                        },
+                    });
+                    layer.close(index);
+                }
+            },
+        };
+        $.modal.openOptions(options);
+    }
+
+    // 查看文件夹，详情
+    function fileDetail(id) {
+        // 详情Id赋值
+        detailPageId = id;
+        var url = prefix + "/fileDetail/" + id;
+        // $.modal.open("查看详情", url);
+        layer.open({
+            type: 2,
+            area: [800 + 'px', ($(window).height() - 50) + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "查看详情",
+            content: url,
+            btn: ['确定', '关闭'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            yes: function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler(index, layero);
+            },
+            btn2: function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.closeHandler(index, layero);
+            },
+            cancel: function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.closeHandler(index, layero);
+            }
+        });
+    }
+
+    // 服务器地址
+    var serverAddress = [[${serverAddress}]];
+
+    // 在线预览
+    function previewFile(id, stringId, type, serverUrl) {
+        debugger;
+        var fileUrl = '';
+        // 文件类型转小写
+        type = type.toLowerCase();
+        if (stringId != undefined && stringId != null && stringId != "" && stringId != "null" &&
+            type != null && type != "null" && type != undefined && type != "") {
+            if (type == "doc" || type == "docx" || type == "xls" || type == "xlsx" || type == "txt" || type == "pdf") {
+                <!--验证文档是否加密，禁止IE浏览器缓存-->
+                $.ajaxSetup({cache: false});
+                $.get(ctx + "pdf/pms/fileView/fileCheckEncryption/" + stringId, function (data) {
+                    if (data.code == 0) {
+                        if (type == "pdf") {
+                            window.open(serverAddress + "/pdf/pms/fileView/openPdfView?id=" + stringId)
+                        } else if (type == "txt") {
+                            window.open(serverAddress + "/pdf/pms/fileView/openTextView?id=" + stringId);
+                        } else if (type == "doc" || type == "docx") {
+                            window.open(serverAddress + "/pdf/pms/fileView/openWordView?id=" + stringId)
+                        } else if (type == "xlsx" || type == "xls") {
+                            window.open(serverAddress + "/pdf/pms/fileView/openExcelView?id=" + stringId);
+                        }
+                        return;
+                    } else {
+                        $.modal.alertWarning(data.msg)
+                    }
+                });
+
+            }
+            if (type == "rar" || type == "zip" || type == "ppt" || type == "pptx") {
+                $.modal.alertWarning("不支持在线预览，请下载后查看");
+                return;
+            }
+            if (type == "jpg" || type == "png" || type == "tif" || type == "gif") {
+                $("#photos").show()
+                $("#media").hide()
+                $("#photos").attr("src", serverUrl)
+                $("#videoButton").click();
+                return;
+            }
+            if (type == "mp3" || type == "mp4" || type == "avi" || type == "mpeg" || type == "rmvb") {
+                $("#photos").hide()
+                $("#media").show()
+                $("#v1").attr("src", serverUrl)
+                $("#videoButton").click();
+                $("#media").load();
+                return;
+            }
+        } else {
+            $.ajax({
+                type: "post",
+                url: prefix + "/getNewFileImage",
+                data: {
+                    pmsBatchId: $("#pmsBatchId").val(),
+                    billId: id,
+                },
+                success: function (result) {
+                    if (result.data) {
+                        fileType = result.data.fileImageType;
+                        fileUrl = result.data.serverUrl;
+                        fileImageId = result.data.stringId;
+                    } else {
+                        fileUrl = null;
+                    }
+
+                    if (fileUrl == null || fileUrl == "null" || fileUrl == "" || fileUrl == undefined) {
+                        $.modal.alertError("没有文件，无法预览")
+                        return;
+                    } else {
+                        // 文件类型转小写
+                        fileType = fileType.toLowerCase();
+                        if (fileType == "doc" || fileType == "docx" || fileType == "xls" || fileType == "xlsx" || fileType == "txt" || fileType == "pdf") {
+                            <!--验证文档是否加密，禁止IE浏览器缓存-->
+                            $.ajaxSetup({cache: false});
+                            $.get(ctx + "pdf/pms/fileView/fileCheckEncryption/" + fileImageId, function (data) {
+                                if (data.code == 0) {
+                                    if (fileType == "pdf") {
+                                        window.open(serverAddress + "/pdf/pms/fileView/openPdfView?id=" + fileImageId)
+                                    } else if (fileType == "txt") {
+                                        window.open(serverAddress + "/pdf/pms/fileView/openTextView?id=" + fileImageId);
+                                    } else if (fileType == "doc" || fileType == "docx") {
+                                        window.open(serverAddress + "/pdf/pms/fileView/openWordView?id=" + fileImageId)
+                                    } else if (fileType == "xlsx" || fileType == "xls") {
+                                        window.open(serverAddress + "/pdf/pms/fileView/openExcelView?id=" + fileImageId);
+                                    }
+                                    return;
+                                } else {
+                                    $.modal.alertWarning(data.msg)
+                                }
+                            });
+
+                        }
+
+                        if (fileType == "rar" || fileType == "zip" || fileType == "tif" || fileType == "ppt" || fileType == "pptx") {
+                            $.modal.alertWarning("不支持在线预览，请下载后查看");
+                            return;
+                        }
+
+                        if (fileType == "jpg" || fileType == "png" || fileType == "bmp" || fileType == "gif") {
+                            $("#photos").show()
+                            $("#media").hide()
+                            $("#photos").attr("src", fileUrl)
+                            $("#videoButton").click();
+                            return;
+                        }
+
+                        if (fileType == "mp3" || fileType == "mp4" || fileType == "avi" || fileType == "mpeg" || fileType == "rmvb") {
+                            $("#photos").hide()
+                            $("#media").show()
+                            $("#v1").attr("src", fileUrl)
+                            $("#videoButton").click();
+                            $("#media").load();
+                            return;
+                        }
+
+                        //获得选中的文件或影像
+                        // $.modal.confirm("确定预览该文件吗?", function () {
+                        //     window.open(serverAddress + "/pdf/web/viewer.html?file=" + serverAddress + "/file/pms/pmsBatch/toPdfFile?fileId=" + fileImageId);
+                        // })
+                    }
+                },
+                error: function (e) {
+                    $.modal.alertError("无法预览，请稍后重试")
+                    return;
+                }
+            });
+
+        }
+    }
+
+    function closeVideo() {
+        $('#media').get(0).pause();
+    }
+
+</script>
+</body>
+
+</html>

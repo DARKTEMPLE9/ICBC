@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<style>
+    #navSize {
+        font-size: 16px;
+    }
+</style>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>中关村银行档案管理平台</title>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <link th:href="@{favicon.ico}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/jquery.contextMenu.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/skins.css}" rel="stylesheet"/>
+    <link th:href="@{/ruoyi/css/ry-ui.css?v=3.4.0}" rel="stylesheet"/>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden"
+      th:classappend="|${@config.getKey('sys.index.sideTheme')} ${@config.getKey('sys.index.skinName')}|">
+<div id="wrapper">
+
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="logo">
+                    <span class="logo-lg"><img style="height: 36px;margin-bottom: 1px"
+                                               th:src="@{/img/hopebank_logo_index.png}" alt=""></span>
+                </li>
+                <li>
+                    <div class="user-panel">
+                        <a class="menuItem" title="个人中心" th:href="@{/system/user/profile}">
+                            <div class="hide" th:text="个人中心"></div>
+                            <div class="pull-left">
+                                <!--<img th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{${user.avatar}}" class="img-circle" alt="User Image">-->
+                                <div id="indexLoginName"
+                                     style="text-align: center;line-height: 50px;font-size: 30px; background-color: white;width: 50px;height: 50px; border-radius: 50%"></div>
+                            </div>
+                        </a>
+                        <div class="pull-left info">
+                            <p>[[${user.userName}]]</p>
+                            <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+                            <a th:href="@{logout}" style="padding-left:5px;"><i class="fa fa-sign-out text-danger"></i>
+                                注销</a>
+                        </div>
+                    </div>
+                </li>
+                <!--<li class="active">-->
+                <!--<a href="index.html"><i class="fa fa-home"></i> <span class="nav-label">主页</span> <span class="fa arrow"></span></a>-->
+                <!--<ul class="nav nav-second-level">-->
+                <!--<li class="active"><a class="menuItem" th:href="@{/system/main}">了解若依</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <li th:each="menu : ${menus}" th:class="${menu.menuId}=='2004'?active:''">
+                    <a th:class="@{${menu.url != '' && menu.url != '#'} ? ${menu.target}}"
+                       th:href="@{${menu.url == ''} ? |#| : ${menu.url}}">
+                        <i class="fa fa-bar-chart-o" th:class="${menu.icon}"></i>
+                        <span class="nav-label" th:text="${menu.menuName}">一级菜单</span>
+                        <span th:class="${menu.url == '' || menu.url == '#'} ? |fa arrow|"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse">
+                        <li th:each="cmenu : ${menu.children}">
+                            <a th:if="${#lists.isEmpty(cmenu.children)}"
+                               th:class="${cmenu.target == ''} ? |menuItem| : ${cmenu.target}"
+                               th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}">二级菜单</a>
+                            <a th:if="${not #lists.isEmpty(cmenu.children)}" href="#">[[${cmenu.menuName}]]<span
+                                    class="fa arrow"></span></a>
+                            <ul th:if="${not #lists.isEmpty(cmenu.children)}" class="nav nav-third-level">
+                                <li th:each="emenu : ${cmenu.children}"><a
+                                        th:class="${emenu.target == ''} ? |menuItem| : ${emenu.target}"
+                                        th:text="${emenu.menuName}" th:href="@{${emenu.url}}">三级菜单</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <!--<div class="navbar-header">-->
+                <div>
+                    <a id="navSize" class="navbar-minimalize minimalize-styl-2" style="color:#FFF;" href="#"
+                       title="收起菜单">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right welcome-message">
+                    <!--<li><a th:href="@{/system/user/profile}" class="menuItem"><i class="fa fa-user"></i> <span id="roleName">系统管理员</span></a></li>-->
+                    <li><a th:href="@{/pms/pmsBatch/initHtml}" class="menuItem"><i class="fa fa-home"></i> 返回首页</a></li>
+                    <!--<li><a onclick="myTask()" class="menuItem"><i class="fa fa-folder-open"></i> 我的任务</a></li>-->
+                    <!--<li><a href="/demo/report/echarts" class="menuItem"><i class="fa fa-check-square"></i> 统计</a></li>-->
+                    <!--<li><a onclick="myTask()" class="menuItem"><i class="fa fa-image"></i> 主题</a></li>-->
+                    <li><a title="全屏显示" href="javascript:void(0)" id="fullScreen"><i class="fa fa-arrows-alt"></i> 全屏显示</a>
+                    </li>
+                    <li class="dropdown user-menu">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-hover="dropdown">
+                            <img th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{${user.avatar}}"
+                                 class="user-image">
+                            <span class="hidden-xs">[[${user.userName}]]</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="mt5">
+                                <a th:href="@{/system/user/profile}" class="menuItem">
+                                    <i class="fa fa-user"></i> 个人中心</a>
+                            </li>
+                            <!--<li>-->
+                            <!--<a onclick="resetPwd()" class="menuItem">-->
+                            <!--<i class="fa fa-key"></i> 修改密码</a>-->
+                            <!--</li>-->
+                            <li class="divider"></li>
+                            <li>
+                                <a th:href="@{logout}">
+                                    <i class="fa fa-sign-out"></i> 退出登录</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left tabLeft">
+                <i class="fa fa-backward"></i>
+            </button>
+            <nav class="page-tabs menuTabs">
+                <div class="page-tabs-content">
+                    <a href="javascript:;" class="active menuTab" data-id="/system/main">首页</a>
+                </div>
+            </nav>
+            <button class="roll-nav roll-right tabRight">
+                <i class="fa fa-forward"></i>
+            </button>
+            <a href="#" class="roll-nav roll-right tabReload"><i class="fa fa-refresh"></i> 刷新</a>
+        </div>
+
+        <a id="ax_close_max" class="ax_close_max" href="#" title="关闭全屏"> <i class="fa fa-times-circle-o"></i> </a>
+
+        <div class="row mainContent" id="content-main">
+            <iframe class="RuoYi_iframe" name="iframe0" width="100%" height="100%" data-id="/system/main"
+                    th:src="@{/pms/pmsBatch?index=1}" frameborder="0" seamless></iframe>
+        </div>
+        <div class="footer">
+            <div class="pull-right">© <span id="crYaer"></span> BaiXin Copyright</div>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+</div>
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/js/jquery.contextMenu.min.js}"></script>
+<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=3.4.0}"></script>
+<script th:src="@{/ruoyi/index.js}"></script>
+<script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
+<script th:inline="javascript">
+    // 获取当前年份
+    var myDate = new Date();
+    var thisyear = myDate.getFullYear();
+
+    /*修改首页角色*/
+    $(function () {
+        // 设置版权年份当前年
+        $("#crYaer").text(thisyear);
+        if ([[${user.roles}]][0].roleName) {
+            $("#roleName").text([[${user.roles}]][0].roleName)
+        }
+    })
+    // 设置用户名最后一个字显示
+    var thisName = [[${user.userName}]]
+    window.onload = function () {
+        var lastLetter = thisName.charAt(thisName.length - 1)
+        $("#indexLoginName").text(lastLetter)
+    }
+    var ctx = [[@{
+        /}]];
+
+        /*用户管理-重置密码*/
+        function resetPwd() {
+            var url = ctx + 'system/user/profile/resetPwd';
+            $.modal.open("重置密码", url, '800', '500');
+        }
+
+        // 	全局添加水印
+        function watermark(settings) {
+            $.ajax({
+                url: ctx + "system/config/getWaterMark",
+                type: "post",
+                success: function (result) {
+                    if (result == "true") {//打开水印
+                        //默认设置
+                        var defaultSettings = {
+                            watermark_txt: settings.watermark_txt,
+                            watermark_x: 20,//水印起始位置x轴坐标
+                            watermark_y: 20,//水印起始位置Y轴坐标
+                            watermark_rows: 20,//水印行数
+                            watermark_cols: 20,//水印列数
+                            watermark_x_space: 60,//水印x轴间隔
+                            watermark_y_space: 60,//水印y轴间隔
+                            watermark_color: '#aaa',//水印字体颜色
+                            watermark_alpha: 0.3,//水印透明度
+                            watermark_fontsize: '18px',//水印字体大小
+                            watermark_font: '微软雅黑',//水印字体
+                            watermark_width: 280,//水印宽度
+                            watermark_height: 100,//水印长度
+                            watermark_angle: 16//水印倾斜度数
+                        };
+                        //采用配置项替换默认值，作用类似jquery.extend
+                        if (arguments.length === 1 && typeof arguments[0] === "object") {
+                            var src = arguments[0] || {};
+                            for (key in src) {
+                                if (src[key] && defaultSettings[key] && src[key] === defaultSettings[key])
+                                    continue;
+                                else if (src[key])
+                                    defaultSettings[key] = src[key];
+                            }
+                        }
+
+                        var oTemp = document.createDocumentFragment();
+
+                        //获取页面最大宽度
+                        var page_width = Math.max(document.body.scrollWidth, document.body.clientWidth);
+                        var cutWidth = page_width * 0.0150;
+                        var page_width = page_width - cutWidth;
+                        //获取页面最大高度
+                        var page_height = Math.max(document.body.scrollHeight, document.body.clientHeight) + 450;
+                        // var page_height = document.body.scrollHeight+document.body.scrollTop;
+                        //如果将水印列数设置为0，或水印列数设置过大，超过页面最大宽度，则重新计算水印列数和水印x轴间隔
+                        if (defaultSettings.watermark_cols == 0 || (parseInt(defaultSettings.watermark_x + defaultSettings.watermark_width * defaultSettings.watermark_cols + defaultSettings.watermark_x_space * (defaultSettings.watermark_cols - 1)) > page_width)) {
+                            defaultSettings.watermark_cols = parseInt((page_width - defaultSettings.watermark_x + defaultSettings.watermark_x_space) / (defaultSettings.watermark_width + defaultSettings.watermark_x_space));
+                            defaultSettings.watermark_x_space = parseInt((page_width - defaultSettings.watermark_x - defaultSettings.watermark_width * defaultSettings.watermark_cols) / (defaultSettings.watermark_cols - 1));
+                        }
+                        //如果将水印行数设置为0，或水印行数设置过大，超过页面最大长度，则重新计算水印行数和水印y轴间隔
+                        if (defaultSettings.watermark_rows == 0 || (parseInt(defaultSettings.watermark_y + defaultSettings.watermark_height * defaultSettings.watermark_rows + defaultSettings.watermark_y_space * (defaultSettings.watermark_rows - 1)) > page_height)) {
+                            defaultSettings.watermark_rows = parseInt((defaultSettings.watermark_y_space + page_height - defaultSettings.watermark_y) / (defaultSettings.watermark_height + defaultSettings.watermark_y_space));
+                            defaultSettings.watermark_y_space = parseInt(((page_height - defaultSettings.watermark_y) - defaultSettings.watermark_height * defaultSettings.watermark_rows) / (defaultSettings.watermark_rows - 1));
+                        }
+                        var x;
+                        var y;
+                        for (var i = 0; i < defaultSettings.watermark_rows; i++) {
+                            y = defaultSettings.watermark_y + (defaultSettings.watermark_y_space + defaultSettings.watermark_height) * i;
+                            for (var j = 0; j < defaultSettings.watermark_cols; j++) {
+                                x = defaultSettings.watermark_x + (defaultSettings.watermark_width + defaultSettings.watermark_x_space) * j;
+
+                                var mask_div = document.createElement('div');
+                                mask_div.id = 'mask_div' + i + j;
+                                mask_div.className = 'mask_div';
+                                mask_div.appendChild(document.createTextNode(defaultSettings.watermark_txt));
+                                //设置水印div倾斜显示
+                                mask_div.style.webkitTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+                                mask_div.style.MozTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+                                mask_div.style.msTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+                                mask_div.style.OTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+                                mask_div.style.transform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+                                mask_div.style.visibility = "";
+                                mask_div.style.position = "absolute";
+                                mask_div.style.left = x + 'px';
+                                mask_div.style.top = y + 'px';
+                                mask_div.style.overflow = "hidden";
+                                mask_div.style.zIndex = "9999";
+                                mask_div.style.pointerEvents = 'none';//pointer-events:none  让水印不遮挡页面的点击事件
+                                //mask_div.style.border="solid #eee 1px";
+                                mask_div.style.opacity = defaultSettings.watermark_alpha;
+                                mask_div.style.fontSize = defaultSettings.watermark_fontsize;
+                                mask_div.style.fontFamily = defaultSettings.watermark_font;
+                                mask_div.style.color = defaultSettings.watermark_color;
+                                mask_div.style.textAlign = "center";
+                                mask_div.style.width = defaultSettings.watermark_width + 'px';
+                                mask_div.style.height = defaultSettings.watermark_height + 'px';
+                                mask_div.style.display = "block";
+                                oTemp.appendChild(mask_div);
+                            }
+                            ;
+                        }
+                        ;
+                        document.body.appendChild(oTemp);
+                    }
+                }
+            });
+
+        }
+    var thisTime = new Date()
+    watermark({watermark_txt: "中关村银行" + "-" + thisName + thisTime.toLocaleDateString()})
+</script>
+</body>
+</html>

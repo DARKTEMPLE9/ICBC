@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('档案详情')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-amsArchives-detail" th:object="${amsArchives}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <h4 class="form-header h4">基本信息</h4>
+
+        <div class="form-group">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案编号：</label>
+                <div class="col-sm-8">
+                    <input id="arcNo" name="arcNo" th:field="*{arcNo}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案名称：</label>
+                <div class="col-sm-8">
+                    <input id="name" name="name" th:field="*{name}" class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display: none">
+                <label class="col-sm-4 control-label">部门编号：</label>
+                <div class="col-sm-8">
+                    <input id="opDepNo" name="opDepNo" th:field="*{opDepNo}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">部门名称：</label>
+                <div class="col-sm-8">
+                    <input id="opDepName" name="opDepName" th:field="*{opDepName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display: none">
+                <label class="col-sm-4 control-label">档案管理部门号：</label>
+                <div class="col-sm-8">
+                    <input id="manaDepNo" name="manaDepNo" th:field="*{manaDepNo}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案管理部门名：</label>
+                <div class="col-sm-8">
+                    <input id="manaDepName" name="manaDepName" th:field="*{manaDepName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">库房编号：</label>
+                <div class="col-sm-8">
+                    <input id="depotNo" name="depotNo" th:field="*{depotNo}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">库房名称：</label>
+                <div class="col-sm-8">
+                    <input id="depotName" name="depotName" th:field="*{depotName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">库房类型：</label>
+                <div class="col-sm-8" th:switch="*{depotType}">
+                    <input name="depotType" th:case="10" class="form-control" type="text" value="部门库房"
+                           disabled="readonly disabled">
+                    <input name="depotType" th:case="20" class="form-control" type="text" value="总行库房"
+                           disabled="readonly disabled">
+                    <input name="depotType" th:case="*" class="form-control" type="text" value=" "
+                           disabled="readonly disabled">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">库柜编号：</label>
+                <div class="col-sm-8">
+                    <input id="cabintNo" name="cabintNo" th:field="*{cabintNo}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">库柜名称：</label>
+                <div class="col-sm-8">
+                    <input id="cabintName" name="cabintName" th:field="*{cabintName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案形态：</label>
+                <div class="col-sm-8" th:switch="*{arcType}">
+                    <input name="arcType" th:case="10" class="form-control" type="text" value="电子形态"
+                           disabled="readonly disabled">
+                    <input name="arcType" th:case="20" class="form-control" type="text" value="实物形态"
+                           disabled="readonly disabled">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">责任部门：</label>
+                <div class="col-sm-8">
+                    <input id="respDepaName" name="respDepaName" th:field="*{respDepaName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">责任者：</label>
+                <div class="col-sm-8">
+                    <input id="respOpName" name="respOpName" th:field="*{respOpName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">份数：</label>
+                <div class="col-sm-8">
+                    <input id="arcNum" name="arcNum" th:field="*{arcNum}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">页数：</label>
+                <div class="col-sm-8">
+                    <input id="arcPageNum" name="arcPageNum" th:field="*{arcPageNum}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">密级：</label>
+                <div class="col-sm-8">
+                    <input name="arcLevel" th:if="*{arcLevel} == '01'" class="form-control" type="text" value="绝密"
+                           disabled="readonly disabled">
+                    <input name="arcLevel" th:if="*{arcLevel} == '02'" class="form-control" type="text" value="机密"
+                           disabled="readonly disabled">
+                    <input name="arcLevel" th:if="*{arcLevel} == '03'" class="form-control" type="text" value="秘密"
+                           disabled="readonly disabled">
+                    <input name="arcLevel" th:if="*{arcLevel} == '04'" class="form-control" type="text" value="内部公开"
+                           disabled="readonly disabled">
+
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">形成日期：</label>
+                <div class="col-sm-8">
+                    <input id="arcCreTime" name="arcCreTime"
+                           th:value="${#dates.format(amsArchives.arcCreTime,'yyyy-MM-dd')}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">归档日期：</label>
+                <div class="col-sm-8">
+                    <input id="filingTime" name="filingTime"
+                           th:value="${#dates.format(amsArchives.filingTime,'yyyy-MM-dd HH:mm:ss')}"
+                           class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">归档单位：</label>
+                <div class="col-sm-8">
+                    <input id="filingDepa" name="filingDepaName" th:field="*{filingDepaName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案管理员名：</label>
+                <div class="col-sm-8">
+                    <input id="adminName" name="adminName" th:field="*{adminName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案出库人名：</label>
+                <div class="col-sm-8">
+                    <input id="depotOutName" name="depotOutName" th:field="*{depotOutName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案借阅人名：</label>
+                <div class="col-sm-8">
+                    <input id="borrowName" name="borrowName" th:field="*{borrowName}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案状态：</label>
+                <div class="col-sm-8" th:switch="*{status}">
+                    <input id="status10" name="status" th:case="10" value="已销毁" class="form-control" type="text"
+                           disabled="readonly disabled">
+                    <input id="status9" name="status" th:case="9" value="待废弃" class="form-control" type="text"
+                           disabled="readonly disabled">
+                    <input id="status8" name="status" th:case="8" value="已废弃" class="form-control" type="text"
+                           disabled="readonly disabled">
+                    <input id="status7" name="status" th:case="7" value="已出库" class="form-control" type="text"
+                           disabled="readonly disabled">
+                    <input id="status5" name="status" th:case="5" value="已入库" class="form-control" type="text"
+                           disabled="readonly disabled">
+                    <input id="status2" name="status" th:case="2" value="借阅申请中" class="form-control" type="text"
+                           disabled="readonly disabled">
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">著入Id：</label>
+                <div class="col-sm-8">
+                    <input id="batchId" name="batchId" th:field="*{batchId}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">著入编号：</label>
+                <div class="col-sm-8">
+                    <input id="batchNo" name="batchNo" th:field="*{batchNo}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">归档部门名称：</label>
+                <div class="col-sm-8">
+                    <input id="filingDepaName" name="filingDepaName" th:field="*{filingDepaName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">库房id：</label>
+                <div class="col-sm-8">
+                    <input id="depotId" name="depotId" th:field="*{depotId}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">库柜id：</label>
+                <div class="col-sm-8">
+                    <input id="cabintId" name="cabintId" th:field="*{cabintId}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案类型名称：</label>
+                <div class="col-sm-8">
+                    <input id="arcBillName" name="arcBillName" th:field="*{arcBillName}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">档案类型编码：</label>
+                <div class="col-sm-8">
+                    <input id="arcBillCode" name="arcBillCode" th:field="*{arcBillCode}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">保管期限：</label>
+                <div class="col-sm-8">
+                    <input name="valPeriod" th:if="*{valPeriod} == '10'" class="form-control" type="text" value="10年"
+                           disabled="readonly disabled">
+                    <input name="valPeriod" th:if="*{valPeriod} == '30'" class="form-control" type="text" value="30年"
+                           disabled="readonly disabled">
+                    <input name="valPeriod" th:if="*{valPeriod} == '99'" class="form-control" type="text" value="永久"
+                           disabled="readonly disabled">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">来源方式：</label>
+                <div class="col-sm-8" th:switch="*{originMode}">
+                    <input value="经营产生" th:case="1" id="originMode1" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="上级下发" th:case="2" id="originMode2" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="移交" th:case="3" id="originMode3" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="征集" th:case="4" id="originMode4" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="收集" th:case="5" id="originMode5" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="购买" th:case="6" id="originMode6" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="捐赠" th:case="7" id="originMode7" name="originMode" class="form-control" type="text"
+                           disabled>
+                    <input value="其他" th:case="" id="originMode8" name="originMode" class="form-control" type="text"
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">是否移交行档室：</label>
+                <div class="col-sm-8" th:switch="${amsBatch.arcHasMoveBank}">
+                    <input name="arcHasMoveBank" th:case="1" class="form-control" type="text" value="是"
+                           readonly disabled>
+                    <input name="arcHasMoveBank" th:case="0" class="form-control" type="text" value="否"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">是否涉及费用：</label>
+                <div class="col-sm-8">
+                    <input name="expenseInvolve" th:if="*{expenseInvolve} == '0'" class="form-control" type="text"
+                           value="否" readonly disabled>
+                    <input name="expenseInvolve" th:if="*{expenseInvolve} == '1'" class="form-control" type="text"
+                           value="是" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" th:if="*{arcType == '10'}">
+                <label class="col-sm-4 control-label">图像分类：</label>
+                <div class="col-sm-8" th:switch="*{bill}">
+                    <input id="bill" name="bill" th:case="1" value="全部" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="2" value="重大活动" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="3" value="员工培训" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="4" value="公司荣誉" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="5" value="文化建设" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="6" value="关怀指导" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="7" value="同业交流" class="form-control" type="text" disabled>
+                    <input id="bill" name="bill" th:case="8" value="其他" class="form-control" type="text" disabled>
+
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">业务类型：</label>
+                <div class="col-sm-8">
+                    <input id="serviceType" name="serviceType" th:field="*{serviceType}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">是否电子化：</label>
+                <div class="col-sm-8" th:switch="*{arcType}">
+                    <input name="arcType" th:case="10" class="form-control" type="text" value="是" readonly disabled>
+                    <input name="arcType" th:case="20" class="form-control" type="text" value="否" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">载体形式：</label>
+                <div class="col-sm-8" th:switch="*{carrier}">
+                    <!--                    th:field="*{carrier}" <input value="经营产生" th:case="1" id="originMode1" name="originMode"  class="form-control" type="text" readonly disabled>-->
+                    <input id="carrier" th:case="01" value="纸质档案" name="carrier" class="form-control" type="text"
+                           readonly disabled>
+                    <input id="carrier" th:case="02" value="音像档案" name="carrier" class="form-control" type="text"
+                           readonly disabled>
+                    <input id="carrier" th:case="03" value="电子档案" name="carrier" class="form-control" type="text"
+                           readonly disabled>
+                    <input id="carrier" th:case="04" value="实物档案" name="carrier" class="form-control" type="text"
+                           readonly disabled>
+                    <input id="carrier" th:case=" *" value="其他" name="carrier" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">实物分类：</label>
+                <div class="col-sm-8">
+                    <input id="practType" name="practType" th:field="*{practType}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">文件路径：</label>
+                <div class="col-sm-8">
+                    <input id="filePath" name="filePath" th:field="*{filePath}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">查看著录路径：</label>
+                <div class="col-sm-8">
+                    <input id="viewPath" name="viewPath" th:field="*{viewPath}" class="form-control" type="text"
+                           readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">保留时间：</label>
+                <div class="col-sm-8">
+                    <input id="persistTime" name="persistTime" th:field="*{persistTime}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">保留期限：</label>
+                <div class="col-sm-8">
+                    <input id="persistPeriod" name="persistPeriod" th:field="*{persistPeriod}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">是否为保留档案：</label>
+                <div class="col-sm-8" th:switch="*{period}">
+                    <input id="period" name="period" th:case="0" value="不是" class="form-control" type="text" readonly
+                           disabled>
+                    <input id="period" name="period" th:case="1" value="是" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案盒号：</label>
+                <div class="col-sm-8">
+                    <input id="boxCode" name="boxCode" th:field="*{boxCode}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案盒名称：</label>
+                <div class="col-sm-8">
+                    <input id="boxName" name="boxName" th:field="*{boxName}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案件号：</label>
+                <div class="col-sm-8">
+                    <input id="boxNum" name="boxNum" th:field="*{boxNum}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">batch表的文件编号：</label>
+                <div class="col-sm-8">
+                    <input id="fileNo" name="fileNo" th:field="*{fileNo}" class="form-control" type="text" readonly
+                           disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">档案存放地址：</label>
+                <div class="col-sm-8">
+                    <input id="storageLocation" name="storageLocation" th:field="*{storageLocation}"
+                           class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">移交时间：</label>
+                <div class="col-sm-8">
+                    <input id="turnInTime" name="turnInTime"
+                           th:value="${#dates.format(amsArchives.turnInTime,'yyyy-MM-dd HH:mm:ss')}"
+                           class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">接收时间：</label>
+                <div class="col-sm-8">
+                    <input id="receiveTime" name="receiveTime"
+                           th:value="${#dates.format(amsArchives.receiveTime,'yyyy-MM-dd HH:mm:ss')}"
+                           class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-4 control-label">部门档案类型：</label>
+                <div class="col-sm-8">
+                    <input id="arcBillDept" name="arcBillDept" th:field="*{arcBillDept}" class="form-control"
+                           type="text" readonly disabled>
+                </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none;">
+                <label class="col-sm-4 control-label">部门档案类型编号：</label>
+                <div class="col-sm-8">
+                    <input id="arcBillDeptCode" name="arcBillDeptCode" th:field="*{arcBillDeptCode}"
+                           class="form-control" type="text" readonly disabled>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    console.log([[${amsArchives}]])
+</script>
+</body>
+</html>

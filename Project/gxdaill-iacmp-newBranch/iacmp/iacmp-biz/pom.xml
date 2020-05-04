@@ -1,0 +1,421 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.northking.iacmp</groupId>
+        <artifactId>iacmp-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>iacmp-biz</artifactId>
+    <packaging>pom</packaging>
+    <name>iacmp business module</name>
+    <description>IACMP 业务相关模块</description>
+    <modules>
+        <module>iacmp-biz-common</module>
+        <module>iacmp-biz-generator</module>
+        <module>iacmp-biz-quartz</module>
+        <module>iacmp-biz-system</module>
+        <module>iacmp-biz-framework</module>
+        <module>iacmp-biz-ams</module>
+        <module>iacmp-biz-ams-server</module>
+        <module>iacmp-biz-cms</module>
+        <module>iacmp-biz-cms-server</module>
+        <module>iacmp-biz-pms</module>
+        <module>iacmp-biz-elasticsearch</module>
+        <module>iacmp-biz-imp</module>
+        <module>iacmp-biz-imp-server</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <shiro.version>1.4.0</shiro.version>
+        <thymeleaf.extras.shiro.version>2.0.0</thymeleaf.extras.shiro.version>
+        <mybatis.boot.version>1.3.2</mybatis.boot.version>
+        <druid.version>1.1.14</druid.version>
+        <bitwalker.version>1.19</bitwalker.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <swagger.version>2.9.2</swagger.version>
+        <pagehelper.boot.version>1.2.5</pagehelper.boot.version>
+        <oshi.version>3.9.1</oshi.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
+        <jsoup.version>1.11.3</jsoup.version>
+        <poi.version>3.17</poi.version>
+        <velocity.version>1.7</velocity.version>
+        <activiti.version>5.22.0</activiti.version>
+        <mybatis.version>3.4.6</mybatis.version>
+        <httpclient.version>4.5.6</httpclient.version>
+        <elasticsearch.data.version>3.1.10.RELEASE</elasticsearch.data.version>
+        <elasticsearch.version>6.2.2</elasticsearch.version>
+        <jodconverter.version>4.2.2</jodconverter.version>
+        <hutool.version>4.6.1</hutool.version>
+        <hive.version>1.1.0</hive.version>
+        <hadoop.version>3.1.0</hadoop.version>
+        <dnsjava.version>2.1.1</dnsjava.version>
+        <mail.version>1.4.7</mail.version>
+        <spring.data.commons.version>2.1.1.RELEASE</spring.data.commons.version>
+    </properties>
+
+    <!-- 依赖声明 -->
+    <dependencyManagement>
+        <dependencies>
+            <!--阿里数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <!--验证码 -->
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
+            <!--Shiro核心框架 -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <!-- Shiro使用Srping框架 -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <!-- Shiro使用EhCache缓存框架 -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <!-- thymeleaf模板引擎和shiro框架的整合 -->
+            <dependency>
+                <groupId>com.github.theborakompanioni</groupId>
+                <artifactId>thymeleaf-extras-shiro</artifactId>
+                <version>${thymeleaf.extras.shiro.version}</version>
+            </dependency>
+
+            <!-- 解析客户端操作系统、浏览器等 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${bitwalker.version}</version>
+            </dependency>
+
+            <!-- pagehelper 分页插件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.boot.version}</version>
+            </dependency>
+
+            <!-- 获取系统信息 -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+
+            <!-- swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-annotations</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-models</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- swagger2-UI -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!--io常用工具类 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+
+            <!--文件上传工具类 -->
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons.fileupload.version}</version>
+            </dependency>
+
+            <!-- HTML解析器 -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+
+            <!-- excel工具 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <!--velocity代码生成使用模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+
+            <!-- hutool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!--档案系统核心模块-->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-ams</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--内容管理核心模块-->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-cms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--影像平台核心模块-->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-imp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-imp-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 定时任务 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-quartz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 代码生成 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-generator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-framework</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <!-- 系统模块 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 系统模块 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-ams-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 系统模块 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-cms-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- pms业务模块 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-pms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--工作流模块-->
+            <!--<dependency>-->
+            <!--<groupId>net.northking.iacmp</groupId>-->
+            <!--<artifactId>iacmp-biz-activiti</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!-- 通用工具 -->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-common-bean</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-common-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring.data.commons.version}</version>
+            </dependency>
+            <!-- es模块 -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${elasticsearch.data.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-commons</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!--影像平台service层-->
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-imp-server</artifactId>
+                <version>${parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-http-chunk</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>net.northking.iacmp</groupId>
+                <artifactId>iacmp-biz-elasticsearch</artifactId>
+                <version>${parent.version}</version>
+            </dependency>
+
+            <!--<dependency>-->
+            <!--<groupId>org.jodconverter</groupId>-->
+            <!--<artifactId>jodconverter-core</artifactId>-->
+            <!--<version>${jodconverter.version}</version>-->
+            <!--</dependency>-->
+
+            <!--&lt;!&ndash;springboot支持包，里面包括了自动配置类 &ndash;&gt;-->
+            <!--<dependency>-->
+            <!--<groupId>org.jodconverter</groupId>-->
+            <!--<artifactId>jodconverter-spring-boot-starter</artifactId>-->
+            <!--<version>${jodconverter.version}</version>-->
+            <!--</dependency>-->
+
+            <!--&lt;!&ndash;jodconverter 本地支持包 &ndash;&gt;-->
+            <!--<dependency>-->
+            <!--<groupId>org.jodconverter</groupId>-->
+            <!--<artifactId>jodconverter-local</artifactId>-->
+            <!--<version>${jodconverter.version}</version>-->
+            <!--</dependency>-->
+
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--	<repositories>-->
+    <!--		<repository>-->
+    <!--            <id>bxbank_privrepository_interfaces</id>-->
+    <!--            <url>http://10.4.71.144:9090/repository/bxbank_privrepository_interfaces/</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>bxbank_privrepository_releases</id>-->
+    <!--            <url>http://10.4.71.144:9090/repository/bxbank_privrepository_releases/</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>bxbank_privrepository_snapshots</id>-->
+    <!--            <url>http://10.4.71.144:9090/repository/bxbank_privrepository_snapshots/</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>official</id>-->
+    <!--            <name>Maven official Repository</name>-->
+    <!--            <url>http://10.4.71.144:9090/repository/bxbank_central/</url>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--	</repositories>-->
+
+    <!--	<pluginRepositories>-->
+    <!--        <pluginRepository>-->
+    <!--            <id>baixin_plugin</id>-->
+    <!--            <name>repository of baixin_plugin</name>-->
+    <!--            <url>http://10.4.71.144:9090/repository/bxbank_central/</url>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </pluginRepository>-->
+    <!--    </pluginRepositories>-->
+</project>

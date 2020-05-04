@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('弹出查询档案管理员弹窗')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-batch-queryAdmin" th:object="${amsBatch}">
+        <!--<input id="ids" name="ids" th:value="${archManageId}"  type="hidden">-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">行档案室人员：</label>
+            <div class="col-sm-8">
+                <select id="queryAdmin">
+                    <option id="checked"
+                            th:each="archManager:${archManager}"
+                            th:text="${archManager.userName}"
+                            th:value="${archManager.userId}"></option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" th:inline="javascript">
+    var prefix = ctx + "archManage/transApply";
+    $("#form-batch-queryAdmin").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        var sysUserId = $("#queryAdmin option:selected").val()
+        console.log(sysUserId)
+        var batchIds = [[${ids}]]
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/toBAR?id=" + sysUserId + "&batchIds=" + batchIds, $('#form-batch-queryAdmin').serialize());
+        }
+    }
+
+
+    //
+    //        function submitHandler() {
+    //            if ($.validate.form()) {
+    //                $.operate.save(prefix + "/toBAR", $('#form-batch-queryAdmin').serialize());
+    //            }
+    //        }
+
+</script>
+</body>
+</html>

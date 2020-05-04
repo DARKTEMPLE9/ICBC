@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImAccessSystemMapper">
+
+    <resultMap type="ImAccessSystem" id="ImAccessSystemResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="authentInfo" column="AUTHENT_INFO"/>
+        <result property="remark" column="REMARK"/>
+        <result property="ip" column="IP"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="accId" column="ACC_ID"/>
+    </resultMap>
+
+    <sql id="selectImAccessSystemVo">
+        select ID, CODE, NAME, AUTHENT_INFO, REMARK, IP, SYS_FLAG_INT, ACC_ID from im_access_system
+    </sql>
+
+    <select id="selectImAccessSystemList" parameterType="ImAccessSystem"
+            resultMap="ImAccessSystemResult">
+        <include refid="selectImAccessSystemVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="authentInfo != null  and authentInfo != '' ">and AUTHENT_INFO = #{authentInfo}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="ip != null  and ip != '' ">and IP = #{ip}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="accId != null ">and ACC_ID = #{accId}</if>
+        </where>
+    </select>
+
+    <select id="queryAllSystem" parameterType="ImAccessSystem"
+            resultMap="ImAccessSystemResult">
+        <include refid="selectImAccessSystemVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="authentInfo != null  and authentInfo != '' ">and AUTHENT_INFO = #{authentInfo}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="ip != null  and ip != '' ">and IP = #{ip}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="accId != null ">and ACC_ID = #{accId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="selectSystemCount" resultType="Integer">
+        select count(1) from im_access_system
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="authentInfo != null  and authentInfo != '' ">and AUTHENT_INFO = #{authentInfo}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="ip != null  and ip != '' ">and IP = #{ip}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="accId != null ">and ACC_ID = #{accId}</if>
+        </where>
+    </select>
+
+    <select id="selectImAccessSystemById" parameterType="String" resultMap="ImAccessSystemResult">
+        <include refid="selectImAccessSystemVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="querySystemById" resultType="Map">
+        <include refid="selectImAccessSystemVo"/>
+        where ID = #{systemId}
+    </select>
+
+    <select id="queryBySysFlagInt" resultType="Map">
+        select id,name,code from im_access_system
+        where sys_flag_int = #{sysFlagInt}
+    </select>
+    <select id="queryBySysFlagInt2" resultType="Map">
+        select id,name,code from im_access_system
+        where sys_flag_int = #{sysFlagInt} and id != #{id}
+    </select>
+
+    <insert id="insertImAccessSystem">
+        insert into im_access_system (id,code,name,remark,sys_flag_int) values
+        (#{id},#{code},#{name},#{remark},#{sysFlagInt})
+    </insert>
+
+    <update id="updateById">
+        update im_access_system set code = #{code},name = #{name},sys_flag_int = #{sysFlagInt},remark = #{remark}
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImAccessSystemById" parameterType="String">
+        delete from im_access_system where ID = #{id}
+    </delete>
+
+    <delete id="deleteImAccessSystemByIds" parameterType="String">
+        delete from im_access_system where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

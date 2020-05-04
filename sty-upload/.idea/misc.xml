@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../Project/sty" />
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../Project/y_project-RuoYi-master/RuoYi/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/pom.xml" />
+        <option value="$PROJECT_DIR$/syt-upload/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/power-shrio-log4j/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-common/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-mbg/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-portal/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-search/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/mall-security/pom.xml" />
+        <option value="$PROJECT_DIR$/../Project/mall-电商项目/mall-master/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

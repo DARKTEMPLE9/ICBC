@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iacmp.biz.common.dao.mapper.ams.AmsPeriodMapper">
+
+    <resultMap type="AmsPeriod" id="AmsPeriodResult">
+        <result property="periodId" column="PERIOD_ID"/>
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="value" column="VALUE"/>
+        <result property="code" column="CODE"/>
+    </resultMap>
+
+    <sql id="selectAmsPeriodVo">
+        select PERIOD_ID, ID, NAME, VALUE, CODE from ams_period
+    </sql>
+
+    <select id="selectAmsPeriodList" parameterType="AmsPeriod" resultMap="AmsPeriodResult">
+        <include refid="selectAmsPeriodVo"/>
+        <where>
+            <if test="periodId != null  and periodId != '' ">and PERIOD_ID = #{periodId}</if>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="name != null  and name != '' ">and NAME like concat(concat('%',#{name}),'%')</if>
+            <if test="value != null  and value != '' ">and VALUE = #{value}</if>
+            <if test="code != null  and code != '' ">and CODE like concat(concat('%',#{code}),'%')</if>
+        </where>
+    </select>
+
+    <select id="selectAmsPeriodById" parameterType="String" resultMap="AmsPeriodResult">
+        <include refid="selectAmsPeriodVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertAmsPeriod" parameterType="AmsPeriod">
+        insert into ams_period
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="value != null  and value != ''  ">VALUE,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="value != null  and value != ''  ">#{value},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAmsPeriod" parameterType="AmsPeriod">
+        update ams_period
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="value != null  and value != ''  ">VALUE = #{value},</if>
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteAmsPeriodById" parameterType="String">
+        delete from ams_period where ID = #{id}
+    </delete>
+
+    <delete id="deleteAmsPeriodByIds" parameterType="String">
+        delete from ams_period where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

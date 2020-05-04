@@ -1,7 +1,6 @@
 /**
  * 克隆封装
- * 
- * @author looly
  *
+ * @author looly
  */
 package cn.hutool.core.clone;

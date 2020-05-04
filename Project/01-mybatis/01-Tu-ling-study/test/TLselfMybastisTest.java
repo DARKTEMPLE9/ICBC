@@ -15,7 +15,7 @@ public class TLselfMybastisTest {
         DefaultSqlSession sqlSession = (DefaultSqlSession) sqlSessionFactory.openSession(configuration);
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         UserBean userBean = mapper.selectUser(1);
-        System.out.println("使用annotation方式（mapper）查询 user:{}"+userBean);
+        System.out.println("使用annotation方式（mapper）查询 user:{}" + userBean);
 
     }
 }

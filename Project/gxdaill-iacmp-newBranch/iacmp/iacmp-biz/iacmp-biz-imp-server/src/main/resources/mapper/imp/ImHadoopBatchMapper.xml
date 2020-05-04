@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImHadoopBatchMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImHadoopBatch" id="ImHadoopBatchResult">
+        <result property="id" column="ID"/>
+        <result property="regbillglideno" column="REGBILLGLIDENO"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="tellerNo" column="TELLERNO"/>
+        <result property="tellerName" column="TELLERNAME"/>
+        <result property="branchNo" column="BRANCHNO"/>
+        <result property="branchName" column="BRANCHNAME"/>
+        <result property="serialino" column="SERIALNO"/>
+        <result property="rcvNum" column="RCVNUM"/>
+        <result property="totalNum" column="TOTALNUM"/>
+        <result property="billPackages" column="BILLPACKAGES"/>
+        <result property="systemFlag" column="SYSTEMFLAG"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="ocrFlag" column="OCR_FLAG"/>
+        <result property="defectType" column="DEFECT_TYPE"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="bHour" column="b_hour"/>
+        <result property="bYear" column="b_year"/>
+        <result property="bMonth" column="b_month"/>
+        <result property="bDay" column="b_day"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="userAssciationFlag" column="USER_ASSCIATION_FLAG"/>
+        <result property="hBatchId" column="HBATCH_ID"/>
+    </resultMap>
+
+    <sql id="selectImHadoopBatchVo">
+        select ID, REGBILLGLIDENO, OPERATIONCODE, TELLERNO, TELLERNAME, BRANCHNO, BRANCHNAME, SERIALNO, RCVNUM,
+        TOTALNUM, BILLPACKAGES, SYSTEMFLAG, CREATE_TIME, OCR_FLAG, DEFECT_TYPE, ORDER_NUM, b_hour, b_year, b_month,
+        b_day, SYS_FLAG_INT, USER_ASSCIATION_FLAG, HBATCH_ID from im_hadoop_batch
+    </sql>
+
+    <select id="selectImHadoopBatchList" resultMap="ImHadoopBatchResult">
+        <include refid="selectImHadoopBatchVo"/>
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE = #{operationCode}</if>
+            <if test="tellerNo != null  and tellerNo != '' ">and TELLERNO = #{tellerNo}</if>
+            <if test="tellerName != null  and tellerName != '' ">and TELLERNAME = #{tellerName}</if>
+            <if test="branchNo != null  and branchNo != '' ">and BRANCHNO = #{branchNo}</if>
+            <if test="branchName != null  and branchName != '' ">and BRANCHNAME = #{branchName}</if>
+            <if test="serialino != null  and serialino != '' ">and SERIALNO = #{serialino}</if>
+            <if test="rcvNum != null  and rcvNum != '' ">and RCVNUM = #{rcvNum}</if>
+            <if test="totalNum != null  and totalNum != '' ">and TOTALNUM = #{totalNum}</if>
+            <if test="billPackages != null  and billPackages != '' ">and BILLPACKAGES = #{billPackages}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEMFLAG = #{systemFlag}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="ocrFlag != null  and ocrFlag != '' ">and OCR_FLAG = #{ocrFlag}</if>
+            <if test="defectType != null  and defectType != '' ">and DEFECT_TYPE = #{defectType}</if>
+            <if test="orderNum != null  and orderNum != '' ">and ORDER_NUM = #{orderNum}</if>
+            <if test="bHour != null ">and b_hour = #{bHour}</if>
+            <if test="bYear != null ">and b_year = #{bYear}</if>
+            <if test="bMonth != null ">and b_month = #{bMonth}</if>
+            <if test="bDay != null ">and b_day = #{bDay}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="userAssciationFlag != null ">and USER_ASSCIATION_FLAG = #{userAssciationFlag}</if>
+            <if test="hBatchId != null ">and HBATCH_ID = #{hBatchId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(1) from im_hadoop_batch
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="regbillglideno != null  and regbillglideno != '' ">and REGBILLGLIDENO = #{regbillglideno}</if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE = #{operationCode}</if>
+            <if test="tellerNo != null  and tellerNo != '' ">and TELLERNO = #{tellerNo}</if>
+            <if test="tellerName != null  and tellerName != '' ">and TELLERNAME = #{tellerName}</if>
+            <if test="branchNo != null  and branchNo != '' ">and BRANCHNO = #{branchNo}</if>
+            <if test="branchName != null  and branchName != '' ">and BRANCHNAME = #{branchName}</if>
+            <if test="serialino != null  and serialino != '' ">and SERIALNO = #{serialino}</if>
+            <if test="rcvNum != null  and rcvNum != '' ">and RCVNUM = #{rcvNum}</if>
+            <if test="totalNum != null  and totalNum != '' ">and TOTALNUM = #{totalNum}</if>
+            <if test="billPackages != null  and billPackages != '' ">and BILLPACKAGES = #{billPackages}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEMFLAG = #{systemFlag}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="ocrFlag != null  and ocrFlag != '' ">and OCR_FLAG = #{ocrFlag}</if>
+            <if test="defectType != null  and defectType != '' ">and DEFECT_TYPE = #{defectType}</if>
+            <if test="orderNum != null  and orderNum != '' ">and ORDER_NUM = #{orderNum}</if>
+            <if test="bHour != null ">and b_hour = #{bHour}</if>
+            <if test="bYear != null ">and b_year = #{bYear}</if>
+            <if test="bMonth != null ">and b_month = #{bMonth}</if>
+            <if test="bDay != null ">and b_day = #{bDay}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="userAssciationFlag != null ">and USER_ASSCIATION_FLAG = #{userAssciationFlag}</if>
+            <if test="hBatchId != null ">and HBATCH_ID = #{hBatchId}</if>
+        </where>
+    </select>
+
+    <select id="selectByRegno" resultMap="ImHadoopBatchResult">
+        <include refid="selectImHadoopBatchVo"/>
+        where regbillglideno = #{regno}
+    </select>
+
+    <select id="selectImHadoopBatchById" parameterType="String" resultMap="ImHadoopBatchResult">
+        <include refid="selectImHadoopBatchVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImHadoopBatch">
+        insert into im_hadoop_batch (id,regbillglideno,operationCode,sys_flag_int,create_time) values
+        (#{id},#{regbillglideno},#{operationCode},#{sysFlagInt},#{createTime})
+    </insert>
+
+    <update id="updateImHadoopBatch" parameterType="net.northking.iacmp.imp.domain.ImHadoopBatch">
+        update im_hadoop_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="regbillglideno != null  and regbillglideno != ''  ">REGBILLGLIDENO = #{regbillglideno},</if>
+            <if test="operationCode != null  and operationCode != ''  ">OPERATIONCODE = #{operationCode},</if>
+            <if test="tellerNo != null  and tellerNo != ''  ">TELLERNO = #{tellerNo},</if>
+            <if test="tellerName != null  and tellerName != ''  ">TELLERNAME = #{tellerName},</if>
+            <if test="branchNo != null  and branchNo != ''  ">BRANCHNO = #{branchNo},</if>
+            <if test="branchName != null  and branchName != ''  ">BRANCHNAME = #{branchName},</if>
+            <if test="serialino != null  and serialino != ''  ">SERIALNO = #{serialino},</if>
+            <if test="rcvNum != null  and rcvNum != ''  ">RCVNUM = #{rcvNum},</if>
+            <if test="totalNum != null  and totalNum != ''  ">TOTALNUM = #{totalNum},</if>
+            <if test="billPackages != null  and billPackages != ''  ">BILLPACKAGES = #{billPackages},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEMFLAG = #{systemFlag},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="ocrFlag != null  and ocrFlag != ''  ">OCR_FLAG = #{ocrFlag},</if>
+            <if test="defectType != null  and defectType != ''  ">DEFECT_TYPE = #{defectType},</if>
+            <if test="orderNum != null  and orderNum != ''  ">ORDER_NUM = #{orderNum},</if>
+            <if test="bHour != null  ">b_hour = #{bHour},</if>
+            <if test="bYear != null  ">b_year = #{bYear},</if>
+            <if test="bMonth != null  ">b_month = #{bMonth},</if>
+            <if test="bDay != null  ">b_day = #{bDay},</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT = #{sysFlagInt},</if>
+            <if test="userAssciationFlag != null  ">USER_ASSCIATION_FLAG = #{userAssciationFlag},</if>
+            <if test="hBatchId != null  ">HBATCH_ID = #{hBatchId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImHadoopBatchById" parameterType="String">
+        delete from im_hadoop_batch where ID = #{id}
+    </delete>
+
+    <delete id="deleteImHadoopBatchByIds" parameterType="String">
+        delete from im_hadoop_batch where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

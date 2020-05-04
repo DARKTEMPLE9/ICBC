@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>iacmp-biz</artifactId>
+        <groupId>net.northking.iacmp</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>iacmp-biz-pms</artifactId>
+    <dependencies>
+        <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- 系统模块-->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-common-dao</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-system</artifactId>
+        </dependency>
+
+        <!---核心模块-->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-cms-server</artifactId>
+        </dependency>
+
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-framework</artifactId>
+        </dependency>
+
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>net.northking.iacmp</groupId>
+            <artifactId>iacmp-biz-generator</artifactId>
+        </dependency>
+
+        <!-- 文档转换-->
+        <!--<dependency>-->
+        <!--<groupId>aspose.total</groupId>-->
+        <!--<artifactId>aspose-cells</artifactId>-->
+        <!--<version>17.7</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>aspose.total</groupId>-->
+        <!--<artifactId>aspose-words</artifactId>-->
+        <!--<version>17.8</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>net.northking</groupId>-->
+        <!--<artifactId>baixin-aspose-word</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>net.northking</groupId>-->
+        <!--<artifactId>baixin-aspose-ppt</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-core</artifactId>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash;springboot支持包，里面包括了自动配置类 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-spring-boot-starter</artifactId>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash;jodconverter 本地支持包 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.jodconverter</groupId>-->
+        <!--<artifactId>jodconverter-local</artifactId>-->
+        <!--</dependency>-->
+        <!--本地jar包-->
+        <dependency>
+            <groupId>DBstep</groupId>
+            <artifactId>DBstep</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/DBstep.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>ojdbc6</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/ojdbc6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>httpFileTransClient</groupId>
+            <artifactId>httpFileTransClient</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/httpFileTransClient.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <!--<build>-->
+    <!--<resources>-->
+    <!--<resource>-->
+    <!--<directory>lib</directory>-->
+    <!--<targetPath>/BOOT-INF/lib/</targetPath>-->
+    <!--<includes>-->
+    <!--<include>**/*.jar</include>-->
+    <!--</includes>-->
+    <!--</resource>-->
+    <!--</resources>-->
+    <!--</build>-->
+</project>

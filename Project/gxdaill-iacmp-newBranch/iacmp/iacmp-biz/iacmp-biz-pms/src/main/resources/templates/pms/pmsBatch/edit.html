@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改影像批次')"/>
+</head>
+<style>
+    .inputCss {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 1px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pmsBatch-edit" th:object="${pmsBatch}">
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">项目名称：</label>
+            <div class="col-sm-8">
+                <input id="projectName" name="projectName" th:field="*{projectName}" class="form-control" type="text"
+                       required maxlength="255" placeholder="最大输入255位">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">项目编号：</label>
+            <div class="col-sm-8">
+                <input id="operationCode" name="operationCode" th:field="*{operationCode}" class="form-control"
+                       type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">预算编号：</label>
+            <div class="col-sm-8">
+                <input id="budgetId" name="budgetId" th:field="*{budgetId}" class="form-control" type="text"
+                       maxlength="100" placeholder="最大输入100位" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <input id="projectManager" name="projectManager" class="form-control" th:field="*{projectManager}"
+                       type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">科技项目经理：</label>
+            <div class="col-sm-8">
+                <input id="projectManager2" name="projectManager2"
+                       onclick="selectUser('projectManager');projectManager2.blur();return false"
+                       th:field="*{projectManagerName}" class="form-control" type="text" required>
+
+            </div>
+        </div>
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <input id="productManager" name="productManager" class="form-control" th:field="*{productManager}"
+                       type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">项目产品经理：</label>
+            <div class="col-sm-8">
+                <input id="productManager2" name="productManager2"
+                       onclick="selectUser('productManager');productManager2.blur();return false"
+                       th:field="*{productManagerName}" class="form-control" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8" th:if="*{attriDept==null}">
+                <input id="attriDept" name="attriDept" class="form-control" value="0000"
+                       type="text" required>
+            </div>
+            <div class="col-sm-8" th:if="*{attriDept!=null}">
+                <input id="attriDept" name="attriDept" class="form-control" th:field="*{attriDept}"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归属部门：</label>
+            <div class="col-sm-8" th:if="*{attriDeptName==null}">
+                <input id="attriDept2" onclick="selectDept('attriDept');attriDept2.blur();return false" value="未知"
+                       name="attriDept2" class="form-control"
+                       type="text" required>
+            </div>
+            <div class="col-sm-8" th:if="*{attriDeptName!=null}">
+                <input id="attriDept2" onclick="selectDept('attriDept');attriDept2.blur();return false"
+                       th:field="*{attriDeptName}" name="attriDept2" class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <input id="modelList" name="modelList" class="form-control" th:field="*{modelList}"
+                       type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模型选择：</label>
+            <div class="col-sm-8">
+                <input id="modelList2" name="modelList2"
+                       onclick="selectModels('modelList');modelList2.blur();return false" th:field="*{modelListName}"
+                       class="form-control" type="text" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建人：</label>
+            <div class="col-sm-8">
+                <input id="createBy" name="createBy" th:field="*{createBy}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+
+        <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">部门编号：</label>-->
+        <!--<div class="col-sm-8">-->
+        <!--<input id="deptId" name="deptId" th:field="*{deptId}" class="form-control" type="text">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8" th:if="*{buildDept==null}">
+                <input id="buildDept" name="buildDept" class="form-control" value="0000"
+                       type="text" required>
+            </div>
+            <div class="col-sm-8" th:if="*{buildDept!=null}">
+                <input id="buildDept" name="buildDept" class="form-control" th:field="*{buildDept}"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">承建部门：</label>
+            <div class="col-sm-8" th:if="*{buildDeptName==null}">
+                <input id="buildDept2" onclick="selectDept('buildDept');buildDept2.blur();return false" value="未知"
+                       name="buildDept2" class="form-control"
+                       type="text" required>
+            </div>
+            <div class="col-sm-8" th:if="*{buildDeptName!=null}">
+                <input id="buildDept2" onclick="selectDept('buildDept');buildDept2.blur();return false"
+                       th:field="*{buildDeptName}" name="buildDept2" class="form-control"
+                       type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input id="updateTime" name="updateTime"
+                       th:value="${#dates.format(pmsBatch.updateTime,'yyyy-MM-dd HH:mm:ss')}" class="form-control"
+                       type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改人：</label>
+            <div class="col-sm-8">
+                <input id="updateBy" name="updateBy" th:field="*{updateBy}" class="form-control" type="text" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">项目状态：</label>
+            <select style="margin-left: 15px" class="inputCss col-sm-7" name="status" th:field="*{status}"
+                    th:with="type=${@dict.getType('pms_batch_status')}" required>
+                <option value="">未选择</option>
+                <option value="0">未启动</option>
+                <option value="2">已结项</option>
+                <option value="3">实施中</option>
+                <option value="4">取消</option>
+                <!--					<option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+                <!--							th:value="${dict?.dictValue}"></option>-->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">系统级别：</label>
+            <select style="margin-left: 15px" class="inputCss col-sm-7" name="sysLevel" th:field="*{sysLevel}"
+                    th:with="type=${@dict.getType('pms_batch_sysLevel')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">系统类型：</label>
+            <select style="margin-left: 15px" class="inputCss col-sm-7" name="sysType" th:field="*{sysType}"
+                    th:with="type=${@dict.getType('pms_batch_sysType')}" required>
+                <option value="">未选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict?.dictValue}"></option>
+            </select>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "pms/pmsBatch";
+    $("#form-pmsBatch-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-pmsBatch-edit').serialize());
+        }
+    }
+
+    /*选择人*/
+    function selectUser(id, width, height) {
+        var options = {
+            title: '选择用户',
+            width: width,
+            height: height,
+            id: id,
+            url: ctx + "pms/pmsBatch/selectUser/" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisLoginName').val());
+                $('#' + id + "2").val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /*选择部门*/
+    function selectDept(id, width, height) {
+        var options = {
+            title: '选择部门',
+            width: width,
+            height: height,
+            id: id,
+            url: ctx + "pms/pmsBatch/selectDeptTree/" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#treeId').val());
+                $('#' + id + "2").val(body.find('#treeName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    function selectModels(id, width, height) {
+        $.modal.open("选择模型", ctx + "pms/pmsBatch/selectModel/" + id);
+    }
+</script>
+</body>
+</html>

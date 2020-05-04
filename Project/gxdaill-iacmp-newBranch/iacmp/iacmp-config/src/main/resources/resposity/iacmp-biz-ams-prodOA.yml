@@ -1,0 +1,172 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为80
+  port: 8088
+  servlet:
+    # 应用的访问路径
+    context-path: /ams/
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 200
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+    # 请求头最大
+    max-http-header-size: 10000000
+# 日志配置
+logging:
+  level:
+    net.northking.iacmp.ams: info
+    org.springframework: warn
+
+# 用户配置
+user:
+  password:
+    # 密码错误{maxRetryCount}次锁定10分钟
+    maxRetryCount: 5
+
+# Spring配置
+spring:
+  # 模板引擎
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    # 禁用缓存
+    cache: false
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: static/i18n/messages
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: druid
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size:  20MB
+      # 设置总上传的文件大小
+      max-request-size:  100MB
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: net.northking.iacmp.*.domain,net.northking.iacmp.common.bean
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 忽略扫描该路径下mapper.xml映射文件
+  ignoreMapperLocations: classpath*:mapper/cms/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# Shiro
+shiro:
+  user:
+    # 登录地址
+    loginUrl: /login
+    # 权限认证失败地址
+    unauthorizedUrl: /unauth
+    # 首页地址
+    indexUrl: /index
+    # 验证码开关
+    captchaEnabled: false
+    # 验证码类型 math 数组计算 char 字符
+    captchaType: math
+  cookie:
+    # 设置Cookie的域名 默认空，即当前访问的域名
+    domain:
+    # 设置cookie的有效访问路径
+    path: /
+    # 设置HttpOnly属性
+    httpOnly: true
+    # 设置Cookie的过期时间，天为单位
+    maxAge: 30
+  session:
+    # Session超时时间（默认30分钟）
+    expireTime: 180
+    # 同步session到数据库的周期（默认1分钟）
+    dbSyncPeriod: 1
+    # 相隔多久检查一次session的有效性，默认就是10分钟
+    validationInterval: 10
+    # 同一个用户最大会话数，比如2的意思是同一个账号允许最多同时两个人登录（默认-1不限制）
+    maxSession: -1
+    # 踢出之前登录的/之后登录的用户，默认踢出之前登录的用户
+    kickoutAfter: false
+  ignore:
+    #忽略登录验证的接口地址
+    path: /outInterface/amsBatchRecord/*,/myTask/waitProcessInfo/*,/myTask/waitProcessInfo/returnProcess/*,/myTask/waitProcessInfo/approvalHistory/*,/file/**,/convert/**,/es/**,/pdf/**,/soft/**,/uip/**,/pages/**,/ssoLogin/**,
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+#获取组织架构
+ladp:
+  #连接ladpURL
+  ladpUrl: LDAP://ad.it.bx:389
+  #用户名
+  adminName: amsldap@oa.bx
+  #密码
+  adminPassword: P@ssw0rd
+  #所有人信息
+  searchBaseAll:
+  #行员信息
+  searchBaseBank: ou=ZXBXUsers,ou=中信百信银行,dc=oa,dc=bx
+  #搜索过滤器
+  searchFilter: objectClass=User
+  #初始化密码
+  initPwd: 123456
+  #登录后缀
+  loginSuffix: oa.bx
+
+#hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+#ribbon的超时时间
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 120000
+
+#office转pdf工具
+jodconverter:
+  local:
+    enabled: true
+    office-home: /opt/openoffice4
+    max-tasks-per-process: 10
+    port-numbers: 8101
+    task-execution-timeout: 1200000
+
+# feign调用cms时的上下文路径配置
+providerContext: cms
+
+#登录方式（SSO 或者 AD 或者 ALL）
+loginType: AD
+
+#最大上传大小
+maxUploadSize: 20480 #20M

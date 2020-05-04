@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-ams/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-cms/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-bean/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-dao/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-common/iacmp-biz-common-dao/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-elasticsearch/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-imp/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-pms/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-pms/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-quartz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-quartz/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-biz/iacmp-biz-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-config/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-eureka/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-monitor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-monitor/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-turbine/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/iacmp-turbine/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

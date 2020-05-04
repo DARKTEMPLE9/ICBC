@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImTemplateBlockDefMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImTemplateBlockDef" id="ImTemplateBlockDefResult">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="templateId" column="TEMPLATE_ID"/>
+        <result property="pyszm" column="PYSZM"/>
+        <result property="btdefId" column="BTDEF_ID"/>
+    </resultMap>
+
+    <sql id="selectImTemplateBlockDefVo">
+        select ID, CODE, NAME, TEMPLATE_ID, PYSZM, BTDEF_ID from im_template_block_def
+    </sql>
+
+    <select id="selectImTemplateBlockDefList" resultMap="ImTemplateBlockDefResult">
+        select ID, CODE, NAME,(select name from im_template_def where id = a.template_id) as TEMPLATE_ID, PYSZM,
+        BTDEF_ID from im_template_block_def a
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="templateId != null  and templateId != '' ">and TEMPLATE_ID = #{templateId}</if>
+            <if test="pyszm != null  and pyszm != '' ">and PYSZM = #{pyszm}</if>
+            <if test="btdefId != null ">and BTDEF_ID = #{btdefId}</if>
+        </where>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(1) from im_template_block_def
+        <where>
+            <if test="id != null  and id != '' ">and ID = #{id}</if>
+            <if test="code != null  and code != '' ">and CODE = #{code}</if>
+            <if test="name != null  and name != '' ">and NAME = #{name}</if>
+            <if test="templateId != null  and templateId != '' ">and TEMPLATE_ID = #{templateId}</if>
+            <if test="pyszm != null  and pyszm != '' ">and PYSZM = #{pyszm}</if>
+            <if test="btdefId != null ">and BTDEF_ID = #{btdefId}</if>
+        </where>
+    </select>
+
+    <select id="selectById" parameterType="String" resultType="Map">
+        select id, code, name, (select name from im_template_def where id = a.template_id) as templateName, pyszm from
+        im_template_block_def a
+        where id = #{id}
+    </select>
+
+    <insert id="insertImTemplateBlockDef">
+        insert into im_template_block_def
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="code != null  and code != ''  ">CODE,</if>
+            <if test="name != null  and name != ''  ">NAME,</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID,</if>
+            <if test="pyszm != null  and pyszm != ''  ">PYSZM,</if>
+            <if test="btdefId != null  ">BTDEF_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="code != null  and code != ''  ">#{code},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="templateId != null  and templateId != ''  ">#{templateId},</if>
+            <if test="pyszm != null  and pyszm != ''  ">#{pyszm},</if>
+            <if test="btdefId != null  ">#{btdefId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById">
+        update im_template_block_def
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''  ">CODE = #{code},</if>
+            <if test="name != null  and name != ''  ">NAME = #{name},</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID = #{templateId},</if>
+            <if test="pyszm != null  and pyszm != ''  ">PYSZM = #{pyszm},</if>
+            <if test="btdefId != null  ">BTDEF_ID = #{btdefId},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+
+    <delete id="deleteImTemplateBlockDefById" parameterType="String">
+        delete from im_template_block_def where ID = #{id}
+    </delete>
+
+    <delete id="deleteImTemplateBlockDefByIds" parameterType="String">
+        delete from im_template_block_def where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

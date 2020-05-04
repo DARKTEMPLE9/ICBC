@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <th:block th:include="include :: header('列表')"/>
+    <style>
+        label {
+            width: 110px;
+        }
+
+        label.error {
+            right: auto !important;
+            top: auto;
+            left: 140px;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="form-gftEntryDtl-search">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>凭证类别：</label>
+                            <input type="text" name="voucherCate"/>
+                        </li>
+
+                        <li>
+                            <label style="width: 108px;">凭证号：</label>
+                            <input type="text" name="voucherId"/>
+                        </li>
+
+                        <li>
+                            <label style="width: 131px">交易流水号：</label>
+                            <input type="text" name="dealNum"/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--<label>开始时间：</label>-->
+                        <!--<input type="text" id="tallyDtStart" placeholder="" name="tallyDtStart"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label>结束时间：</label>-->
+                        <!--<input type="text" id="tallyDtEnd" placeholder="" name="tallyDtEnd"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="select-time">
+                                <label>记账日期(30天)： </label>
+                                <input type="text" style="width: 200px;margin-left: 2px" required
+                                       class="input-sm form-control" id="tallyDtStart" placeholder=""
+                                       name="tallyDtStart"/>
+                                <span style="margin-left: 58px;margin-right: 58px">到</span>
+                                <input type="text" style="width: 200px;" required class="input-sm form-control"
+                                       id="tallyDtEnd" placeholder="" name="tallyDtEnd"/>
+                            </div>
+                        </li>
+
+                        <li>
+                            <label style="width: 131px">辅助核算项来源系统：</label>
+                            <input type="text" name="asstSrcSys"/>
+                        </li>
+
+                        <!--<li>-->
+                        <!--<label>记账日期开始(全部)：</label>-->
+                        <!--<input type="text" id="tallyDtStart1" placeholder="" name="tallyDtStart"/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--<label>记账日期结束(全部)：</label>-->
+                        <!--<input type="text" id="tallyDtEnd1" placeholder="" name="tallyDtEnd"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <div class="select-time">
+                                <label>历史数据查询： </label>
+                                <input type="text" style="width: 200px;margin-left: 2px" class="input-sm form-control"
+                                       id="tallyDtStart1" placeholder="" required name="tallyDtStart"/>
+                                <span style="margin-left: 58px;margin-right: 58px">到</span>
+                                <input type="text" style="width: 200px;" class="input-sm form-control" id="tallyDtEnd1"
+                                       placeholder="" required name="tallyDtEnd"/>
+                            </div>
+                        </li>
+
+
+                        <!--<li style="">-->
+                        <!--<div class="select-time">-->
+                        <!--<label style="margin-right: 5px;">记账日期开始: </label>-->
+                        <!--<input type="text" class="input-sm form-control" id="tallyDtStart" placeholder="" name="tallyDtStart"/>-->
+                        <!--<span>-</span>-->
+                        <!--<input type="text" style=";width: 151px;" class="input-sm form-control" id="tallyDtEnd" placeholder="" name="tallyDtEnd"/>-->
+                        <!--</div>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                        <!--记账日期：<input type="text" name="tallyDt"/>-->
+                        <!--</li>-->
+
+                        <li>
+                            <label style="width: 131px">会计科目：</label>
+                            <input type="text" name="subjId"/>
+                        </li>
+
+                        <li style="margin-right: 600px">
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="submitHandler()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                            <a class="btn btn-success btn-rounded btn-sm" onclick="openClose()"><i id="openCloseI"
+                                                                                                   class="fa fa-download"></i>&nbsp;<span
+                                    id="openCloseSpan">展开</span></a>
+                        </li>
+
+                        <ul id="openClose" style="display: none;">
+                            <li>
+                                <label>账簿编号：</label>
+                                <input type="text" name="bookId"/>
+                            </li>
+
+                            <li>
+                                <label>交易账户：</label>
+                                <input type="text" name="dealAcct"/>
+                            </li>
+
+                            <li>
+                                <label>审核人：</label>
+                                <input type="text" name="auditor"/>
+                            </li>
+
+                            <li>
+                                <label>制单人：</label>
+                                <input type="text" name="preparer"/>
+                            </li>
+
+                            <li>
+                                <label>记账人：</label>
+                                <input type="text" name="bookkeeper"/>
+                            </li>
+
+                            <li>
+                                <label>会计年度：</label>
+                                <input type="text" name="acctsYear"/>
+                            </li>
+
+                            <li>
+                                <label>会计月份：</label>
+                                <input type="text" name="acctsMonth"/>
+                            </li>
+
+                            <li>
+                                <label>调整期间：</label>
+                                <input type="text" name="adjPeriod"/>
+                            </li>
+
+                            <li>
+                                <div class="select-time">
+                                    <label style="margin-right: 3px">审核日期： </label>
+                                    <input type="text" style="width: 200px" class="input-sm form-control" id="auditDt"
+                                           placeholder="" name="auditDt"/>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="select-time">
+                                    <label style="margin-right: 5px">制单日期： </label>
+                                    <input type="text" style="width: 200px;" class="input-sm form-control"
+                                           id="prepareDt" placeholder="" name="prepareDt"/>
+                                </div>
+                            </li>
+
+                            <li>
+                                <label>附属单据：</label>
+                                <input type="text" name="addBillNum"/>
+                            </li>
+
+                            <li>
+                                <label>制单系统：</label>
+                                <input type="text" name="prepareSys"/>
+                            </li>
+
+                            <li>
+                                <label>分录号：</label>
+                                <input type="text" name="entryId"/>
+                            </li>
+
+                            <li>
+                                <label>分录摘要：</label>
+                                <input type="text" name="entryCont"/>
+                            </li>
+
+                            <li>
+                                <label>辅助核算项部门：</label>
+                                <input type="text" name="asstOrg"/>
+                            </li>
+
+                            <li>
+                                <label>币种编号：</label>
+                                <input type="text" name="ccyId"/>
+                            </li>
+
+                            <li>
+                                <label>汇率：</label>
+                                <input type="text" name="exRate"/>
+                            </li>
+
+                            <li>
+                                <label>发生额方向：</label>
+                                <input type="text" name="amtDir"/>
+                            </li>
+
+                            <li>
+                                <label>原币借方发生额：</label>
+                                <input type="text" name="oriDebAmt"/>
+                            </li>
+
+                            <li>
+                                <label>原币贷方发生额：</label>
+                                <input type="text" name="oriCrdAmt"/>
+                            </li>
+
+                            <li>
+                                <label>本币借方发生额：</label>
+                                <input type="text" name="locDebAmt"/>
+                            </li>
+
+                            <li>
+                                <label>本币贷方发生额：</label>
+                                <input type="text" name="locCrdAmt"/>
+                            </li>
+
+                            <li>
+                                <label>是否年末结转：</label>
+                                <input type="text" name="isEyearTurn"/>
+                            </li>
+
+                            <li>
+                                <label>是否表外：</label>
+                                <input type="text" name="isOff"/>
+                            </li>
+                        </ul>
+
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="iacmp:gftEntryDtl:add">-->
+            <!--<i class="fa fa-plus"></i> 添加-->
+            <!--</a>-->
+            <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="iacmp:gftEntryDtl:edit">-->
+            <!--<i class="fa fa-edit"></i> 修改-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="iacmp:gftEntryDtl:remove">-->
+            <!--<i class="fa fa-remove"></i> 删除-->
+            <!--</a>-->
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="iacmp:gftEntryDtl:export">
+                <i class="glyphicon glyphicon-export"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    $("#form-gftEntryDtl-search").validate();
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.table.search();
+        }
+    }
+
+    var editFlag = [[${@permission.hasPermi('iacmp:gftEntryDtl:edit')}]];
+    //var removeFlag = [[${@permission.hasPermi('iacmp:gftEntryDtl:remove')}]];
+    var detailFlag = [[${@permission.hasPermi('iacmp:gftEntryDtl:detail')}]];
+    var prefix = ctx + "testController/gftEntryDtl";
+
+    // 展开隐藏菜单
+    var flag = true;
+
+    function openClose() {
+        if (flag) {
+            $("#openClose").show()
+            $("#openCloseSpan").text("隐藏")
+            $("#openCloseI").prop("class", "fa fa-upload")
+        } else {
+            $("#openClose").hide()
+            $("#openCloseSpan").text("展示")
+            $("#openCloseI").prop("class", "fa fa-download")
+        }
+        flag = !flag
+    }
+
+    // 日期框js
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#auditDt',
+                type: 'date',
+                trigger: 'click'
+            });
+            laydate.render({
+                elem: '#prepareDt',
+                type: 'date',
+                trigger: 'click'
+            });
+            var startDate = laydate.render({
+                elem: '#tallyDtStart',
+                type: 'datetime',
+                max: $('#tallyDtStart').val(),
+                theme: 'molv',
+                min: -30,
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#tallyDtEnd',
+                type: 'datetime',
+                min: $('#tallyDtEnd').val(),
+                theme: 'molv',
+                max: 0,
+                trigger: 'click',
+                done: function (value, date) {
+                    // 开始时间小于结束时间
+                    if (value !== '') {
+                        startDate.config.max.year = date.year;
+                        startDate.config.max.month = date.month - 1;
+                        startDate.config.max.date = date.date;
+                    } else {
+                        startDate.config.max.year = '';
+                        startDate.config.max.month = '';
+                        startDate.config.max.date = '';
+                    }
+                }
+            });
+            var startDate = laydate.render({
+                elem: '#tallyDtStart1',
+                type: 'datetime',
+                max: $('#tallyDtStart1').val(),
+                theme: 'molv',
+                trigger: 'click',
+                done: function (value, date) {
+                    // 结束时间大于开始时间
+                    if (value !== '') {
+                        endDate.config.min.year = date.year;
+                        endDate.config.min.month = date.month - 1;
+                        endDate.config.min.date = date.date;
+                    } else {
+                        endDate.config.min.year = '';
+                        endDate.config.min.month = '';
+                        endDate.config.min.date = '';
+                    }
+                }
+            });
+            var endDate = laydate.render({
+                elem: '#tallyDtEnd1',
+                type: 'datetime',
+                min: $('#tallyDtEnd1').val(),
+                theme: 'molv',
+                max: 0,
+                trigger: 'click',
+                done: function (value, date) {
+                    // 开始时间小于结束时间
+                    if (value !== '') {
+                        startDate.config.max.year = date.year;
+                        startDate.config.max.month = date.month - 1;
+                        startDate.config.max.date = date.date;
+                    } else {
+                        startDate.config.max.year = '';
+                        startDate.config.max.month = '';
+                        startDate.config.max.date = '';
+                    }
+                }
+            });
+        });
+    });
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "财务",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'dealNum',
+                    title: '交易流水号',
+                    sortable: true,
+                    visible: true
+                },
+
+                {
+                    field: 'dealAcct',
+                    title: '交易账户',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'subjId',
+                    title: '会计科目',
+                    sortable: true,
+                    visible: true,
+                },
+                {
+                    field: 'voucherId',
+                    title: '凭证号',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'entryId',
+                    title: '分录号',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'asstSrcSys',
+                    title: '辅助核算项来源系统',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'tallyDt',
+                    title: '记账日期',
+                    sortable: true,
+                    visible: false,
+                },
+                {
+                    field: 'entryCont',
+                    title: '分录摘要',
+                    sortable: true,
+                    visible: false,
+
+                },
+
+
+                {
+                    field: 'pkEntryDtl',
+                    title: '主键',
+                    visible: false,
+                    sortable: true
+
+                },
+                {
+                    field: 'bookkeeper',
+                    title: '记账人',
+                    sortable: true,
+                    visible: false,
+
+                },
+
+                {
+                    field: 'bookId',
+                    title: '账簿编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'voucherCate',
+                    title: '凭证类别',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'auditor',
+                    title: '审核人',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'preparer',
+                    title: '制单人',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'acctsYear',
+                    title: '会计年度',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'acctsMonth',
+                    title: '会计月份',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'adjPeriod',
+                    title: '调整期间',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'auditDt',
+                    title: '审核日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'prepareDt',
+                    title: '制单日期',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'addBillNum',
+                    title: '附属单据',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'prepareSys',
+                    title: '制单系统',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'asstOrg',
+                    title: '辅助核算项部门',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'ccyId',
+                    title: '币种编号',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'exRate',
+                    title: '汇率',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'amtDir',
+                    title: '发生额方向',
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    field: 'oriDebAmt',
+                    title: '原币借方发生额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'oriCrdAmt',
+                    title: '原币贷方发生额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'locDebAmt',
+                    title: '本币借方发生额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'locCrdAmt',
+                    title: '本币贷方发生额',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'isEyearTurn',
+                    title: '是否年末结转',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'isOff',
+                    title: '是否表外',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'gftEntryDtlId',
+                    title: '',
+                    sortable: true,
+                    visible: false
+                },
+                // {
+                // 	field : 'def1',
+                // 	title : '',
+                // 	sortable: false
+                // },
+                // {
+                // 	field : 'def2',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def3',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def4',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def5',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def6',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def7',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def8',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def9',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'def10',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                // {
+                // 	field : 'ts',
+                // 	title : '',
+                // 	sortable: true
+                // },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.pkEntryDtl + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.pkEntryDtl + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

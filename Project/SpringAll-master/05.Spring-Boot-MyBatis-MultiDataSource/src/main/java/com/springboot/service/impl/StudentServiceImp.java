@@ -11,20 +11,20 @@ import com.springboot.oracledao.OracleStudentMapper;
 import com.springboot.service.StudentService;
 
 @Service("studentService")
-public class StudentServiceImp implements StudentService{
-	@Autowired
-	private OracleStudentMapper oracleStudentMapper;
-	@Autowired
-	private MysqlStudentMapper mysqlStudentMapper;
-	
-	@Override
-	public List<Map<String, Object>> getAllStudentsFromOralce() {
-		return this.oracleStudentMapper.getAllStudents();
-	}
+public class StudentServiceImp implements StudentService {
+    @Autowired
+    private OracleStudentMapper oracleStudentMapper;
+    @Autowired
+    private MysqlStudentMapper mysqlStudentMapper;
 
-	@Override
-	public List<Map<String, Object>> getAllStudentsFromMysql() {
-		return this.mysqlStudentMapper.getAllStudents();
-	}
+    @Override
+    public List<Map<String, Object>> getAllStudentsFromOralce() {
+        return this.oracleStudentMapper.getAllStudents();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllStudentsFromMysql() {
+        return this.mysqlStudentMapper.getAllStudents();
+    }
 
 }

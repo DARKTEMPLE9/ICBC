@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImImageCacheMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImImageCache" id="ImImageCacheResult">
+        <result property="id" column="ID"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+        <result property="imageStatus" column="IMAGE_STATUS"/>
+        <result property="batchId" column="BATCH_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="serialino" column="SERIALNO"/>
+        <result property="ecmFileId" column="ECM_FILE_ID"/>
+        <result property="width" column="WIDTH"/>
+        <result property="height" column="HEIGHT"/>
+        <result property="billId" column="BILL_ID"/>
+        <result property="compressFileId" column="COMPRESS_FILE_ID"/>
+        <result property="templateId" column="TEMPLATE_ID"/>
+        <result property="imageSize" column="IMAGE_SIZE"/>
+        <result property="imagePath" column="IMAGE_PATH"/>
+        <result property="operationCode" column="OPERATIONCODE"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="billName" column="BILL_NAME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="createUser" column="CREATE_USER"/>
+        <result property="createUserName" column="CREATE_USER_NAME"/>
+        <result property="deleteTime" column="DELETE_TIME"/>
+        <result property="systemFlag" column="SYSTEM_FLAG"/>
+        <result property="deleteUser" column="DELETE_USER"/>
+        <result property="deleteUserName" column="DELETE_USER_NAME"/>
+        <result property="pzNum" column="PZ_NUM"/>
+        <result property="imageSource" column="IMAGE_SOURCE"/>
+        <result property="sysFlagInt" column="SYS_FLAG_INT"/>
+        <result property="ocrType" column="OCR_TYPE"/>
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="userCode" column="user_code"/>
+        <result property="ip" column="IP"/>
+    </resultMap>
+
+    <sql id="selectImImageCacheVo">
+        select ID, IMAGE_NAME, IMAGE_STATUS, BATCH_ID, CREATE_TIME, SERIALNO, ECM_FILE_ID, WIDTH, HEIGHT, BILL_ID,
+        COMPRESS_FILE_ID, TEMPLATE_ID, IMAGE_SIZE, IMAGE_PATH, OPERATIONCODE, FILE_TYPE, BILL_NAME, REMARK, CREATE_USER,
+        CREATE_USER_NAME, DELETE_TIME, SYSTEM_FLAG, DELETE_USER, DELETE_USER_NAME, PZ_NUM, IMAGE_SOURCE, SYS_FLAG_INT,
+        OCR_TYPE, IMAGE_ID, user_code, IP from im_image_cache
+    </sql>
+
+    <select id="selectImImageCacheList" parameterType="net.northking.iacmp.imp.domain.ImImageCache"
+            resultMap="ImImageCacheResult">
+        <include refid="selectImImageCacheVo"/>
+        <where>
+            <if test="id != null ">and ID = #{id}</if>
+            <if test="imageName != null  and imageName != '' ">and IMAGE_NAME = #{imageName}</if>
+            <if test="imageStatus != null  and imageStatus != '' ">and IMAGE_STATUS = #{imageStatus}</if>
+            <if test="batchId != null  and batchId != '' ">and BATCH_ID = #{batchId}</if>
+            <if test="createTime != null ">and CREATE_TIME = #{createTime}</if>
+            <if test="serialino != null ">and SERIALNO = #{serialino}</if>
+            <if test="ecmFileId != null  and ecmFileId != '' ">and ECM_FILE_ID = #{ecmFileId}</if>
+            <if test="width != null  and width != '' ">and WIDTH = #{width}</if>
+            <if test="height != null  and height != '' ">and HEIGHT = #{height}</if>
+            <if test="billId != null  and billId != '' ">and BILL_ID = #{billId}</if>
+            <if test="compressFileId != null  and compressFileId != '' ">and COMPRESS_FILE_ID = #{compressFileId}</if>
+            <if test="templateId != null  and templateId != '' ">and TEMPLATE_ID = #{templateId}</if>
+            <if test="imageSize != null ">and IMAGE_SIZE = #{imageSize}</if>
+            <if test="imagePath != null  and imagePath != '' ">and IMAGE_PATH = #{imagePath}</if>
+            <if test="operationCode != null  and operationCode != '' ">and OPERATIONCODE = #{operationCode}</if>
+            <if test="fileType != null  and fileType != '' ">and FILE_TYPE = #{fileType}</if>
+            <if test="billName != null  and billName != '' ">and BILL_NAME = #{billName}</if>
+            <if test="remark != null  and remark != '' ">and REMARK = #{remark}</if>
+            <if test="createUser != null  and createUser != '' ">and CREATE_USER = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != '' ">and CREATE_USER_NAME = #{createUserName}</if>
+            <if test="deleteTime != null ">and DELETE_TIME = #{deleteTime}</if>
+            <if test="systemFlag != null  and systemFlag != '' ">and SYSTEM_FLAG = #{systemFlag}</if>
+            <if test="deleteUser != null  and deleteUser != '' ">and DELETE_USER = #{deleteUser}</if>
+            <if test="deleteUserName != null  and deleteUserName != '' ">and DELETE_USER_NAME = #{deleteUserName}</if>
+            <if test="pzNum != null ">and PZ_NUM = #{pzNum}</if>
+            <if test="imageSource != null  and imageSource != '' ">and IMAGE_SOURCE = #{imageSource}</if>
+            <if test="sysFlagInt != null ">and SYS_FLAG_INT = #{sysFlagInt}</if>
+            <if test="ocrType != null  and ocrType != '' ">and OCR_TYPE = #{ocrType}</if>
+            <if test="imageId != null  and imageId != '' ">and IMAGE_ID = #{imageId}</if>
+            <if test="userCode != null  and userCode != '' ">and user_code = #{userCode}</if>
+            <if test="ip != null  and ip != '' ">and IP = #{ip}</if>
+        </where>
+    </select>
+
+    <select id="selectImImageCacheById" parameterType="Long" resultMap="ImImageCacheResult">
+        <include refid="selectImImageCacheVo"/>
+        where ID = #{id}
+    </select>
+
+    <select id="selectByImageId" parameterType="String" resultMap="ImImageCacheResult">
+        <include refid="selectImImageCacheVo"/>
+        where IMAGE_ID = #{imageId}
+    </select>
+
+    <select id="scanLookAtImageCache" resultMap="ImImageCacheResult">
+        <include refid="selectImImageCacheVo"/>
+        where (image_status=2 or image_status=5 or image_status=6) and ip = #{ip} limit #{tasknum}
+    </select>
+
+    <insert id="insertImImageCache" parameterType="net.northking.iacmp.imp.domain.ImImageCache"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into im_image_cache
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME,</if>
+            <if test="imageStatus != null  and imageStatus != ''  ">IMAGE_STATUS,</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID,</if>
+            <if test="createTime != null  ">CREATE_TIME,</if>
+            <if test="serialino != null  ">SERIALNO,</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID,</if>
+            <if test="width != null  and width != ''  ">WIDTH,</if>
+            <if test="height != null  and height != ''  ">HEIGHT,</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID,</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID,</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID,</if>
+            <if test="imageSize != null  ">IMAGE_SIZE,</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH,</if>
+            <if test="operationCode != null  and operationCode != ''  ">OPERATIONCODE,</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE,</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME,</if>
+            <if test="remark != null  and remark != ''  ">REMARK,</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER,</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME,</if>
+            <if test="deleteTime != null  ">DELETE_TIME,</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG,</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">DELETE_USER,</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">DELETE_USER_NAME,</if>
+            <if test="pzNum != null  ">PZ_NUM,</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE,</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT,</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE,</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID,</if>
+            <if test="userCode != null  and userCode != ''  ">user_code,</if>
+            <if test="ip != null  and ip != ''  ">IP,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="imageName != null  and imageName != ''  ">#{imageName},</if>
+            <if test="imageStatus != null  and imageStatus != ''  ">#{imageStatus},</if>
+            <if test="batchId != null  and batchId != ''  ">#{batchId},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="serialino != null  ">#{serialino},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">#{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">#{width},</if>
+            <if test="height != null  and height != ''  ">#{height},</if>
+            <if test="billId != null  and billId != ''  ">#{billId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">#{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">#{templateId},</if>
+            <if test="imageSize != null  ">#{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">#{imagePath},</if>
+            <if test="operationCode != null  and operationCode != ''  ">#{operationCode},</if>
+            <if test="fileType != null  and fileType != ''  ">#{fileType},</if>
+            <if test="billName != null  and billName != ''  ">#{billName},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">#{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">#{createUserName},</if>
+            <if test="deleteTime != null  ">#{deleteTime},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">#{systemFlag},</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">#{deleteUser},</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">#{deleteUserName},</if>
+            <if test="pzNum != null  ">#{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">#{imageSource},</if>
+            <if test="sysFlagInt != null  ">#{sysFlagInt},</if>
+            <if test="ocrType != null  and ocrType != ''  ">#{ocrType},</if>
+            <if test="imageId != null  and imageId != ''  ">#{imageId},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="ip != null  and ip != ''  ">#{ip},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImImageCache" parameterType="net.northking.iacmp.imp.domain.ImImageCache">
+        update im_image_cache
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageName != null  and imageName != ''  ">IMAGE_NAME = #{imageName},</if>
+            <if test="imageStatus != null  and imageStatus != ''  ">IMAGE_STATUS = #{imageStatus},</if>
+            <if test="batchId != null  and batchId != ''  ">BATCH_ID = #{batchId},</if>
+            <if test="createTime != null  ">CREATE_TIME = #{createTime},</if>
+            <if test="serialino != null  ">SERIALNO = #{serialino},</if>
+            <if test="ecmFileId != null  and ecmFileId != ''  ">ECM_FILE_ID = #{ecmFileId},</if>
+            <if test="width != null  and width != ''  ">WIDTH = #{width},</if>
+            <if test="height != null  and height != ''  ">HEIGHT = #{height},</if>
+            <if test="billId != null  and billId != ''  ">BILL_ID = #{billId},</if>
+            <if test="compressFileId != null  and compressFileId != ''  ">COMPRESS_FILE_ID = #{compressFileId},</if>
+            <if test="templateId != null  and templateId != ''  ">TEMPLATE_ID = #{templateId},</if>
+            <if test="imageSize != null  ">IMAGE_SIZE = #{imageSize},</if>
+            <if test="imagePath != null  and imagePath != ''  ">IMAGE_PATH = #{imagePath},</if>
+            <if test="operationCode != null  and operationCode != ''  ">OPERATIONCODE = #{operationCode},</if>
+            <if test="fileType != null  and fileType != ''  ">FILE_TYPE = #{fileType},</if>
+            <if test="billName != null  and billName != ''  ">BILL_NAME = #{billName},</if>
+            <if test="remark != null  and remark != ''  ">REMARK = #{remark},</if>
+            <if test="createUser != null  and createUser != ''  ">CREATE_USER = #{createUser},</if>
+            <if test="createUserName != null  and createUserName != ''  ">CREATE_USER_NAME = #{createUserName},</if>
+            <if test="deleteTime != null  ">DELETE_TIME = #{deleteTime},</if>
+            <if test="systemFlag != null  and systemFlag != ''  ">SYSTEM_FLAG = #{systemFlag},</if>
+            <if test="deleteUser != null  and deleteUser != ''  ">DELETE_USER = #{deleteUser},</if>
+            <if test="deleteUserName != null  and deleteUserName != ''  ">DELETE_USER_NAME = #{deleteUserName},</if>
+            <if test="pzNum != null  ">PZ_NUM = #{pzNum},</if>
+            <if test="imageSource != null  and imageSource != ''  ">IMAGE_SOURCE = #{imageSource},</if>
+            <if test="sysFlagInt != null  ">SYS_FLAG_INT = #{sysFlagInt},</if>
+            <if test="ocrType != null  and ocrType != ''  ">OCR_TYPE = #{ocrType},</if>
+            <if test="imageId != null  and imageId != ''  ">IMAGE_ID = #{imageId},</if>
+            <if test="userCode != null  and userCode != ''  ">user_code = #{userCode},</if>
+            <if test="ip != null  and ip != ''  ">IP = #{ip},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImImageCacheById" parameterType="Long">
+        delete from im_image_cache where ID = #{id}
+    </delete>
+
+    <delete id="deleteImImageCacheByIds" parameterType="String">
+        delete from im_image_cache where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

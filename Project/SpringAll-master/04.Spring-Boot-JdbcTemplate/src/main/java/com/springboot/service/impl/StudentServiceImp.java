@@ -14,32 +14,32 @@ import com.springboot.service.StudentService;
 @Service("studentService")
 public class StudentServiceImp implements StudentService {
 
-	@Autowired
-	private StudentDao studentDao;
+    @Autowired
+    private StudentDao studentDao;
 
-	@Override
-	public int add(Student student) {
-		return this.studentDao.add(student);
-	}
+    @Override
+    public int add(Student student) {
+        return this.studentDao.add(student);
+    }
 
-	@Override
-	public int update(Student student) {
-		return this.studentDao.update(student);
-	}
+    @Override
+    public int update(Student student) {
+        return this.studentDao.update(student);
+    }
 
-	@Override
-	public int deleteBysno(String sno) {
-		return this.studentDao.deleteBysno(sno);
-	}
+    @Override
+    public int deleteBysno(String sno) {
+        return this.studentDao.deleteBysno(sno);
+    }
 
-	@Override
-	public List<Map<String, Object>> queryStudentListMap() {
-		return this.studentDao.queryStudentsListMap();
-	}
+    @Override
+    public List<Map<String, Object>> queryStudentListMap() {
+        return this.studentDao.queryStudentsListMap();
+    }
 
-	@Override
-	public Student queryStudentBySno(String sno) {
-		return this.studentDao.queryStudentBySno(sno);
-	}
+    @Override
+    public Student queryStudentBySno(String sno) {
+        return this.studentDao.queryStudentBySno(sno);
+    }
 
 }

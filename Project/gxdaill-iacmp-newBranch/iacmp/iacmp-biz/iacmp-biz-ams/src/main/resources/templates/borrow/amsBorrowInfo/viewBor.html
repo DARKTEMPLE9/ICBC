@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('档案借阅历史详情')"/>
+    <style>
+        #myForm {
+            position: relative;
+        }
+
+        #myForm .seeDetail {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+        }
+
+        #myForm .sendEmail {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<!--<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight ibox-content clearfix">
+
+    <form class="form-horizontal" id='myForm' th:object="${amsBorrowInfo}">
+        <a class="btn btn-info btn-sm seeDetail" onclick="selectUsersToParent()">审批记录</a>
+        <a class="btn btn-info btn-sm sendEmail " onclick="selectEmailHistory()">邮件发送记录</a>
+        <div class="form-group">
+            <div class="col-sm-12 text-right">
+                <button type='button' class="btn  btn-warning" id='myProcess' style="display:none;"
+                        value='查看审批信息' title=''>
+                    <span class='glyphicon glyphicon-pencil'></span>&nbsp;查看审批信息
+                </button>
+            </div>
+        </div>
+        <!--<input type="hidden"  class='submitInput form-control'>-->
+        <input type="hidden" id="id" class="input-text" th:field="*{id}"/>
+        <input type="hidden" id="batchId" class="input-text" th:field="*{batchId}"/>
+        <input type="hidden" th:field="*{id}" id="amsProId">
+
+        <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+            <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">档案信息</h4>
+            <!--<div class="form-groupcol-sm-6" >-->
+            <!--<label class="col-sm-3 control-label">档号:</label>-->
+            <!--<div class="col-sm-8">-->
+            <!--<input class='submitInput form-control ' type="text" th:field="*{arcNo}"-->
+            <!--readonly disabled maxlength='255' id="arcNo" placeholder=""-->
+            <!--value="">-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">档案名称:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcName}"
+                               readonly disabled maxlength='255' id="arcName" placeholder=""
+                               value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">档案分类:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{arcBillName}"
+                               readonly disabled maxlength='255' id="arcBillName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">档案形态:</label>
+                    <div class="col-sm-8">
+                        <!--<input class='submitInput form-control ' type="text" th:field="*{arcType}"-->
+                        <!--readonly disabled maxlength='255' id="arcType" placeholder=""-->
+                        <!--value="">-->
+
+                        <input name="arcType" th:if="*{arcType} == '10'" class="form-control" type="text" value="电子档案"
+                               readonly disabled>
+                        <input name="arcType" th:if="*{arcType} == '20'" class="form-control" type="text" value="实物档案"
+                               readonly disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所属部门:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{opDepName}"
+                               readonly disabled maxlength='255' id="opDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">档案盒号:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text"
+                               readonly disabled maxlength='255' id="boxName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所属库柜:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text"
+                               readonly disabled maxlength='255' id="cabintName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所属库房:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text"
+                               readonly disabled maxlength='255' id="depotName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">是否移交行当室:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text"
+                               readonly disabled maxlength='255' id="hasMoveBank"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+        <fieldset style="width: 100%;  padding: 10px; margin-top: 1px;">
+            <h4 class="form-header h4" style="color: #6379bb;font-size: 15px;margin-bottom: 20px">申请利用</h4>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">申请人:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{appOpName}"
+                               readonly disabled maxlength='255' id="appOpName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">申请部门:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control ' type="text" th:field="*{appDepName}"
+                               readonly disabled maxlength='255' id="appDepName"
+                               placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                           style="">利用形式:</label>
+                    <div class="col-sm-8 pad-sm" id="entityDiv">
+                        <input type="hidden" id="borType" th:value="*{borType}"/>
+                        <input class='submitInput form-control ' type="text"
+                               readonly disabled maxlength='255' id="borTypeL" placeholder=""
+                               value=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                           style="padding-right: 0;">利用开始日期:</label>
+                    <div class="col-sm-8">
+                        <input class='submitInput form-control '
+                               th:value="${#dates.format(amsBorrowInfo.borStaTime,'yyyy-MM-dd')}"
+                               readonly disabled type="text" name="borStaTime">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                           style="">归还日期:</label>
+                    <div class="col-sm-8" style="">
+                        <input class='submitInput form-control '
+                               th:value="${#dates.format(amsBorrowInfo.borEndTime,'yyyy-MM-dd')}"
+                               readonly disabled type="text" name="borEndTime">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" style="">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                           style="">利用目的:</label>
+                    <div class="col-sm-8  pad-sm"
+                         style="">
+                        <input class='submitInput form-control ' type="text" th:field="*{usePurpose}"
+                               readonly disabled maxlength='255' id="usePurpose" placeholder="" value="">
+                    </div>
+                </div>
+            </div>
+            <div id="hidDiv" style="display:none;">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" style="margin-left:0.22%">代办部门:</label>
+                        <div class="col-sm-8" style="margin-right:-0.8%">
+                            <input readonly disabled class='submitInput form-control' th:field="*{agentOrgName}"
+                                   type="text" id="agentOrgName" placeholder="" value="" style="width:98.9%">
+                            <input type='hidden' class='submitInput form-control' id="agentOrgCode" placeholder=""
+                                   value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-groupcol-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" style="margin-right:-0.4%">代办人:</label>
+                        <div class="col-sm-8">
+                            <input readonly disabled class='submitInput form-control' th:field="*{agentName}"
+                                   type="text" id="agentName" placeholder="" value="" style="margin-left:2%">
+                            <input type='hidden' class='submitInput form-control' id="agentCode" placeholder=""
+                                   value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">利用事由:</label>
+                    <div class="col-sm-8">
+							<textarea rows="5" cols="" class='submitInput form-control'
+                                      notNull='true' type="" dataType='text' readonly disabled th:field="*{appReason}"
+                                      onclick='onclickInput(this,event);'
+                                      maxlength='200' id="appReason" name="appReason"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="" id="hidDiv" style="display: none;">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">利用形式：</label>
+                        <div class="col-sm-8 pad-sm">
+                            <input class='submitInput form-control '
+                                   notNull='true' th:field="*{borForm}"
+                                   readonly disabled type="text" id="borForm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">复印份数：</label>
+                        <div class="col-sm-8 pad-sm">
+                            <input class='submitInput form-control ' type="text"
+                                   onclick='onclickInput(this,event);' readonly disabled
+                                   maxlength='11' id="copyNum" placeholder="" th:field="*{copyNum}"
+                                   value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">借出份数：</label>
+                        <div class="col-sm-8 pad-sm">
+                            <input class='submitInput form-control ' type="text"
+                                   onclick='onclickInput(this,event);' readonly disabled th:field="*{loanNum}"
+                                   maxlength='11' id="loanNum" placeholder=""
+                                   value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</div>
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+
+    var prefix = ctx + "borrow/amsBorrowInfo";
+
+    //查看邮件发送记录
+    function selectEmailHistory(width, height) {
+        var id = $("#amsProId").val();
+        var options = {
+            title: "邮件发送记录",
+            width: width,
+            height: height,
+            url: prefix + "/emailHistory/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    /* 查看审批意见 */
+    function selectUsersToParent(width, height) {
+        var id = $("#amsProId").val();
+        // $.operate.detail("查询历史审批意见", ctx + "myTask/waitProcessInfo/approvalHistory/" + id);
+        var options = {
+            title: "历史审批意见",
+            width: width,
+            height: height,
+            url: prefix + "/approvalHistory/" + id,
+            skin: 'layui-layer-gray',
+            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        };
+        $.modal.openOptions(options);
+    }
+
+    $(function () {
+        var borType = $("#borType").val();
+        if (borType == "10") {
+            $("#borTypeL").val("申请在线查阅");
+        } else {
+            $("#borTypeL").val("申请实体利用");
+        }
+
+        addParam();
+
+        var hasMoveBank = [[${amsBatch.arcHasMoveBank}]];
+        if (1 == hasMoveBank) {
+            $("#hasMoveBank").val("是");
+        } else {
+            $("#hasMoveBank").val("否");
+        }
+    });
+
+    //查询档案相关信息
+    function addParam() {
+        var batchId = $("#batchId").val();
+        // var url = "/borrow/amsBorrowInfo";
+        $.ajax({
+            type: "post",
+            url: prefix + "/queryAmsArchivesBybatchId",
+            dataType: "json",
+            data: {
+                batchId: batchId
+            },
+            error: function () {
+            },
+            success: function (json) {
+                $("#boxName").val(json["boxName"]);
+                $("#cabintName").val(json["cabintName"]);
+                $("#depotName").val(json["depotName"]);
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

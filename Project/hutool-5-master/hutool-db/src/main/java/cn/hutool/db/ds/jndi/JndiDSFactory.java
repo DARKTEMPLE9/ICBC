@@ -15,29 +15,28 @@ import cn.hutool.setting.Setting;
  * [group]<br>
  * jndi = jdbc/TestDB<br>
  * ---------------------<br>
- * 
- * @author Looly
  *
+ * @author Looly
  */
 public class JndiDSFactory extends AbstractDSFactory {
-	private static final long serialVersionUID = 1573625812927370432L;
-	
-	public static final String DS_NAME = "JNDI DataSource";
+    private static final long serialVersionUID = 1573625812927370432L;
 
-	public JndiDSFactory() {
-		this(null);
-	}
+    public static final String DS_NAME = "JNDI DataSource";
 
-	public JndiDSFactory(Setting setting) {
-		super(DS_NAME, null, setting);
-	}
+    public JndiDSFactory() {
+        this(null);
+    }
 
-	@Override
-	protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
-		String jndiName = poolSetting.getStr("jndi");
-		if (StrUtil.isEmpty(jndiName)) {
-			throw new DbRuntimeException("No setting name [jndi] for this group.");
-		}
-		return DbUtil.getJndiDs(jndiName);
-	}
+    public JndiDSFactory(Setting setting) {
+        super(DS_NAME, null, setting);
+    }
+
+    @Override
+    protected DataSource createDataSource(String jdbcUrl, String driver, String user, String pass, Setting poolSetting) {
+        String jndiName = poolSetting.getStr("jndi");
+        if (StrUtil.isEmpty(jndiName)) {
+            throw new DbRuntimeException("No setting name [jndi] for this group.");
+        }
+        return DbUtil.getJndiDs(jndiName);
+    }
 }

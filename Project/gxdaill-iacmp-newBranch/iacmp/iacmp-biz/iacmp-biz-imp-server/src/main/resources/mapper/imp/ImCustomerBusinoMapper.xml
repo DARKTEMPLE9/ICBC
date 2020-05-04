@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.northking.iacmp.imp.mapper.ImCustomerBusinoMapper">
+
+    <resultMap type="net.northking.iacmp.imp.domain.ImCustomerBusino" id="ImCustomerBusinoResult">
+        <result property="id" column="ID"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="busino" column="BUSINO"/>
+    </resultMap>
+
+    <sql id="selectImCustomerBusinoVo">
+        select ID, USER_CODE, BUSINO from im_customer_busino
+    </sql>
+
+    <select id="selectRegbillglidenos" resultType="java.lang.String">
+        select busino from im_customer_busino where user_code = #{userCode}
+    </select>
+
+    <select id="selectImCustomerBusinoById" parameterType="Long" resultMap="ImCustomerBusinoResult">
+        <include refid="selectImCustomerBusinoVo"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insertImCustomerBusino" parameterType="net.northking.iacmp.imp.domain.ImCustomerBusino"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into im_customer_busino
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">ID,</if>
+            <if test="userCode != null  and userCode != ''  ">USER_CODE,</if>
+            <if test="busino != null  and busino != ''  ">BUSINO,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">#{id},</if>
+            <if test="userCode != null  and userCode != ''  ">#{userCode},</if>
+            <if test="busino != null  and busino != ''  ">#{busino},</if>
+        </trim>
+    </insert>
+
+    <update id="updateImCustomerBusino" parameterType="net.northking.iacmp.imp.domain.ImCustomerBusino">
+        update im_customer_busino
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userCode != null  and userCode != ''  ">USER_CODE = #{userCode},</if>
+            <if test="busino != null  and busino != ''  ">BUSINO = #{busino},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteImCustomerBusinoById" parameterType="Long">
+        delete from im_customer_busino where ID = #{id}
+    </delete>
+
+    <delete id="deleteImCustomerBusinoByIds" parameterType="String">
+        delete from im_customer_busino where ID in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectImCustomerBusinoByUserCodes" parameterType="String" resultMap="ImCustomerBusinoResult">
+        <include refid="selectImCustomerBusinoVo"/>
+        where USER_CODE in
+        <foreach item="userCode" collection="array" open="(" separator="," close=")">
+            #{userCode}
+        </foreach>
+    </select>
+
+</mapper>

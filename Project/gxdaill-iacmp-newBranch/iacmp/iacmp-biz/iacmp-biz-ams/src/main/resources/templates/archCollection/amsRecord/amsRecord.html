@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('用户列表')"/>
+    <th:block th:include="include :: layout-latest-css"/>
+    <th:block th:include="include :: ztree-css"/>
+    <th:block th:include="include :: select2-css"/>
+    <style>
+        .radio_box {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            background: url("../../../img/blue.png") no-repeat;
+            background-position: -100px 0;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+        }
+
+        .radio_box input {
+            opacity: 0;
+        }
+
+        .radio_box:hover {
+            background-position: -120px 0;
+        }
+
+        .radio_png {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+        }
+
+        .radio_box.checked {
+            background-position: -140px 0;
+        }
+
+        .form-horizontal .control-label {
+            padding-right: 0 !important;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="ui-layout-west">
+    <div class="main-content">
+        <div class="box box-main">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa icon-grid"></i> 档案类型
+                </div>
+                <div class="box-tools pull-right">
+                    <a type="button" class="btn btn-box-tool menuItem" href="#" onclick="amsBill()" title="管理档案类型"><i
+                            class="fa fa-edit"></i></a>
+                    <button type="button" class="btn btn-box-tool" id="btnExpand" title="展开" style="display:none;"><i
+                            class="fa fa-chevron-up"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnCollapse" title="折叠"><i
+                            class="fa fa-chevron-down"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新档案类型"><i
+                            class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+            <div class="ui-layout-content">
+                <div id="tree" class="ztree"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui-layout-center">
+    <div class="container-div">
+        <div class="row">
+            <div id="topDiv" style="display:block;">
+                <div class='h4' style="float:left;"><b>档案著录</b></div>
+                <hr size="1" width="100%" color="black" noshade="noshade"
+                    style="margin-top: 0px; margin-bottom: 5px; height: 1px; background-color: lightgray;"/>
+                <div style="align:center;margin-top:10%;">
+                    <font style="text-align:center;font-size:16px;">欢迎使用档案著录,请选择要著录的档案类型。</font>
+                </div>
+                <div style="align:center;margin-top:10%;">
+                    <font style="text-align:center;font-size:16px;">著录完成后请到/我的任务/我的档案著录中查看和进行操作。</font>
+                </div>
+            </div>
+            <div id="bottomDiv" style="display: none;width: 70%;position: relative;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" method="post" id="form-amsRecord-amsRecord">
+                            <input id="batchNo" name="batchNo" type="hidden" class="form-control" th:value="${batchId}">
+                            <div style="border-bottom: 1px solid gray">
+                                <h3 id="thisTitle" style="margin-left: 40px;margin-top: -10px"></h3>
+                                <div class="form-group" style="position: absolute;top: 9px;right: 60px">
+                                    <div class="col-sm-12 col-sm-offset-3">
+                                        <button id="i_select_files0" onclick="$.modal.close()" class="btn btn-success"
+                                                type="button">上传文件
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="submitHandler()">提交
+                                        </button>
+                                        <button id="" class="btn btn-danger" style="margin-right: 30px" type="button"
+                                                onclick="backLast()">返回
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" style="display: none">档案编号：</label>
+                                <div class="col-sm-9" th:object="${amsArcReg}">
+                                    <input id="arcNo" name="arcNo" type="hidden" class="form-control" required
+                                           th:value="${amsArcReg?.id}">
+                                </div>
+                            </div>
+
+                            <div id="chooseSelect">
+                                <div id="arcName" class="form-group">
+                                    <label class="col-sm-3 control-label">★档案名称：</label>
+                                    <div class="col-sm-9" th:object="${amsArcReg}">
+                                        <input name="arcName" type="text" class="form-control" required
+                                               th:value="${amsArcReg?.name}" th:if="${amsArcReg?.name!=null}" readonly>
+                                        <input name="arcName" type="text" class="form-control" required
+                                               th:if="${amsArcReg?.name==null}">
+                                    </div>
+                                </div>
+
+                                <div id="arcCreTime" class="form-group">
+                                    <label class="col-sm-3 control-label">★形成日期：</label>
+                                    <div class="col-sm-9 date">
+                                        <input name="arcCreTime" type="text" class="form-control" id="formTime" required
+                                               th:value="${#dates.format(amsArcReg?.arcCreTime,'yyyy-MM-dd')}">
+                                    </div>
+                                </div>
+
+                                <div id="arcBill" class="form-group">
+                                    <label class="col-sm-3 control-label">★档案类型：</label>
+                                    <div class="col-sm-9">
+                                        <input id="treeType" name="arcBill" type="text" class="form-control" required
+                                               readonly>
+                                        <input id="treeType1" name="arcBillCode" type="hidden" class="form-control"
+                                               required
+                                               readonly>
+                                    </div>
+                                </div>
+
+                                <div id="arcBillDept" class="form-group">
+                                    <label class="col-sm-3 control-label">★二级类目 ：</label>
+                                    <div class="col-sm-9">
+                                        <input id="treeTypeTwo" name="arcBillDept" type="text" class="form-control"
+                                               required readonly>
+                                        <input id="treeTypeTwo1" name="arcBillDeptCode" type="hidden"
+                                               class="form-control"
+                                               required readonly>
+                                    </div>
+                                </div>
+
+                                <div id="valPeriod" class="form-group">
+                                    <label class="col-sm-3 control-label">★保管期限：
+                                    </label>
+                                    <div class="col-sm-9" style="">
+                                        <label class="radio-box"><input type="radio" value="10" name="valPeriod"
+                                                                        required>10年</label>
+                                        <label class="radio-box"><input type="radio" value="30" name="valPeriod"
+                                                                        required>30年</label>
+                                        <label class="radio-box"><input type="radio" value="99" name="valPeriod" checked
+                                                                        required>永久</label>
+                                    </div>
+                                </div>
+
+                                <div id="arcLevel" class="form-group">
+                                    <label class="col-sm-3 control-label">★密级：
+                                    </label>
+                                    <div class="col-sm-9" style="">
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="01" name="arcLevel" id="arcLevel01"
+                                                       style="z-index: 66;" required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text" for="arcLevel01">绝密</label>
+                                        </div>
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="02" name="arcLevel" id="arcLevel02"
+                                                       style="z-index: 66;" required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text" for="arcLevel02">机密</label>
+                                        </div>
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="03" name="arcLevel" id="arcLevel03"
+                                                       style="z-index: 66;" required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text" for="arcLevel03">秘密</label>
+                                        </div>
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="04" name="arcLevel" checked id="arcLevel04"
+                                                       style="z-index: 66;" required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text" for="arcLevel04">内部公开</label>
+                                        </div>
+                                        <!--   <label class="radio-box"><input type="radio" value="01" name="arcLevel"
+                                                                           required>绝密</label>
+                                           <label class="radio-box"><input type="radio" value="02" name="arcLevel"
+                                                                           required>机密</label>
+                                           <label class="radio-box"><input type="radio" value="03" name="arcLevel"
+                                                                           required>秘密</label>
+                                           <label class="radio-box"><input type="radio" value="04" name="arcLevel" checked
+                                                                           required>内部公开</label>-->
+                                    </div>
+                                </div>
+                                <div id="hasMoveBank" class="form-group">
+                                    <label class="col-sm-3 control-label">★是否移交行档室：</label>
+                                    <div class="col-sm-9" style="">
+                                        <!--<label class="radio-box" th:if="${amsArcReg?.hasMoveBank!=null}" >-->
+                                        <!--<input type="radio" value="1" name="arcHasMoveBank" th:field="*{amsArcReg.hasMoveBank}" required>是</label>-->
+                                        <!--<label class="radio-box" th:if="${amsArcReg?.hasMoveBank==null}">-->
+                                        <!--<input type="radio" value="1" name="arcHasMoveBank" required>是</label>-->
+                                        <!--<label class="radio-box" th:if="${amsArcReg?.hasMoveBank!=null}">-->
+                                        <!--<input type="radio" value="0" name="arcHasMoveBank" th:field="*{amsArcReg.hasMoveBank}" checked required>否</label>-->
+                                        <!--<label class="radio-box" th:if="${amsArcReg?.hasMoveBank==null}">-->
+                                        <!--<input type="radio" value="0" name="arcHasMoveBank" checked required>否</label>-->
+                                        <label class="radio-box">
+                                            <input type="radio" value="1" id="arcHasMoveBank1" name="arcHasMoveBank"/>是</label>
+                                        <label class="radio-box">
+                                            <input type="radio" value="0" id="arcHasMoveBank0" name="arcHasMoveBank"
+                                                   checked/>否</label>
+                                    </div>
+                                </div>
+
+                                <div id="expenseInvolve" class="form-group" style="position: relative;">
+                                    <label class="col-sm-3 control-label">★是否涉及费用：
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="1" name="expenseInvolve"
+                                                       style="z-index: 66;">
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text">是</label>
+                                        </div>
+                                        <div style="position:relative ;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="0" checked name="expenseInvolve"
+                                                       style="z-index: 66;">
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text">否</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-3" style="position: absolute;bottom: 3px;right: 133px;"
+                                         id="expenseInvolveDiv">
+                                        <input id="expenseInvolveValue" name="expense" type="text"
+                                               style="width: 60px;"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'');if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                        <span>(万元)</span>
+                                    </div>
+                                </div>
+
+                                <div id="arcFormat" class="form-group" style="position: relative;">
+                                    <label class="col-sm-3 control-label">★是否电子化：
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="10" id="optionsRadios10" name="arcFormat"
+                                                       required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text">是</label>
+                                        </div>
+                                        <div style="position:relative;display: inline-block;padding-left: 25px;padding-right: 15px; padding-top: 8px;">
+                                            <div class="radio_box">
+                                                <input type="radio" value="20" id="optionsRadios11" checked
+                                                       name="arcFormat" required>
+                                                <span class="radio_png"></span>
+                                            </div>
+                                            <label class="radio_text">否</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="isNoMedium" class="form-group">
+                                    <label class="col-sm-3 control-label">★有无介质：
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-box"><input type="radio" value="1" name="isNoMedium"
+                                                                        required>是</label>
+                                        <label class="radio-box"><input type="radio" value="0" name="isNoMedium" checked
+                                                                        required>否</label>
+                                    </div>
+                                </div>
+
+                                <div id="respOpName" class="form-group">
+                                    <label class="col-sm-3 control-label">★责任者 ：</label>
+                                    <div class="col-sm-9">
+                                        <input id="respOpName0" name="respOpName" type="text" class="form-control"
+                                               onclick="selectUser('respOpName0');respOpName.blur();return false;"
+                                               required
+                                               placeholder="请选择责任者" autocomplete="off"
+                                               th:value="${amsArcReg?.respOpName}">
+                                    </div>
+                                </div>
+
+                                <div id="arcCode" class="form-group">
+                                    <label class="col-sm-3 control-label">★文件编号：</label>
+                                    <div class="col-sm-9">
+                                        <input name="arcCode" type="text" class="form-control" required
+                                               th:value="${amsArcReg?.arcCode}" maxlength="15"
+                                               placeholder="非0开头数字和字母，最多15位，-和_不可放在首位"
+                                               oninput="value=value.replace(/[^\a-\z\A-\Z0-9-_]/g,'')"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,'')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,'')};if(this.value.substring(0,1)=='0'){this.value=this.value.replace(this.value,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^\a-\z\A-\Z1-9]/g,'')}else{this.value=this.value.replace(/[^\a-\z\A-\Z0-9-_]/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="arcPageNum" class="form-group">
+                                    <label class="col-sm-3 control-label">页数 ：</label>
+                                    <div class="col-sm-9" th:object="${amsArcReg}">
+                                        <input name="arcPageNum" type="text" class="form-control" maxlength="9"
+                                               th:value="${amsArcReg?.recPageNum}" placeholder="非0开头数字，最多9位"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="arcNum" class="form-group">
+                                    <label class="col-sm-3 control-label">★份数：</label>
+                                    <div class="col-sm-9" th:object="${amsArcReg}">
+                                        <input name="arcNum" type="text" class="form-control" required maxlength="9"
+                                               th:value="${amsArcReg?.regArcNum}" placeholder="非0开头数字，最多9位"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="totalTransactions" class="form-group">
+                                    <label class="col-sm-3 control-label">★笔数：</label>
+                                    <div class="col-sm-9">
+                                        <input name="totalTransactions" type="text" class="form-control" required
+                                               maxlength="15"
+                                               oninput="value=value.replace(/[^\d]/g,'')" placeholder="非0开头数字，最多15位"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="photographer" class="form-group">
+                                    <label class="col-sm-3 control-label">★摄录人员：</label>
+                                    <div class="col-sm-9">
+                                        <input name="photographer" type="text" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div id="duration" class="form-group">
+                                    <label class="col-sm-3 control-label">★时长：</label>
+                                    <div class="col-sm-9">
+                                        <input name="duration" id="durationHidden" type="text" class="form-control"
+                                               style="display: none">
+                                        <input id="time1" type="text" style="width: 70px;" required placeholder="最多720"
+                                               onkeyup="value=value.replace(/[^\d]/g, '')"
+                                               oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'');if(value>720)value=720;if(value.length>3)value=value.slice(0,3);if(value<0)value=0">&nbsp;&nbsp;时&nbsp;&nbsp;
+                                        <input id="time2" type="text" style="width: 70px;" required placeholder="最多59"
+                                               onkeyup="value=value.replace(/[^\d]/g, '')"
+                                               oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'');if(value>59)value=59;if(value.length>2)value=value.slice(0,2);if(value<0)value=0"/>&nbsp;&nbsp;分&nbsp;&nbsp;
+                                        <input id="time3" type="text" style="width: 70px;" required placeholder="最多59"
+                                               onkeyup="value=value.replace(/[^\d]/g, '')"
+                                               oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'');if(value>59)value=59;if(value.length>2)value=value.slice(0,2);if(value<0)value=0">&nbsp;&nbsp;秒
+                                    </div>
+                                </div>
+
+                                <div id="caption" class="form-group">
+                                    <label class="col-sm-3 control-label">★文字说明：</label>
+                                    <div class="col-sm-9">
+                                        <input name="caption" type="text" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div id="conferIns" class="form-group">
+                                    <label class="col-sm-3 control-label">★授予单位：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="conferIns" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div id="receiveIns" class="form-group">
+                                    <label class="col-sm-3 control-label">★接收单位：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="receiveIns" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div id="originMode" class="form-group">
+                                    <label class="col-sm-3 control-label">★来源：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="originMode">
+                                            <option value="1" required>经营产生</option>
+                                            <option value="2" required>上级下发</option>
+                                            <option value="3" required>移交</option>
+                                            <option value="4" required>征集</option>
+                                            <option value="5" required>收集</option>
+                                            <option value="6" required>购买</option>
+                                            <option value="7" required>捐赠</option>
+                                            <option value="8" required>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="bill" class="form-group">
+                                    <label class="col-sm-3 control-label">★分类：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="bill">
+                                            <option value="1" required>全部</option>
+                                            <option value="2" required>重大活动</option>
+                                            <option value="3" required>员工培训</option>
+                                            <option value="4" required>公司荣誉</option>
+                                            <option value="5" required>文化建设</option>
+                                            <option value="6" required>关怀指导</option>
+                                            <option value="7" required>同业交流</option>
+                                            <option value="8 " required>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="counterpart" class="form-group">
+                                    <label class="col-sm-3 control-label">★相对方：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="counterpart" class="form-control"
+                                               placeholder="请输入16字以内" maxlength="16" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="peopleName">
+                                    <label class="col-sm-3 control-label">姓名：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="peopleName" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="peopleCard">
+                                    <label class="col-sm-3 control-label">身份证号：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="peopleCard" class="form-control"
+                                               placeholder="最多18位" maxlength="18"
+                                               oninput="value= value.replace(/[^\d|xX]/g,'')"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/[^\d|xX]/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/[^\d|xX]/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="carrier" class="form-group">
+                                    <label class="col-sm-3 control-label">载体形式：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="carrier">
+                                            <option value='01'>纸质档案</option>
+                                            <option value='02'>音像档案</option>
+                                            <option value='03'>电子档案</option>
+                                            <option value='04'>实物档案</option>
+                                            <option value='05'>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="arcLayout" class="form-group">
+                                    <label class="col-sm-3 control-label">格式：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="arcLayout">
+                                            <option value='0'>全部</option>
+                                            <option value='1'>mp4</option>
+                                            <option value='2'>wmv</option>
+                                            <option value='3'>rmvb</option>
+                                            <option value='4'>mkv</option>
+                                            <option value='5'>avi</option>
+                                            <option value='6'>flv</option>
+                                            <option value='7'>mp3</option>
+                                            <option value='8'>wav</option>
+                                            <option value='9'>wma</option>
+                                            <option value='10'>ogg</option>
+                                            <option value='11'>ape</option>
+                                            <option value='12'>acc</option>
+                                            <option value='13'>其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="afourNum" class="form-group">
+                                    <label class="col-sm-3 control-label">A4数：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="afourNum" class="form-control"
+                                               maxlength="9" placeholder="非0开头数字，最多9位"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="themeSpeech" class="form-group">
+                                    <label class="col-sm-3 control-label">主题词：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="themeSpeech" class="form-control"
+                                               placeholder="请输入64字以内" th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="language" class="form-group">
+                                    <label class="col-sm-3 control-label">语种：</label>
+                                    <div class="col-sm-9">
+                                        <!--   <input type="text" name="language" class="form-control">-->
+                                        <select class="form-control" name="language">
+                                            <option value='中文'>中文</option>
+                                            <option value='英文'>英文</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="originType" class="form-group">
+                                    <label class="col-sm-3 control-label">来源单位或个人：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="originType" class="form-control" placeholder="请输入64字以内"
+                                               th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="cutting" class="form-group">
+                                    <label class="col-sm-3 control-label">开本：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="cutting" class="form-control" placeholder="请输入64字以内"
+                                               th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="otherName" class="form-group">
+                                    <label class="col-sm-3 control-label">并列题名：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="otherName" class="form-control" placeholder="请输入64字以内"
+                                               th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="forwardNo" class="form-group">
+                                    <label class="col-sm-3 control-label">转发文号：</label>
+                                    <div class="col-sm-9">
+                                        <!--不能汉字-->
+                                        <input type="text" name="forwardNo" class="form-control" maxlength="16"
+                                               oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'')"
+                                               placeholder="不允许汉字，最多16位"
+                                               onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"
+                                               onafterpaste="this.value=this.value.replace(/[\u4E00-\u9FA5]/g,'')">
+                                    </div>
+                                </div>
+
+                                <div id="forwardName" class="form-group">
+                                    <label class="col-sm-3 control-label">转发文题名：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="forwardName" class="form-control"
+                                               placeholder="请输入64字以内" th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="receiptNo" class="form-group">
+                                    <label class="col-sm-3 control-label">收文编号：</label>
+                                    <div class="col-sm-9">
+                                        <!--不能汉字-->
+                                        <input type="text" name="receiptNo" class="form-control" maxlength="16"
+                                               oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'')"
+                                               placeholder="不允许汉字，最多16位"
+                                               onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"
+                                               onafterpaste="this.value=this.value.replace(/[\u4E00-\u9FA5]/g,'')">
+                                    </div>
+                                </div>
+
+                                <div id="etc" class="form-group">
+                                    <label class="col-sm-3 control-label">附注：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="eTC" class="form-control" placeholder="请输入200字以内"
+                                               th:maxlength="200">
+                                    </div>
+                                </div>
+
+                                <div id="etcNum" class="form-group">
+                                    <label class="col-sm-3 control-label">附件数：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="etcNum" class="form-control"
+                                               maxlength="9" placeholder="非0开头数字，最多9位"
+                                               oninput="value=value.replace(/[^\d]/g,'')"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                                    </div>
+                                </div>
+
+                                <div id="edition" class="form-group">
+                                    <label class="col-sm-3 control-label">版次：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="edition" class="form-control"
+                                               placeholder="请输入64字以内" th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="practDesc" class="form-group">
+                                    <label class="col-sm-3 control-label">描述：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="practDesc" class="form-control"
+                                               placeholder="请输入200字以内" th:maxlength="200">
+                                    </div>
+                                </div>
+
+                                <div id="arcCopyright" class="form-group">
+                                    <label class="col-sm-3 control-label">版权：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="arcCopyright" class="form-control"
+                                               placeholder="请输入64字以内" th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="keyWord" class="form-group">
+                                    <label class="col-sm-3 control-label">关键字：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="keyWord" class="form-control"
+                                               placeholder="请输入64字以内" th:maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div id="remark" class="form-group">
+                                    <label class="col-sm-3 control-label">备注信息：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="remark" class="form-control" placeholder="请输入200字以内"
+                                               th:maxlength="200">
+                                    </div>
+                                </div>
+
+                                <div id="arcAbstract" class="form-group">
+                                    <label class="col-sm-3 control-label">摘要：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="arcAbstract" class="form-control"
+                                               placeholder="请输入200字以内" th:maxlength="200">
+                                    </div>
+                                </div>
+                                <div id="busiNo" class="form-group">
+                                    <label class="col-sm-3 control-label">全局流水号：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="busiNo" class="form-control"
+                                               placeholder="请输入64字符以内" th:maxlength="64">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "archCollection/amsRecord";
+    /* 表单数据验证 */
+    $("#form-amsRecord-amsRecord").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+    $(document).ready(function () {
+        // 初始化是否涉及费用
+        $('input[name="expenseInvolve"]:checked').parent().addClass('checked');
+        var val = $('input[name="expenseInvolve"]:checked').val();
+        if (val == "1") {
+            $("#expenseInvolveDiv").show();
+
+        } else {
+            $("#expenseInvolveDiv").hide();
+
+        }
+        // 绑定是否涉及费用选中改变显示 input框
+        $("input[name='expenseInvolve']").click(function () {
+            var val = $('input[name="expenseInvolve"]:checked').val();
+            if (val == "1") {
+                $("#expenseInvolveDiv").show();
+                $('#expenseInvolve .radio_box').removeClass('checked');
+                $('input[name="expenseInvolve"]:checked').parent().addClass('checked');
+
+            } else {
+                $("#expenseInvolveDiv").hide();
+                $("#expenseInvolveValue").val("")
+                $('#expenseInvolve .radio_box').removeClass('checked');
+                $('input[name="expenseInvolve"]:checked').parent().addClass('checked');
+            }
+        });
+    })
+    //初始化是否电子化
+    $('input[name="arcFormat"]:checked').parent().addClass('checked');
+    //电子化 切换
+    $("input[name='arcFormat']").click(function () {
+        $('#arcFormat .radio_box').removeClass('checked');
+        $('input[name="arcFormat"]:checked').parent().addClass('checked');
+    })
+
+
+    if ([[${amsArcReg.arcFormat}]] == "10") {
+
+        $("#optionsRadios10").parent().addClass('checked');
+        $("#optionsRadios11").parent().removeClass('checked');
+        $("#optionsRadios11").attr("checked", false);
+        $("#optionsRadios10").attr("checked", true);
+
+    } else {
+        $("#optionsRadios10").parent().removeClass('checked');
+        $("#optionsRadios11").parent().addClass('checked');
+        $("#optionsRadios10").attr("checked", false);
+        $("#optionsRadios11").attr("checked", true);
+
+
+    }
+
+
+    //初始密级
+    $('input[name="arcLevel"]:checked').parent().addClass('checked');
+    //密级切换
+    $("input[name='arcLevel']").click(function () {
+        if ($("input[name='arcLevel']:checked").val() == '01' || $("input[name='arcLevel']:checked").val() == '02') {
+            $.modal.alert('“机密”、“绝密”级别的档案不允许著录，请联系行档案管理员。已默认勾选为“内部公开”');
+            $('input[name="arcLevel"]').parent().removeClass('checked');
+            $("input[name='arcLevel']:eq(3)").parent().addClass('checked');
+            $("input[name='arcLevel']:eq(3)").prop('checked', 'checked')
+        } else {
+            $('input[name="arcLevel"]').parent().removeClass('checked');
+            $('input[name="arcLevel"]:checked').parent().addClass('checked');
+        }
+    })
+    // 页数、分数、笔数 A4数 附件数只能输入以0开头的数字
+    $("input[name='arcNum'],input[name='arcPageNum'],input[name='totalTransactions'],input[name='afourNum'],input[name='etcNum']").keyup(function () {
+        var val = $(this).val();
+        if (val.length == 1) {
+            $(this).val(val.replace(/[^1-9]/g, ''));
+        } else {
+            $(this).val(val.replace(/\D/g, ''));
+
+            if (val.substring(0, 1) == '0') {
+                $(this).val('');
+            }
+        }
+    });
+
+    /* 表单数据提交 */
+    function submitHandler() {
+        // var val = $("input[name='arcFormat']:checked").val();
+        // if(val == "10"){
+        //
+        //     $.modal.alertWarning("请上传文件");
+        //     return;
+        // }
+        // if($('#optionsRadios10').is(':checked')){
+        //     alert("请上传文件")
+        //     //后期加入文件上传功能
+        // }
+
+        // 拼接时长字段，插入form表
+        var time = $("#time1").val() + "时" + $("#time2").val() + "分" + $("#time3").val() + "秒"
+        $("#durationHidden").val(time)
+
+        // 限制档案密级
+        var arcLevel = $("input[name='arcLevel']:checked").val();
+        if (arcLevel == '01' || arcLevel == '02') {
+            alert('机密、绝密级别的档案不允许著录，请联系行档案管理员');
+        }
+        if ($.validate.form()) {
+            // $.post(prefix + "/addBatch", $('#form-amsRecord-amsRecord').serialize());
+            $.ajax({
+                url: prefix + "/addBatch",
+                data: $('#form-amsRecord-amsRecord').serialize(),
+                type: 'POST',
+                success: function (result) {
+                    // console.log(result.code)
+                    if (result.code == 0) {
+                        var url = prefix;
+                        $.modal.parentTab("档案著录", url);
+                    } else {
+                        $.modal.alertError("著录信息有误，请重新著录：\n" + result.msg)
+                    }
+                },
+            });
+            // 前页面跳转刷新
+            //             var url = prefix;
+            //             $.modal.parentTab("档案著录", url);
+        }
+    }
+
+
+    // 退回上一个页面
+    function backLast() {
+        // $('#form-amsRecord-amsRecord')[0].reset();
+        // $.modal.closeTab();
+        // 前页面跳转刷新
+        $('#form-amsRecord-amsRecord')[0].reset();
+        var url = prefix;
+        $.modal.parentTab("档案著录", url);
+    }
+
+    // 日期框js
+    $(function () {
+        <!-- laydate示例 -->
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            // formTime
+            var formTime = laydate.render({
+                elem: '#formTime',
+                max: 0,
+                theme: 'molv',
+                trigger: 'click'
+            });
+        });
+    });
+
+    $(function () {
+        var panehHidden = false;
+        if ($(this).width() < 769) {
+            panehHidden = true;
+        }
+        $('body').layout({initClosed: panehHidden, west__size: 300});
+        queryAmsBillTree();
+    });
+
+    String.prototype.startWith = function (str) {
+        var reg = new RegExp("^" + str);
+        return reg.test(this);
+    }
+    // 是否移交行档案室初始化后台的值
+    if ([[${amsArcReg?.hasMoveBank}]] == "1") {
+        $("#arcHasMoveBank1").prop("checked", 'checked');
+    } else {
+        $("#arcHasMoveBank0").prop("checked", 'checked');
+    }
+
+    /*查询部门树*/
+    function queryAmsBillTree() {
+        var url = ctx + "archCollection/amsRecord/treeData";
+        var options = {
+            url: url,
+            expandLevel: 1,
+            onClick: zOnClick
+        };
+        $.tree.init(options);
+
+        /*定义三个数组用来判断*/
+        var arr1 = [];
+        $("#chooseSelect>div").each(function () {
+            arr1.push($(this).attr("id"))
+        })
+        var arr2 = [];
+        var arr3 = [];
+
+        function zOnClick(event, treeId, treeNode) {
+
+            if (treeNode.pId == null) {
+                $("#treeType1").val(treeNode.id)
+            } else {
+                $("#treeType1").val(treeNode.pId)
+            }
+            $("#treeTypeTwo1").val(treeNode.id)
+
+            for (var l = 0; l < arr1.length; l++) {
+                $("#" + arr1[l]).show()
+            }
+            arr2.length = 0;
+            arr3.length = 0;
+            var thisId = treeNode.id.toString()
+            // console.log(treeNode)
+            $("#topDiv").hide()
+            $("#bottomDiv").show()
+            $("#thisTitle").text(treeNode.name)
+            $.ajax({
+                //请求方式
+                type: "GET",
+                //请求地址
+                url: ctx + "archCollection/amsRecord/findAmsBill/" + thisId,
+                //请求成功
+                success: function (data) {
+
+                    /*两数组对比，分别展示不同模型*/
+                    arr2 = data.mouldStr.split(",")
+
+                    /*新数组用于存放不同项*/
+                    for (var i = 0; i < arr1.length; i++) {
+                        for (var j = 0; j < arr2.length; j++) {
+                            if (arr1[i] == arr2[j]) {
+                                break;
+                            }
+                            if (j == arr2.length - 1) {
+                                if (arr1[i] != arr2[j]) {
+                                    arr3.push(arr1[i]);
+                                }
+                            }
+                        }
+                    }
+                    /*循环数组3，删除项目*/
+                    for (var k = 0; k < arr3.length; k++) {
+                        $("#" + arr3[k]).hide()
+                    }
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    console.log(e.status);
+                }
+            });
+
+            // 档案类型
+            if (treeNode.parentName == '-') {
+                $("#treeType").val(treeNode.name);
+            } else {
+                $("#treeType").val(treeNode.parentName);
+            }
+            $("#treeTypeTwo").val(treeNode.name);
+        }
+    }
+
+    $('#btnExpand').click(function () {
+        $._tree.expandAll(true);
+        $(this).hide();
+        $('#btnCollapse').show();
+    });
+
+    $('#btnCollapse').click(function () {
+        $._tree.expandAll(false);
+        $(this).hide();
+        $('#btnExpand').show();
+    });
+    $('#btnRefresh').click(function () {
+        queryAmsBillTree();
+    });
+
+    /* 档案类型管理TODO */
+    function amsBill() {
+        $.modal.alertWarning("请联系行档案管理员进行编辑档案分类！")
+        // var url = ctx + "system/dept";
+        // $.modal.openTab("档案类型管理", url);
+    }
+
+    <!--上传-->
+    var batchId = [[${batchId}]];
+    $('#i_select_files0').on('click', function () {
+        // 判断是否电子化
+        var arcLevel = $("input[name='arcFormat']:checked").val();
+        if (arcLevel != '10') {
+            $.modal.alert("若上传文件，请选择电子化");
+            return;
+        }
+        var regId = $("#arcNo").val();
+        var url = prefix + "/toUploadBatch/" + batchId + "/" + regId + "/111";
+        $.modal.openTab("上传文件", url)
+    });
+
+    <!--选择用户-->
+    /*选择人员 */
+    function selectUser(id) {
+        var options = {
+            title: '选择用户',
+            /* width: width,
+             height: height,*/
+            id: id,
+            url: ctx + "system/user/selectUser?id=" + id,
+            btn: ['确定', '关闭'],
+            shadeClose: true,
+            yes: function (index, layero) {
+                var body = layer.getChildFrame('body', index);
+                $('#' + id).val(body.find('#thisRowName').val());
+                layer.close(index);
+            },
+            cancel: function (index) {
+                return true;
+            }
+        };
+        $.modal.openOptions(options);
+    }
+</script>
+
+
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果登录账户已经存在，更新这条数据。"> 是否更新已经存在的用户数据
+                &nbsp; <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i
+                    class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+</html>
